@@ -1805,4 +1805,46 @@ void IndexRouter::SetupAlgorithmMode(IndexGraphStarter & starter, bool guidesAct
   case VehicleType::Count: CHECK(false, ("Unknown vehicle type:", m_vehicleType)); break;
   }
 }
+
+// Phase 4: Alternative routes implementation
+void IndexRouter::CalculateAlternatives(Route & primaryRoute)
+{
+  if (!m_computeAlternatives)
+    return;
+
+  // Only compute alternatives for car routing
+  if (m_vehicleType != VehicleType::Car)
+  {
+    LOG(LDEBUG, ("Alternatives only supported for car routing"));
+    return;
+  }
+
+  // Check minimum route length
+  double const primaryLength = primaryRoute.GetTotalDistanceMeters();
+  AlternativeParams params = AlternativeParams::Default();
+
+  if (primaryLength < params.minLengthMeters)
+  {
+    LOG(LDEBUG, ("Route too short for alternatives:",
+        primaryLength, "m <", params.minLengthMeters, "m"));
+    return;
+  }
+
+  // Create finder if not exists
+  if (!m_alternativeFinder)
+    m_alternativeFinder = CreateAlternativeFinder();
+
+  // Find alternatives using k-SPwLO algorithm
+  std::vector<AlternativeRoute> alternatives = m_alternativeFinder->Find(primaryRoute, params);
+
+  if (!alternatives.empty())
+  {
+    LOG(LINFO, ("Found", alternatives.size(), "alternative routes"));
+
+    // TODO: Store alternatives in Route for RoutingSession to access.
+    // For now, we just log that alternatives were found.
+    // Full integration requires Route class modification to store alternatives.
+  }
+}
+
 }  // namespace routing

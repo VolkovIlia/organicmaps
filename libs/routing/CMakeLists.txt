@@ -3,6 +3,10 @@ project(routing)
 set(SRC
   absent_regions_finder.cpp
   absent_regions_finder.hpp
+  alternative_finder.cpp
+  alternative_finder.hpp
+  alternative_route.hpp
+  alternatives_ui_state.hpp
   async_router.cpp
   async_router.hpp
   base/astar_algorithm.hpp

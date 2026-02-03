@@ -1,5 +1,7 @@
 #pragma once
 
+#include "routing/alternative_finder.hpp"
+#include "routing/alternative_route.hpp"
 #include "routing/base/astar_algorithm.hpp"
 #include "routing/base/astar_progress.hpp"
 #include "routing/base/routing_result.hpp"
@@ -94,6 +96,11 @@ public:
   {
     m_currentTimeGetter = std::forward<T>(getter);
   }
+
+  // Phase 4: Alternative routes
+  /// @brief Enable/disable alternative route computation.
+  void SetComputeAlternatives(bool enable) { m_computeAlternatives = enable; }
+  bool GetComputeAlternatives() const { return m_computeAlternatives; }
 
 private:
   RouterResultCode CalculateSubrouteJointsMode(IndexGraphStarter & starter, RouterDelegate const & delegate,
@@ -265,6 +272,9 @@ private:
 
   std::vector<Segment> GetBestOutgoingSegments(m2::PointD const & checkpoint, WorldGraph & graph);
 
+  // Phase 4: Calculate alternatives using k-SPwLO algorithm
+  void CalculateAlternatives(Route & primaryRoute);
+
   VehicleType m_vehicleType;
   bool m_loadAltitudes;
   std::string const m_name;
@@ -289,5 +299,9 @@ private:
   CountryParentNameGetterFn m_countryParentNameGetterFn;
 
   TimeGetterT m_currentTimeGetter;
+
+  // Phase 4: Alternative routes
+  bool m_computeAlternatives = false;
+  std::unique_ptr<IAlternativeFinder> m_alternativeFinder;
 };
 }  // namespace routing
