@@ -11,6 +11,11 @@ set(SRC
   altitude_generator.hpp
   borders.cpp
   borders.hpp
+  # Phase 3: CCH (Customizable Contraction Hierarchies) Generator
+  cch_section_writer.cpp
+  cch_section_writer.hpp
+  cch_topology_builder.cpp
+  cch_topology_builder.hpp
   boundary_postcodes_enricher.cpp
   boundary_postcodes_enricher.hpp
   brands_loader.cpp

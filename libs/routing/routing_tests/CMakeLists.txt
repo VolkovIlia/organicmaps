@@ -5,6 +5,8 @@ set(SRC
   lanes/lanes_recommendation_tests.cpp
   applying_traffic_test.cpp
   astar_algorithm_test.cpp
+  # Phase 3: CCH tests
+  cch_tests.cpp
   astar_progress_test.cpp
   astar_router_test.cpp
   async_router_test.cpp
