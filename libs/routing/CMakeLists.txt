@@ -5,6 +5,8 @@ set(SRC
   absent_regions_finder.hpp
   async_router.cpp
   async_router.hpp
+  corridor_tracker.cpp
+  corridor_tracker.hpp
   base/astar_algorithm.hpp
   base/astar_progress.cpp
   base/astar_progress.hpp
@@ -113,6 +115,8 @@ set(SRC
   regions_router.hpp
   regions_sparse_graph.cpp
   regions_sparse_graph.hpp
+  reroute_decision.cpp
+  reroute_decision.hpp
   restriction_loader.cpp
   restriction_loader.hpp
   restrictions_serialization.cpp

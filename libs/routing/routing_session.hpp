@@ -1,8 +1,10 @@
 #pragma once
 
 #include "routing/async_router.hpp"
+#include "routing/corridor_tracker.hpp"
 #include "routing/following_info.hpp"
 #include "routing/position_accumulator.hpp"
+#include "routing/reroute_decision.hpp"
 #include "routing/route.hpp"
 #include "routing/router.hpp"
 #include "routing/routing_callbacks.hpp"
@@ -167,6 +169,12 @@ public:
   SpeedCameraManager & GetSpeedCamManager() { return m_speedCameraManager; }
   SpeedCameraManager const & GetSpeedCamManager() const { return m_speedCameraManager; }
 
+  /// @brief Enable/disable corridor-based tracking (Phase 2)
+  void SetCorridorTrackingEnabled(bool enabled);
+
+  /// @brief Get current corridor state (for UI)
+  CorridorState GetCorridorState() const;
+
   std::shared_ptr<Route> GetRouteForTests() const { return m_route; }
   void SetGuidesForTests(GuidesTracks guides) { m_router->SetGuidesTracks(std::move(guides)); }
 
@@ -188,6 +196,9 @@ private:
   void RemoveRoute();
   void RebuildRouteOnTrafficUpdate();
 
+  /// @brief Handle reroute decision from corridor tracker
+  void HandleCorridorRerouteDecision(RerouteDecisionResult const & decision);
+
   void PassCheckpoints();
 
 private:
@@ -204,6 +215,11 @@ private:
   double m_lastDistance = 0.0;
   int m_moveAwayCounter = 0;
   m2::PointD m_lastGoodPosition;
+
+  // Phase 2: Corridor-based following
+  std::unique_ptr<ICorridorTracker> m_corridorTracker;
+  std::unique_ptr<IRerouteDecision> m_rerouteDecision;
+  bool m_useCorridorTracking = false;  // Feature flag, disabled by default
 
   m2::PointD m_userCurrentPosition;
   bool m_userCurrentPositionValid = false;
