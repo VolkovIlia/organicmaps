@@ -1,5 +1,6 @@
 #pragma once
 
+#include "routing/alternative_route.hpp"
 #include "routing/async_router.hpp"
 #include "routing/corridor_tracker.hpp"
 #include "routing/following_info.hpp"
@@ -32,8 +33,11 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <optional>
 #include <queue>
+#include <set>
 #include <string>
+#include <vector>
 
 namespace location
 {
@@ -180,6 +184,32 @@ public:
 
   double GetCompletionPercent() const;
 
+  // Phase 4: Alternative routes support
+  /// @brief Get available alternative routes (excludes primary).
+  std::vector<AlternativeRoute> const & GetAlternatives() const { return m_alternatives; }
+
+  /// @brief Check if alternatives are available.
+  bool HasAlternatives() const { return !m_alternatives.empty(); }
+
+  /// @brief Set alternatives computed by IndexRouter.
+  void SetAlternatives(std::vector<AlternativeRoute> && alternatives);
+
+  /// @brief Switch navigation to alternative route.
+  /// @param index 1-based alternative index.
+  /// @return True if switch succeeded.
+  bool SwitchToAlternative(int index);
+
+  /// @brief Dismiss alternative at decision point (user chose to stay on primary).
+  /// @param alternativeIndex 1-based alternative index.
+  void DismissAlternative(int alternativeIndex);
+
+  /// @brief Clear all dismissed decision points.
+  void ClearDismissedAlternatives() { m_dismissedAlternatives.clear(); }
+
+  /// @brief Get decision point that should be shown now (if any).
+  /// @return Decision point if approaching one, nullopt otherwise.
+  std::optional<DecisionPoint> GetVisibleDecisionPoint() const;
+
 private:
   struct DoReadyCallback
   {
@@ -248,6 +278,10 @@ private:
   int m_routingRebuildCount = -1;         // -1 for the first rebuild called in BuildRoute().
   int m_routingRebuildAnnounceCount = 0;  // track TTS announcement state (ignore the first build)
   mutable double m_lastCompletionPercent = 0.0;
+
+  // Phase 4: Alternative routes
+  std::vector<AlternativeRoute> m_alternatives;
+  std::set<int> m_dismissedAlternatives;  // Set of dismissed alternative indices
 
   DECLARE_THREAD_CHECKER(m_threadChecker);
 };

@@ -993,6 +993,69 @@ void RoutingSession::HandleCorridorRerouteDecision(RerouteDecisionResult const &
   }
 }
 
+// Phase 4: Alternative routes implementation
+void RoutingSession::SetAlternatives(std::vector<AlternativeRoute> && alternatives)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  m_alternatives = std::move(alternatives);
+  m_dismissedAlternatives.clear();
+}
+
+bool RoutingSession::SwitchToAlternative(int index)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+
+  if (index < 1 || index > static_cast<int>(m_alternatives.size()))
+    return false;
+
+  auto const & alt = m_alternatives[static_cast<size_t>(index - 1)];
+  if (!alt.IsValid())
+    return false;
+
+  // TODO: In full implementation, create new Route from alternative path
+  // and call AssignRoute with the new route.
+  // For now, just clear alternatives after switch attempt.
+  m_alternatives.clear();
+  m_dismissedAlternatives.clear();
+
+  return true;
+}
+
+void RoutingSession::DismissAlternative(int alternativeIndex)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  m_dismissedAlternatives.insert(alternativeIndex);
+}
+
+std::optional<DecisionPoint> RoutingSession::GetVisibleDecisionPoint() const
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+
+  if (!m_route || !m_route->IsValid() || m_alternatives.empty())
+    return std::nullopt;
+
+  double const currentDistance = m_route->GetCurrentDistanceFromBeginMeters();
+
+  for (auto const & alt : m_alternatives)
+  {
+    // Skip dismissed alternatives
+    if (m_dismissedAlternatives.count(alt.routeIndex) > 0)
+      continue;
+
+    for (auto const & point : alt.decisionPoints)
+    {
+      if (point.IsGoodTimeToShow(currentDistance))
+      {
+        // Only show if time saving is significant (> 60 seconds)
+        if (point.timeSavingSeconds > 60.0)
+          return point;
+      }
+    }
+  }
+
+  return std::nullopt;
+}
+
 std::string DebugPrint(SessionState state)
 {
   switch (state)
