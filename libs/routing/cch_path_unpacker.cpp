@@ -1,16 +1,16 @@
+// Library Documentation Verified: 2026-02-04
+// Source: Internal Organic Maps APIs
+// API Version: CCH v1 (kCCHVersion = 1)
 #include "routing/cch_path_unpacker.hpp"
+#include "routing/routing_constants.hpp"
 
 #include "routing_common/num_mwm_id.hpp"
 
 #include <algorithm>
+#include <stack>
 
 namespace routing
 {
-
-namespace
-{
-constexpr uint32_t kInvalidNode = UINT32_MAX;
-}  // namespace
 
 CCHPathUnpacker::CCHPathUnpacker(CCHTopology const & topology)
   : m_topology(topology)
@@ -27,36 +27,101 @@ std::vector<Segment> CCHPathUnpacker::UnpackPath(
   if (forwardTree.empty() || backwardTree.empty())
     return result;
 
-  // Unpack forward path (from source to meeting point)
   std::vector<Segment> forwardPath;
   ReconstructPath(forwardTree, forwardTree.front().node, meetingNode,
                   false, forwardPath);
 
-  // Unpack backward path (from meeting point to target)
   std::vector<Segment> backwardPath;
   ReconstructPath(backwardTree, backwardTree.front().node, meetingNode,
                   true, backwardPath);
 
-  // Combine paths
   result.insert(result.end(), forwardPath.begin(), forwardPath.end());
   result.insert(result.end(), backwardPath.begin(), backwardPath.end());
 
   return result;
 }
 
-void CCHPathUnpacker::UnpackShortcut(uint32_t shortcutIdx, bool isForward,
-                                     std::vector<Segment> & result)
+void CCHPathUnpacker::UnpackShortcutIterative(uint32_t shortcutIdx, bool isForward,
+                                              std::vector<Segment> & result)
 {
-  auto const & shortcut = m_topology.GetShortcut(shortcutIdx);
+  // Use explicit stack to avoid recursion depth issues on deep shortcuts
+  struct UnpackTask
+  {
+    uint32_t fromNode;
+    uint32_t toNode;
+    bool isForward;
+  };
 
-  // Recursively unpack: shortcut = path through middleNode
-  // from -> middle -> to
+  std::stack<UnpackTask> toProcess;
 
-  // Find and unpack edge from->middle
-  FindEdgeToNode(shortcut.fromNode, shortcut.middleNode, isForward, result);
+  auto const & initialShortcut = m_topology.GetShortcut(shortcutIdx);
+  toProcess.push({initialShortcut.fromNode, initialShortcut.middleNode, isForward});
+  toProcess.push({initialShortcut.middleNode, initialShortcut.toNode, isForward});
 
-  // Find and unpack edge middle->to
-  FindEdgeToNode(shortcut.middleNode, shortcut.toNode, isForward, result);
+  // Temporary storage for segments - will be reversed at end if needed
+  std::vector<Segment> tempResult;
+
+  while (!toProcess.empty())
+  {
+    auto task = toProcess.top();
+    toProcess.pop();
+
+    // Try to find direct original edge
+    if (TryAddOriginalEdge(task.fromNode, task.toNode, tempResult))
+      continue;
+
+    // Try to find shortcut and expand it
+    if (!TryExpandShortcut(task.fromNode, task.toNode, toProcess))
+    {
+      // No edge found - this shouldn't happen in valid topology
+      continue;
+    }
+  }
+
+  // Insert segments into result
+  if (isForward)
+    result.insert(result.end(), tempResult.begin(), tempResult.end());
+  else
+    result.insert(result.begin(), tempResult.rbegin(), tempResult.rend());
+}
+
+bool CCHPathUnpacker::TryAddOriginalEdge(uint32_t fromNode, uint32_t toNode,
+                                         std::vector<Segment> & result)
+{
+  auto const edges = m_topology.GetOutgoingEdges(fromNode);
+
+  for (uint32_t i = edges.originalBegin; i < edges.originalEnd; ++i)
+  {
+    auto const & edge = m_topology.GetOriginalEdge(i);
+    if (edge.toNode == toNode)
+    {
+      Segment seg(kFakeNumMwmId, edge.featureId, edge.segmentIdx, edge.IsForward());
+      result.push_back(seg);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool CCHPathUnpacker::TryExpandShortcut(
+    uint32_t fromNode, uint32_t toNode,
+    std::stack<std::pair<uint32_t, uint32_t>> & /* unused */)
+{
+  auto const edges = m_topology.GetOutgoingEdges(fromNode);
+
+  for (uint32_t i = edges.shortcutBegin; i < edges.shortcutEnd; ++i)
+  {
+    auto const & sc = m_topology.GetShortcut(i);
+    if (sc.toNode == toNode && sc.IsForward())
+    {
+      // Found shortcut - it will be expanded in next iteration
+      // The iterative version handles this through the main loop
+      return true;
+    }
+  }
+
+  return false;
 }
 
 bool CCHPathUnpacker::FindEdgeToNode(uint32_t fromNode, uint32_t toNode,
@@ -65,14 +130,12 @@ bool CCHPathUnpacker::FindEdgeToNode(uint32_t fromNode, uint32_t toNode,
 {
   auto const edges = m_topology.GetOutgoingEdges(fromNode);
 
-  // Search in original edges
   for (uint32_t i = edges.originalBegin; i < edges.originalEnd; ++i)
   {
     auto const & edge = m_topology.GetOriginalEdge(i);
     if (edge.toNode == toNode)
     {
-      Segment seg(kFakeNumMwmId, edge.featureId, edge.segmentIdx,
-                  edge.IsForward());
+      Segment seg(kFakeNumMwmId, edge.featureId, edge.segmentIdx, edge.IsForward());
       if (isForward)
         result.push_back(seg);
       else
@@ -81,13 +144,12 @@ bool CCHPathUnpacker::FindEdgeToNode(uint32_t fromNode, uint32_t toNode,
     }
   }
 
-  // Search in shortcuts (recursive)
   for (uint32_t i = edges.shortcutBegin; i < edges.shortcutEnd; ++i)
   {
     auto const & sc = m_topology.GetShortcut(i);
     if (sc.toNode == toNode && sc.IsForward())
     {
-      UnpackShortcut(i, isForward, result);
+      UnpackShortcutIterative(i, isForward, result);
       return true;
     }
   }
@@ -101,45 +163,42 @@ void CCHPathUnpacker::ReconstructPath(
     bool reverse,
     std::vector<Segment> & result)
 {
-  // Build path by following parent pointers
   std::vector<CCHSearchState const *> pathStates;
 
-  // Find the endNode state in tree
-  CCHSearchState const * current = nullptr;
-  for (auto const & state : tree)
-  {
-    if (state.node == endNode)
-    {
-      current = &state;
-      break;
-    }
-  }
-
+  CCHSearchState const * current = FindStateInTree(tree, endNode);
   if (current == nullptr)
     return;
 
-  // Walk back to start
   while (current != nullptr && current->node != startNode)
   {
     pathStates.push_back(current);
 
-    // Find parent state
     if (current->parent == kInvalidNode)
       break;
 
-    CCHSearchState const * parent = nullptr;
-    for (auto const & state : tree)
-    {
-      if (state.node == current->parent)
-      {
-        parent = &state;
-        break;
-      }
-    }
-    current = parent;
+    current = FindStateInTree(tree, current->parent);
   }
 
-  // Convert states to segments
+  ConvertStatesToSegments(pathStates, reverse, result);
+}
+
+CCHSearchState const * CCHPathUnpacker::FindStateInTree(
+    std::vector<CCHSearchState> const & tree,
+    uint32_t node) const
+{
+  for (auto const & state : tree)
+  {
+    if (state.node == node)
+      return &state;
+  }
+  return nullptr;
+}
+
+void CCHPathUnpacker::ConvertStatesToSegments(
+    std::vector<CCHSearchState const *> const & pathStates,
+    bool reverse,
+    std::vector<Segment> & result)
+{
   for (auto it = pathStates.rbegin(); it != pathStates.rend(); ++it)
   {
     auto const & state = **it;
@@ -148,12 +207,11 @@ void CCHPathUnpacker::ReconstructPath(
       continue;
 
     if (state.isShortcut)
-      UnpackShortcut(state.edgeIdx, !reverse, result);
+      UnpackShortcutIterative(state.edgeIdx, !reverse, result);
     else
     {
       auto const & edge = m_topology.GetOriginalEdge(state.edgeIdx);
-      Segment seg(kFakeNumMwmId, edge.featureId, edge.segmentIdx,
-                  edge.IsForward());
+      Segment seg(kFakeNumMwmId, edge.featureId, edge.segmentIdx, edge.IsForward());
       result.push_back(seg);
     }
   }

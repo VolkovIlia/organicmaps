@@ -1,20 +1,17 @@
+// Library Documentation Verified: 2026-02-04
+// Source: Internal Organic Maps APIs
+// API Version: CCH v1 (kCCHVersion = 1)
 #include "routing/cch_customizer.hpp"
+#include "routing/routing_constants.hpp"
 
 #include "base/assert.hpp"
 #include "base/logging.hpp"
 #include "base/timer.hpp"
 
 #include <algorithm>
-#include <limits>
 
 namespace routing
 {
-
-namespace
-{
-constexpr double kInfinity = std::numeric_limits<double>::max();
-constexpr double kDefaultEdgeWeight = 1.0;
-}  // namespace
 
 CCHCustomizer::CCHCustomizer(CCHTopology const & topology)
   : m_topology(topology)

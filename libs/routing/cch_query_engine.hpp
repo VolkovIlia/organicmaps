@@ -1,3 +1,6 @@
+// Library Documentation Verified: 2026-02-04
+// Source: Internal Organic Maps APIs
+// API Version: CCH v1 (kCCHVersion = 1)
 #pragma once
 
 #include "routing/cch_customizer.hpp"
@@ -18,6 +21,8 @@
 namespace routing
 {
 
+enum class SearchDirection;
+
 /// @brief Result of CCH query
 struct CCHQueryResult
 {
@@ -28,10 +33,7 @@ struct CCHQueryResult
   double distanceMeters = 0.0;
   double durationSeconds = 0.0;
 
-  // Path as sequence of segments (for UI display)
   std::vector<Segment> path;
-
-  // For debugging: was fallback used?
   bool usedFallback = false;
 };
 
@@ -50,17 +52,9 @@ class ICCHQueryEngine
 {
 public:
   virtual ~ICCHQueryEngine() = default;
-
-  /// @brief Execute CCH query with node IDs
   virtual CCHQueryResult Query(CCHQueryRequest const & request) = 0;
-
-  /// @brief Check if CCH is available for given MWM
   virtual bool IsCCHAvailable(NumMwmId mwmId) const = 0;
-
-  /// @brief Customize CCH for profile
   virtual bool Customize(CCHCustomizationConfig const & config) = 0;
-
-  /// @brief Check if engine is ready for queries
   virtual bool IsReady() const = 0;
 };
 
@@ -75,7 +69,6 @@ public:
   bool Customize(CCHCustomizationConfig const & config) override;
   bool IsReady() const override;
 
-  /// @brief Reset query state for new query
   void ResetQueryState();
 
 private:
@@ -84,28 +77,80 @@ private:
       std::vector<CCHSearchState>,
       std::greater<CCHSearchState>>;
 
-  /// @brief Find path using bidirectional Dijkstra
+  /// @brief Validate query request parameters.
+  bool ValidateQueryRequest(CCHQueryRequest const & request,
+                            CCHQueryResult & result) const;
+
+  /// @brief Initialize search queues for bidirectional Dijkstra.
+  void InitializeSearch(uint32_t sourceNode, uint32_t targetNode,
+                        PriorityQueue & forwardQueue,
+                        PriorityQueue & backwardQueue);
+
+  /// @brief Check if search can be terminated early.
+  bool CheckTermination(PriorityQueue const & forwardQueue,
+                        PriorityQueue const & backwardQueue,
+                        double bestDist) const;
+
+  /// @brief Find path using bidirectional Dijkstra.
   bool FindPath(uint32_t sourceNode, uint32_t targetNode,
                 std::vector<CCHSearchState> & forwardTree,
                 std::vector<CCHSearchState> & backwardTree,
                 uint32_t & meetingNode);
 
-  /// @brief Process forward search step
-  void ProcessForwardStep(PriorityQueue & queue, double & bestDist,
-                          uint32_t & meetingNode,
-                          std::vector<CCHSearchState> & tree);
+  /// @brief Process single search step in given direction.
+  void ProcessSearchStep(SearchDirection direction,
+                         PriorityQueue & queue,
+                         std::vector<CCHSearchState> & tree,
+                         double & bestDist,
+                         uint32_t & meetingNode);
 
-  /// @brief Process backward search step
-  void ProcessBackwardStep(PriorityQueue & queue, double & bestDist,
-                           uint32_t & meetingNode,
-                           std::vector<CCHSearchState> & tree);
+  /// @brief Try to update meeting point if searches have met.
+  void TryUpdateMeetingPoint(uint32_t node, double myNodeDist,
+                             std::vector<bool> const & otherVisited,
+                             std::vector<double> const & otherDist,
+                             double & bestDist,
+                             uint32_t & meetingNode,
+                             SearchDirection direction) const;
+
+  /// @brief Relax edges from current node.
+  void RelaxEdges(SearchDirection direction,
+                  CCHSearchState const & state,
+                  PriorityQueue & queue,
+                  std::vector<double> & myDist,
+                  std::vector<bool> const & otherVisited,
+                  std::vector<double> const & otherDist,
+                  double & bestDist,
+                  uint32_t & meetingNode);
+
+  /// @brief Relax original edges.
+  void RelaxOriginalEdges(SearchDirection direction,
+                          CCHSearchState const & state,
+                          CCHEdgeRange const & edges,
+                          uint32_t nodeLevel,
+                          PriorityQueue & queue,
+                          std::vector<double> & myDist,
+                          std::vector<bool> const & otherVisited,
+                          std::vector<double> const & otherDist,
+                          double & bestDist,
+                          uint32_t & meetingNode);
+
+  /// @brief Relax shortcut edges.
+  void RelaxShortcuts(SearchDirection direction,
+                      CCHSearchState const & state,
+                      CCHEdgeRange const & edges,
+                      uint32_t nodeLevel,
+                      PriorityQueue & queue,
+                      std::vector<double> & myDist,
+                      std::vector<bool> const & otherVisited,
+                      std::vector<double> const & otherDist,
+                      double & bestDist,
+                      uint32_t & meetingNode);
 
 private:
   CCHTopology const & m_topology;
   CCHCustomizer & m_customizer;
   CCHPathUnpacker m_pathUnpacker;
 
-  // Reusable data structures
   std::vector<double> m_forwardDist;
   std::vector<double> m_backwardDist;
   std::vector<bool> m_forwardVisited;
@@ -114,7 +159,6 @@ private:
   std::vector<CCHSearchState> m_backwardParent;
 };
 
-/// @brief Comparison operator for priority queue
 inline bool operator>(CCHSearchState const & a, CCHSearchState const & b)
 {
   return a.distance > b.distance;

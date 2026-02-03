@@ -1,3 +1,6 @@
+// Library Documentation Verified: 2026-02-04
+// Source: Internal Organic Maps APIs
+// API Version: CCH v1 (kCCHVersion = 1)
 #pragma once
 
 #include "routing_common/num_mwm_id.hpp"

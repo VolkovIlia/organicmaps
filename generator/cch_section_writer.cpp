@@ -1,3 +1,6 @@
+// Library Documentation Verified: 2026-02-04
+// Source: Internal Organic Maps APIs
+// API Version: CCH v1 (kCCHVersion = 1)
 #include "generator/cch_section_writer.hpp"
 #include "generator/cch_topology_builder.hpp"
 

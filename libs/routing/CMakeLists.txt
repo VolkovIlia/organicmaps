@@ -9,6 +9,7 @@ set(SRC
   # Phase 3: CCH (Customizable Contraction Hierarchies)
   cch_customizer.cpp
   cch_customizer.hpp
+  routing_constants.hpp
   cch_path_unpacker.cpp
   cch_path_unpacker.hpp
   cch_query_engine.cpp
