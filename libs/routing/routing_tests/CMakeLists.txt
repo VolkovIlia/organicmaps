@@ -5,6 +5,7 @@ set(SRC
   lanes/lanes_recommendation_tests.cpp
   applying_traffic_test.cpp
   astar_algorithm_test.cpp
+  corridor_tracker_tests.cpp
   astar_progress_test.cpp
   astar_router_test.cpp
   async_router_test.cpp
@@ -26,6 +27,7 @@ set(SRC
   nearest_edge_finder_tests.cpp
   opening_hours_serdes_tests.cpp
   position_accumulator_tests.cpp
+  reroute_decision_tests.cpp
   restriction_test.cpp
   road_access_test.cpp
   road_graph_builder.cpp

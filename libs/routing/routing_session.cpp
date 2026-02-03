@@ -49,6 +49,9 @@ RoutingSession::RoutingSession()
   , m_routingSettings(GetRoutingSettings(VehicleType::Car))
   , m_passedDistanceOnRouteMeters(0.0)
   , m_lastCompletionPercent(0.0)
+  , m_corridorTracker(std::make_unique<CorridorTracker>())
+  , m_rerouteDecision(std::make_unique<RerouteDecision>())
+  , m_useCorridorTracking(false)
 {
   // To call |m_changeSessionStateCallback| on |m_state| initialization.
   SetState(SessionState::NoValidRoute);
@@ -124,6 +127,10 @@ void RoutingSession::RemoveRoute()
   m_lastDistance = 0.0;
   m_moveAwayCounter = 0;
   m_turnNotificationsMgr.Reset();
+
+  // Reset corridor tracker when route is removed
+  if (m_corridorTracker)
+    m_corridorTracker->Reset();
 
   m_route = std::make_shared<Route>(std::string{} /* router */, 0 /* route id */);
   m_speedCameraManager.Reset();
@@ -303,25 +310,69 @@ SessionState RoutingSession::OnLocationPositionChanged(GpsInfo const & info)
 
   if (m_state != SessionState::RouteNeedRebuild && m_state != SessionState::RouteRebuilding)
   {
-    // Distance from the last known projection on route
-    // (check if we are moving far from the last known projection).
-    auto const & lastGoodPoint = m_route->GetFollowedPolyline().GetCurrentIter().m_pt;
-    double const dist =
-        mercator::DistanceOnEarth(lastGoodPoint, mercator::FromLatLon(info.m_latitude, info.m_longitude));
-    if (AlmostEqualAbs(dist, m_lastDistance, kRunawayDistanceSensitivityMeters))
-      return m_state;
-
-    if (!info.HasSpeed() || info.m_speed < m_routingSettings.m_minSpeedForRouteRebuildMpS)
-      m_moveAwayCounter += 1;
-    else
-      m_moveAwayCounter += 2;
-
-    m_lastDistance = dist;
-
-    if (m_moveAwayCounter > kOnRouteMissedCount)
+    // Phase 2: Use corridor-based off-route detection when enabled
+    if (m_useCorridorTracking && m_corridorTracker && m_route->IsValid())
     {
-      m_passedDistanceOnRouteMeters += m_route->GetCurrentDistanceFromBeginMeters();
-      SetState(SessionState::RouteNeedRebuild);
+      ms::LatLon const position(info.m_latitude, info.m_longitude);
+      double const gpsAccuracy = info.m_horizontalAccuracy > 0 ? info.m_horizontalAccuracy : 10.0;
+
+      auto const checkResult = m_corridorTracker->CheckPosition(position, gpsAccuracy, *m_route);
+
+      switch (checkResult.recommendation)
+      {
+      case CorridorCheckResult::Recommendation::Continue:
+        // Normal operation - continue on route
+        if (checkResult.isInsideCorridor)
+        {
+          m_moveAwayCounter = 0;
+          m_lastDistance = 0.0;
+        }
+        break;
+
+      case CorridorCheckResult::Recommendation::SuggestReturn:
+        // Could show UI prompt here in future
+        // For now, treat as still on route
+        break;
+
+      case CorridorCheckResult::Recommendation::Reroute:
+        // Make reroute decision
+        if (m_rerouteDecision)
+        {
+          auto const decision = m_rerouteDecision->Decide(position, *m_route);
+          HandleCorridorRerouteDecision(decision);
+        }
+        else
+        {
+          // Fallback to immediate reroute
+          m_passedDistanceOnRouteMeters += m_route->GetCurrentDistanceFromBeginMeters();
+          SetState(SessionState::RouteNeedRebuild);
+        }
+        break;
+      }
+    }
+    else
+    {
+      // Legacy: distance-based off-route detection
+      // Distance from the last known projection on route
+      // (check if we are moving far from the last known projection).
+      auto const & lastGoodPoint = m_route->GetFollowedPolyline().GetCurrentIter().m_pt;
+      double const dist =
+          mercator::DistanceOnEarth(lastGoodPoint, mercator::FromLatLon(info.m_latitude, info.m_longitude));
+      if (AlmostEqualAbs(dist, m_lastDistance, kRunawayDistanceSensitivityMeters))
+        return m_state;
+
+      if (!info.HasSpeed() || info.m_speed < m_routingSettings.m_minSpeedForRouteRebuildMpS)
+        m_moveAwayCounter += 1;
+      else
+        m_moveAwayCounter += 2;
+
+      m_lastDistance = dist;
+
+      if (m_moveAwayCounter > kOnRouteMissedCount)
+      {
+        m_passedDistanceOnRouteMeters += m_route->GetCurrentDistanceFromBeginMeters();
+        SetState(SessionState::RouteNeedRebuild);
+      }
     }
   }
 
@@ -893,6 +944,53 @@ void RoutingSession::SetLocaleWithJsonForTesting(std::string const & json, std::
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   m_turnNotificationsMgr.SetLocaleWithJsonForTesting(json, locale);
+}
+
+void RoutingSession::SetCorridorTrackingEnabled(bool enabled)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  m_useCorridorTracking = enabled;
+  LOG(LINFO, ("Corridor tracking", enabled ? "enabled" : "disabled"));
+
+  if (enabled && !m_corridorTracker)
+    m_corridorTracker = std::make_unique<CorridorTracker>();
+  if (enabled && !m_rerouteDecision)
+    m_rerouteDecision = std::make_unique<RerouteDecision>();
+}
+
+CorridorState RoutingSession::GetCorridorState() const
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  if (m_corridorTracker)
+    return m_corridorTracker->GetState();
+  return CorridorState::OnRoute;
+}
+
+void RoutingSession::HandleCorridorRerouteDecision(RerouteDecisionResult const & decision)
+{
+  switch (decision.decision)
+  {
+  case RerouteDecisionType::StayOnRoute:
+    // Do nothing, continue on current route
+    if (m_corridorTracker)
+      m_corridorTracker->Reset();
+    break;
+
+  case RerouteDecisionType::SuggestReturn:
+    // In future: transition corridor tracker to SuggestingReturn state
+    // For now, still trigger reroute after some delay
+    LOG(LINFO, ("Corridor: Suggest return -", decision.reason));
+    break;
+
+  case RerouteDecisionType::CalculateNewRoute:
+    // Trigger reroute
+    LOG(LINFO, ("Corridor: Calculate new route -", decision.reason));
+    m_passedDistanceOnRouteMeters += m_route->GetCurrentDistanceFromBeginMeters();
+    SetState(SessionState::RouteNeedRebuild);
+    if (m_corridorTracker)
+      m_corridorTracker->Reset();
+    break;
+  }
 }
 
 std::string DebugPrint(SessionState state)
