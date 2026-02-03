@@ -10,6 +10,11 @@
 namespace routing
 {
 
+/// @brief Distance thresholds for showing alternative route notifications.
+/// Show notification when user is between these distances before decision point.
+constexpr double kMinDecisionPointShowDistanceMeters = 500.0;   ///< Don't show too close
+constexpr double kMaxDecisionPointShowDistanceMeters = 2000.0;  ///< Don't show too early
+
 /// @brief Point where user can switch to alternative route.
 struct DecisionPoint
 {
@@ -20,11 +25,12 @@ struct DecisionPoint
 
   /// @brief Check if this is a good time to show alternative notification.
   /// @param currentDistanceFromStart Current position along route in meters.
-  /// @return True if within 500m-2km before decision point.
+  /// @return True if within kMinDecisionPointShowDistanceMeters-kMaxDecisionPointShowDistanceMeters before decision point.
   bool IsGoodTimeToShow(double currentDistanceFromStart) const
   {
     double const distanceToDecision = distanceFromStartMeters - currentDistanceFromStart;
-    return distanceToDecision >= 500.0 && distanceToDecision <= 2000.0;
+    return distanceToDecision >= kMinDecisionPointShowDistanceMeters &&
+           distanceToDecision <= kMaxDecisionPointShowDistanceMeters;
   }
 
   bool operator==(DecisionPoint const & rhs) const

@@ -46,102 +46,137 @@ public:
       AlternativeParams const & params) override
   {
     base::Timer timer;
-    std::vector<AlternativeRoute> alternatives;
 
-    // Step 0: Check minimum route length
-    double const primaryLength = primaryRoute.GetTotalDistanceMeters();
-    if (primaryLength < params.minLengthMeters)
-    {
-      LOG(LDEBUG, ("Route too short for alternatives:",
-          primaryLength, "m <", params.minLengthMeters, "m"));
-      return alternatives;
-    }
+    if (!ValidateRouteLength(primaryRoute, params))
+      return {};
 
-    // Step 1: Collect primary route segments
     std::vector<Segment> const primaryPath = CollectRouteSegments(primaryRoute);
     if (primaryPath.empty())
     {
       LOG(LDEBUG, ("Primary route has no segments"));
-      return alternatives;
+      return {};
     }
 
-    std::unordered_set<Segment, std::hash<Segment>> primarySegmentSet(
-        primaryPath.begin(), primaryPath.end());
+    std::vector<AlternativeRoute> alternatives = EvaluateViaCandidates(
+        primaryRoute, primaryPath, params);
 
-    // Step 2: Find via-node candidates
-    // In full implementation, this would query CCH high-level nodes.
-    // For now, we implement the structure for future CCH integration.
-    std::vector<uint32_t> viaCandidates = FindViaCandidates(
-        primaryRoute, primarySegmentSet, params.maxViaNodeCandidates);
-
-    // Step 3: For each via-node, try to build alternative
-    double const primaryDuration = primaryRoute.GetTotalTimeSec();
-
-    for (uint32_t viaNode : viaCandidates)
-    {
-      if (static_cast<int>(alternatives.size()) >= params.k - 1)
-        break;  // Found enough alternatives
-
-      // Try to construct alternative through via-node
-      // In full implementation: query CCH for origin->via and via->dest
-      auto candidateOpt = TryBuildAlternative(
-          primaryRoute, viaNode, primaryPath, params);
-
-      if (!candidateOpt.has_value())
-        continue;
-
-      AlternativeRoute & candidate = candidateOpt.value();
-      candidate.routeIndex = static_cast<int>(alternatives.size()) + 1;
-
-      // Check acceptance criteria
-      if (!candidate.IsAcceptable(params.overlapThreshold,
-                                   params.maxLengthRatio,
-                                   primaryLength))
-      {
-        continue;
-      }
-
-      // Check overlap with existing alternatives
-      bool const overlapsExisting = std::any_of(
-          alternatives.begin(), alternatives.end(),
-          [&](AlternativeRoute const & existing) {
-            return CalcOverlap(candidate.path, existing.path) > params.overlapThreshold;
-          });
-
-      if (overlapsExisting)
-        continue;
-
-      // Calculate diversity score
-      candidate.diversityScore = 1.0 - candidate.overlapWithPrimary;
-
-      LOG(LDEBUG, ("Found alternative", candidate.routeIndex,
-          "overlap:", candidate.overlapWithPrimary,
-          "stretch:", candidate.GetStretchRatio(primaryLength),
-          "time saving:", primaryDuration - candidate.durationSeconds, "s"));
-
-      alternatives.push_back(std::move(candidate));
-    }
-
-    // Step 4: Find decision points for accepted alternatives
-    if (!alternatives.empty())
-    {
-      std::vector<DecisionPoint> decisionPoints = FindDecisionPoints(
-          primaryRoute, alternatives);
-
-      // Assign decision points to alternatives
-      for (auto & point : decisionPoints)
-      {
-        int const idx = point.alternativeIndex - 1;
-        if (idx >= 0 && idx < static_cast<int>(alternatives.size()))
-          alternatives[idx].decisionPoints.push_back(point);
-      }
-    }
+    PopulateDecisionPoints(primaryRoute, alternatives);
 
     LOG(LINFO, ("Found", alternatives.size(), "alternatives in",
         timer.ElapsedSeconds() * 1000, "ms"));
 
     return alternatives;
   }
+
+private:
+  /// @brief Validate that route is long enough for alternatives.
+  bool ValidateRouteLength(Route const & route, AlternativeParams const & params) const
+  {
+    double const length = route.GetTotalDistanceMeters();
+    if (length < params.minLengthMeters)
+    {
+      LOG(LDEBUG, ("Route too short for alternatives:",
+          length, "m <", params.minLengthMeters, "m"));
+      return false;
+    }
+    return true;
+  }
+
+  /// @brief Evaluate via-node candidates and build valid alternatives.
+  std::vector<AlternativeRoute> EvaluateViaCandidates(
+      Route const & primaryRoute,
+      std::vector<Segment> const & primaryPath,
+      AlternativeParams const & params) const
+  {
+    std::vector<AlternativeRoute> alternatives;
+    double const primaryLength = primaryRoute.GetTotalDistanceMeters();
+    double const primaryDuration = primaryRoute.GetTotalTimeSec();
+
+    std::unordered_set<Segment, std::hash<Segment>> primarySegmentSet(
+        primaryPath.begin(), primaryPath.end());
+
+    std::vector<uint32_t> viaCandidates = FindViaCandidates(
+        primaryRoute, primarySegmentSet, params.maxViaNodeCandidates);
+
+    for (uint32_t viaNode : viaCandidates)
+    {
+      if (static_cast<int>(alternatives.size()) >= params.k - 1)
+        break;
+
+      auto candidate = TryAcceptCandidate(
+          primaryRoute, viaNode, primaryPath, primaryLength, primaryDuration, params, alternatives);
+
+      if (candidate.has_value())
+        alternatives.push_back(std::move(candidate.value()));
+    }
+
+    return alternatives;
+  }
+
+  /// @brief Try to build and accept a candidate alternative through via-node.
+  std::optional<AlternativeRoute> TryAcceptCandidate(
+      Route const & primaryRoute,
+      uint32_t viaNode,
+      std::vector<Segment> const & primaryPath,
+      double primaryLength,
+      double primaryDuration,
+      AlternativeParams const & params,
+      std::vector<AlternativeRoute> const & existingAlternatives) const
+  {
+    auto candidateOpt = TryBuildAlternative(primaryRoute, viaNode, primaryPath, params);
+    if (!candidateOpt.has_value())
+      return std::nullopt;
+
+    AlternativeRoute & candidate = candidateOpt.value();
+    candidate.routeIndex = static_cast<int>(existingAlternatives.size()) + 1;
+
+    if (!candidate.IsAcceptable(params.overlapThreshold, params.maxLengthRatio, primaryLength))
+      return std::nullopt;
+
+    if (OverlapsExistingAlternative(candidate, existingAlternatives, params.overlapThreshold))
+      return std::nullopt;
+
+    candidate.diversityScore = 1.0 - candidate.overlapWithPrimary;
+
+    LOG(LDEBUG, ("Found alternative", candidate.routeIndex,
+        "overlap:", candidate.overlapWithPrimary,
+        "stretch:", candidate.GetStretchRatio(primaryLength),
+        "time saving:", primaryDuration - candidate.durationSeconds, "s"));
+
+    return candidate;
+  }
+
+  /// @brief Check if candidate overlaps with any existing alternative.
+  bool OverlapsExistingAlternative(
+      AlternativeRoute const & candidate,
+      std::vector<AlternativeRoute> const & existingAlternatives,
+      double overlapThreshold) const
+  {
+    return std::any_of(existingAlternatives.begin(), existingAlternatives.end(),
+        [&](AlternativeRoute const & existing) {
+          return CalcOverlap(candidate.path, existing.path) > overlapThreshold;
+        });
+  }
+
+  /// @brief Populate decision points for all alternatives.
+  void PopulateDecisionPoints(
+      Route const & primaryRoute,
+      std::vector<AlternativeRoute> & alternatives) const
+  {
+    if (alternatives.empty())
+      return;
+
+    std::vector<DecisionPoint> decisionPoints = FindDecisionPoints(primaryRoute, alternatives);
+
+    for (auto & point : decisionPoints)
+    {
+      int const idx = point.alternativeIndex - 1;
+      if (idx >= 0 && idx < static_cast<int>(alternatives.size()))
+        alternatives[idx].decisionPoints.push_back(point);
+    }
+  }
+
+public:
 
   double CalcOverlap(
       std::vector<Segment> const & path1,
