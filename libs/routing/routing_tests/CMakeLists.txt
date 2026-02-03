@@ -5,7 +5,12 @@ set(SRC
   lanes/lanes_recommendation_tests.cpp
   applying_traffic_test.cpp
   astar_algorithm_test.cpp
+
   corridor_tracker_tests.cpp
+
+  
+  cch_tests.cpp
+
   astar_progress_test.cpp
   astar_router_test.cpp
   async_router_test.cpp

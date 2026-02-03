@@ -13,6 +13,16 @@ set(SRC
   corridor_tracker.hpp
 
   base/astar_algorithm.hpp
+  # Phase 3: CCH (Customizable Contraction Hierarchies)
+  cch_customizer.cpp
+  cch_customizer.hpp
+  routing_constants.hpp
+  cch_path_unpacker.cpp
+  cch_path_unpacker.hpp
+  cch_query_engine.cpp
+  cch_query_engine.hpp
+  cch_topology.cpp
+  cch_topology.hpp
   base/astar_progress.cpp
   base/astar_progress.hpp
   base/astar_vertex_data.hpp
