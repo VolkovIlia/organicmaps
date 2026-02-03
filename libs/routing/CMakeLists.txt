@@ -5,6 +5,8 @@ set(SRC
   absent_regions_finder.hpp
   async_router.cpp
   async_router.hpp
+  turn_cost_model.cpp
+  turn_cost_model.hpp
   base/astar_algorithm.hpp
   base/astar_progress.cpp
   base/astar_progress.hpp

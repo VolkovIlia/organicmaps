@@ -11,6 +11,8 @@ set(SRC
   num_mwm_id.hpp
   pedestrian_model.cpp
   pedestrian_model.hpp
+  regional_speed_profiles.cpp
+  regional_speed_profiles.hpp
   vehicle_model.cpp
   vehicle_model.hpp
 )

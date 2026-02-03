@@ -4,6 +4,7 @@
 #include "routing/latlon_with_altitude.hpp"
 #include "routing/routing_helpers.hpp"
 #include "routing/traffic_stash.hpp"
+#include "routing/turn_cost_model.hpp"
 
 #include "traffic/speed_groups.hpp"
 
@@ -355,17 +356,28 @@ public:
                double maxWeightSpeedKMpH, SpeedKMpH const & offroadSpeedKMpH)
     : EdgeEstimator(maxWeightSpeedKMpH, offroadSpeedKMpH, dataSourcePtr, numMwmIds)
     , m_trafficStash(std::move(trafficStash))
+    , m_turnCostModel(std::make_shared<DefaultTurnCostModel>())
   {}
 
   // EdgeEstimator overrides:
   double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const override;
+
+  // Returns default U-turn penalty when road class is unknown.
+  // For context-aware penalty, use GetUTurnPenalty(HighwayType, Purpose).
   double GetUTurnPenalty(Purpose /* purpose */) const override
   {
-    // Adds 2 minutes penalty for U-turn. The value is quite arbitrary
-    // and needs to be properly selected after a number of real-world
-    // experiments.
+    // Default penalty for unknown road class (2 minutes).
+    // This is used when caller doesn't have road class information.
     return 2 * 60;  // seconds
   }
+
+  // Context-aware U-turn penalty based on road class.
+  double GetUTurnPenalty(HighwayType roadClass, Purpose /* purpose */) const
+  {
+    return m_turnCostModel->GetUTurnPenalty(roadClass);
+  }
+
+  ITurnCostModel const & GetTurnCostModel() const { return *m_turnCostModel; }
 
   double GetFerryLandingPenalty(Purpose purpose) const override
   {
@@ -379,6 +391,7 @@ public:
 
 private:
   shared_ptr<TrafficStash> m_trafficStash;
+  std::shared_ptr<ITurnCostModel> m_turnCostModel;
 };
 
 double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const

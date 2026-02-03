@@ -1,6 +1,7 @@
 #pragma once
 
 #include "routing/segment.hpp"
+#include "routing/turn_cost_model.hpp"
 #include "routing/vehicle_mask.hpp"
 
 #include "routing_common/num_mwm_id.hpp"
