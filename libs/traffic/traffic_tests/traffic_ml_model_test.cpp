@@ -97,9 +97,9 @@ UNIT_TEST(TrafficMLFeatureBuilder_ToVector)
       HighwayType::HighwayPrimary, true, 8, 1, 45.0f, 50.0f, 60.0f);
   auto vec = TrafficMLFeatureBuilder::ToVector(features);
 
-  // Verify vector has 16 elements
+  // Verify vector has 15 elements
   TEST_EQUAL(vec.size(), TrafficMLFeatureBuilder::kInputSize, ());
-  TEST_EQUAL(vec.size(), 16u, ());
+  TEST_EQUAL(vec.size(), 15u, ());
 
   // Verify road type one-hot sums to 1
   float oneHotSum = 0.0f;
