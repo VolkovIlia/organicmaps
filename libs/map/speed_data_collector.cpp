@@ -1,5 +1,7 @@
 #include "map/speed_data_collector.hpp"
 
+#include "platform/settings.hpp"
+
 #include "base/logging.hpp"
 
 #include <ctime>
@@ -15,11 +17,13 @@ constexpr double kMsToKmph = 3.6;
 SpeedDataCollector::SpeedDataCollector(std::string const & storagePath)
   : m_storage(std::make_shared<traffic::PersonalSpeedStorage>(storagePath))
 {
+  InitFromSettings();
 }
 
 SpeedDataCollector::SpeedDataCollector(std::shared_ptr<traffic::PersonalSpeedStorage> storage)
   : m_storage(std::move(storage))
 {
+  InitFromSettings();
 }
 
 SpeedDataCollector::~SpeedDataCollector()
@@ -32,6 +36,15 @@ SpeedDataCollector::~SpeedDataCollector()
   {
     LOG(LERROR, ("Failed to flush speed data collector:", e.what()));
   }
+}
+
+void SpeedDataCollector::InitFromSettings()
+{
+  // Default: enabled (user must explicitly disable in Settings to opt-out).
+  // Data is 100% local and never leaves device, so enabled-by-default is acceptable.
+  bool enabled = true;
+  settings::TryGet(settings::kPersonalSpeedDataEnabled, enabled);
+  m_enabled = enabled;
 }
 
 void SpeedDataCollector::OnLocationUpdate(location::GpsInfo const & info,

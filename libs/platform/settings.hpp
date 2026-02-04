@@ -15,6 +15,8 @@ extern std::string_view kMapLanguageCode;
 // The following two settings are configured externally at the metaserver.
 extern std::string_view kDonateUrl;
 extern std::string_view kNY;
+/// Privacy: Enable/disable personal driving speed data collection.
+extern std::string_view kPersonalSpeedDataEnabled;
 
 template <class T>
 bool FromString(std::string const & str, T & outValue);

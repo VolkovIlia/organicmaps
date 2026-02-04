@@ -6,6 +6,7 @@
 #include "routing/segment.hpp"
 
 #include "platform/platform.hpp"
+#include "platform/settings.hpp"
 
 #include <cstdio>
 
@@ -267,6 +268,50 @@ UNIT_TEST(SpeedDataCollector_Clear)
     TEST_EQUAL(collector.GetStorage()->GetRecordCount(), 0, ());
   }
 
+  CleanupTestFile(path);
+}
+
+UNIT_TEST(SpeedDataCollector_SettingsIntegration)
+{
+  std::string const path = GetTestFilePath();
+  CleanupTestFile(path);
+
+  // Ensure setting defaults to true (opt-out, not opt-in)
+  settings::Delete(settings::kPersonalSpeedDataEnabled);
+
+  {
+    SpeedDataCollector collector(path);
+
+    // Default: enabled
+    TEST(collector.IsEnabled(), ("Personal speed data should be enabled by default"));
+
+    auto info = MakeGpsInfo(16.67);
+    auto segment = MakeSegment(100, 0, true);
+
+    collector.OnLocationUpdate(info, segment, true);
+    TEST_EQUAL(collector.GetSessionObservationCount(), 1, ());
+  }
+
+  CleanupTestFile(path);
+
+  // Now disable via settings
+  settings::Set(settings::kPersonalSpeedDataEnabled, false);
+
+  {
+    SpeedDataCollector collector(path);
+
+    // Should be disabled from settings
+    TEST(!collector.IsEnabled(), ("Personal speed data should be disabled via settings"));
+
+    auto info = MakeGpsInfo(16.67);
+    auto segment = MakeSegment(100, 0, true);
+
+    collector.OnLocationUpdate(info, segment, true);
+    TEST_EQUAL(collector.GetSessionObservationCount(), 0, ());
+  }
+
+  // Cleanup
+  settings::Delete(settings::kPersonalSpeedDataEnabled);
   CleanupTestFile(path);
 }
 

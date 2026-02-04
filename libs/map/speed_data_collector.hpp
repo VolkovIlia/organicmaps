@@ -37,7 +37,9 @@ public:
   void OnLocationUpdate(location::GpsInfo const & info, routing::Segment const & segment,
                         bool isNavigating);
 
-  /// \brief Enable/disable data collection.
+  /// \brief Enable/disable data collection at runtime.
+  /// \note Does NOT persist to settings. UI layer must call
+  ///       settings::Set(kPersonalSpeedDataEnabled, value) separately.
   void SetEnabled(bool enabled);
 
   /// \brief Check if collection is enabled.
@@ -59,6 +61,9 @@ public:
   void CleanupOldRecords();
 
 private:
+  /// \brief Initialize enabled state from user settings.
+  void InitFromSettings();
+
   /// \brief Extract day of week and hour from timestamp.
   static void GetTimeComponents(std::time_t timestamp, uint8_t & dayOfWeek, uint8_t & hour);
 
