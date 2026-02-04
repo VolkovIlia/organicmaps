@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="?attr/cardBackground"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    android:paddingTop="@dimen/margin_half"
+    android:paddingBottom="@dimen/margin_half"
     android:visibility="gone"
     tools:visibility="visible">
 
@@ -16,8 +16,8 @@
         android:id="@+id/alternatives_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/margin_base"
+        android:layout_marginBottom="@dimen/margin_half"
         android:text="@string/alternative_routes"
         android:textSize="14sp"
         android:textColor="?android:textColorSecondary" />
@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
+        android:paddingStart="@dimen/margin_base"
+        android:paddingEnd="@dimen/margin_half"
         android:orientation="horizontal"
         tools:listitem="@layout/item_alternative_route" />
 

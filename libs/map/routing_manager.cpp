@@ -1628,13 +1628,17 @@ void RoutingManager::InsertAlternativeRoutes(std::vector<AlternativeRoute> const
   // The UI will show alternative route cards with time/distance info
 }
 
+/// @brief Select an alternative route as the new primary.
+/// @param index Route index: 0 = keep current primary, 1+ = switch to alternative (1-based for alternatives).
+/// @note Alternatives array uses 0-based indexing internally, so index 1 maps to alternatives[0].
 void RoutingManager::SelectAlternativeRoute(int index)
 {
   if (index == m_selectedRouteIndex)
     return;
 
   auto const & alternatives = m_routingSession.GetAlternatives();
-  if (index > 0 && static_cast<size_t>(index) > alternatives.size())
+  // Validate index: must be >= 0, and if > 0, (index - 1) must be valid index into alternatives array
+  if (index < 0 || (index > 0 && static_cast<size_t>(index - 1) >= alternatives.size()))
     return;
 
   // TODO: In Phase 4, implement style swapping:
@@ -1675,7 +1679,7 @@ void RoutingManager::ClearAlternativeRoutes()
   m_selectedRouteIndex = 0;
 }
 
-std::vector<AlternativeRoute> const & RoutingManager::GetAlternativeRoutes() const
+std::vector<AlternativeRoute> RoutingManager::GetAlternativeRoutes() const
 {
   return m_routingSession.GetAlternatives();
 }

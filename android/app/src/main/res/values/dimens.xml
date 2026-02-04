@@ -90,6 +90,7 @@
   <dimen name="map_button_arrow_icon_size">34dp</dimen>
 
   <!-- routing layout -->
+  <dimen name="alternative_route_card_width">160dp</dimen>
   <dimen name="routing_selector_wheel_size">40dp</dimen>
   <dimen name="routing_selector_wheel_margin">4dp</dimen>
   <dimen name="routing_transit_step_corner_radius">4dp</dimen>

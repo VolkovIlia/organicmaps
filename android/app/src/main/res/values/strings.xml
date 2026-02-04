@@ -683,6 +683,7 @@
     <string name="route_number">Route %d</string>
     <string name="route_faster">%s faster</string>
     <string name="route_slower">%s slower</string>
+    <string name="route_card_description">Alternative route option</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
     <string name="avoid_tolls">Avoid tolls</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->

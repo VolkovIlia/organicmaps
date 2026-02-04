@@ -37,4 +37,8 @@
 
   <color name="elevation_profile_dot_enabled">#FF9600</color>
   <color name="elevation_profile">#4BB9E6</color>
+
+  <!-- Routing -->
+  <color name="routing_route_faster">#81C784</color>
+  <color name="routing_route_slower">#E57373</color>
 </resources>

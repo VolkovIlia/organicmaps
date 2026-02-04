@@ -187,7 +187,8 @@ public:
   int GetSelectedRouteIndex() const { return m_selectedRouteIndex; }
 
   /// @brief Get all alternative routes.
-  std::vector<routing::AlternativeRoute> const & GetAlternativeRoutes() const;
+  /// @note Returns a copy for thread safety.
+  std::vector<routing::AlternativeRoute> GetAlternativeRoutes() const;
 
   /// @brief Check if alternatives are available.
   bool HasAlternativeRoutes() const;
