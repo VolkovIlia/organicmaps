@@ -5,6 +5,7 @@
 #include "traffic/osm_speed_inference.hpp"
 #include "traffic/personal_speed_storage.hpp"
 #include "traffic/speed_groups.hpp"
+#include "traffic/traffic_ml_model.hpp"
 
 #include "indexer/mwm_set.hpp"
 
@@ -95,6 +96,9 @@ public:
   /// \brief Set personal speed storage for user's driving history.
   void SetPersonalStorage(std::shared_ptr<PersonalSpeedStorage> storage);
 
+  /// \brief Set ML model for traffic predictions.
+  void SetMLModel(std::shared_ptr<ITrafficMLModel> model);
+
   /// \brief Get traffic estimate for a road segment at given time.
   /// \param mwmId MWM identifier.
   /// \param featureId Feature ID within MWM.
@@ -149,6 +153,11 @@ private:
                                                         bool isForward, routing::HighwayType hwType,
                                                         bool isInCity, std::time_t time) const;
 
+  /// \brief Get estimate from ML model.
+  [[nodiscard]] std::optional<TrafficEstimate> GetMLEstimate(
+      uint32_t featureId, uint16_t segmentIdx, bool isForward,
+      routing::HighwayType hwType, bool isInCity, std::time_t time) const;
+
   /// \brief Get estimate from OSM inference.
   std::optional<TrafficEstimate> GetOSMEstimate(routing::HighwayType hwType,
                                                  bool isInCity) const;
@@ -159,10 +168,21 @@ private:
   /// \brief Convert speed to traffic factor.
   double SpeedToFactor(double speedKmph, routing::HighwayType hwType, bool isInCity) const;
 
+  /// \brief Extract day of week and hour from time_t.
+  /// \return true if successful, false on error.
+  static bool ExtractTimeComponents(std::time_t time, uint8_t & dayOfWeek, uint8_t & hour);
+
+  /// \brief Calculate speed percentage from speed and free-flow.
+  static SpeedPercentage CalcSpeedPercentage(double speedKmph, double freeFlowKmph);
+
+  /// \brief Get free-flow speed for segment.
+  double GetFreeFlowSpeed(routing::HighwayType hwType, bool isInCity) const;
+
   Config m_config;
   std::shared_ptr<PersonalSpeedStorage> m_personalStorage;
   std::shared_ptr<IHistoricalSpeedProvider> m_historicalProvider;
   std::shared_ptr<OSMSpeedInference> m_osmInference;
+  std::shared_ptr<ITrafficMLModel> m_mlModel;
 };
 
 /// \brief Calculate decay factor for data age.

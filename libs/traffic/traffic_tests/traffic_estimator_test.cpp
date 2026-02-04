@@ -297,4 +297,25 @@ UNIT_TEST(TrafficEstimator_HasDataWithPersonalStorage)
   Platform::RemoveFileIfExists(storagePath);
 }
 
+UNIT_TEST(TrafficSource_Priority)
+{
+  // Verify priority ordering: Personal > ML > P2P > Historical > OSM > Default
+  TEST_LESS(static_cast<uint8_t>(TrafficSource::kPersonalHistory),
+            static_cast<uint8_t>(TrafficSource::kOnDeviceML), ());
+  TEST_LESS(static_cast<uint8_t>(TrafficSource::kOnDeviceML),
+            static_cast<uint8_t>(TrafficSource::kP2PReceived), ());
+  TEST_LESS(static_cast<uint8_t>(TrafficSource::kP2PReceived),
+            static_cast<uint8_t>(TrafficSource::kHistoricalPattern), ());
+  TEST_LESS(static_cast<uint8_t>(TrafficSource::kHistoricalPattern),
+            static_cast<uint8_t>(TrafficSource::kOSMInference), ());
+  TEST_LESS(static_cast<uint8_t>(TrafficSource::kOSMInference),
+            static_cast<uint8_t>(TrafficSource::kRoadClassDefault), ());
+}
+
+UNIT_TEST(TrafficSource_MLSourceExists)
+{
+  // Verify ML source is in the enumeration
+  TEST_EQUAL(DebugPrint(TrafficSource::kOnDeviceML), "OnDeviceML", ());
+}
+
 }  // namespace traffic_estimator_test

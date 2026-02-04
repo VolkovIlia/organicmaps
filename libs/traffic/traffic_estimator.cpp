@@ -77,62 +77,92 @@ void TrafficEstimator::SetPersonalStorage(std::shared_ptr<PersonalSpeedStorage> 
   m_personalStorage = std::move(storage);
 }
 
+void TrafficEstimator::SetMLModel(std::shared_ptr<ITrafficMLModel> model)
+{
+  m_mlModel = std::move(model);
+}
+
+bool TrafficEstimator::ExtractTimeComponents(std::time_t time, uint8_t & dayOfWeek, uint8_t & hour)
+{
+  std::tm localTime;
+#ifdef _WIN32
+  if (localtime_s(&localTime, &time) != 0)
+    return false;
+#else
+  if (localtime_r(&time, &localTime) == nullptr)
+    return false;
+#endif
+  dayOfWeek = static_cast<uint8_t>(localTime.tm_wday);
+  hour = static_cast<uint8_t>(localTime.tm_hour);
+  return true;
+}
+
+SpeedPercentage TrafficEstimator::CalcSpeedPercentage(double speedKmph, double freeFlowKmph)
+{
+  if (freeFlowKmph <= 0.0)
+    return 80;  // Default: 80% of theoretical max
+  double const ratio = (speedKmph / freeFlowKmph) * 100.0;
+  return static_cast<SpeedPercentage>(std::min(200.0, std::max(1.0, ratio)));
+}
+
+double TrafficEstimator::GetFreeFlowSpeed(HighwayType hwType, bool isInCity) const
+{
+  if (m_osmInference)
+    return m_osmInference->GetFreeFlowSpeedKmph(hwType, isInCity);
+  return OSMSpeedInference::GetDefaultSpeedKmph(hwType, isInCity) * 1.15;
+}
+
 TrafficEstimate TrafficEstimator::GetEstimate(MwmSet::MwmId const & mwmId, uint32_t featureId,
                                                uint16_t segmentIdx, bool isForward,
                                                HighwayType hwType, bool isInCity,
                                                std::time_t time) const
 {
-  // Use current time if not specified
   if (time == 0)
     time = std::time(nullptr);
 
   TrafficEstimate result;
 
-  // Try sources in priority order
-
   // 0. Personal history (highest priority)
-  auto personal = GetPersonalEstimate(featureId, segmentIdx, isForward, hwType, isInCity, time);
-  if (personal && personal->m_confidence >= m_config.m_earlyReturnThreshold)
+  if (auto personal = GetPersonalEstimate(featureId, segmentIdx, isForward, hwType, isInCity, time))
   {
-    LOG(LDEBUG, ("Using personal speed estimate:", DebugPrint(*personal)));
-    return *personal;
+    if (personal->m_confidence >= m_config.m_earlyReturnThreshold)
+      return *personal;
+    result = *personal;
   }
 
-  if (personal)
-    result = *personal;
+  // 1. ML model prediction
+  if (auto ml = GetMLEstimate(featureId, segmentIdx, isForward, hwType, isInCity, time))
+  {
+    if (result.IsValid())
+      result.CombineWith(*ml, m_config.m_onDeviceMLWeight);
+    else if (ml->m_confidence >= m_config.m_earlyReturnThreshold)
+      return *ml;
+    else
+      result = *ml;
+  }
 
-  // 1. Historical patterns
+  // 2. Historical patterns
   if (m_config.m_useHistoricalPatterns)
   {
-    auto historical = GetHistoricalEstimate(mwmId, featureId, segmentIdx, isForward, hwType, isInCity, time);
-    if (historical)
+    if (auto hist = GetHistoricalEstimate(mwmId, featureId, segmentIdx, isForward, hwType, isInCity, time))
     {
       if (result.IsValid())
-        result.CombineWith(*historical, m_config.m_historicalPatternWeight);
+        result.CombineWith(*hist, m_config.m_historicalPatternWeight);
+      else if (hist->m_confidence >= m_config.m_earlyReturnThreshold)
+        return *hist;
       else
-      {
-        result = *historical;
-        // Early return for high-confidence historical data (>= 0.8).
-        if (result.m_confidence >= 0.8)
-          return result;
-      }
+        result = *hist;
     }
   }
 
-  // 2. OSM inference (fallback)
+  // 3. OSM inference (fallback)
   if (m_config.m_useOSMInference && !result.IsValid())
   {
-    auto osm = GetOSMEstimate(hwType, isInCity);
-    if (osm)
-    {
-      if (result.IsValid())
-        result.CombineWith(*osm, m_config.m_osmInferenceWeight);
-      else
-        result = *osm;
-    }
+    if (auto osm = GetOSMEstimate(hwType, isInCity))
+      result = *osm;
   }
 
-  // 3. Default fallback
+  // 4. Default fallback
   if (!result.IsValid())
     result = GetDefaultEstimate(hwType, isInCity);
 
@@ -189,46 +219,54 @@ std::optional<TrafficEstimate> TrafficEstimator::GetPersonalEstimate(
   if (!m_personalStorage)
     return std::nullopt;
 
-  // Extract dayOfWeek and hour from time_t (same logic as historical_speed_data.cpp)
-  std::tm localTime;
-#ifdef _WIN32
-  if (localtime_s(&localTime, &time) != 0)
+  uint8_t dayOfWeek, hour;
+  if (!ExtractTimeComponents(time, dayOfWeek, hour))
     return std::nullopt;
-#else
-  if (localtime_r(&time, &localTime) == nullptr)
-    return std::nullopt;
-#endif
-
-  uint8_t const dayOfWeek = static_cast<uint8_t>(localTime.tm_wday);
-  uint8_t const hour = static_cast<uint8_t>(localTime.tm_hour);
 
   float const speedKmph = m_personalStorage->GetSpeed(featureId, segmentIdx, isForward, dayOfWeek, hour);
   if (speedKmph <= 0.0f)
     return std::nullopt;
+
+  double const freeFlowSpeed = GetFreeFlowSpeed(hwType, isInCity);
 
   TrafficEstimate result;
   result.m_speedKmph = static_cast<double>(speedKmph);
   result.m_source = TrafficSource::kPersonalHistory;
   result.m_confidence = m_config.m_personalHistoryWeight;
   result.m_isValid = true;
+  result.m_percentage = CalcSpeedPercentage(result.m_speedKmph, freeFlowSpeed);
+  result.m_speedGroup = SpeedPercentageToGroup(result.m_percentage);
+  return result;
+}
 
-  // Calculate percentage relative to free-flow
-  double freeFlowSpeed = 0.0;
-  if (m_osmInference)
-    freeFlowSpeed = m_osmInference->GetFreeFlowSpeedKmph(hwType, isInCity);
-  else
-    freeFlowSpeed = OSMSpeedInference::GetDefaultSpeedKmph(hwType, isInCity) * 1.15;
+std::optional<TrafficEstimate> TrafficEstimator::GetMLEstimate(
+    uint32_t featureId, uint16_t segmentIdx, bool isForward,
+    HighwayType hwType, bool isInCity, std::time_t time) const
+{
+  if (!m_mlModel || !m_mlModel->IsReady())
+    return std::nullopt;
 
-  if (freeFlowSpeed > 0.0)
-  {
-    result.m_percentage = static_cast<SpeedPercentage>(
-        std::min(200.0, std::max(1.0, (result.m_speedKmph / freeFlowSpeed) * 100.0)));
-  }
-  else
-  {
-    result.m_percentage = 80;  // Default: 80% of theoretical max
-  }
+  uint8_t dayOfWeek, hour;
+  if (!ExtractTimeComponents(time, dayOfWeek, hour))
+    return std::nullopt;
 
+  float const freeFlowSpeed = static_cast<float>(GetFreeFlowSpeed(hwType, isInCity));
+  float personalSpeed = 0.0f;
+  if (m_personalStorage)
+    personalSpeed = m_personalStorage->GetSpeed(featureId, segmentIdx, isForward, dayOfWeek, hour);
+
+  auto features = TrafficMLFeatureBuilder::Build(hwType, isInCity, hour, dayOfWeek,
+                                                  0.0f, personalSpeed, freeFlowSpeed);
+  auto prediction = m_mlModel->Predict(features);
+  if (!prediction.m_isValid)
+    return std::nullopt;
+
+  TrafficEstimate result;
+  result.m_speedKmph = static_cast<double>(freeFlowSpeed * prediction.m_speedMultiplier);
+  result.m_source = TrafficSource::kOnDeviceML;
+  result.m_confidence = static_cast<double>(prediction.m_confidence) * m_config.m_onDeviceMLWeight;
+  result.m_isValid = true;
+  result.m_percentage = CalcSpeedPercentage(prediction.m_speedMultiplier * 100.0, 100.0);
   result.m_speedGroup = SpeedPercentageToGroup(result.m_percentage);
   return result;
 }

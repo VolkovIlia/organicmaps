@@ -7,6 +7,7 @@ set(SRC
   personal_speed_storage_test.cpp
   traffic_estimator_test.cpp
   traffic_info_test.cpp
+  traffic_ml_model_test.cpp
 )
 
 omim_add_test(${PROJECT_NAME} ${SRC} REQUIRE_QT)

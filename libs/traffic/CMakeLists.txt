@@ -13,12 +13,16 @@ set(SRC
   personal_speed_storage.hpp
   speed_groups.cpp
   speed_groups.hpp
+  stub_traffic_ml_model.cpp
+  stub_traffic_ml_model.hpp
   traffic_cache.cpp
   traffic_cache.hpp
   traffic_estimator.cpp
   traffic_estimator.hpp
   traffic_info.cpp
   traffic_info.hpp
+  traffic_ml_model.cpp
+  traffic_ml_model.hpp
 )
 
 omim_add_library(${PROJECT_NAME} ${SRC})
