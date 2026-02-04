@@ -1106,3 +1106,23 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Purple downloaded regions";
+
+/* P2P Traffic Privacy Settings */
+"p2p_privacy_title" = "Traffic Sharing";
+"p2p_consent_level_title" = "Participation Mode";
+"p2p_consent_level_summary" = "Choose how you participate in traffic sharing";
+"p2p_consent_off" = "Off (Privacy First)";
+"p2p_consent_view_only" = "View Only - Receive traffic data";
+"p2p_consent_contribute" = "Contribute - Share and receive";
+"p2p_status_peers" = "Nearby Users";
+"p2p_status_peers_none" = "No nearby users found";
+"p2p_status_peers_count" = "%d user(s) nearby";
+"p2p_status_exchanges" = "Data Exchanges (24h)";
+"p2p_status_exchanges_none" = "No exchanges today";
+"p2p_status_exchanges_count" = "%d exchange(s)";
+"p2p_what_shared_title" = "What Gets Shared";
+"p2p_what_shared_summary" = "Only aggregated speed data for ~175m areas. No GPS coordinates, routes, or personal data.";
+"p2p_privacy_guarantees_title" = "Privacy Guarantees";
+"p2p_privacy_guarantees_summary" = "Anonymous device IDs rotate every 15 minutes. Differential privacy noise protects your data. K-anonymity ensures your patterns cannot be identified.";
+"p2p_disable_now" = "Turn Off Immediately";
+"p2p_debug_mode" = "Debug Mode";
