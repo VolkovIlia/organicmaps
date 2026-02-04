@@ -23,14 +23,43 @@ set(SRC
   traffic_info.hpp
   traffic_ml_model.cpp
   traffic_ml_model.hpp
+  traffic_ml_model_factory.cpp
+  traffic_ml_model_factory.hpp
 )
 
+# Platform-specific ML implementations.
+if (PLATFORM_IPHONE)
+  append(SRC
+    coreml_traffic_ml_model.hpp
+    coreml_traffic_ml_model.mm
+  )
+elseif (PLATFORM_ANDROID)
+  append(SRC
+    tflite_traffic_ml_model.hpp
+    tflite_traffic_ml_model.cpp
+  )
+endif()
+
 omim_add_library(${PROJECT_NAME} ${SRC})
+
+# Objective-C++ compiler options for iOS.
+if (PLATFORM_IPHONE)
+  target_compile_options(${PROJECT_NAME} PRIVATE -fobjc-arc)
+endif()
 
 target_link_libraries(${PROJECT_NAME}
   PUBLIC
     routing_common
     indexer
 )
+
+# Platform-specific framework linking.
+if (PLATFORM_IPHONE)
+  target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+      "-framework CoreML"
+      "-framework Foundation"
+  )
+endif()
 
 omim_add_test_subdirectory(traffic_tests)
