@@ -3,6 +3,7 @@
 #include "traffic/historical_speed_data.hpp"
 #include "traffic/historical_speed_provider.hpp"
 #include "traffic/osm_speed_inference.hpp"
+#include "traffic/personal_speed_storage.hpp"
 #include "traffic/speed_groups.hpp"
 
 #include "indexer/mwm_set.hpp"
@@ -75,6 +76,9 @@ public:
     float m_p2pReceivedWeight = 0.5f;
     float m_historicalPatternWeight = 0.4f;
     float m_osmInferenceWeight = 0.2f;
+
+    // Confidence threshold for early return (skip lower priority sources)
+    float m_earlyReturnThreshold = 0.8f;
   };
 
   TrafficEstimator();
@@ -87,6 +91,9 @@ public:
 
   /// \brief Set OSM speed inference (for country-specific rules).
   void SetOSMInference(std::shared_ptr<OSMSpeedInference> inference);
+
+  /// \brief Set personal speed storage for user's driving history.
+  void SetPersonalStorage(std::shared_ptr<PersonalSpeedStorage> storage);
 
   /// \brief Get traffic estimate for a road segment at given time.
   /// \param mwmId MWM identifier.
@@ -131,6 +138,11 @@ public:
   Config const & GetConfig() const { return m_config; }
 
 private:
+  /// \brief Get estimate from user's personal driving history.
+  [[nodiscard]] std::optional<TrafficEstimate> GetPersonalEstimate(uint32_t featureId, uint16_t segmentIdx,
+                                                      bool isForward, routing::HighwayType hwType,
+                                                      bool isInCity, std::time_t time) const;
+
   /// \brief Get estimate from historical patterns.
   std::optional<TrafficEstimate> GetHistoricalEstimate(MwmSet::MwmId const & mwmId,
                                                         uint32_t featureId, uint16_t segmentIdx,
@@ -148,6 +160,7 @@ private:
   double SpeedToFactor(double speedKmph, routing::HighwayType hwType, bool isInCity) const;
 
   Config m_config;
+  std::shared_ptr<PersonalSpeedStorage> m_personalStorage;
   std::shared_ptr<IHistoricalSpeedProvider> m_historicalProvider;
   std::shared_ptr<OSMSpeedInference> m_osmInference;
 };

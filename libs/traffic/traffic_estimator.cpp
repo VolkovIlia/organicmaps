@@ -72,6 +72,11 @@ void TrafficEstimator::SetOSMInference(std::shared_ptr<OSMSpeedInference> infere
   m_osmInference = std::move(inference);
 }
 
+void TrafficEstimator::SetPersonalStorage(std::shared_ptr<PersonalSpeedStorage> storage)
+{
+  m_personalStorage = std::move(storage);
+}
+
 TrafficEstimate TrafficEstimator::GetEstimate(MwmSet::MwmId const & mwmId, uint32_t featureId,
                                                uint16_t segmentIdx, bool isForward,
                                                HighwayType hwType, bool isInCity,
@@ -85,24 +90,36 @@ TrafficEstimate TrafficEstimator::GetEstimate(MwmSet::MwmId const & mwmId, uint3
 
   // Try sources in priority order
 
-  // 1. Historical patterns (Phase 1)
+  // 0. Personal history (highest priority)
+  auto personal = GetPersonalEstimate(featureId, segmentIdx, isForward, hwType, isInCity, time);
+  if (personal && personal->m_confidence >= m_config.m_earlyReturnThreshold)
+  {
+    LOG(LDEBUG, ("Using personal speed estimate:", DebugPrint(*personal)));
+    return *personal;
+  }
+
+  if (personal)
+    result = *personal;
+
+  // 1. Historical patterns
   if (m_config.m_useHistoricalPatterns)
   {
     auto historical = GetHistoricalEstimate(mwmId, featureId, segmentIdx, isForward, hwType, isInCity, time);
     if (historical)
     {
-      result = *historical;
-      // Early return for high-confidence historical data (>= 0.8).
-      // Threshold rationale: Historical patterns with 80%+ confidence indicate
-      // dense coverage (many samples) for this time slot. Combining with lower-quality
-      // sources (OSM inference) would dilute accuracy. The 0.8 threshold balances
-      // trusting good data vs allowing multi-source refinement for sparse data.
-      if (result.m_confidence >= 0.8)
-        return result;
+      if (result.IsValid())
+        result.CombineWith(*historical, m_config.m_historicalPatternWeight);
+      else
+      {
+        result = *historical;
+        // Early return for high-confidence historical data (>= 0.8).
+        if (result.m_confidence >= 0.8)
+          return result;
+      }
     }
   }
 
-  // 2. OSM inference (Phase 1 fallback)
+  // 2. OSM inference (fallback)
   if (m_config.m_useOSMInference && !result.IsValid())
   {
     auto osm = GetOSMEstimate(hwType, isInCity);
@@ -154,11 +171,66 @@ double TrafficEstimator::GetTrafficFactor(MwmSet::MwmId const & mwmId, uint32_t 
 
 bool TrafficEstimator::HasData(MwmSet::MwmId const & mwmId) const
 {
+  // Personal storage has data regardless of MWM (it's global user data)
+  if (m_personalStorage && m_personalStorage->GetRecordCount() > 0)
+    return true;
+
   if (m_historicalProvider && m_historicalProvider->HasData(mwmId))
     return true;
 
   // OSM inference is always available as fallback
   return m_config.m_useOSMInference;
+}
+
+std::optional<TrafficEstimate> TrafficEstimator::GetPersonalEstimate(
+    uint32_t featureId, uint16_t segmentIdx, bool isForward,
+    HighwayType hwType, bool isInCity, std::time_t time) const
+{
+  if (!m_personalStorage)
+    return std::nullopt;
+
+  // Extract dayOfWeek and hour from time_t (same logic as historical_speed_data.cpp)
+  std::tm localTime;
+#ifdef _WIN32
+  if (localtime_s(&localTime, &time) != 0)
+    return std::nullopt;
+#else
+  if (localtime_r(&time, &localTime) == nullptr)
+    return std::nullopt;
+#endif
+
+  uint8_t const dayOfWeek = static_cast<uint8_t>(localTime.tm_wday);
+  uint8_t const hour = static_cast<uint8_t>(localTime.tm_hour);
+
+  float const speedKmph = m_personalStorage->GetSpeed(featureId, segmentIdx, isForward, dayOfWeek, hour);
+  if (speedKmph <= 0.0f)
+    return std::nullopt;
+
+  TrafficEstimate result;
+  result.m_speedKmph = static_cast<double>(speedKmph);
+  result.m_source = TrafficSource::kPersonalHistory;
+  result.m_confidence = m_config.m_personalHistoryWeight;
+  result.m_isValid = true;
+
+  // Calculate percentage relative to free-flow
+  double freeFlowSpeed = 0.0;
+  if (m_osmInference)
+    freeFlowSpeed = m_osmInference->GetFreeFlowSpeedKmph(hwType, isInCity);
+  else
+    freeFlowSpeed = OSMSpeedInference::GetDefaultSpeedKmph(hwType, isInCity) * 1.15;
+
+  if (freeFlowSpeed > 0.0)
+  {
+    result.m_percentage = static_cast<SpeedPercentage>(
+        std::min(200.0, std::max(1.0, (result.m_speedKmph / freeFlowSpeed) * 100.0)));
+  }
+  else
+  {
+    result.m_percentage = 80;  // Default: 80% of theoretical max
+  }
+
+  result.m_speedGroup = SpeedPercentageToGroup(result.m_percentage);
+  return result;
 }
 
 std::optional<TrafficEstimate> TrafficEstimator::GetHistoricalEstimate(

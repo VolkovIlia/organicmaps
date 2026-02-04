@@ -4,8 +4,14 @@
 #include "traffic/historical_speed_data.hpp"
 #include "traffic/historical_speed_provider.hpp"
 #include "traffic/osm_speed_inference.hpp"
+#include "traffic/personal_speed_storage.hpp"
 
 #include "indexer/mwm_set.hpp"
+
+#include "platform/platform.hpp"
+
+#include <ctime>
+#include <memory>
 
 namespace traffic_estimator_test
 {
@@ -182,6 +188,113 @@ UNIT_TEST(TrafficSource_DebugPrint)
   TEST_EQUAL(DebugPrint(TrafficSource::kHistoricalPattern), "HistoricalPattern", ());
   TEST_EQUAL(DebugPrint(TrafficSource::kOSMInference), "OSMInference", ());
   TEST_EQUAL(DebugPrint(TrafficSource::kRoadClassDefault), "RoadClassDefault", ());
+}
+
+UNIT_TEST(TrafficEstimator_PersonalHistoryHighestPriority)
+{
+  // Create temporary storage file
+  std::string const storagePath = GetPlatform().WritablePathForFile("test_personal_speed.bin");
+
+  {
+    // Create personal storage with data
+    auto personalStorage = std::make_shared<PersonalSpeedStorage>(storagePath);
+
+    // Add observation: Monday 8 AM, feature 42, segment 0, forward, 30 km/h (rush hour)
+    uint8_t const monday = 1;  // Monday
+    uint8_t const hour8am = 8;
+    personalStorage->AddObservation(42 /* featureId */, 0 /* segmentIdx */, true /* isForward */,
+                                    monday, hour8am, 30.0f /* speedKmph */);
+    personalStorage->Flush();
+
+    // Create estimator with personal storage
+    TrafficEstimator estimator;
+    estimator.SetPersonalStorage(personalStorage);
+
+    // Create a time_t for Monday 8 AM
+    std::tm tm = {};
+    tm.tm_year = 125;  // 2025
+    tm.tm_mon = 0;     // January
+    tm.tm_mday = 6;    // Monday
+    tm.tm_hour = 8;
+    tm.tm_min = 0;
+    tm.tm_sec = 0;
+    std::time_t mondayTime = std::mktime(&tm);
+
+    MwmSet::MwmId emptyMwmId;
+    auto estimate = estimator.GetEstimate(
+        emptyMwmId, 42 /* featureId */, 0 /* segmentIdx */, true /* isForward */,
+        HighwayType::HighwayPrimary, true /* isInCity */, mondayTime);
+
+    // Personal history should be highest priority source
+    TEST(estimate.IsValid(), ());
+    TEST_EQUAL(estimate.m_source, TrafficSource::kPersonalHistory, ());
+    TEST_ALMOST_EQUAL_ABS(estimate.m_speedKmph, 30.0, 1.0, ());
+    TEST_GREATER_OR_EQUAL(estimate.m_confidence, 0.8, ());
+  }
+
+  // Cleanup
+  Platform::RemoveFileIfExists(storagePath);
+}
+
+UNIT_TEST(TrafficEstimator_PersonalHistoryFallbackToHistorical)
+{
+  // Create temporary storage file
+  std::string const storagePath = GetPlatform().WritablePathForFile("test_personal_speed_fallback.bin");
+
+  {
+    // Create personal storage WITHOUT data for our query time
+    auto personalStorage = std::make_shared<PersonalSpeedStorage>(storagePath);
+
+    // Only add data for Sunday midnight (different time slot)
+    uint8_t const sunday = 0;
+    uint8_t const midnightHour = 0;
+    personalStorage->AddObservation(42, 0, true, sunday, midnightHour, 50.0f);
+    personalStorage->Flush();
+
+    TrafficEstimator estimator;
+    estimator.SetPersonalStorage(personalStorage);
+
+    // Query for Monday 8 AM - no personal data exists
+    std::tm tm = {};
+    tm.tm_year = 125;
+    tm.tm_mon = 0;
+    tm.tm_mday = 6;  // Monday
+    tm.tm_hour = 8;
+    tm.tm_min = 0;
+    tm.tm_sec = 0;
+    std::time_t mondayTime = std::mktime(&tm);
+
+    MwmSet::MwmId emptyMwmId;
+    auto estimate = estimator.GetEstimate(
+        emptyMwmId, 42, 0, true, HighwayType::HighwayPrimary, true, mondayTime);
+
+    // Should fall back to OSM inference or default (not personal history)
+    TEST(estimate.IsValid(), ());
+    TEST(estimate.m_source == TrafficSource::kOSMInference ||
+         estimate.m_source == TrafficSource::kRoadClassDefault, ());
+  }
+
+  Platform::RemoveFileIfExists(storagePath);
+}
+
+UNIT_TEST(TrafficEstimator_HasDataWithPersonalStorage)
+{
+  std::string const storagePath = GetPlatform().WritablePathForFile("test_personal_speed_hasdata.bin");
+
+  {
+    auto personalStorage = std::make_shared<PersonalSpeedStorage>(storagePath);
+    personalStorage->AddObservation(1, 0, true, 0, 0, 50.0f);
+    personalStorage->Flush();
+
+    TrafficEstimator estimator;
+    estimator.SetPersonalStorage(personalStorage);
+
+    MwmSet::MwmId emptyMwmId;
+    // Should have data because personal storage has records
+    TEST(estimator.HasData(emptyMwmId), ());
+  }
+
+  Platform::RemoveFileIfExists(storagePath);
 }
 
 }  // namespace traffic_estimator_test
