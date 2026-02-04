@@ -45,9 +45,17 @@ private:
   bool TryAddOriginalEdge(uint32_t fromNode, uint32_t toNode,
                           std::vector<Segment> & result);
 
+  /// @brief Internal stack item for shortcut unpacking.
+  struct UnpackTask
+  {
+    uint32_t fromNode;
+    uint32_t toNode;
+    bool isForward;
+  };
+
   /// @brief Try to find and expand a shortcut.
   bool TryExpandShortcut(uint32_t fromNode, uint32_t toNode,
-                         std::stack<std::pair<uint32_t, uint32_t>> & toProcess);
+                         std::stack<UnpackTask> & toProcess);
 
   /// @brief Reconstruct path from search tree.
   void ReconstructPath(std::vector<CCHSearchState> const & tree,

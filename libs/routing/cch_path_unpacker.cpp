@@ -45,13 +45,6 @@ void CCHPathUnpacker::UnpackShortcutIterative(uint32_t shortcutIdx, bool isForwa
                                               std::vector<Segment> & result)
 {
   // Use explicit stack to avoid recursion depth issues on deep shortcuts
-  struct UnpackTask
-  {
-    uint32_t fromNode;
-    uint32_t toNode;
-    bool isForward;
-  };
-
   std::stack<UnpackTask> toProcess;
 
   auto const & initialShortcut = m_topology.GetShortcut(shortcutIdx);
@@ -106,7 +99,7 @@ bool CCHPathUnpacker::TryAddOriginalEdge(uint32_t fromNode, uint32_t toNode,
 
 bool CCHPathUnpacker::TryExpandShortcut(
     uint32_t fromNode, uint32_t toNode,
-    std::stack<std::pair<uint32_t, uint32_t>> & /* unused */)
+    std::stack<UnpackTask> & toProcess)
 {
   auto const edges = m_topology.GetOutgoingEdges(fromNode);
 

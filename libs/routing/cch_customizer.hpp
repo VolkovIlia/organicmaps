@@ -57,7 +57,7 @@ public:
   /// @param estimator Edge estimator for weight calculation
   /// @return True if customization succeeded
   bool Customize(CCHCustomizationConfig const & config,
-                 Geometry const & geometry,
+                 Geometry & geometry,
                  EdgeEstimator const & estimator);
 
   /// @brief Check if CCH is customized for given config
@@ -81,7 +81,7 @@ public:
 private:
   /// @brief Calculate weight for a single original edge
   double CalcOriginalEdgeWeight(CCHOriginalEdge const & edge,
-                                Geometry const & geometry,
+                                Geometry & geometry,
                                 EdgeEstimator const & estimator) const;
 
   /// @brief Bottom-up weight propagation through contraction levels

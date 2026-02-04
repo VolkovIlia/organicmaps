@@ -104,16 +104,17 @@ double RerouteDecision::CalcReturnDistance(ms::LatLon const & position, Route co
   m2::PointD const posPoint = mercator::FromLatLon(position);
 
   auto const & poly = route.GetFollowedPolyline();
-  if (poly.GetSize() < 2)
+  auto const & polyline = poly.GetPolyline();
+  if (polyline.GetSize() < 2)
     return std::numeric_limits<double>::max();
 
   double minDistanceMeters = std::numeric_limits<double>::max();
 
   // Find closest point on route
-  for (size_t i = 0; i + 1 < poly.GetSize(); ++i)
+  for (size_t i = 0; i + 1 < polyline.GetSize(); ++i)
   {
-    m2::PointD const & p1 = poly.GetPolyline().GetPoint(i);
-    m2::PointD const & p2 = poly.GetPolyline().GetPoint(i + 1);
+    m2::PointD const & p1 = polyline.GetPoint(i);
+    m2::PointD const & p2 = polyline.GetPoint(i + 1);
 
     // Project point onto segment
     m2::PointD const segment = p2 - p1;
@@ -140,11 +141,12 @@ double RerouteDecision::CalcForwardDistance(ms::LatLon const & position, Route c
 {
   // Get destination from route (last point of polyline)
   auto const & poly = route.GetFollowedPolyline();
-  if (poly.GetSize() == 0)
+  auto const & polyline = poly.GetPolyline();
+  if (polyline.GetSize() == 0)
     return std::numeric_limits<double>::max();
 
   m2::PointD const posPoint = mercator::FromLatLon(position);
-  m2::PointD const destPoint = poly.GetPolyline().Back();
+  m2::PointD const destPoint = polyline.Back();
 
   // Simplified: direct distance to destination
   // In production, this would use actual routing to get real distance

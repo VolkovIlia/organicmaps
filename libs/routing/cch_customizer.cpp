@@ -22,7 +22,7 @@ CCHCustomizer::CCHCustomizer(CCHTopology const & topology)
 }
 
 bool CCHCustomizer::Customize(CCHCustomizationConfig const & config,
-                              Geometry const & geometry,
+                              Geometry & geometry,
                               EdgeEstimator const & estimator)
 {
   if (IsCustomized(config))
@@ -82,7 +82,7 @@ void CCHCustomizer::Reset()
 }
 
 double CCHCustomizer::CalcOriginalEdgeWeight(CCHOriginalEdge const & edge,
-                                             Geometry const & geometry,
+                                             Geometry & geometry,
                                              EdgeEstimator const & estimator) const
 {
   // Create segment from edge info
@@ -90,12 +90,12 @@ double CCHCustomizer::CalcOriginalEdgeWeight(CCHOriginalEdge const & edge,
   Segment const segment(kFakeNumMwmId, edge.featureId, edge.segmentIdx,
                         edge.IsForward());
 
-  // Check if feature is valid
-  if (!geometry.IsRoad(edge.featureId))
-    return kInfinity;
-
   // Get road geometry for the segment
   auto const & road = geometry.GetRoad(edge.featureId);
+
+  // Check if feature is valid
+  if (!road.IsValid())
+    return kInfinity;
 
   // Calculate weight using edge estimator
   double const weight = estimator.CalcSegmentWeight(

@@ -171,16 +171,17 @@ double CorridorTracker::CalcLateralDistance(ms::LatLon const & position, Route c
   m2::PointD const posPoint = mercator::FromLatLon(position);
 
   auto const & poly = route.GetFollowedPolyline();
-  if (poly.GetSize() < 2)
+  auto const & polyline = poly.GetPolyline();
+  if (polyline.GetSize() < 2)
     return std::numeric_limits<double>::max();
 
   double minDistanceMercator = std::numeric_limits<double>::max();
 
   // Check distance to each segment
-  for (size_t i = 0; i + 1 < poly.GetSize(); ++i)
+  for (size_t i = 0; i + 1 < polyline.GetSize(); ++i)
   {
-    m2::PointD const & p1 = poly.GetPolyline().GetPoint(i);
-    m2::PointD const & p2 = poly.GetPolyline().GetPoint(i + 1);
+    m2::PointD const & p1 = polyline.GetPoint(i);
+    m2::PointD const & p2 = polyline.GetPoint(i + 1);
 
     // Project point onto segment
     m2::PointD const segment = p2 - p1;
