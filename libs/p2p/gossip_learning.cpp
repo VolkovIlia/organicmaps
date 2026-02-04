@@ -147,7 +147,11 @@ void GossipLearning::ApplyNoiseToGradients(std::vector<float> & gradients) const
   if (!m_privacyManager)
     return;
 
-  // Sensitivity: max gradient magnitude (assume normalized to [-1, 1])
+  // Sensitivity for LDP noise calibration.
+  // Gradients are assumed normalized to [-1, 1] range, so max change from
+  // any single record is 2.0 (from -1 to +1). This is a conservative bound
+  // that provides strong privacy guarantees. If gradients are clipped to a
+  // smaller range during training, this value can be reduced for better utility.
   constexpr float kSensitivity = 2.0f;
 
   for (float & g : gradients)

@@ -11,8 +11,12 @@
 namespace p2p
 {
 /// \brief Lightweight spatial indexing for traffic data aggregation.
-/// Uses grid-based approximation of H3 resolution 9 (~175m cells).
-/// Can be upgraded to full Uber H3 library later.
+///
+/// NOTE: This is a GRID-BASED APPROXIMATION, not true Uber H3 hexagons.
+/// Uses rectangular grid cells with similar size to H3 resolution 9 (~175m).
+/// Cell IDs are NOT compatible with real H3 library - they use a custom
+/// encoding format. Can be upgraded to full Uber H3 library later by
+/// replacing this implementation while keeping the same API.
 class H3Aggregator
 {
 public:
