@@ -58,6 +58,7 @@ auto constexpr TMP_OFFSETS_EXT = OFFSET_EXT EXTENSION_TMP;
 #define CAMERAS_INFO_FILE_TAG "speedcams"
 #define ISOLINES_INFO_FILE_TAG "isolines_info"
 #define TRAFFIC_KEYS_FILE_TAG "traffic"
+#define HISTORICAL_SPEEDS_FILE_TAG "historical_speeds"
 #define TRANSIT_CROSS_MWM_FILE_TAG "transit_cross_mwm"
 #define TRANSIT_FILE_TAG "transit"
 #define CITY_ROADS_FILE_TAG "city_roads"

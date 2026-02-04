@@ -118,6 +118,8 @@ set(SRC
 #  hierarchy.hpp
 #  hierarchy_entry.cpp
 #  hierarchy_entry.hpp
+  historical_speeds_generator.cpp
+  historical_speeds_generator.hpp
   holes.cpp
   holes.hpp
   intermediate_data.cpp
@@ -256,6 +258,7 @@ target_link_libraries(${PROJECT_NAME}
     storage
     descriptions
     indexer
+    traffic
     cppjansson
     expat::expat
     tess2

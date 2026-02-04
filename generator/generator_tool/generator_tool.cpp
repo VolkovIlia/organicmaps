@@ -25,6 +25,7 @@
 #include "generator/routing_world_roads_generator.hpp"
 #include "generator/search_index_builder.hpp"
 #include "generator/statistics.hpp"
+#include "generator/historical_speeds_generator.hpp"
 #include "generator/traffic_generator.hpp"
 #include "generator/transit_generator.hpp"
 #include "generator/transit_generator_experimental.hpp"
@@ -171,6 +172,8 @@ DEFINE_bool(unpack_mwm, false, "Unpack each section of mwm into a separate file 
 DEFINE_bool(check_mwm, false, "Check map file to be correct.");
 DEFINE_string(delete_section, "", "Delete specified section (defines.hpp) from container.");
 DEFINE_bool(generate_traffic_keys, false, "Generate keys for the traffic map (road segment -> speed group).");
+DEFINE_bool(generate_historical_speeds, false, "Generate historical speed patterns section.");
+DEFINE_string(historical_speeds_path, "", "Path to historical speeds data file. If empty, generates synthetic data.");
 
 DEFINE_bool(dump_mwm_tmp, false, "Prints feature builder objects from .mwm.tmp");
 
@@ -548,6 +551,24 @@ MAIN_WITH_ERROR_HANDLING([](int argc, char ** argv)
     {
       if (!traffic::GenerateTrafficKeysFromDataFile(dataFile))
         LOG(LCRITICAL, ("Error generating traffic keys."));
+    }
+
+    if (FLAGS_generate_historical_speeds)
+    {
+      LOG(LINFO, ("Generating historical speeds section for", dataFile));
+      bool result = false;
+      if (FLAGS_historical_speeds_path.empty())
+      {
+        // Generate synthetic data based on road classification
+        result = traffic::GenerateSyntheticHistoricalSpeeds(dataFile);
+      }
+      else
+      {
+        // Use provided data file
+        result = traffic::GenerateHistoricalSpeedsFromCSV(dataFile, FLAGS_historical_speeds_path);
+      }
+      if (!result)
+        LOG(LCRITICAL, ("Error generating historical speeds section."));
     }
   }
 

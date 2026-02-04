@@ -7,6 +7,9 @@
 #include "routing/turn_cost_model.hpp"
 
 #include "traffic/speed_groups.hpp"
+#include "traffic/traffic_estimator.hpp"
+
+#include "indexer/mwm_set.hpp"
 
 #include "geometry/distance_on_sphere.hpp"
 #include "geometry/point_with_altitude.hpp"
@@ -389,9 +392,26 @@ public:
     UNREACHABLE();
   }
 
+  void SetTrafficEstimator(std::shared_ptr<traffic::TrafficEstimator> estimator) override
+  {
+    m_historicalTrafficEstimator = std::move(estimator);
+  }
+
+  void SetDepartureTime(std::time_t departureTime) override
+  {
+    m_departureTime = departureTime;
+  }
+
+  std::time_t GetDepartureTime() const override
+  {
+    return m_departureTime;
+  }
+
 private:
   shared_ptr<TrafficStash> m_trafficStash;
   std::shared_ptr<ITurnCostModel> m_turnCostModel;
+  std::shared_ptr<traffic::TrafficEstimator> m_historicalTrafficEstimator;
+  std::time_t m_departureTime = 0;  // 0 = use current time
 };
 
 double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const
@@ -409,19 +429,53 @@ double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry con
 
   double result = road.GetDistance(segment.GetSegmentIdx()) / speed;
 
+  // Priority 1: Real-time traffic from TrafficStash
   if (m_trafficStash)
   {
     SpeedGroup const speedGroup = m_trafficStash->GetSpeedGroup(segment);
     ASSERT_LESS(speedGroup, SpeedGroup::Count, ());
-    double const trafficFactor = CalcTrafficFactor(speedGroup);
-    result *= trafficFactor;
-    if (speedGroup != SpeedGroup::Unknown && speedGroup != SpeedGroup::G5)
+
+    // Only use real-time traffic if we have actual data (not Unknown)
+    if (speedGroup != SpeedGroup::Unknown)
     {
-      // Current time estimation are too optimistic.
-      // Need more accurate tuning: traffic lights, traffic jams, road models and so on.
-      // Add some penalty to make estimation more realistic.
-      /// @todo Make accurate tuning, remove penalty.
-      result *= 1.8;
+      double const trafficFactor = CalcTrafficFactor(speedGroup);
+      result *= trafficFactor;
+      if (speedGroup != SpeedGroup::G5)
+      {
+        // Current time estimation are too optimistic.
+        // Need more accurate tuning: traffic lights, traffic jams, road models and so on.
+        // Add some penalty to make estimation more realistic.
+        /// @todo Make accurate tuning, remove penalty.
+        result *= 1.8;
+      }
+      return result;
+    }
+  }
+
+  // Priority 2: Historical traffic patterns (time-aware)
+  // Used when real-time traffic is not available (SpeedGroup::Unknown or no TrafficStash)
+  if (m_historicalTrafficEstimator)
+  {
+    auto const hwType = road.GetHighwayType();
+    if (hwType)
+    {
+      // Use departure time for time-aware estimation, or current time if not set
+      std::time_t const time = m_departureTime > 0 ? m_departureTime : std::time(nullptr);
+
+      // Get MwmId from segment's NumMwmId using DataSource
+      MwmSet::MwmId mwmId;
+      if (m_dataSourcePtr && segment.GetMwmId() != kFakeNumMwmId)
+        mwmId = m_dataSourcePtr->GetMwmId(segment.GetMwmId());
+
+      double const factor = m_historicalTrafficEstimator->GetTrafficFactor(
+          mwmId, segment.GetFeatureId(), segment.GetSegmentIdx(),
+          segment.IsForward(), *hwType, road.IsInCity(), time);
+
+      if (factor > 0.0 && factor < 10.0)  // Valid factor range
+      {
+        result *= factor;
+        return result;
+      }
     }
   }
 

@@ -7,6 +7,8 @@
 
 #include "platform/platform.hpp"
 
+#include "base/logging.hpp"
+
 using namespace std::chrono;
 
 namespace
@@ -46,6 +48,7 @@ TrafficManager::TrafficManager(GetMwmsByRectFn const & getMwmsByRectFn, size_t m
   , m_isRunning(true)
   , m_isPaused(false)
   , m_thread(&TrafficManager::ThreadRoutine, this)
+  , m_historicalProvider(std::make_unique<traffic::HistoricalTrafficProvider>())
 {
   CHECK(m_getMwmsByRectFn != nullptr, ());
 }
@@ -326,31 +329,53 @@ void TrafficManager::RequestTrafficData()
 
 void TrafficManager::OnTrafficRequestFailed(traffic::TrafficInfo && info)
 {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  MwmSet::MwmId const mwmId = info.GetMwmId();
 
-  auto it = m_mwmCache.find(info.GetMwmId());
-  if (it == m_mwmCache.end())
-    return;
-
-  it->second.m_isWaitingForResponse = false;
-  it->second.m_lastAvailability = info.GetAvailability();
-
-  if (info.GetAvailability() == traffic::TrafficInfo::Availability::Unknown && !it->second.m_isLoaded)
   {
-    if (m_activeDrapeMwms.find(info.GetMwmId()) != m_activeDrapeMwms.cend() ||
-        m_activeRoutingMwms.find(info.GetMwmId()) != m_activeRoutingMwms.cend())
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    auto it = m_mwmCache.find(mwmId);
+    if (it == m_mwmCache.end())
+      return;
+
+    it->second.m_isWaitingForResponse = false;
+    it->second.m_lastAvailability = info.GetAvailability();
+
+    if (info.GetAvailability() == traffic::TrafficInfo::Availability::Unknown && !it->second.m_isLoaded)
     {
-      if (it->second.m_retriesCount < kMaxRetriesCount)
-        RequestTrafficData(info.GetMwmId(), true /* force */);
-      ++it->second.m_retriesCount;
+      if (m_activeDrapeMwms.find(mwmId) != m_activeDrapeMwms.cend() ||
+          m_activeRoutingMwms.find(mwmId) != m_activeRoutingMwms.cend())
+      {
+        if (it->second.m_retriesCount < kMaxRetriesCount)
+          RequestTrafficData(mwmId, true /* force */);
+        ++it->second.m_retriesCount;
+      }
+      else
+      {
+        it->second.m_retriesCount = 0;
+      }
     }
-    else
-    {
-      it->second.m_retriesCount = 0;
-    }
+
+    UpdateState();
   }
 
-  UpdateState();
+  // Try historical fallback if enabled and real-time data unavailable
+  if (m_historicalFallbackEnabled && m_historicalProvider)
+  {
+    auto historicalColoring = m_historicalProvider->GetColoring(mwmId);
+    if (historicalColoring && !historicalColoring->empty())
+    {
+      LOG(LINFO, ("Using historical traffic data for", mwmId, "with",
+                  historicalColoring->size(), "segments"));
+
+      traffic::TrafficInfo historicalInfo =
+          traffic::TrafficInfo::BuildFromHistorical(mwmId, std::move(*historicalColoring));
+
+      m_drapeEngine.SafeCall(&df::DrapeEngine::UpdateTraffic,
+                             static_cast<traffic::TrafficInfo const &>(historicalInfo));
+      m_observer.OnTrafficInfoAdded(std::move(historicalInfo));
+    }
+  }
 }
 
 void TrafficManager::OnTrafficDataResponse(traffic::TrafficInfo && info)
@@ -567,4 +592,16 @@ std::string DebugPrint(TrafficManager::TrafficState state)
   default: ASSERT(false, ("Unknown state"));
   }
   return "Unknown";
+}
+
+void TrafficManager::SetHistoricalFallbackEnabled(bool enabled)
+{
+  m_historicalFallbackEnabled = enabled;
+}
+
+bool TrafficManager::HasHistoricalData(MwmSet::MwmId const & mwmId) const
+{
+  if (!m_historicalProvider)
+    return false;
+  return m_historicalProvider->HasData(mwmId);
 }

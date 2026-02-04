@@ -138,6 +138,16 @@ TrafficInfo TrafficInfo::BuildForTesting(Coloring && coloring)
   return info;
 }
 
+// static
+TrafficInfo TrafficInfo::BuildFromHistorical(MwmSet::MwmId const & mwmId, Coloring && coloring)
+{
+  TrafficInfo info;
+  info.m_mwmId = mwmId;
+  info.m_coloring = std::move(coloring);
+  info.m_availability = Availability::IsAvailable;
+  return info;
+}
+
 void TrafficInfo::SetTrafficKeysForTesting(vector<RoadSegmentId> const & keys)
 {
   m_keys = keys;

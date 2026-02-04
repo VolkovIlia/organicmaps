@@ -4,12 +4,15 @@
 #include "routing/turn_cost_model.hpp"
 #include "routing/vehicle_mask.hpp"
 
+#include "traffic/traffic_estimator.hpp"
+
 #include "routing_common/num_mwm_id.hpp"
 #include "routing_common/vehicle_model.hpp"
 
 #include "geometry/latlon.hpp"
 #include "geometry/point_with_altitude.hpp"
 
+#include <ctime>
 #include <memory>
 
 class DataSource;
@@ -58,6 +61,17 @@ public:
   static std::shared_ptr<EdgeEstimator> Create(VehicleType vehicleType, VehicleModelInterface const & vehicleModel,
                                                std::shared_ptr<TrafficStash> trafficStash, DataSource * dataSourcePtr,
                                                std::shared_ptr<NumMwmIds> numMwmIds);
+
+  /// \brief Set traffic estimator for time-aware routing (historical patterns).
+  /// If set, routing will use historical speed patterns when real-time traffic is unavailable.
+  virtual void SetTrafficEstimator(std::shared_ptr<traffic::TrafficEstimator> estimator) {}
+
+  /// \brief Set departure time for time-aware ETA calculation.
+  /// Used with TrafficEstimator to get appropriate historical patterns.
+  virtual void SetDepartureTime(std::time_t departureTime) {}
+
+  /// \brief Get current departure time (0 = current time).
+  virtual std::time_t GetDepartureTime() const { return 0; }
 
 private:
   double const m_maxWeightSpeedMpS;

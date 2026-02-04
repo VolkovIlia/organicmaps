@@ -78,6 +78,11 @@ public:
   static TrafficInfo BuildForTesting(Coloring && coloring);
   void SetTrafficKeysForTesting(std::vector<RoadSegmentId> const & keys);
 
+  /// \brief Build TrafficInfo from historical patterns.
+  /// \param mwmId The MWM this traffic data belongs to.
+  /// \param coloring The traffic coloring data.
+  static TrafficInfo BuildFromHistorical(MwmSet::MwmId const & mwmId, Coloring && coloring);
+
   // Fetches the latest traffic data from the server and updates the coloring and ETag.
   // Construct the url by passing an MwmId.
   // The ETag or entity tag is part of HTTP, the protocol for the World Wide Web.

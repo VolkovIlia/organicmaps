@@ -1,6 +1,12 @@
 project(traffic_tests)
 
-set(SRC traffic_info_test.cpp)
+set(SRC
+  historical_speed_test.cpp
+  historical_traffic_provider_test.cpp
+  osm_speed_inference_test.cpp
+  traffic_estimator_test.cpp
+  traffic_info_test.cpp
+)
 
 omim_add_test(${PROJECT_NAME} ${SRC} REQUIRE_QT)
 

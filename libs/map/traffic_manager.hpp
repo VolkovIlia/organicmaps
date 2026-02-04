@@ -1,5 +1,6 @@
 #pragma once
 
+#include "traffic/historical_traffic_provider.hpp"
 #include "traffic/traffic_info.hpp"
 
 #include "drape_frontend/drape_engine_safe_ptr.hpp"
@@ -21,6 +22,7 @@
 #include <condition_variable>
 #include <cstdint>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <optional>
 #include <set>
@@ -86,6 +88,13 @@ public:
 
   void SetSimplifiedColorScheme(bool simplified);
   bool HasSimplifiedColorScheme() const { return m_hasSimplifiedColorScheme; }
+
+  /// \brief Enable/disable historical traffic fallback when real-time is unavailable.
+  void SetHistoricalFallbackEnabled(bool enabled);
+  bool IsHistoricalFallbackEnabled() const { return m_historicalFallbackEnabled; }
+
+  /// \brief Check if historical data is available for an MWM.
+  bool HasHistoricalData(MwmSet::MwmId const & mwmId) const;
 
 private:
   struct CacheEntry
@@ -184,6 +193,10 @@ private:
   std::vector<MwmSet::MwmId> m_requestedMwms;
   std::mutex m_mutex;
   threads::SimpleThread m_thread;
+
+  // Historical traffic fallback
+  std::atomic<bool> m_historicalFallbackEnabled{true};
+  std::unique_ptr<traffic::HistoricalTrafficProvider> m_historicalProvider;
 };
 
 extern std::string DebugPrint(TrafficManager::TrafficState state);
