@@ -10,6 +10,7 @@
 #include "app/organicmaps/sdk/routing/RouteRecommendationType.hpp"
 #include "app/organicmaps/sdk/routing/RoutingInfo.hpp"
 #include "app/organicmaps/sdk/routing/TransitRouteInfo.hpp"
+#include "app/organicmaps/sdk/routing/AlternativeRouteInfo.hpp"
 #include "app/organicmaps/sdk/util/Distance.hpp"
 #include "app/organicmaps/sdk/util/NetworkPolicy.hpp"
 #include "app/organicmaps/sdk/vulkan/android_vulkan_context_factory.hpp"
@@ -1458,6 +1459,37 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_Framework_nativeGetTransitRouteInfo(J
   return CreateTransitRouteInfo(env, frm()->GetRoutingManager().GetTransitRouteInfo());
 }
 
+// Alternative routes JNI functions
+JNIEXPORT jboolean Java_app_organicmaps_sdk_Framework_nativeHasAlternativeRoutes(JNIEnv *, jclass)
+{
+  return static_cast<jboolean>(frm()->GetRoutingManager().HasAlternativeRoutes());
+}
+
+JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex(JNIEnv *, jclass)
+{
+  return static_cast<jint>(frm()->GetRoutingManager().GetSelectedRouteIndex());
+}
+
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute(JNIEnv *, jclass, jint routeIndex)
+{
+  frm()->GetRoutingManager().SelectAlternativeRoute(static_cast<int>(routeIndex));
+}
+
+JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetAlternativeRoutes(JNIEnv * env, jclass)
+{
+  auto const & rm = frm()->GetRoutingManager();
+  auto const & alternatives = rm.GetAlternativeRoutes();
+  if (alternatives.empty())
+    return nullptr;
+
+  // Get primary route duration for time difference calculation
+  routing::FollowingInfo info;
+  rm.GetRouteFollowingInfo(info);
+  double const primaryDuration = info.IsValid() ? static_cast<double>(info.m_time) : 0.0;
+
+  return CreateAlternativeRouteInfoArray(env, alternatives, primaryDuration);
+}
+
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeReloadWorldMaps(JNIEnv * env, jclass)
 {
   g_framework->ReloadWorldMaps();
@@ -1823,6 +1855,15 @@ namespace
 JNINativeMethod const frameworkMethods[] = {
     {"nativeGetRouteFollowingInfo", "()Lapp/organicmaps/sdk/routing/RoutingInfo;",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetRouteFollowingInfo)},
+    // Alternative routes
+    {"nativeGetAlternativeRoutes", "()[Lapp/organicmaps/sdk/routing/AlternativeRouteInfo;",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetAlternativeRoutes)},
+    {"nativeSelectAlternativeRoute", "(I)V",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute)},
+    {"nativeHasAlternativeRoutes", "()Z",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeHasAlternativeRoutes)},
+    {"nativeGetSelectedRouteIndex", "()I",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex)},
 };
 }
 

@@ -4,6 +4,7 @@
 #include "map/routing_mark.hpp"
 
 #include "routing/absent_regions_finder.hpp"
+#include "routing/alternative_finder.hpp"
 #include "routing/checkpoint_predictor.hpp"
 #include "routing/index_router.hpp"
 #include "routing/route.hpp"
@@ -404,6 +405,30 @@ void RoutingManager::OnBuildRouteReady(Route const & route, RouterResultCode cod
 
   auto const hasWarnings = InsertRoute(route);
   m_drapeEngine.SafeCall(&df::DrapeEngine::StopLocationFollow);
+
+  // Phase 4: Compute alternative routes for car routing on long routes
+  if (m_currentRouterType == RouterType::Vehicle && route.IsValid())
+  {
+    double const routeDistanceMeters = route.GetTotalDistanceMeters();
+    AlternativeParams params = AlternativeParams::Default();
+
+    // Only compute alternatives for routes longer than minimum threshold
+    if (routeDistanceMeters >= params.minLengthMeters)
+    {
+      // Create alternative finder if not already created
+      if (!m_alternativeFinder)
+        m_alternativeFinder = CreateAlternativeFinder();
+
+      if (m_alternativeFinder)
+      {
+        auto alternatives = m_alternativeFinder->Find(route, params);
+        if (!alternatives.empty())
+        {
+          InsertAlternativeRoutes(alternatives);
+        }
+      }
+    }
+  }
 
   // Validate route (in case of bicycle routing it can be invalid).
   ASSERT(route.IsValid(), ());
@@ -1579,4 +1604,83 @@ void RoutingManager::SetSubroutesVisibility(bool visible)
 bool RoutingManager::IsSpeedCamLimitExceeded() const
 {
   return m_routingSession.IsSpeedCamLimitExceeded();
+}
+
+// Phase 4: Alternative routes implementation
+
+void RoutingManager::InsertAlternativeRoutes(std::vector<AlternativeRoute> const & alternatives)
+{
+  if (!m_drapeEngine || alternatives.empty())
+    return;
+
+  // Clear any existing alternative subroutes
+  ClearAlternativeRoutes();
+
+  // For now, we create simple subroutes for alternatives using a lighter style
+  // In Phase 4, we will add full polyline rendering from Route objects
+
+  // Store alternatives in routing session
+  std::vector<AlternativeRoute> altCopy = alternatives;
+  m_routingSession.SetAlternatives(std::move(altCopy));
+
+  // TODO: In Phase 4, create actual subroutes from alternative route polylines
+  // For now, alternatives are stored but not rendered as full routes
+  // The UI will show alternative route cards with time/distance info
+}
+
+void RoutingManager::SelectAlternativeRoute(int index)
+{
+  if (index == m_selectedRouteIndex)
+    return;
+
+  auto const & alternatives = m_routingSession.GetAlternatives();
+  if (index > 0 && static_cast<size_t>(index) > alternatives.size())
+    return;
+
+  // TODO: In Phase 4, implement style swapping:
+  // 1. Change current selected route to alternative style (gray dashed)
+  // 2. Change new selected route to primary style (solid blue)
+  // 3. Use DrapeEngine::UpdateSubrouteStyle() when available
+
+  int const prevIndex = m_selectedRouteIndex;
+  m_selectedRouteIndex = index;
+
+  // If switching to an alternative (index > 0), trigger route switch in session
+  if (index > 0)
+  {
+    bool const switched = m_routingSession.SwitchToAlternative(index);
+    if (!switched)
+    {
+      // Revert if switch failed
+      m_selectedRouteIndex = prevIndex;
+      return;
+    }
+
+    // Rebuild the route display with the new primary route
+    m_routingSession.RouteCall([this](Route const & route) { InsertRoute(route); });
+  }
+}
+
+void RoutingManager::ClearAlternativeRoutes()
+{
+  // Remove all alternative subroutes from DrapeEngine
+  df::DrapeEngineLockGuard lock(m_drapeEngine);
+  if (lock)
+  {
+    for (auto const & subrouteId : m_alternativeDrapeSubroutes)
+      lock.Get()->RemoveSubroute(subrouteId, false /* deactivateFollowing */);
+  }
+
+  m_alternativeDrapeSubroutes.clear();
+  m_selectedRouteIndex = 0;
+}
+
+std::vector<AlternativeRoute> const & RoutingManager::GetAlternativeRoutes() const
+{
+  return m_routingSession.GetAlternatives();
+}
+
+bool RoutingManager::HasAlternativeRoutes() const
+{
+  return m_routingSession.HasAlternatives();
 }

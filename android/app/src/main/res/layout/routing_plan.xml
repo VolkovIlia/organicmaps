@@ -178,6 +178,8 @@
     </RelativeLayout>
   </FrameLayout>
 
+  <include layout="@layout/alternative_routes_panel" />
+
   <FrameLayout
     style="@style/MwmWidget.FrameLayout.Elevation"
     android:layout_width="match_parent"

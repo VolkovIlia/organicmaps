@@ -6,6 +6,8 @@
 #include "map/transit/transit_display.hpp"
 #include "map/transit/transit_reader.hpp"
 
+#include "routing/alternative_finder.hpp"
+#include "routing/alternative_route.hpp"
 #include "routing/following_info.hpp"
 #include "routing/route.hpp"
 #include "routing/router.hpp"
@@ -168,6 +170,27 @@ public:
   void GetRouteFollowingInfo(routing::FollowingInfo & info) const { m_routingSession.GetRouteFollowingInfo(info); }
 
   TransitRouteInfo GetTransitRouteInfo() const;
+
+  // Phase 4: Alternative routes support
+  /// @brief Insert alternative routes for rendering.
+  /// @param alternatives Alternative routes from AlternativeFinder.
+  void InsertAlternativeRoutes(std::vector<routing::AlternativeRoute> const & alternatives);
+
+  /// @brief Select an alternative route as the new primary.
+  /// @param index 0 = primary, 1+ = alternative index.
+  void SelectAlternativeRoute(int index);
+
+  /// @brief Clear all alternative routes from display.
+  void ClearAlternativeRoutes();
+
+  /// @brief Get currently selected route index.
+  int GetSelectedRouteIndex() const { return m_selectedRouteIndex; }
+
+  /// @brief Get all alternative routes.
+  std::vector<routing::AlternativeRoute> const & GetAlternativeRoutes() const;
+
+  /// @brief Check if alternatives are available.
+  bool HasAlternativeRoutes() const;
 
   m2::PointD GetRouteEndPoint() const { return m_routingSession.GetEndPoint(); }
   /// Returns the most situable router engine type.
@@ -365,6 +388,11 @@ private:
   std::unique_ptr<location::GpsInfo> m_gpsInfoCache;
 
   TransitRouteInfo m_transitRouteInfo;
+
+  // Phase 4: Alternative routes
+  std::unique_ptr<routing::IAlternativeFinder> m_alternativeFinder;
+  std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;
+  int m_selectedRouteIndex = 0;
 
   struct RoutePointsTransaction
   {

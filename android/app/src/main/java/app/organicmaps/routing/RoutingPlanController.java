@@ -199,6 +199,7 @@ public class RoutingPlanController extends ToolbarController
     if (!ready)
     {
       mRoutingBottomMenuController.hideAltitudeChartAndRoutingDetails();
+      mRoutingBottomMenuController.hideAlternativeRoutes();
       return;
     }
 
@@ -207,6 +208,7 @@ public class RoutingPlanController extends ToolbarController
       TransitRouteInfo info = RoutingController.get().getCachedTransitInfo();
       if (info != null)
         mRoutingBottomMenuController.showTransitInfo(info);
+      mRoutingBottomMenuController.hideAlternativeRoutes();
       return;
     }
 
@@ -215,12 +217,14 @@ public class RoutingPlanController extends ToolbarController
       RoutingInfo routingInfo = RoutingController.get().getCachedRoutingInfo();
       if (routingInfo != null)
         mRoutingBottomMenuController.showRulerInfo(Framework.nativeGetRoutePoints(), routingInfo.distToTarget);
+      mRoutingBottomMenuController.hideAlternativeRoutes();
       return;
     }
 
     final boolean showStartButton = !RoutingController.get().isRulerRouterType();
     mRoutingBottomMenuController.setStartButton(showStartButton);
     mRoutingBottomMenuController.showAltitudeChartAndRoutingDetails();
+    mRoutingBottomMenuController.updateAlternativeRoutes();
   }
 
   public void updateBuildProgress(int progress, @NonNull Router router)

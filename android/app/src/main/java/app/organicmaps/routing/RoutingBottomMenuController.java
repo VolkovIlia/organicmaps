@@ -43,8 +43,10 @@ import app.organicmaps.util.Graphics;
 import app.organicmaps.util.ThemeUtils;
 import app.organicmaps.util.UiUtils;
 import app.organicmaps.util.Utils;
+import app.organicmaps.sdk.routing.AlternativeRouteInfo;
 import app.organicmaps.widget.recycler.DotDividerItemDecoration;
 import app.organicmaps.widget.recycler.MultilineLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,6 +89,13 @@ final class RoutingBottomMenuController implements View.OnClickListener
   private final DotDividerItemDecoration mTransitViewDecorator;
 
   @Nullable
+  private final View mAlternativesPanel;
+  @Nullable
+  private final RecyclerView mAlternativesRecycler;
+  @Nullable
+  private final AlternativeRoutesAdapter mAlternativesAdapter;
+
+  @Nullable
   private final RoutingBottomMenuListener mListener;
 
   @NonNull
@@ -104,10 +113,12 @@ final class RoutingBottomMenuController implements View.OnClickListener
     TextView altitudeDifference = (TextView) getViewById(activity, frame, R.id.altitude_difference);
     TextView arrival = (TextView) getViewById(activity, frame, R.id.arrival);
     View actionFrame = getViewById(activity, frame, R.id.routing_action_frame);
+    View alternativesPanel = frame.findViewById(R.id.alternatives_panel);
+    RecyclerView alternativesRecycler = frame.findViewById(R.id.alternatives_recycler);
 
     return new RoutingBottomMenuController(activity, altitudeChartFrame, timeElevationLine, transitFrame, error, start,
                                            altitudeChart, time, altitudeDifference, timeVehicle, arrival, actionFrame,
-                                           listener);
+                                           alternativesPanel, alternativesRecycler, listener);
   }
 
   @NonNull
@@ -122,7 +133,9 @@ final class RoutingBottomMenuController implements View.OnClickListener
                                       @NonNull TextView error, @NonNull Button start, @NonNull ImageView altitudeChart,
                                       @NonNull TextView time, @NonNull TextView altitudeDifference,
                                       @NonNull TextView timeVehicle, @Nullable TextView arrival,
-                                      @NonNull View actionFrame, @Nullable RoutingBottomMenuListener listener)
+                                      @NonNull View actionFrame, @Nullable View alternativesPanel,
+                                      @Nullable RecyclerView alternativesRecycler,
+                                      @Nullable RoutingBottomMenuListener listener)
   {
     mContext = context;
     mAltitudeChartFrame = altitudeChartFrame;
@@ -155,6 +168,25 @@ final class RoutingBottomMenuController implements View.OnClickListener
 
     Button saveButton = altitudeChartFrame.findViewById(R.id.btn__save);
     saveButton.setOnClickListener(this);
+
+    // Initialize alternative routes panel
+    mAlternativesPanel = alternativesPanel;
+    mAlternativesRecycler = alternativesRecycler;
+    if (mAlternativesRecycler != null)
+    {
+      mAlternativesRecycler.setLayoutManager(
+          new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+      mAlternativesAdapter = new AlternativeRoutesAdapter(context);
+      mAlternativesRecycler.setAdapter(mAlternativesAdapter);
+      mAlternativesAdapter.setOnRouteSelectedListener(routeIndex -> {
+        Framework.nativeSelectAlternativeRoute(routeIndex);
+        mAlternativesAdapter.setSelectedIndex(routeIndex);
+      });
+    }
+    else
+    {
+      mAlternativesAdapter = null;
+    }
   }
 
   void showAltitudeChartAndRoutingDetails()
@@ -284,6 +316,31 @@ final class RoutingBottomMenuController implements View.OnClickListener
   void hideActionFrame()
   {
     UiUtils.hide(mActionFrame);
+  }
+
+  void updateAlternativeRoutes()
+  {
+    if (mAlternativesPanel == null || mAlternativesAdapter == null)
+      return;
+
+    if (Framework.nativeHasAlternativeRoutes())
+    {
+      AlternativeRouteInfo[] routes = Framework.nativeGetAlternativeRoutes();
+      if (routes != null && routes.length > 0)
+      {
+        int selectedIndex = Framework.nativeGetSelectedRouteIndex();
+        mAlternativesAdapter.setRoutes(routes, selectedIndex);
+        mAlternativesPanel.setVisibility(View.VISIBLE);
+        return;
+      }
+    }
+    mAlternativesPanel.setVisibility(View.GONE);
+  }
+
+  void hideAlternativeRoutes()
+  {
+    if (mAlternativesPanel != null)
+      mAlternativesPanel.setVisibility(View.GONE);
   }
 
   void setStartButton(boolean show)

@@ -20,6 +20,7 @@ import app.organicmaps.sdk.routing.RoutingLoadPointsListener;
 import app.organicmaps.sdk.routing.RoutingProgressListener;
 import app.organicmaps.sdk.routing.RoutingRecommendationListener;
 import app.organicmaps.sdk.routing.TransitRouteInfo;
+import app.organicmaps.sdk.routing.AlternativeRouteInfo;
 import app.organicmaps.sdk.settings.SpeedCameraMode;
 import app.organicmaps.sdk.util.Constants;
 import dalvik.annotation.optimization.FastNative;
@@ -261,6 +262,33 @@ public class Framework
 
   @NonNull
   public static native TransitRouteInfo nativeGetTransitRouteInfo();
+
+  // Alternative routes support
+  /**
+   * Get information about alternative routes.
+   * @return Array of AlternativeRouteInfo, or null if no alternatives available.
+   */
+  @Nullable
+  public static native AlternativeRouteInfo[] nativeGetAlternativeRoutes();
+
+  /**
+   * Select an alternative route as the new primary.
+   * @param routeIndex 0 = primary, 1+ = alternative index
+   */
+  public static native void nativeSelectAlternativeRoute(int routeIndex);
+
+  /**
+   * Check if alternative routes are available.
+   * @return true if alternatives exist.
+   */
+  public static native boolean nativeHasAlternativeRoutes();
+
+  /**
+   * Get currently selected route index.
+   * @return 0 = primary, 1+ = alternative
+   */
+  public static native int nativeGetSelectedRouteIndex();
+
   /**
    * Registers all maps(.mwms). Adds them to the models, generates indexes and does all necessary stuff.
    */

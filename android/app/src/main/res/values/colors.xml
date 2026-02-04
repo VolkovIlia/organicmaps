@@ -96,6 +96,8 @@
 
   <!-- Routing-->
   <color name="bg_routing_progress">#1F000000</color>
+  <color name="routing_route_faster">#4CAF50</color>
+  <color name="routing_route_slower">#F44336</color>
   <color name="routing_button_tint">#FFFFFFFF</color>
   <color name="routing_button_activated_tint">@color/bg_statusbar</color>
   <color name="routing_button_pressed_tint">#80FFFFFF</color>
