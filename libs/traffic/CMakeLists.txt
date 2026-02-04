@@ -9,6 +9,8 @@ set(SRC
   historical_traffic_provider.hpp
   osm_speed_inference.cpp
   osm_speed_inference.hpp
+  personal_speed_storage.cpp
+  personal_speed_storage.hpp
   speed_groups.cpp
   speed_groups.hpp
   traffic_cache.cpp

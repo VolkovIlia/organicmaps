@@ -55,6 +55,8 @@ set(SRC
   search_mark.cpp
   search_mark.hpp
   search_product_info.hpp
+  speed_data_collector.cpp
+  speed_data_collector.hpp
   track.cpp
   track.hpp
   track_statistics.cpp

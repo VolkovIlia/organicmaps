@@ -15,6 +15,7 @@ set(SRC
   mwm_url_tests.cpp
   power_manager_tests.cpp
   search_api_tests.cpp
+  speed_data_collector_test.cpp
   transliteration_test.cpp
   elevation_info_tests.cpp
   track_statistics_tests.cpp
