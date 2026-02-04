@@ -892,4 +892,76 @@
     <string name="share_track">Share Track</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">Delete %s?</string>
+
+    <!-- SECTION: P2P Traffic Privacy Settings -->
+    <!-- P2P Consent level - Off -->
+    <string name="p2p_consent_off">Off (Privacy First)</string>
+    <!-- P2P Consent level - View Only -->
+    <string name="p2p_consent_view_only">View Only - Receive traffic data</string>
+    <!-- P2P Consent level - Contribute -->
+    <string name="p2p_consent_contribute">Contribute - Share and receive</string>
+    <!-- Preference key for P2P screen -->
+    <string name="pref_p2p_screen">pref_p2p_screen</string>
+    <!-- P2P Settings screen title -->
+    <string name="p2p_privacy_title">Traffic Sharing</string>
+    <!-- P2P Settings summary in main settings -->
+    <string name="p2p_privacy_summary">Share anonymous traffic with nearby users</string>
+    <!-- P2P Consent level preference key -->
+    <string name="pref_p2p_consent_level">pref_p2p_consent_level</string>
+    <!-- P2P Consent level title -->
+    <string name="p2p_consent_level_title">Participation Mode</string>
+    <!-- P2P Consent level summary -->
+    <string name="p2p_consent_level_summary">Choose how you participate in traffic sharing</string>
+    <!-- P2P Status category key -->
+    <string name="pref_p2p_status_category">pref_p2p_status_category</string>
+    <!-- P2P Status category title -->
+    <string name="p2p_status_category">Status</string>
+    <!-- P2P Peers status key -->
+    <string name="pref_p2p_status_peers">pref_p2p_status_peers</string>
+    <!-- P2P Peers status title -->
+    <string name="p2p_status_peers">Nearby Users</string>
+    <!-- P2P Peers status - none found -->
+    <string name="p2p_status_peers_none">No nearby users found</string>
+    <!-- P2P Peers status - count format -->
+    <string name="p2p_status_peers_count">%d user(s) nearby</string>
+    <!-- P2P Exchanges status key -->
+    <string name="pref_p2p_status_exchanges">pref_p2p_status_exchanges</string>
+    <!-- P2P Exchanges status title -->
+    <string name="p2p_status_exchanges">Data Exchanges (24h)</string>
+    <!-- P2P Exchanges status - none -->
+    <string name="p2p_status_exchanges_none">No exchanges today</string>
+    <!-- P2P Exchanges status - count format -->
+    <string name="p2p_status_exchanges_count">%d exchange(s)</string>
+    <!-- P2P Privacy info category key -->
+    <string name="pref_p2p_privacy_info">pref_p2p_privacy_info</string>
+    <!-- P2P Privacy info category title -->
+    <string name="p2p_privacy_info_title">Privacy Information</string>
+    <!-- P2P What is shared key -->
+    <string name="pref_p2p_what_shared">pref_p2p_what_shared</string>
+    <!-- P2P What is shared title -->
+    <string name="p2p_what_shared_title">What Gets Shared</string>
+    <!-- P2P What is shared summary -->
+    <string name="p2p_what_shared_summary">Only aggregated speed data for ~175m areas. No GPS coordinates, routes, or personal data.</string>
+    <!-- P2P Privacy guarantees key -->
+    <string name="pref_p2p_privacy_guarantees">pref_p2p_privacy_guarantees</string>
+    <!-- P2P Privacy guarantees title -->
+    <string name="p2p_privacy_guarantees_title">Privacy Guarantees</string>
+    <!-- P2P Privacy guarantees summary -->
+    <string name="p2p_privacy_guarantees_summary">Anonymous device IDs rotate every 15 minutes. Differential privacy noise protects your data. K-anonymity ensures your patterns cannot be identified.</string>
+    <!-- P2P Actions category key -->
+    <string name="pref_p2p_actions">pref_p2p_actions</string>
+    <!-- P2P Actions category title -->
+    <string name="p2p_actions_title">Actions</string>
+    <!-- P2P Disable now key -->
+    <string name="pref_p2p_disable_now">pref_p2p_disable_now</string>
+    <!-- P2P Disable now title -->
+    <string name="p2p_disable_now">Turn Off Immediately</string>
+    <!-- P2P Disable now summary -->
+    <string name="p2p_disable_now_summary">Stop all traffic sharing right now</string>
+    <!-- P2P Debug mode key -->
+    <string name="pref_p2p_debug_mode">pref_p2p_debug_mode</string>
+    <!-- P2P Debug mode title -->
+    <string name="p2p_debug_mode">Debug Mode</string>
+    <!-- P2P Debug mode summary -->
+    <string name="p2p_debug_mode_summary">Show raw transmitted data for verification</string>
 </resources>

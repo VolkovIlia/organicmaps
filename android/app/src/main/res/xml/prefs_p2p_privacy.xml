@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <!-- Main consent control -->
+  <ListPreference
+    android:key="@string/pref_p2p_consent_level"
+    android:title="@string/p2p_consent_level_title"
+    app:singleLineTitle="false"
+    android:summary="@string/p2p_consent_level_summary"
+    android:entries="@array/p2p_consent_levels"
+    android:entryValues="@array/p2p_consent_level_values"
+    android:defaultValue="0"
+    android:order="1" />
+
+  <!-- Status category -->
+  <androidx.preference.PreferenceCategory
+    android:key="@string/pref_p2p_status_category"
+    android:title="@string/p2p_status_category"
+    android:order="2">
+
+    <Preference
+      android:key="@string/pref_p2p_status_peers"
+      android:title="@string/p2p_status_peers"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_status_peers_none"
+      android:selectable="false"
+      android:order="1" />
+
+    <Preference
+      android:key="@string/pref_p2p_status_exchanges"
+      android:title="@string/p2p_status_exchanges"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_status_exchanges_none"
+      android:selectable="false"
+      android:order="2" />
+
+  </androidx.preference.PreferenceCategory>
+
+  <!-- Privacy info category -->
+  <androidx.preference.PreferenceCategory
+    android:key="@string/pref_p2p_privacy_info"
+    android:title="@string/p2p_privacy_info_title"
+    android:order="3">
+
+    <Preference
+      android:key="@string/pref_p2p_what_shared"
+      android:title="@string/p2p_what_shared_title"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_what_shared_summary"
+      android:selectable="false"
+      android:order="1" />
+
+    <Preference
+      android:key="@string/pref_p2p_privacy_guarantees"
+      android:title="@string/p2p_privacy_guarantees_title"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_privacy_guarantees_summary"
+      android:selectable="false"
+      android:order="2" />
+
+  </androidx.preference.PreferenceCategory>
+
+  <!-- Actions -->
+  <androidx.preference.PreferenceCategory
+    android:key="@string/pref_p2p_actions"
+    android:title="@string/p2p_actions_title"
+    android:order="4">
+
+    <Preference
+      android:key="@string/pref_p2p_disable_now"
+      android:title="@string/p2p_disable_now"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_disable_now_summary"
+      android:order="1" />
+
+    <SwitchPreferenceCompat
+      android:key="@string/pref_p2p_debug_mode"
+      android:title="@string/p2p_debug_mode"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_debug_mode_summary"
+      android:defaultValue="false"
+      android:order="2" />
+
+  </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

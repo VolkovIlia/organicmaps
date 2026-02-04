@@ -25,6 +25,9 @@ public class P2PConsentManager
   private static final String TAG = P2PConsentManager.class.getSimpleName();
   private static final String PREFS_NAME = "p2p_consent";
   private static final String KEY_CONSENT_LEVEL = "consent_level";
+  private static final String KEY_DEBUG_MODE = "debug_mode";
+  private static final String KEY_EXCHANGE_COUNT = "exchange_count_24h";
+  private static final String KEY_EXCHANGE_TIMESTAMP = "exchange_timestamp";
 
   // Consent level constants matching p2p::ConsentLevel
   public static final int CONSENT_OFF = 0;
@@ -54,6 +57,19 @@ public class P2PConsentManager
   {
     if (sInstance == null)
       sInstance = new P2PConsentManager(context);
+    return sInstance;
+  }
+
+  /**
+   * Get singleton instance. Must have been initialized with context first.
+   * @return P2PConsentManager instance.
+   * @throws IllegalStateException if not initialized.
+   */
+  @NonNull
+  public static synchronized P2PConsentManager getInstance()
+  {
+    if (sInstance == null)
+      throw new IllegalStateException("P2PConsentManager not initialized");
     return sInstance;
   }
 
@@ -155,6 +171,56 @@ public class P2PConsentManager
     int level = getConsentLevel();
     nativeSetConsentLevel(level);
     Logger.d(TAG, "Synced consent level with native: " + getConsentLevelName(level));
+  }
+
+  /**
+   * Enable or disable debug mode.
+   * @param enabled true to enable debug mode.
+   */
+  public void setDebugMode(boolean enabled)
+  {
+    mPrefs.edit().putBoolean(KEY_DEBUG_MODE, enabled).apply();
+  }
+
+  /**
+   * Check if debug mode is enabled.
+   * @return true if debug mode is enabled.
+   */
+  public boolean isDebugMode()
+  {
+    return mPrefs.getBoolean(KEY_DEBUG_MODE, false);
+  }
+
+  /**
+   * Get count of data exchanges in last 24 hours.
+   * @return Number of exchanges.
+   */
+  public int getExchangeCount24h()
+  {
+    long lastTimestamp = mPrefs.getLong(KEY_EXCHANGE_TIMESTAMP, 0);
+    long now = System.currentTimeMillis();
+    // Reset count if more than 24 hours passed
+    if (now - lastTimestamp > 24 * 60 * 60 * 1000)
+    {
+      mPrefs.edit()
+          .putInt(KEY_EXCHANGE_COUNT, 0)
+          .putLong(KEY_EXCHANGE_TIMESTAMP, now)
+          .apply();
+      return 0;
+    }
+    return mPrefs.getInt(KEY_EXCHANGE_COUNT, 0);
+  }
+
+  /**
+   * Increment exchange count.
+   */
+  public void incrementExchangeCount()
+  {
+    int count = getExchangeCount24h() + 1;
+    mPrefs.edit()
+        .putInt(KEY_EXCHANGE_COUNT, count)
+        .putLong(KEY_EXCHANGE_TIMESTAMP, System.currentTimeMillis())
+        .apply();
   }
 
   // Native methods

@@ -24,7 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import app.organicmaps.sdk.util.log.Logger;
@@ -49,6 +51,9 @@ public class P2PTrafficService extends Service
   private boolean mIsScanning = false;
   private boolean mIsAdvertising = false;
 
+  // Track discovered peers for status display
+  private final Set<String> mDiscoveredPeers = new HashSet<>();
+
   private final Handler mHandler = new Handler(Looper.getMainLooper());
   private final IBinder mBinder = new LocalBinder();
 
@@ -64,6 +69,7 @@ public class P2PTrafficService extends Service
   public void onCreate()
   {
     super.onCreate();
+    sInstance = this;
     initBluetooth();
     Logger.i(TAG, "P2PTrafficService created");
   }
@@ -325,8 +331,12 @@ public class P2PTrafficService extends Service
     String address = result.getDevice().getAddress();
     int rssi = result.getRssi();
 
+    // Track discovered peers
+    mDiscoveredPeers.add(address);
+    mDiscoveredPeerCount = mDiscoveredPeers.size();
+
     Logger.d(TAG, "Received P2P data from " + address + " rssi=" + rssi +
-             " bytes=" + serviceData.length);
+             " bytes=" + serviceData.length + " peers=" + mDiscoveredPeerCount);
 
     nativeOnDataReceived(serviceData, address, rssi);
   }
@@ -365,6 +375,40 @@ public class P2PTrafficService extends Service
       default:
         return "Unknown error";
     }
+  }
+
+  // Static reference for settings access
+  private static P2PTrafficService sInstance;
+  private int mDiscoveredPeerCount = 0;
+
+  /**
+   * Stop P2P service.
+   * @param context Application context.
+   */
+  public static void stopService(@NonNull Context context)
+  {
+    context.stopService(new Intent(context, P2PTrafficService.class));
+    Logger.i(TAG, "P2P service stop requested");
+  }
+
+  /**
+   * Start P2P service.
+   * @param context Application context.
+   */
+  public static void startService(@NonNull Context context)
+  {
+    context.startService(new Intent(context, P2PTrafficService.class));
+    Logger.i(TAG, "P2P service start requested");
+  }
+
+  /**
+   * Get count of discovered peers.
+   * @param context Application context.
+   * @return Number of discovered peers.
+   */
+  public static int getDiscoveredPeerCount(@NonNull Context context)
+  {
+    return sInstance != null ? sInstance.mDiscoveredPeerCount : 0;
   }
 
   static

@@ -80,4 +80,17 @@
     <item>2</item>
   </string-array>
 
+  <!-- P2P Consent levels - should match p2p::ConsentLevel enum -->
+  <string-array name="p2p_consent_levels">
+    <item>@string/p2p_consent_off</item>
+    <item>@string/p2p_consent_view_only</item>
+    <item>@string/p2p_consent_contribute</item>
+  </string-array>
+
+  <string-array name="p2p_consent_level_values" translatable="false">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+
 </resources>
