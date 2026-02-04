@@ -86,6 +86,7 @@ set(SRC
   app/organicmaps/sdk/subway/SubwayManager.cpp
   app/organicmaps/sdk/TrackRecorder.cpp
   app/organicmaps/sdk/TrafficState.cpp
+  app/organicmaps/sdk/mesh/P2PJni.cpp
   app/organicmaps/sdk/opengl/android_gl_utils.cpp
   app/organicmaps/sdk/opengl/androidoglcontext.cpp
   app/organicmaps/sdk/opengl/androidoglcontextfactory.cpp
@@ -116,6 +117,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE .)
 target_link_libraries(${PROJECT_NAME} PRIVATE
   # Organic Maps libs
   map
+  mesh
+  p2p
   # ge0
   # tracking
   # routing
