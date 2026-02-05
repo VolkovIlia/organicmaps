@@ -3,6 +3,8 @@
 #include "traffic/historical_speed_data.hpp"
 #include "traffic/traffic_info.hpp"
 
+#include "routing_common/car_model.hpp"
+
 #include "indexer/mwm_set.hpp"
 
 #include "coding/files_container.hpp"
@@ -50,6 +52,10 @@ private:
   /// \brief Loads historical data from MWM file.
   /// \returns true if data was loaded successfully.
   bool LoadHistoricalData(MwmSet::MwmId const & mwmId) const;
+
+  /// \brief Generates synthetic historical data for MWM based on road types.
+  /// \returns true if data was generated successfully.
+  bool GenerateSyntheticData(MwmSet::MwmId const & mwmId) const;
 
   /// \brief Converts HistoricalSpeedData to TrafficInfo::Coloring for given time.
   TrafficInfo::Coloring ConvertToColoring(HistoricalSpeedData const & data,
