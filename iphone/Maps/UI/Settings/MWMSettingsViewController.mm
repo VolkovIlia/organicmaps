@@ -33,6 +33,7 @@ static NSString * const kUDDidShowICloudSynchronizationEnablingAlert = @"kUDDidS
 @property(weak, nonatomic) IBOutlet SettingsTableViewSwitchCell * autoZoomCell;
 @property(weak, nonatomic) IBOutlet SettingsTableViewLinkCell * voiceInstructionsCell;
 @property(weak, nonatomic) IBOutlet SettingsTableViewLinkCell * drivingOptionsCell;
+@property(weak, nonatomic) IBOutlet SettingsTableViewLinkCell * p2pPrivacyCell;
 @property(weak, nonatomic) IBOutlet SettingsTableViewiCloudSwitchCell * iCloudSynchronizationCell;
 @property(weak, nonatomic) IBOutlet SettingsTableViewDetailedSwitchCell * enableLoggingCell;
 
@@ -231,6 +232,7 @@ static NSString * const kUDDidShowICloudSynchronizationEnablingAlert = @"kUDDidS
   NSString * ttsEnabledString = [MWMTextToSpeech isTTSEnabled] ? L(@"on") : L(@"off");
   [self.voiceInstructionsCell configWithTitle:L(@"pref_tts_enable_title") info:ttsEnabledString];
   [self.drivingOptionsCell configWithTitle:L(@"driving_options_title") info:@""];
+  [self.p2pPrivacyCell configWithTitle:L(@"p2p_privacy_title") info:@""];
 }
 
 - (void)showICloudSynchronizationEnablingAlert:(void (^)(BOOL))isEnabled
@@ -398,6 +400,11 @@ static NSString * const kUDDidShowICloudSynchronizationEnablingAlert = @"kUDDidS
     [self performSegueWithIdentifier:@"SettingsToTTSSegue" sender:nil];
   else if (cell == self.drivingOptionsCell)
     [self performSegueWithIdentifier:@"settingsToDrivingOptionsSegue" sender:nil];
+  else if (cell == self.p2pPrivacyCell)
+  {
+    P2PPrivacyViewController * vc = [[P2PPrivacyViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+  }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

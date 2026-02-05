@@ -138,6 +138,11 @@ public class SettingsPrefsFragment extends BaseXmlSettingsFragment implements La
             LanguagesFragment.class, getString(R.string.change_map_locale), null);
         langFragment.setListener(this);
       }
+      else if (key.equals(getString(R.string.pref_p2p_privacy_screen)))
+      {
+        getSettingsActivity().stackFragment(P2PPrivacySettingsFragment.class,
+                                            getString(R.string.p2p_privacy_title), null);
+      }
     }
     return super.onPreferenceTreeClick(preference);
   }
