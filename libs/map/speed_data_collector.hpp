@@ -12,7 +12,7 @@
 #include <mutex>
 #include <string>
 
-namespace map
+namespace speed_collector
 {
 /// \brief Collects user's driving speed during navigation and stores in PersonalSpeedStorage.
 /// Thread-safe. Call OnLocationUpdate() from navigation thread,
@@ -94,4 +94,4 @@ private:
   static constexpr double kMaxHorizontalAccuracy = 50.0;
 };
 
-}  // namespace map
+}  // namespace speed_collector

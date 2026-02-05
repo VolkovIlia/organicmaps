@@ -355,9 +355,10 @@ class CarEstimator final : public EdgeEstimator
 #endif
 
 public:
-  CarEstimator(DataSource * dataSourcePtr, std::shared_ptr<NumMwmIds> numMwmIds, shared_ptr<TrafficStash> trafficStash,
+  CarEstimator(DataSource * /* dataSourcePtr */, std::shared_ptr<NumMwmIds> /* numMwmIds */,
+               shared_ptr<TrafficStash> trafficStash,
                double maxWeightSpeedKMpH, SpeedKMpH const & offroadSpeedKMpH)
-    : EdgeEstimator(maxWeightSpeedKMpH, offroadSpeedKMpH, dataSourcePtr, numMwmIds)
+    : EdgeEstimator(maxWeightSpeedKMpH, offroadSpeedKMpH)
     , m_trafficStash(std::move(trafficStash))
     , m_turnCostModel(std::make_shared<DefaultTurnCostModel>())
   {}
@@ -462,10 +463,9 @@ double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry con
       // Use departure time for time-aware estimation, or current time if not set
       std::time_t const time = m_departureTime > 0 ? m_departureTime : std::time(nullptr);
 
-      // Get MwmId from segment's NumMwmId using DataSource
-      MwmSet::MwmId mwmId;
-      if (m_dataSourcePtr && segment.GetMwmId() != kFakeNumMwmId)
-        mwmId = m_dataSourcePtr->GetMwmId(segment.GetMwmId());
+      // TODO(mesh-traffic): Add MwmId lookup from NumMwmId when available
+      // For now, pass empty MwmId - historical estimator will use segment-only lookup
+      MwmSet::MwmId const mwmId;
 
       double const factor = m_historicalTrafficEstimator->GetTrafficFactor(
           mwmId, segment.GetFeatureId(), segment.GetSegmentIdx(),

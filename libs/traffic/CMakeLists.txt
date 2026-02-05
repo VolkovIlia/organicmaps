@@ -30,16 +30,17 @@ set(SRC
 )
 
 # Platform-specific ML implementations.
+# TODO(mesh-traffic): Enable TFLite when TensorFlow Lite is configured
 if (PLATFORM_IPHONE)
   append(SRC
     coreml_traffic_ml_model.hpp
     coreml_traffic_ml_model.mm
   )
-elseif (PLATFORM_ANDROID)
-  append(SRC
-    tflite_traffic_ml_model.hpp
-    tflite_traffic_ml_model.cpp
-  )
+# elseif (PLATFORM_ANDROID AND TFLITE_ENABLED)
+#   append(SRC
+#     tflite_traffic_ml_model.hpp
+#     tflite_traffic_ml_model.cpp
+#   )
 endif()
 
 omim_add_library(${PROJECT_NAME} ${SRC})

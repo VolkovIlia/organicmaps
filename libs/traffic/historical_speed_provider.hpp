@@ -83,8 +83,7 @@ private:
 
   /// Cache of loaded data per MWM.
   /// Using shared_ptr to allow thread-safe reading while new data is being loaded.
-  mutable std::unordered_map<MwmSet::MwmId, std::shared_ptr<HistoricalSpeedData const>,
-                             MwmSet::MwmIdHasher> m_cache;
+  mutable std::unordered_map<MwmSet::MwmId, std::shared_ptr<HistoricalSpeedData const>> m_cache;
 
   /// Mutex for cache access.
   mutable std::mutex m_mutex;
@@ -110,8 +109,7 @@ public:
   [[nodiscard]] bool HasData(MwmSet::MwmId const & mwmId) const override;
 
 private:
-  std::unordered_map<MwmSet::MwmId, std::shared_ptr<HistoricalSpeedData>,
-                     MwmSet::MwmIdHasher> m_data;
+  std::unordered_map<MwmSet::MwmId, std::shared_ptr<HistoricalSpeedData>> m_data;
 };
 
 }  // namespace traffic

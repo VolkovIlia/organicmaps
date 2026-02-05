@@ -6,7 +6,7 @@
 
 #include <ctime>
 
-namespace map
+namespace speed_collector
 {
 namespace
 {
@@ -171,4 +171,4 @@ bool SpeedDataCollector::IsValidObservation(location::GpsInfo const & info,
   return true;
 }
 
-}  // namespace map
+}  // namespace speed_collector

@@ -4,9 +4,10 @@
 
 #include "std/target_os.hpp"
 
-#ifdef OMIM_OS_ANDROID
-#include "traffic/tflite_traffic_ml_model.hpp"
-#endif
+// TODO(mesh-traffic): Enable TFLite when TensorFlow Lite is configured
+// #ifdef OMIM_OS_ANDROID
+// #include "traffic/tflite_traffic_ml_model.hpp"
+// #endif
 
 #ifdef OMIM_OS_IPHONE
 #include "traffic/coreml_traffic_ml_model.hpp"
@@ -16,12 +17,13 @@ namespace traffic
 {
 std::unique_ptr<ITrafficMLModel> CreateTrafficMLModel(std::string const & modelPath)
 {
-#ifdef OMIM_OS_ANDROID
-  return std::make_unique<TFLiteTrafficMLModel>(modelPath);
-#elif defined(OMIM_OS_IPHONE)
+// TODO(mesh-traffic): Enable TFLite when TensorFlow Lite is configured
+// #ifdef OMIM_OS_ANDROID
+//   return std::make_unique<TFLiteTrafficMLModel>(modelPath);
+#if defined(OMIM_OS_IPHONE)
   return std::make_unique<CoreMLTrafficMLModel>(modelPath);
 #else
-  // Desktop/testing: use stub model.
+  // Desktop/Android/testing: use stub model until TFLite is configured.
   (void)modelPath;
   return std::make_unique<StubTrafficMLModel>();
 #endif
@@ -29,7 +31,8 @@ std::unique_ptr<ITrafficMLModel> CreateTrafficMLModel(std::string const & modelP
 
 bool IsPlatformMLAvailable()
 {
-#if defined(OMIM_OS_ANDROID) || defined(OMIM_OS_IPHONE)
+// TODO(mesh-traffic): Return true for Android when TFLite is configured
+#if defined(OMIM_OS_IPHONE)
   return true;
 #else
   return false;

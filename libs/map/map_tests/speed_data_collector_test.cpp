@@ -12,7 +12,7 @@
 
 namespace speed_data_collector_test
 {
-using namespace map;
+using namespace speed_collector;
 
 namespace
 {
