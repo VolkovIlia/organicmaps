@@ -1691,6 +1691,13 @@ bool RoutingManager::HasAlternativeRoutes() const
 
 int RoutingManager::GetUsualRouteTime() const
 {
+  // TODO(mesh-traffic): Implement route-level historical baseline
+  // Currently returns current route time as placeholder.
+  // Full implementation requires:
+  // 1. Store historical route times by time-of-day/day-of-week
+  // 2. Query TrafficEstimator for route-specific historical data
+  // 3. Return weighted average of historical times
+  // Issue: https://github.com/organicmaps/organicmaps/issues/TBD
   if (!IsRouteBuilt())
     return 0;
 
@@ -1699,19 +1706,11 @@ int RoutingManager::GetUsualRouteTime() const
   if (!info.IsValid())
     return 0;
 
-  // Get current route time as baseline
   int const currentTimeSeconds = info.m_time;
   if (currentTimeSeconds <= 0)
     return 0;
 
-  // For now, estimate "usual" time as current time adjusted by a factor
-  // based on traffic estimation confidence. In a full implementation,
-  // this would query historical patterns for the entire route.
-  // TODO: Integrate with route-level traffic estimation from TrafficEstimator
-
-  // Return current time as "usual" since we don't have historical baseline yet
-  // When TrafficEstimator is integrated with routing, this will return
-  // the historical average time for this route at this time of day.
+  // Return current time as "usual" since we don't have historical baseline yet.
   m_cachedUsualTimeSeconds = currentTimeSeconds;
   return currentTimeSeconds;
 }

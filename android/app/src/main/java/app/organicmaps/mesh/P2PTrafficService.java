@@ -35,6 +35,9 @@ import app.organicmaps.sdk.util.log.Logger;
 /**
  * Background service for P2P traffic data exchange via BLE.
  * Handles both advertising (sharing data) and scanning (receiving data).
+ *
+ * TODO(mesh-traffic): Consider extracting BLE scanning logic to separate BLEScanManager
+ * class when adding new features. Current size: ~420 lines (suckless limit: 500).
  */
 public class P2PTrafficService extends Service
 {
