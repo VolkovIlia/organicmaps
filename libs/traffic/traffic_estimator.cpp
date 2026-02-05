@@ -52,14 +52,18 @@ void TrafficEstimate::CombineWith(TrafficEstimate const & other, double otherWei
 
 TrafficEstimator::TrafficEstimator()
   : m_config()
-  , m_osmInference(std::make_shared<OSMSpeedInference>())
 {
+  // NOTE: OSMSpeedInference is NOT created here because it requires
+  // the Classificator to be initialized. It will be created lazily
+  // on first use or explicitly via SetOSMInference().
 }
 
 TrafficEstimator::TrafficEstimator(Config const & config)
   : m_config(config)
-  , m_osmInference(std::make_shared<OSMSpeedInference>())
 {
+  // NOTE: OSMSpeedInference is NOT created here because it requires
+  // the Classificator to be initialized. It will be created lazily
+  // on first use or explicitly via SetOSMInference().
 }
 
 void TrafficEstimator::SetHistoricalProvider(std::shared_ptr<IHistoricalSpeedProvider> provider)
