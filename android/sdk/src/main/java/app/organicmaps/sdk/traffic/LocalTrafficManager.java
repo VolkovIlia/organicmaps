@@ -12,6 +12,9 @@ public final class LocalTrafficManager
 {
   private LocalTrafficManager() {}
 
+  // TODO: These are stub implementations until native bindings are complete.
+  // For now, return safe defaults to prevent crashes.
+
   /**
    * Check if learning from driving is enabled.
    * When enabled, the app collects anonymous driving speed data
@@ -19,7 +22,8 @@ public final class LocalTrafficManager
    */
   public static boolean isLearningEnabled()
   {
-    return nativeIsLearningEnabled();
+    // Stub: return false until native implementation is ready
+    return false;
   }
 
   /**
@@ -28,7 +32,7 @@ public final class LocalTrafficManager
    */
   public static void setLearningEnabled(boolean enabled)
   {
-    nativeSetLearningEnabled(enabled);
+    // Stub: no-op until native implementation is ready
   }
 
   /**
@@ -37,7 +41,7 @@ public final class LocalTrafficManager
    */
   public static void clearDrivingHistory()
   {
-    nativeClearDrivingHistory();
+    // Stub: no-op until native implementation is ready
   }
 
   /**
@@ -45,7 +49,8 @@ public final class LocalTrafficManager
    */
   public static long getRecordCount()
   {
-    return nativeGetRecordCount();
+    // Stub: return 0 until native implementation is ready
+    return 0;
   }
 
   /**
@@ -53,13 +58,7 @@ public final class LocalTrafficManager
    */
   public static long getStorageSizeBytes()
   {
-    return nativeGetStorageSizeBytes();
+    // Stub: return 0 until native implementation is ready
+    return 0;
   }
-
-  // Native methods
-  private static native boolean nativeIsLearningEnabled();
-  private static native void nativeSetLearningEnabled(boolean enabled);
-  private static native void nativeClearDrivingHistory();
-  private static native long nativeGetRecordCount();
-  private static native long nativeGetStorageSizeBytes();
 }
