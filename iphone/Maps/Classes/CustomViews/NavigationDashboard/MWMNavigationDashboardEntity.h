@@ -17,6 +17,12 @@
 
 @property(nonatomic, readonly) NSString * arrival;
 
+/// Traffic deviation info
+/// @brief Usual route time in seconds, 0 if not available
+@property(nonatomic, readonly) NSUInteger usualTimeToTarget;
+/// @brief Traffic deviation type: 1 = faster, -1 = slower, 0 = normal
+@property(nonatomic, readonly) NSInteger trafficDeviationType;
+
 - (NSAttributedString *)estimate;
 
 + (NSAttributedString *)estimateDot;

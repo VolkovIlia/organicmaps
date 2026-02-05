@@ -75,6 +75,19 @@ extension NavigationDashboard.ViewModel {
     }
     return .estimates(estimates)
   }
+
+  /// Traffic deviation state for the route preview.
+  /// Only visible for vehicle routing when usual time data is available.
+  var trafficDeviationState: TrafficDeviationView.State {
+    guard routerType == .vehicle,
+          progress >= 1,
+          dashboardState != .error else {
+      return .hidden
+    }
+    let usualTime = Int(entity.usualTimeToTarget)
+    let deviation = TrafficDeviationView.DeviationType(rawValue: Int(entity.trafficDeviationType)) ?? .normal
+    return TrafficDeviationView.State(usualTimeSeconds: usualTime, deviationType: deviation)
+  }
 }
 
 extension NavigationDashboard.NavigationInfo {

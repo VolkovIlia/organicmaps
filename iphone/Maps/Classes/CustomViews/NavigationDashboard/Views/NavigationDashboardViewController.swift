@@ -40,6 +40,7 @@ final class NavigationDashboardViewController: UIViewController {
   private let estimatesStackView = UIStackView()
   private let routeStatusStackView = UIStackView()
   private let estimatesView = EstimatesView()
+  private let trafficDeviationView = TrafficDeviationView()
   private let transportTransitStepsView = TransportTransitStepsView()
   private let elevationProfileView = ElevationProfileView()
   private let settingsButton = UIButton(type: .system)
@@ -298,6 +299,7 @@ final class NavigationDashboardViewController: UIViewController {
     estimatesStackView.addArrangedSubview(settingsButton)
 
     routeStatusStackView.addArrangedSubview(estimatesStackView)
+    routeStatusStackView.addArrangedSubview(trafficDeviationView)
     routeStatusStackView.addArrangedSubview(transportTransitStepsView)
     routeStatusStackView.addArrangedSubview(elevationProfileView)
     availableAreaView.addSubview(routeStatusStackView)
@@ -438,6 +440,7 @@ extension NavigationDashboardViewController {
 
     case .error:
       estimatesView.setState(viewModel.estimatesState)
+      trafficDeviationView.setState(.hidden)
       transportTransitStepsView.setNavigationInfo(nil)
       elevationProfileView.setImage(nil)
       saveRouteAsTrackButton.isEnabled = viewModel.canSaveRouteAsTrack
@@ -447,6 +450,7 @@ extension NavigationDashboardViewController {
       transportOptionsView.set(transportOptions: viewModel.transportOptions,
                                selectedRouterType: viewModel.routerType)
       estimatesView.setState(viewModel.estimatesState)
+      trafficDeviationView.setState(viewModel.trafficDeviationState)
       transportTransitStepsView.setNavigationInfo(viewModel.entity)
       elevationProfileView.setImage(viewModel.elevationInfo?.image)
       routePointsView.setRoutePoints(viewModel.routePoints)

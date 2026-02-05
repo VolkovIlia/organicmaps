@@ -115,6 +115,8 @@ NSArray<MWMRouterTransitStepInfo *> * buildRouteTransitSteps(NSArray<MWMRoutePoi
 
 @property(nonatomic, readwrite) BOOL showEta;
 @property(nonatomic, readwrite) BOOL isWalk;
+@property(nonatomic, readwrite) NSUInteger usualTimeToTarget;
+@property(nonatomic, readwrite) NSInteger trafficDeviationType;
 
 @end
 
@@ -161,6 +163,14 @@ NSArray<MWMRouterTransitStepInfo *> * buildRouteTransitSteps(NSArray<MWMRoutePoi
                            turn == CarDirection::LeaveRoundAbout;
       if (isRound)
         _roundExitNumber = info.m_exitNum;
+    }
+
+    // Traffic deviation info (only for vehicle routing)
+    if (type == MWMRouterTypeVehicle)
+    {
+      auto & rm = GetFramework().GetRoutingManager();
+      _usualTimeToTarget = static_cast<NSUInteger>(rm.GetUsualRouteTime());
+      _trafficDeviationType = static_cast<NSInteger>(rm.GetTrafficDeviationType());
     }
   }
   return self;

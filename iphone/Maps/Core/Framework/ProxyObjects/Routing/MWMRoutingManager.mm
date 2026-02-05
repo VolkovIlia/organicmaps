@@ -124,6 +124,16 @@
   return routerType(self.rm.GetRouter());
 }
 
+- (NSInteger)usualRouteTimeSeconds
+{
+  return static_cast<NSInteger>(self.rm.GetUsualRouteTime());
+}
+
+- (NSInteger)trafficDeviationType
+{
+  return static_cast<NSInteger>(self.rm.GetTrafficDeviationType());
+}
+
 - (void)addListener:(id<MWMRoutingManagerListener>)listener
 {
   [self.listeners addObject:listener];

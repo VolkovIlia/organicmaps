@@ -26,6 +26,14 @@ NS_SWIFT_NAME(RoutingManager)
 @property(nonatomic, readonly) MWMRouterType type;
 @property(nonatomic) MWMSpeedCameraManagerMode speedCameraMode;
 
+/// @brief Get usual route time based on historical traffic data.
+/// @return Usual time in seconds, or 0 if not available.
+@property(nonatomic, readonly) NSInteger usualRouteTimeSeconds;
+
+/// @brief Get traffic deviation type for current route.
+/// @return 1 = faster than usual, -1 = slower than usual, 0 = normal
+@property(nonatomic, readonly) NSInteger trafficDeviationType;
+
 - (void)addListener:(id<MWMRoutingManagerListener>)listener;
 - (void)removeListener:(id<MWMRoutingManagerListener>)listener;
 
