@@ -9,6 +9,12 @@ namespace
 {
 NSString * const kP2PConsentLevelKey = @"P2PConsentLevel";
 NSString * const kP2PConsentTimestampKey = @"P2PConsentTimestamp";
+NSString * const kP2PDebugModeKey = @"P2PDebugMode";
+NSString * const kP2PExchangeCountKey = @"P2PExchangeCount24h";
+NSString * const kP2PExchangeTimestampKey = @"P2PExchangeTimestamp";
+
+// 24 hours in seconds
+constexpr double k24HoursInSeconds = 24.0 * 60.0 * 60.0;
 
 p2p::ConsentLevel ToNativeLevel(MWMP2PConsentLevel level)
 {
@@ -160,6 +166,51 @@ MWMP2PConsentLevel FromNativeLevel(p2p::ConsentLevel level)
 - (std::shared_ptr<p2p::PrivacyManager>)nativePrivacyManager
 {
   return m_privacyManager;
+}
+
+#pragma mark - Debug Mode
+
+- (BOOL)isDebugMode
+{
+  return [[NSUserDefaults standardUserDefaults] boolForKey:kP2PDebugModeKey];
+}
+
+- (void)setDebugMode:(BOOL)enabled
+{
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setBool:enabled forKey:kP2PDebugModeKey];
+  [defaults synchronize];
+
+  LOG(LINFO, ("P2P debug mode:", enabled ? "enabled" : "disabled"));
+}
+
+#pragma mark - Exchange Tracking
+
+- (NSInteger)exchangeCount24h
+{
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  double lastTimestamp = [defaults doubleForKey:kP2PExchangeTimestampKey];
+  double now = [[NSDate date] timeIntervalSince1970];
+
+  // Reset count if more than 24 hours passed
+  if (now - lastTimestamp > k24HoursInSeconds)
+  {
+    [defaults setInteger:0 forKey:kP2PExchangeCountKey];
+    [defaults setDouble:now forKey:kP2PExchangeTimestampKey];
+    [defaults synchronize];
+    return 0;
+  }
+
+  return [defaults integerForKey:kP2PExchangeCountKey];
+}
+
+- (void)incrementExchangeCount
+{
+  NSInteger count = self.exchangeCount24h + 1;
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setInteger:count forKey:kP2PExchangeCountKey];
+  [defaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kP2PExchangeTimestampKey];
+  [defaults synchronize];
 }
 
 @end

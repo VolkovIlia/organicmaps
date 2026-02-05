@@ -12,11 +12,9 @@ namespace mesh
 class OpportunisticShare::Impl
 {
 public:
-  // Maximum queue size to prevent unbounded memory growth
-  static constexpr size_t kMaxQueueSize = 100;
-
-  explicit Impl(std::shared_ptr<IConnectionManager> connectionManager)
+  Impl(std::shared_ptr<IConnectionManager> connectionManager, OpportunisticShareConfig config)
     : m_connectionManager(std::move(connectionManager))
+    , m_config(std::move(config))
   {
   }
 
@@ -71,7 +69,7 @@ public:
       return;
 
     // Drop oldest entries if queue is full
-    while (m_trafficQueue.size() >= kMaxQueueSize)
+    while (m_trafficQueue.size() >= m_config.maxQueueSize)
       m_trafficQueue.pop();
 
     m_trafficQueue.push(trafficData);
@@ -85,7 +83,7 @@ public:
       return;
 
     // Drop oldest entries if queue is full
-    while (m_gradientQueue.size() >= kMaxQueueSize)
+    while (m_gradientQueue.size() >= m_config.maxQueueSize)
       m_gradientQueue.pop();
 
     m_gradientQueue.push(gradients);
@@ -165,6 +163,7 @@ private:
 
   mutable std::mutex m_mutex;
   std::shared_ptr<IConnectionManager> m_connectionManager;
+  OpportunisticShareConfig m_config;
   bool m_active = false;
 
   std::queue<std::vector<uint8_t>> m_trafficQueue;
@@ -173,7 +172,14 @@ private:
 
 OpportunisticShare::OpportunisticShare(
     std::shared_ptr<IConnectionManager> connectionManager)
-  : m_impl(std::make_unique<Impl>(std::move(connectionManager)))
+  : m_impl(std::make_unique<Impl>(std::move(connectionManager), OpportunisticShareConfig{}))
+{
+}
+
+OpportunisticShare::OpportunisticShare(
+    std::shared_ptr<IConnectionManager> connectionManager,
+    OpportunisticShareConfig config)
+  : m_impl(std::make_unique<Impl>(std::move(connectionManager), std::move(config)))
 {
 }
 

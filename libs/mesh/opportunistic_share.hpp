@@ -7,12 +7,26 @@
 
 namespace mesh
 {
+/// \brief Configuration for OpportunisticShare.
+struct OpportunisticShareConfig
+{
+  /// Maximum queue size to prevent unbounded memory growth.
+  /// Default: 100 entries.
+  size_t maxQueueSize = 100;
+};
+
 /// \brief Coordinator for opportunistic P2P traffic sharing.
 /// Manages when and what data to share with discovered peers.
 class OpportunisticShare
 {
 public:
+  /// \brief Construct with connection manager and default config.
   explicit OpportunisticShare(std::shared_ptr<IConnectionManager> connectionManager);
+
+  /// \brief Construct with connection manager and custom config.
+  OpportunisticShare(std::shared_ptr<IConnectionManager> connectionManager,
+                     OpportunisticShareConfig config);
+
   ~OpportunisticShare();
 
   /// \brief Start opportunistic sharing.

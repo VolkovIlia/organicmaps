@@ -49,6 +49,23 @@ NS_SWIFT_NAME(P2PConsentManager)
 /// Remove all consent change callbacks.
 - (void)removeAllCallbacks;
 
+#pragma mark - Debug Mode
+
+/// Whether debug mode is enabled.
+@property (nonatomic, readonly) BOOL isDebugMode;
+
+/// Enable or disable debug mode.
+/// @param enabled YES to enable debug mode.
+- (void)setDebugMode:(BOOL)enabled;
+
+#pragma mark - Exchange Tracking
+
+/// Number of data exchanges in last 24 hours.
+@property (nonatomic, readonly) NSInteger exchangeCount24h;
+
+/// Increment exchange count. Call when data is exchanged with a peer.
+- (void)incrementExchangeCount;
+
 @end
 
 NS_ASSUME_NONNULL_END

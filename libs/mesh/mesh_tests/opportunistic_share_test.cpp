@@ -196,4 +196,34 @@ UNIT_TEST(OpportunisticShare_QueueSizeLimit)
   share.Stop();
 }
 
+UNIT_TEST(OpportunisticShare_CustomQueueSize)
+{
+  auto mockManager = std::make_shared<MockConnectionManager>();
+
+  OpportunisticShareConfig config;
+  config.maxQueueSize = 5;
+
+  OpportunisticShare share(mockManager, config);
+  share.Start();
+
+  // Queue more items than the custom limit
+  for (int i = 0; i < 10; ++i)
+  {
+    std::vector<uint8_t> data = {static_cast<uint8_t>(i)};
+    share.QueueTrafficData(data);
+  }
+
+  // Add peer to trigger sending
+  mockManager->AddPeer("device1");
+
+  std::vector<uint8_t> triggerData = {0xFF};
+  share.QueueTrafficData(triggerData);
+
+  // Should have sent at most maxQueueSize + 1 (trigger) items
+  auto const & sentData = mockManager->GetSentData();
+  TEST(sentData.size() <= 6, ("Queue should respect custom limit"));
+
+  share.Stop();
+}
+
 }  // namespace mesh

@@ -77,8 +77,12 @@ final class P2PPrivacyViewController: MWMTableViewController {
       } else {
         peersStatusCell.detailTextLabel?.text = L("p2p_status_peers_none")
       }
-      // TODO: Get exchange count from native layer
-      exchangesStatusCell.detailTextLabel?.text = L("p2p_status_exchanges_none")
+      let exchangeCount = consentManager.exchangeCount24h
+      if exchangeCount > 0 {
+        exchangesStatusCell.detailTextLabel?.text = String(format: L("p2p_status_exchanges_count"), exchangeCount)
+      } else {
+        exchangesStatusCell.detailTextLabel?.text = L("p2p_status_exchanges_none")
+      }
     } else {
       peersStatusCell.detailTextLabel?.text = L("p2p_status_peers_none")
       exchangesStatusCell.detailTextLabel?.text = L("p2p_status_exchanges_none")
@@ -90,6 +94,9 @@ final class P2PPrivacyViewController: MWMTableViewController {
     // Update disable button state
     disableNowCell.isUserInteractionEnabled = isActive
     disableNowCell.textLabel?.alpha = isActive ? 1.0 : 0.5
+
+    // Update debug mode switch state
+    debugModeCell.setOn(consentManager.isDebugMode, animated: false)
   }
 
   // MARK: - Table View Delegate
@@ -145,8 +152,7 @@ final class P2PPrivacyViewController: MWMTableViewController {
 extension P2PPrivacyViewController: SettingsTableViewSwitchCellDelegate {
   func switchCell(_ cell: SettingsTableViewSwitchCell, didChangeValue value: Bool) {
     if cell === debugModeCell {
-      // TODO: Store debug mode preference
-      // UserDefaults.standard.set(value, forKey: "P2PDebugMode")
+      MWMP2PConsentManager.shared.setDebugMode(value)
     }
   }
 }
