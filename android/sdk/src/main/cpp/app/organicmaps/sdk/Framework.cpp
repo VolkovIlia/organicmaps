@@ -1470,6 +1470,18 @@ JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex(JN
   return static_cast<jint>(frm()->GetRoutingManager().GetSelectedRouteIndex());
 }
 
+JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetUsualRouteTime(JNIEnv *, jclass)
+{
+  auto const & rm = frm()->GetRoutingManager();
+  return static_cast<jint>(rm.GetUsualRouteTime());
+}
+
+JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetTrafficDeviationType(JNIEnv *, jclass)
+{
+  auto const & rm = frm()->GetRoutingManager();
+  return static_cast<jint>(rm.GetTrafficDeviationType());
+}
+
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute(JNIEnv *, jclass, jint routeIndex)
 {
   frm()->GetRoutingManager().SelectAlternativeRoute(static_cast<int>(routeIndex));
@@ -1864,6 +1876,11 @@ JNINativeMethod const frameworkMethods[] = {
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeHasAlternativeRoutes)},
     {"nativeGetSelectedRouteIndex", "()I",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex)},
+    // Traffic deviation
+    {"nativeGetUsualRouteTime", "()I",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetUsualRouteTime)},
+    {"nativeGetTrafficDeviationType", "()I",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetTrafficDeviationType)},
 };
 }
 

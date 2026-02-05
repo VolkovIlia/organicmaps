@@ -17,6 +17,8 @@ set(SRC
   stub_traffic_ml_model.hpp
   traffic_cache.cpp
   traffic_cache.hpp
+  traffic_deviation.cpp
+  traffic_deviation.hpp
   traffic_estimator.cpp
   traffic_estimator.hpp
   traffic_info.cpp

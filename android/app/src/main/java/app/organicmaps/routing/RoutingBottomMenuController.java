@@ -77,6 +77,12 @@ final class RoutingBottomMenuController implements View.OnClickListener
   private final TextView mTimeVehicle;
   @Nullable
   private final TextView mArrival;
+  @Nullable
+  private final View mTrafficInfoLine;
+  @Nullable
+  private final TextView mUsualTime;
+  @Nullable
+  private final TextView mTrafficDeviationBadge;
   @NonNull
   private final View mActionFrame;
   @NonNull
@@ -112,12 +118,16 @@ final class RoutingBottomMenuController implements View.OnClickListener
     TextView timeVehicle = (TextView) getViewById(activity, frame, R.id.time_vehicle);
     TextView altitudeDifference = (TextView) getViewById(activity, frame, R.id.altitude_difference);
     TextView arrival = (TextView) getViewById(activity, frame, R.id.arrival);
+    View trafficInfoLine = frame.findViewById(R.id.traffic_info_line);
+    TextView usualTime = frame.findViewById(R.id.usual_time);
+    TextView trafficDeviationBadge = frame.findViewById(R.id.traffic_deviation_badge);
     View actionFrame = getViewById(activity, frame, R.id.routing_action_frame);
     View alternativesPanel = frame.findViewById(R.id.alternatives_panel);
     RecyclerView alternativesRecycler = frame.findViewById(R.id.alternatives_recycler);
 
     return new RoutingBottomMenuController(activity, altitudeChartFrame, timeElevationLine, transitFrame, error, start,
-                                           altitudeChart, time, altitudeDifference, timeVehicle, arrival, actionFrame,
+                                           altitudeChart, time, altitudeDifference, timeVehicle, arrival,
+                                           trafficInfoLine, usualTime, trafficDeviationBadge, actionFrame,
                                            alternativesPanel, alternativesRecycler, listener);
   }
 
@@ -133,6 +143,8 @@ final class RoutingBottomMenuController implements View.OnClickListener
                                       @NonNull TextView error, @NonNull Button start, @NonNull ImageView altitudeChart,
                                       @NonNull TextView time, @NonNull TextView altitudeDifference,
                                       @NonNull TextView timeVehicle, @Nullable TextView arrival,
+                                      @Nullable View trafficInfoLine, @Nullable TextView usualTime,
+                                      @Nullable TextView trafficDeviationBadge,
                                       @NonNull View actionFrame, @Nullable View alternativesPanel,
                                       @Nullable RecyclerView alternativesRecycler,
                                       @Nullable RoutingBottomMenuListener listener)
@@ -148,6 +160,9 @@ final class RoutingBottomMenuController implements View.OnClickListener
     mAltitudeDifference = altitudeDifference;
     mTimeVehicle = timeVehicle;
     mArrival = arrival;
+    mTrafficInfoLine = trafficInfoLine;
+    mUsualTime = usualTime;
+    mTrafficDeviationBadge = trafficDeviationBadge;
     mActionFrame = actionFrame;
     mActionMessage = actionFrame.findViewById(R.id.tv__message);
     mActionButton = actionFrame.findViewById(R.id.btn__my_position_use);
@@ -205,6 +220,8 @@ final class RoutingBottomMenuController implements View.OnClickListener
   void hideAltitudeChartAndRoutingDetails()
   {
     UiUtils.hide(mAltitudeChartFrame, mTransitFrame);
+    if (mTrafficInfoLine != null)
+      UiUtils.hide(mTrafficInfoLine);
   }
 
   @SuppressLint("SetTextI18n")
@@ -443,6 +460,52 @@ final class RoutingBottomMenuController implements View.OnClickListener
     {
       String arrivalTime = Utils.formatArrivalTime(rinfo.totalTimeInSeconds);
       mArrival.setText(arrivalTime);
+    }
+
+    updateTrafficDeviationInfo();
+  }
+
+  /// \brief Updates traffic deviation UI (usual time and faster/slower badge).
+  private void updateTrafficDeviationInfo()
+  {
+    if (mTrafficInfoLine == null || mUsualTime == null || mTrafficDeviationBadge == null)
+      return;
+
+    // TODO: Get actual traffic deviation data from Framework.nativeGetTrafficDeviation()
+    // For now, hide the traffic info line until backend integration is complete
+    int usualTimeSeconds = Framework.nativeGetUsualRouteTime();
+    int deviationType = Framework.nativeGetTrafficDeviationType();
+
+    if (usualTimeSeconds <= 0)
+    {
+      UiUtils.hide(mTrafficInfoLine);
+      return;
+    }
+
+    UiUtils.show(mTrafficInfoLine);
+
+    // Format usual time string
+    String usualTimeStr = Utils.formatRoutingTimeForTraffic(mContext, usualTimeSeconds);
+    mUsualTime.setText(mContext.getString(R.string.usually_x_minutes, usualTimeStr));
+
+    // Update deviation badge
+    if (deviationType == 1) // Faster
+    {
+      UiUtils.show(mTrafficDeviationBadge);
+      mTrafficDeviationBadge.setText(R.string.faster_than_usual);
+      mTrafficDeviationBadge.getBackground().setTint(
+          ContextCompat.getColor(mContext, R.color.routing_route_faster));
+    }
+    else if (deviationType == -1) // Slower
+    {
+      UiUtils.show(mTrafficDeviationBadge);
+      mTrafficDeviationBadge.setText(R.string.slower_than_usual);
+      mTrafficDeviationBadge.getBackground().setTint(
+          ContextCompat.getColor(mContext, R.color.routing_route_slower));
+    }
+    else // Normal
+    {
+      UiUtils.hide(mTrafficDeviationBadge);
     }
   }
 

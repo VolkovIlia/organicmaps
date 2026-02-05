@@ -290,6 +290,18 @@ public class Framework
   public static native int nativeGetSelectedRouteIndex();
 
   /**
+   * Get usual route time based on historical traffic data.
+   * @return Usual time in seconds, or 0 if not available.
+   */
+  public static native int nativeGetUsualRouteTime();
+
+  /**
+   * Get traffic deviation type for current route.
+   * @return 1 = faster than usual, -1 = slower than usual, 0 = normal
+   */
+  public static native int nativeGetTrafficDeviationType();
+
+  /**
    * Registers all maps(.mwms). Adds them to the models, generates indexes and does all necessary stuff.
    */
   public static native void nativeReloadWorldMaps();

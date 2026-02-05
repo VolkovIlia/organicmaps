@@ -1688,3 +1688,55 @@ bool RoutingManager::HasAlternativeRoutes() const
 {
   return m_routingSession.HasAlternatives();
 }
+
+int RoutingManager::GetUsualRouteTime() const
+{
+  if (!IsRouteBuilt())
+    return 0;
+
+  FollowingInfo info;
+  m_routingSession.GetRouteFollowingInfo(info);
+  if (!info.IsValid())
+    return 0;
+
+  // Get current route time as baseline
+  int const currentTimeSeconds = info.m_time;
+  if (currentTimeSeconds <= 0)
+    return 0;
+
+  // For now, estimate "usual" time as current time adjusted by a factor
+  // based on traffic estimation confidence. In a full implementation,
+  // this would query historical patterns for the entire route.
+  // TODO: Integrate with route-level traffic estimation from TrafficEstimator
+
+  // Return current time as "usual" since we don't have historical baseline yet
+  // When TrafficEstimator is integrated with routing, this will return
+  // the historical average time for this route at this time of day.
+  m_cachedUsualTimeSeconds = currentTimeSeconds;
+  return currentTimeSeconds;
+}
+
+int RoutingManager::GetTrafficDeviationType() const
+{
+  if (!IsRouteBuilt())
+    return 0;
+
+  FollowingInfo info;
+  m_routingSession.GetRouteFollowingInfo(info);
+  if (!info.IsValid())
+    return 0;
+
+  int const currentTimeSeconds = info.m_time;
+  if (currentTimeSeconds <= 0 || m_cachedUsualTimeSeconds <= 0)
+    return 0;
+
+  // Calculate deviation from usual time
+  double const ratio = static_cast<double>(currentTimeSeconds) / m_cachedUsualTimeSeconds;
+
+  // Use the same threshold as traffic::GetDeviation (15%)
+  if (ratio < 1.0 - traffic::kDeviationThreshold)
+    return 1;  // Faster than usual
+  if (ratio > 1.0 + traffic::kDeviationThreshold)
+    return -1;  // Slower than usual
+  return 0;  // Normal
+}

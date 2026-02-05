@@ -46,6 +46,39 @@
     </LinearLayout>
 
     <LinearLayout
+      android:id="@+id/traffic_info_line"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_marginBottom="@dimen/margin_half"
+      android:visibility="gone"
+      tools:visibility="visible">
+        <TextView
+          android:id="@+id/usual_time"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:textAppearance="@style/MwmTextAppearance.Body4"
+          android:textColor="?android:textColorSecondary"
+          tools:text="usually 45 min" />
+
+        <TextView
+          android:id="@+id/traffic_deviation_badge"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingStart="@dimen/margin_half"
+          android:paddingEnd="@dimen/margin_half"
+          android:paddingTop="2dp"
+          android:paddingBottom="2dp"
+          android:textAppearance="@style/MwmTextAppearance.Body4"
+          android:textColor="@android:color/white"
+          android:background="@drawable/bg_traffic_badge"
+          android:visibility="gone"
+          tools:text="Faster than usual"
+          tools:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="horizontal"

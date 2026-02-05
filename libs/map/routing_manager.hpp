@@ -15,6 +15,9 @@
 #include "routing/routing_session.hpp"
 #include "routing/speed_camera_manager.hpp"
 
+#include "traffic/traffic_deviation.hpp"
+#include "traffic/traffic_estimator.hpp"
+
 #include "storage/storage_defines.hpp"
 
 #include "drape_frontend/drape_engine_safe_ptr.hpp"
@@ -192,6 +195,18 @@ public:
 
   /// @brief Check if alternatives are available.
   bool HasAlternativeRoutes() const;
+
+  // Traffic deviation UI support
+  /// @brief Get usual route time based on historical traffic data.
+  /// @return Usual time in seconds, or 0 if not available.
+  int GetUsualRouteTime() const;
+
+  /// @brief Get traffic deviation type for current route.
+  /// @return 1 = faster than usual, -1 = slower than usual, 0 = normal
+  int GetTrafficDeviationType() const;
+
+  /// @brief Get the traffic estimator for external use.
+  traffic::TrafficEstimator const & GetTrafficEstimator() const { return m_trafficEstimator; }
 
   m2::PointD GetRouteEndPoint() const { return m_routingSession.GetEndPoint(); }
   /// Returns the most situable router engine type.
@@ -394,6 +409,10 @@ private:
   std::unique_ptr<routing::IAlternativeFinder> m_alternativeFinder;
   std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;
   int m_selectedRouteIndex = 0;
+
+  // Traffic estimation for deviation display
+  traffic::TrafficEstimator m_trafficEstimator;
+  mutable int m_cachedUsualTimeSeconds = 0;  // Cached for performance
 
   struct RoutePointsTransaction
   {

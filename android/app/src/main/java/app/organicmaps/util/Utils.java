@@ -495,6 +495,20 @@ public class Utils
     return StringUtils.formatUsingUsLocale("%d:%02d", time.getHour(), time.getMinute());
   }
 
+  /// \brief Formats routing time as a simple string (e.g., "45 min" or "1 h 30 min").
+  /// Used for traffic deviation display where styled text is not needed.
+  @NonNull
+  public static String formatRoutingTimeForTraffic(Context context, int seconds)
+  {
+    long minutes = TimeUnit.SECONDS.toMinutes(seconds) % 60;
+    long hours = TimeUnit.SECONDS.toHours(seconds);
+    String min = context.getString(R.string.minute);
+    String hour = context.getString(R.string.hour);
+    if (hours == 0)
+      return minutes + " " + min;
+    return hours + " " + hour + " " + minutes + " " + min;
+  }
+
   @NonNull
   public static String getDonateUrl(@NonNull Context context)
   {
