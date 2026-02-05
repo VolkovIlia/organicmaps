@@ -10,6 +10,9 @@ import androidx.preference.TwoStatePreference;
 import app.organicmaps.R;
 import app.organicmaps.mesh.P2PConsentManager;
 import app.organicmaps.mesh.P2PTrafficService;
+import app.organicmaps.sdk.traffic.LocalTrafficManager;
+import android.widget.Toast;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 /**
  * Privacy dashboard for P2P traffic sharing.
@@ -22,6 +25,8 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
   private Preference mExchangesStatusPref;
   private Preference mDisableNowPref;
   private TwoStatePreference mDebugModePref;
+  private TwoStatePreference mLearnFromDrivingPref;
+  private Preference mClearHistoryPref;
 
   @Override
   protected int getXmlResources()
@@ -35,6 +40,7 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
     super.onViewCreated(view, savedInstanceState);
     initConsentLevelPref();
     initStatusPrefs();
+    initLocalTrafficPrefs();
     initActionPrefs();
   }
 
@@ -72,6 +78,36 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
   {
     mPeersStatusPref = getPreference(getString(R.string.pref_p2p_status_peers));
     mExchangesStatusPref = getPreference(getString(R.string.pref_p2p_status_exchanges));
+  }
+
+  private void initLocalTrafficPrefs()
+  {
+    mLearnFromDrivingPref = getPreference(getString(R.string.pref_learn_from_driving));
+    mLearnFromDrivingPref.setChecked(LocalTrafficManager.isLearningEnabled());
+    mLearnFromDrivingPref.setOnPreferenceChangeListener((preference, newValue) -> {
+      boolean enabled = (Boolean) newValue;
+      LocalTrafficManager.setLearningEnabled(enabled);
+      return true;
+    });
+
+    mClearHistoryPref = getPreference(getString(R.string.pref_clear_driving_history));
+    mClearHistoryPref.setOnPreferenceClickListener(preference -> {
+      showClearHistoryConfirmation();
+      return true;
+    });
+  }
+
+  private void showClearHistoryConfirmation()
+  {
+    new MaterialAlertDialogBuilder(requireContext(), R.style.MwmTheme_AlertDialog)
+        .setTitle(R.string.clear_history_confirm_title)
+        .setMessage(R.string.clear_history_confirm_message)
+        .setPositiveButton(R.string.delete, (dialog, which) -> {
+          LocalTrafficManager.clearDrivingHistory();
+          Toast.makeText(requireContext(), R.string.clear_history_success, Toast.LENGTH_SHORT).show();
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .show();
   }
 
   private void initActionPrefs()

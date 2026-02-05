@@ -947,7 +947,7 @@
     <!-- P2P Privacy guarantees title -->
     <string name="p2p_privacy_guarantees_title">Privacy Guarantees</string>
     <!-- P2P Privacy guarantees summary -->
-    <string name="p2p_privacy_guarantees_summary">Anonymous device IDs rotate every 15 minutes. Differential privacy noise protects your data. K-anonymity ensures your patterns cannot be identified.</string>
+    <string name="p2p_privacy_guarantees_summary">Your data is protected by three layers: rotating anonymous IDs, mathematical noise that hides individual data, and minimum group sizes that prevent pattern identification.</string>
     <!-- P2P Actions category key -->
     <string name="pref_p2p_actions">pref_p2p_actions</string>
     <!-- P2P Actions category title -->
@@ -964,4 +964,51 @@
     <string name="p2p_debug_mode">Debug Mode</string>
     <!-- P2P Debug mode summary -->
     <string name="p2p_debug_mode_summary">Show raw transmitted data for verification</string>
+
+    <!-- Preference key for ID rotation info -->
+    <string name="pref_p2p_id_rotation">pref_p2p_id_rotation</string>
+    <!-- ID rotation title -->
+    <string name="p2p_id_rotation_title">Device ID Rotation</string>
+    <!-- ID rotation summary -->
+    <string name="p2p_id_rotation_summary">Your anonymous ID changes every 15 minutes, making tracking impossible</string>
+    <!-- Preference key for data retention info -->
+    <string name="pref_p2p_data_retention">pref_p2p_data_retention</string>
+    <!-- Data retention title -->
+    <string name="p2p_data_retention_title">Data Retention</string>
+    <!-- Data retention summary -->
+    <string name="p2p_data_retention_summary">Shared data is automatically deleted after 24 hours</string>
+    <!-- Clear history success toast message -->
+    <string name="clear_history_success">Driving history cleared</string>
+    <!-- P2P status off indicator -->
+    <string name="p2p_status_off">(Off)</string>
+    <!-- P2P status active indicator -->
+    <string name="p2p_status_active">(Active)</string>
+
+    <!-- SECTION: Local Traffic Learning Settings -->
+    <!-- Preference key for learning from driving -->
+    <string name="pref_learn_from_driving">pref_learn_from_driving</string>
+    <!-- Learn from driving title -->
+    <string name="learn_from_driving_title">Learn from my driving</string>
+    <!-- Learn from driving summary -->
+    <string name="learn_from_driving_summary">Improve predictions based on your driving history</string>
+    <!-- Preference key for clear driving history -->
+    <string name="pref_clear_driving_history">pref_clear_driving_history</string>
+    <!-- Clear driving history title -->
+    <string name="clear_driving_history_title">Clear driving history</string>
+    <!-- Clear driving history summary -->
+    <string name="clear_driving_history_summary">Delete all saved driving data</string>
+    <!-- Clear history confirmation dialog title -->
+    <string name="clear_history_confirm_title">Clear driving history?</string>
+    <!-- Clear history confirmation dialog message -->
+    <string name="clear_history_confirm_message">This will delete all your driving history. Predictions will be less personalized until new data is collected.</string>
+    <!-- Format string for typical duration (e.g., "usually 45 min") -->
+    <string name="usually_x_minutes">usually %s</string>
+    <!-- Badge text when traffic is faster than usual -->
+    <string name="faster_than_usual">Faster than usual</string>
+    <!-- Badge text when traffic is slower than usual -->
+    <string name="slower_than_usual">Slower than usual</string>
+    <!-- Local traffic settings category -->
+    <string name="pref_local_traffic_category">pref_local_traffic_category</string>
+    <!-- Local traffic category title -->
+    <string name="local_traffic_category_title">Local Traffic Learning</string>
 </resources>

@@ -30,6 +30,14 @@ final class P2PPrivacyViewController: MWMTableViewController {
   @IBOutlet private weak var disableNowCell: UITableViewCell!
   @IBOutlet private weak var debugModeCell: SettingsTableViewSwitchCell!
 
+  // Privacy info detail cells
+  @IBOutlet private weak var idRotationCell: UITableViewCell!
+  @IBOutlet private weak var dataRetentionCell: UITableViewCell!
+
+  // Local Traffic Learning outlets
+  @IBOutlet private weak var learnFromDrivingCell: SettingsTableViewSwitchCell!
+  @IBOutlet private weak var clearHistoryCell: UITableViewCell!
+
   // MARK: - Lifecycle
 
   override func viewDidLoad() {
@@ -54,11 +62,27 @@ final class P2PPrivacyViewController: MWMTableViewController {
     privacyGuaranteesCell.detailTextLabel?.text = L("p2p_privacy_guarantees_summary")
     privacyGuaranteesCell.detailTextLabel?.numberOfLines = 0
 
+    idRotationCell.textLabel?.text = L("p2p_id_rotation_title")
+    idRotationCell.detailTextLabel?.text = L("p2p_id_rotation_summary")
+    idRotationCell.detailTextLabel?.numberOfLines = 0
+
+    dataRetentionCell.textLabel?.text = L("p2p_data_retention_title")
+    dataRetentionCell.detailTextLabel?.text = L("p2p_data_retention_summary")
+    dataRetentionCell.detailTextLabel?.numberOfLines = 0
+
     disableNowCell.textLabel?.text = L("p2p_disable_now")
     disableNowCell.textLabel?.textColor = .systemRed
 
     debugModeCell.config(withTitle: L("p2p_debug_mode"))
     debugModeCell.delegate = self
+
+    // Local traffic learning cells
+    learnFromDrivingCell.config(withTitle: L("learn_from_driving_title"))
+    learnFromDrivingCell.delegate = self
+
+    clearHistoryCell.textLabel?.text = L("clear_driving_history_title")
+    clearHistoryCell.detailTextLabel?.text = L("clear_driving_history_summary")
+    clearHistoryCell.detailTextLabel?.numberOfLines = 0
   }
 
   private func updateUI() {
@@ -97,6 +121,9 @@ final class P2PPrivacyViewController: MWMTableViewController {
 
     // Update debug mode switch state
     debugModeCell.setOn(consentManager.isDebugMode, animated: false)
+
+    // Update local traffic learning switch state
+    learnFromDrivingCell.setOn(MWMLocalTrafficManager.isLearningEnabled(), animated: false)
   }
 
   // MARK: - Table View Delegate
@@ -110,6 +137,8 @@ final class P2PPrivacyViewController: MWMTableViewController {
       showConsentLevelPicker()
     } else if cell === disableNowCell {
       disableP2P()
+    } else if cell === clearHistoryCell {
+      showClearHistoryConfirmation()
     }
   }
 
@@ -145,6 +174,33 @@ final class P2PPrivacyViewController: MWMTableViewController {
     MWMP2PTrafficService.shared.stop()
     updateUI()
   }
+
+  private func showClearHistoryConfirmation() {
+    let alertController = UIAlertController(
+      title: L("clear_history_confirm_title"),
+      message: L("clear_history_confirm_message"),
+      preferredStyle: .alert
+    )
+
+    let deleteAction = UIAlertAction(title: L("delete"), style: .destructive) { [weak self] _ in
+      MWMLocalTrafficManager.clearDrivingHistory()
+      self?.updateUI()
+      self?.showClearHistorySuccessToast()
+    }
+
+    alertController.addAction(deleteAction)
+    alertController.addAction(UIAlertAction(title: L("cancel"), style: .cancel))
+
+    present(alertController, animated: true)
+  }
+
+  private func showClearHistorySuccessToast() {
+    let banner = UIAlertController(title: nil, message: L("clear_history_success"), preferredStyle: .alert)
+    present(banner, animated: true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+      banner.dismiss(animated: true)
+    }
+  }
 }
 
 // MARK: - SettingsTableViewSwitchCellDelegate
@@ -153,6 +209,8 @@ extension P2PPrivacyViewController: SettingsTableViewSwitchCellDelegate {
   func switchCell(_ cell: SettingsTableViewSwitchCell, didChangeValue value: Bool) {
     if cell === debugModeCell {
       MWMP2PConsentManager.shared.setDebugMode(value)
+    } else if cell === learnFromDrivingCell {
+      MWMLocalTrafficManager.setLearningEnabled(value)
     }
   }
 }

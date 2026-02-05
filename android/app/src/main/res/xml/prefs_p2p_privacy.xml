@@ -60,13 +60,52 @@
       android:selectable="false"
       android:order="2" />
 
+    <Preference
+      android:key="@string/pref_p2p_id_rotation"
+      android:title="@string/p2p_id_rotation_title"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_id_rotation_summary"
+      android:selectable="false"
+      android:order="3" />
+
+    <Preference
+      android:key="@string/pref_p2p_data_retention"
+      android:title="@string/p2p_data_retention_title"
+      app:singleLineTitle="false"
+      android:summary="@string/p2p_data_retention_summary"
+      android:selectable="false"
+      android:order="4" />
+
+  </androidx.preference.PreferenceCategory>
+
+  <!-- Local Traffic Learning category -->
+  <androidx.preference.PreferenceCategory
+    android:key="@string/pref_local_traffic_category"
+    android:title="@string/local_traffic_category_title"
+    android:order="4">
+
+    <SwitchPreferenceCompat
+      android:key="@string/pref_learn_from_driving"
+      android:title="@string/learn_from_driving_title"
+      app:singleLineTitle="false"
+      android:summary="@string/learn_from_driving_summary"
+      android:defaultValue="true"
+      android:order="1" />
+
+    <Preference
+      android:key="@string/pref_clear_driving_history"
+      android:title="@string/clear_driving_history_title"
+      app:singleLineTitle="false"
+      android:summary="@string/clear_driving_history_summary"
+      android:order="2" />
+
   </androidx.preference.PreferenceCategory>
 
   <!-- Actions -->
   <androidx.preference.PreferenceCategory
     android:key="@string/pref_p2p_actions"
     android:title="@string/p2p_actions_title"
-    android:order="4">
+    android:order="5">
 
     <Preference
       android:key="@string/pref_p2p_disable_now"
