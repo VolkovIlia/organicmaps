@@ -54,13 +54,13 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
   private void initConsentLevelPref()
   {
     mConsentLevelPref = getPreference(getString(R.string.pref_p2p_consent_level));
-    int currentLevel = P2PConsentManager.getInstance().getConsentLevel();
+    int currentLevel = P2PConsentManager.getInstance(requireContext()).getConsentLevel();
     mConsentLevelPref.setValue(String.valueOf(currentLevel));
     updateConsentLevelSummary(currentLevel);
 
     mConsentLevelPref.setOnPreferenceChangeListener((preference, newValue) -> {
       int level = Integer.parseInt((String) newValue);
-      P2PConsentManager.getInstance().setConsentLevel(level);
+      P2PConsentManager.getInstance(requireContext()).setConsentLevel(level);
       updateConsentLevelSummary(level);
       updateStatusDisplay();
       return true;
@@ -114,7 +114,7 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
   {
     mDisableNowPref = getPreference(getString(R.string.pref_p2p_disable_now));
     mDisableNowPref.setOnPreferenceClickListener(preference -> {
-      P2PConsentManager.getInstance().setConsentLevel(P2PConsentManager.CONSENT_OFF);
+      P2PConsentManager.getInstance(requireContext()).setConsentLevel(P2PConsentManager.CONSENT_OFF);
       P2PTrafficService.stopService(requireContext());
       mConsentLevelPref.setValue("0");
       updateConsentLevelSummary(0);
@@ -125,15 +125,15 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
     mDebugModePref = getPreference(getString(R.string.pref_p2p_debug_mode));
     mDebugModePref.setOnPreferenceChangeListener((preference, newValue) -> {
       boolean enabled = (Boolean) newValue;
-      P2PConsentManager.getInstance().setDebugMode(enabled);
+      P2PConsentManager.getInstance(requireContext()).setDebugMode(enabled);
       return true;
     });
-    mDebugModePref.setChecked(P2PConsentManager.getInstance().isDebugMode());
+    mDebugModePref.setChecked(P2PConsentManager.getInstance(requireContext()).isDebugMode());
   }
 
   private void updateStatusDisplay()
   {
-    int consentLevel = P2PConsentManager.getInstance().getConsentLevel();
+    int consentLevel = P2PConsentManager.getInstance(requireContext()).getConsentLevel();
     boolean isActive = consentLevel > P2PConsentManager.CONSENT_OFF;
 
     // Update peers status
@@ -153,7 +153,7 @@ public class P2PPrivacySettingsFragment extends BaseXmlSettingsFragment
     // Update exchanges status
     if (isActive)
     {
-      int exchangeCount = P2PConsentManager.getInstance().getExchangeCount24h();
+      int exchangeCount = P2PConsentManager.getInstance(requireContext()).getExchangeCount24h();
       if (exchangeCount > 0)
         mExchangesStatusPref.setSummary(getString(R.string.p2p_status_exchanges_count, exchangeCount));
       else

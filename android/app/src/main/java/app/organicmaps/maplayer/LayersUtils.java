@@ -9,6 +9,7 @@ public class LayersUtils
   public static List<Mode> getAvailableLayers()
   {
     List<Mode> availableLayers = new ArrayList<>();
+    availableLayers.add(Mode.TRAFFIC);
     availableLayers.add(Mode.OUTDOORS);
     availableLayers.add(Mode.ISOLINES);
     availableLayers.add(Mode.HIKING);
