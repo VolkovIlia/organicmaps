@@ -80,7 +80,7 @@ MWMP2PConsentLevel FromNativeLevel(p2p::ConsentLevel level)
 - (void)setupNativeCallback
 {
   __weak typeof(self) weakSelf = self;
-  m_privacyManager->SetConsentCallback([weakSelf](p2p::ConsentLevel level) {
+  m_privacyManager->RegisterConsentCallback([weakSelf](p2p::ConsentLevel level) {
     __strong typeof(weakSelf) strongSelf = weakSelf;
     if (!strongSelf)
       return;

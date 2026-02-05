@@ -11,13 +11,13 @@ namespace
 // Convert C++ service UUID to CBUUID
 CBUUID *GetServiceUUID()
 {
-  NSString *uuidString = [NSString stringWithUTF8String:mesh::kServiceUUID];
+  NSString *uuidString = [NSString stringWithUTF8String:mesh::BleUuid::kServiceUuid];
   return [CBUUID UUIDWithString:uuidString];
 }
 
 CBUUID *GetCharacteristicUUID()
 {
-  NSString *uuidString = [NSString stringWithUTF8String:mesh::kTrafficCharacteristicUUID];
+  NSString *uuidString = [NSString stringWithUTF8String:mesh::BleUuid::kTrafficDataUuid];
   return [CBUUID UUIDWithString:uuidString];
 }
 }  // namespace

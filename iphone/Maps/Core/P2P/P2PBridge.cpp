@@ -2,6 +2,8 @@
 
 #include "base/logging.hpp"
 
+#include <span>
+
 namespace p2p_bridge
 {
 std::optional<p2p::AggregatedTrafficShare> ParseReceivedMessage(
@@ -10,26 +12,24 @@ std::optional<p2p::AggregatedTrafficShare> ParseReceivedMessage(
   if (!data || size == 0)
     return std::nullopt;
 
-  auto parsed = mesh::BleProtocol::ParseMessage(data, size);
-  if (!parsed)
+  std::span<uint8_t const> dataSpan(data, size);
+
+  if (!mesh::BleProtocol::ValidateMessage(dataSpan))
     return std::nullopt;
 
-  if (parsed->m_type != mesh::MessageType::TrafficData)
+  auto header = mesh::BleProtocol::DeserializeHeader(dataSpan);
+  if (!header || header->type != mesh::MessageType::TrafficData)
     return std::nullopt;
 
-  return p2p::TrafficShareSerializer::Deserialize(
-      parsed->m_payload.data(), parsed->m_payload.size());
+  auto payload = mesh::BleProtocol::GetPayload(dataSpan);
+  return p2p::TrafficShareSerializer::Deserialize(payload.data(), payload.size());
 }
 
 std::vector<uint8_t> CreateTrafficMessage(p2p::AggregatedTrafficShare const & share)
 {
   auto payload = p2p::TrafficShareSerializer::Serialize(share);
-
-  mesh::BleMessage message;
-  message.m_type = mesh::MessageType::TrafficData;
-  message.m_payload = std::move(payload);
-
-  return mesh::BleProtocol::CreateMessage(message);
+  std::span<uint8_t const> payloadSpan(payload.data(), payload.size());
+  return mesh::BleProtocol::CreateMessage(mesh::MessageType::TrafficData, payloadSpan);
 }
 
 bool CanShare(std::shared_ptr<p2p::PrivacyManager> const & manager)

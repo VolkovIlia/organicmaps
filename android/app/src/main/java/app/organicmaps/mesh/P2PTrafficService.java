@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import app.organicmaps.sdk.util.log.Logger;
 
@@ -48,8 +49,8 @@ public class P2PTrafficService extends Service
   private BluetoothLeScanner mScanner;
   private BluetoothLeAdvertiser mAdvertiser;
 
-  private boolean mIsScanning = false;
-  private boolean mIsAdvertising = false;
+  private final AtomicBoolean mIsScanning = new AtomicBoolean(false);
+  private final AtomicBoolean mIsAdvertising = new AtomicBoolean(false);
 
   // Track discovered peers for status display
   private final Set<String> mDiscoveredPeers = new HashSet<>();
@@ -91,8 +92,10 @@ public class P2PTrafficService extends Service
   @Override
   public void onDestroy()
   {
+    sInstance = null;
     stopScanning();
     stopAdvertising();
+    mDiscoveredPeers.clear();
     Logger.i(TAG, "P2PTrafficService destroyed");
     super.onDestroy();
   }
@@ -145,7 +148,7 @@ public class P2PTrafficService extends Service
       return false;
     }
 
-    if (mIsScanning)
+    if (mIsScanning.get())
     {
       Logger.w(TAG, "Scanning already in progress");
       return true;
@@ -166,7 +169,7 @@ public class P2PTrafficService extends Service
     try
     {
       mScanner.startScan(filters, settings, mScanCallback);
-      mIsScanning = true;
+      mIsScanning.set(true);
       Logger.i(TAG, "BLE scanning started");
       return true;
     }
@@ -184,7 +187,7 @@ public class P2PTrafficService extends Service
 
   public void stopScanning()
   {
-    if (mScanner == null || !mIsScanning)
+    if (mScanner == null || !mIsScanning.get())
       return;
 
     try
@@ -202,7 +205,7 @@ public class P2PTrafficService extends Service
     }
     finally
     {
-      mIsScanning = false;
+      mIsScanning.set(false);
     }
   }
 
@@ -214,7 +217,7 @@ public class P2PTrafficService extends Service
       return false;
     }
 
-    if (mIsAdvertising)
+    if (mIsAdvertising.get())
     {
       Logger.w(TAG, "Advertising already in progress");
       return true;
@@ -243,7 +246,7 @@ public class P2PTrafficService extends Service
     try
     {
       mAdvertiser.startAdvertising(settings, advertiseData, mAdvertiseCallback);
-      mIsAdvertising = true;
+      mIsAdvertising.set(true);
       Logger.i(TAG, "BLE advertising started with " + data.length + " bytes");
       return true;
     }
@@ -261,7 +264,7 @@ public class P2PTrafficService extends Service
 
   public void stopAdvertising()
   {
-    if (mAdvertiser == null || !mIsAdvertising)
+    if (mAdvertiser == null || !mIsAdvertising.get())
       return;
 
     try
@@ -279,18 +282,18 @@ public class P2PTrafficService extends Service
     }
     finally
     {
-      mIsAdvertising = false;
+      mIsAdvertising.set(false);
     }
   }
 
   public boolean isScanning()
   {
-    return mIsScanning;
+    return mIsScanning.get();
   }
 
   public boolean isAdvertising()
   {
-    return mIsAdvertising;
+    return mIsAdvertising.get();
   }
 
   // Native method to process received BLE data
@@ -315,7 +318,7 @@ public class P2PTrafficService extends Service
     public void onScanFailed(int errorCode)
     {
       Logger.e(TAG, "BLE scan failed with error code: " + errorCode);
-      mIsScanning = false;
+      mIsScanning.set(false);
     }
   };
 
@@ -354,7 +357,7 @@ public class P2PTrafficService extends Service
     {
       String errorMsg = getAdvertiseErrorMessage(errorCode);
       Logger.e(TAG, "BLE advertise failed: " + errorMsg + " (code " + errorCode + ")");
-      mIsAdvertising = false;
+      mIsAdvertising.set(false);
     }
   };
 

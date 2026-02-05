@@ -12,6 +12,9 @@ namespace mesh
 class OpportunisticShare::Impl
 {
 public:
+  // Maximum queue size to prevent unbounded memory growth
+  static constexpr size_t kMaxQueueSize = 100;
+
   explicit Impl(std::shared_ptr<IConnectionManager> connectionManager)
     : m_connectionManager(std::move(connectionManager))
   {
@@ -67,6 +70,10 @@ public:
     if (!m_active)
       return;
 
+    // Drop oldest entries if queue is full
+    while (m_trafficQueue.size() >= kMaxQueueSize)
+      m_trafficQueue.pop();
+
     m_trafficQueue.push(trafficData);
     TrySendPendingData();
   }
@@ -76,6 +83,10 @@ public:
     std::lock_guard lock(m_mutex);
     if (!m_active)
       return;
+
+    // Drop oldest entries if queue is full
+    while (m_gradientQueue.size() >= kMaxQueueSize)
+      m_gradientQueue.pop();
 
     m_gradientQueue.push(gradients);
     TrySendPendingData();
