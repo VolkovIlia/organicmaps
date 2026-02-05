@@ -1106,3 +1106,31 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Фиолетовые загруженные регионы";
+
+
+/********** P2P Privacy Dashboard **********/
+
+"p2p_privacy_title" = "Обмен трафиком";
+"p2p_privacy_summary" = "Анонимный обмен данными о трафике с ближайшими пользователями";
+"p2p_consent_level_title" = "Режим участия";
+"p2p_consent_level_summary" = "Выберите способ участия в обмене трафиком";
+"p2p_consent_off" = "Выключено (Приватность)";
+"p2p_consent_view_only" = "Только просмотр — получать данные";
+"p2p_consent_contribute" = "Участвовать — отправлять и получать";
+"p2p_status_category" = "Статус";
+"p2p_status_peers" = "Пользователи поблизости";
+"p2p_status_peers_none" = "Пользователи не найдены";
+"p2p_status_peers_count" = "Пользователей поблизости: %@";
+"p2p_status_exchanges" = "Обмены за 24ч";
+"p2p_status_exchanges_none" = "Обменов сегодня не было";
+"p2p_status_exchanges_count" = "Обменов: %@";
+"p2p_privacy_info_title" = "Информация о приватности";
+"p2p_what_shared_title" = "Что передаётся";
+"p2p_what_shared_summary" = "Только агрегированные данные о скорости для областей ~175м. Без GPS-координат, маршрутов или личных данных.";
+"p2p_privacy_guarantees_title" = "Гарантии приватности";
+"p2p_privacy_guarantees_summary" = "Анонимные ID устройств меняются каждые 15 минут. Дифференциальная приватность защищает ваши данные. K-анонимность не позволяет идентифицировать ваши паттерны.";
+"p2p_actions_title" = "Действия";
+"p2p_disable_now" = "Выключить сейчас";
+"p2p_disable_now_summary" = "Остановить обмен трафиком немедленно";
+"p2p_debug_mode" = "Режим отладки";
+"p2p_debug_mode_summary" = "Показывать передаваемые данные для проверки";

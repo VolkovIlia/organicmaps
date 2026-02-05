@@ -3,6 +3,7 @@ project(mesh_tests)
 set(SRC
   ble_protocol_test.cpp
   connection_manager_test.cpp
+  opportunistic_share_test.cpp
 )
 
 omim_add_test(${PROJECT_NAME} ${SRC})

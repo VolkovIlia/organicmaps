@@ -893,4 +893,30 @@
     <string name="share_track">Поделиться треком</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">Удалить %s?</string>
+
+    <!-- SECTION: P2P Privacy Dashboard -->
+    <string name="p2p_privacy_title">Обмен трафиком</string>
+    <string name="p2p_privacy_summary">Анонимный обмен данными о трафике с ближайшими пользователями</string>
+    <string name="p2p_consent_level_title">Режим участия</string>
+    <string name="p2p_consent_level_summary">Выберите способ участия в обмене трафиком</string>
+    <string name="p2p_consent_off">Выключено (Приватность)</string>
+    <string name="p2p_consent_view_only">Только просмотр — получать данные</string>
+    <string name="p2p_consent_contribute">Участвовать — отправлять и получать</string>
+    <string name="p2p_status_category">Статус</string>
+    <string name="p2p_status_peers">Пользователи поблизости</string>
+    <string name="p2p_status_peers_none">Пользователи не найдены</string>
+    <string name="p2p_status_peers_count">Пользователей поблизости: %d</string>
+    <string name="p2p_status_exchanges">Обмены за 24ч</string>
+    <string name="p2p_status_exchanges_none">Обменов сегодня не было</string>
+    <string name="p2p_status_exchanges_count">Обменов: %d</string>
+    <string name="p2p_privacy_info_title">Информация о приватности</string>
+    <string name="p2p_what_shared_title">Что передаётся</string>
+    <string name="p2p_what_shared_summary">Только агрегированные данные о скорости для областей ~175м. Без GPS-координат, маршрутов или личных данных.</string>
+    <string name="p2p_privacy_guarantees_title">Гарантии приватности</string>
+    <string name="p2p_privacy_guarantees_summary">Анонимные ID устройств меняются каждые 15 минут. Дифференциальная приватность защищает ваши данные. K-анонимность не позволяет идентифицировать ваши паттерны.</string>
+    <string name="p2p_actions_title">Действия</string>
+    <string name="p2p_disable_now">Выключить сейчас</string>
+    <string name="p2p_disable_now_summary">Остановить обмен трафиком немедленно</string>
+    <string name="p2p_debug_mode">Режим отладки</string>
+    <string name="p2p_debug_mode_summary">Показывать передаваемые данные для проверки</string>
 </resources>
