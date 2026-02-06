@@ -53,6 +53,12 @@ public:
                       uint32_t timeoutSec = RouterDelegate::kNoTimeout);
 
   void SetGuidesTracks(GuidesTracks && guides);
+
+  /// @brief Synchronous route calculation using the stored router.
+  /// Must only be called when no async routing is in progress.
+  /// @note This is used by alternative route finder.
+  RouterResultCode CalculateRouteSync(Checkpoints const & checkpoints, Route & route);
+
   /// Interrupt routing and clear buffers
   void ClearState();
 

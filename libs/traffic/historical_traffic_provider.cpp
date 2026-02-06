@@ -116,6 +116,18 @@ bool IsResidentialRoad(routing::HighwayType hwType)
   }
 }
 
+/// @brief Apply deterministic spatial variation to a speed value using feature ID hash.
+/// Uses Fibonacci hashing for good distribution. Returns clamped to [5, 100].
+uint8_t ApplySpatialVariation(uint8_t baseSpeed, uint32_t featureId, uint8_t maxVariation)
+{
+  // Fibonacci hash for good distribution across feature IDs
+  uint32_t const hash = featureId * 2654435761u;
+  // Map hash to [-maxVariation, +maxVariation] range
+  int const variation = static_cast<int>(hash % (2 * maxVariation + 1)) - maxVariation;
+  int const result = static_cast<int>(baseSpeed) + variation;
+  return static_cast<uint8_t>(std::max(5, std::min(100, result)));
+}
+
 SegmentSpeedPattern GeneratePatternForRoadType(routing::HighwayType hwType)
 {
   SegmentSpeedPattern pattern;
@@ -277,12 +289,29 @@ bool HistoricalTrafficProvider::GenerateSyntheticData(MwmSet::MwmId const & mwmI
       if (!hwType)
         return;
 
+      // Skip residential/service roads — they clutter the traffic layer
+      // and are almost always green (free-flow). Saves ~50-70% memory.
+      if (IsResidentialRoad(*hwType))
+        return;
+
       ft.ParseGeometry(FeatureType::BEST_GEOMETRY);
       auto const numPoints = static_cast<uint16_t>(ft.GetPointsCount());
       bool const isOneWay = carModel.IsOneWay(types);
 
-      // Generate pattern for this road type
-      SegmentSpeedPattern const pattern = GeneratePatternForRoadType(*hwType);
+      // Generate base pattern for this road type, then apply per-feature variation
+      SegmentSpeedPattern pattern = GeneratePatternForRoadType(*hwType);
+
+      // Apply spatial variation: major roads ±8pp, minor roads ±12pp
+      uint8_t const maxVariation = IsMajorRoad(*hwType) ? 8 : 12;
+      for (uint8_t dayOfWeek = 0; dayOfWeek < kDaysPerWeek; ++dayOfWeek)
+      {
+        for (uint8_t hour = 0; hour < kHoursPerDay; ++hour)
+        {
+          uint8_t const base = pattern.GetSpeed(dayOfWeek, hour);
+          uint8_t const varied = ApplySpatialVariation(base, fid, maxVariation);
+          pattern.SetSpeed(dayOfWeek, hour, varied);
+        }
+      }
 
       // Add pattern for each segment
       for (uint16_t i = 0; i + 1 < numPoints; ++i)

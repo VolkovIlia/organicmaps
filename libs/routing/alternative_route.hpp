@@ -1,8 +1,11 @@
 #pragma once
 
+#include "routing/route.hpp"
 #include "routing/segment.hpp"
 
 #include "geometry/latlon.hpp"
+#include "geometry/point2d.hpp"
+#include "geometry/polyline2d.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -51,6 +54,10 @@ struct AlternativeRoute
   std::vector<DecisionPoint> decisionPoints;
   std::vector<Segment> path;        ///< Full path segments
 
+  // Rendering data (populated when route is actually built)
+  m2::PolylineD polyline;           ///< Route polyline for rendering
+  std::vector<RouteSegment> routeSegments;  ///< Route segments with traffic for rendering
+
   /// @brief Get stretch ratio compared to primary route.
   /// @param primaryDistance Primary route distance in meters.
   /// @return Ratio (1.0 = same length, >1.0 = longer).
@@ -84,7 +91,7 @@ struct AlternativeParams
   int k = 3;                        ///< Total routes (1 primary + k-1 alternatives)
   double overlapThreshold = 0.6;    ///< Max overlap with primary (Jaccard similarity)
   double maxLengthRatio = 1.3;      ///< Max stretch factor vs primary
-  double minLengthMeters = 50000;   ///< Minimum route length to compute alternatives (50km)
+  double minLengthMeters = 5000;    ///< Minimum route length to compute alternatives (5km)
   int maxViaNodeCandidates = 100;   ///< Max via-nodes to evaluate
   double minTimeSavingSeconds = 60; ///< Min time saving to show decision point (1 min)
 

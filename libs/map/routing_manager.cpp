@@ -17,6 +17,7 @@
 #include "storage/routing_helpers.hpp"
 
 #include "drape_frontend/drape_engine.hpp"
+#include "drape_frontend/route_renderer.hpp"
 
 #include "routing_common/num_mwm_id.hpp"
 
@@ -385,6 +386,9 @@ RoutingManager::RoutingManager(Callbacks && callbacks, Delegate & delegate)
         m_routeSpeedCamsClearCallback();
     });
   });
+
+  // Create shared traffic estimator for passing to IndexRouter
+  m_trafficEstimator = std::make_shared<traffic::TrafficEstimator>();
 }
 
 void RoutingManager::SetBookmarkManager(BookmarkManager * bmManager)
@@ -417,15 +421,33 @@ void RoutingManager::OnBuildRouteReady(Route const & route, RouterResultCode cod
     {
       // Create alternative finder if not already created
       if (!m_alternativeFinder)
-        m_alternativeFinder = CreateAlternativeFinder();
+        m_alternativeFinder = std::shared_ptr<IAlternativeFinder>(CreateAlternativeFinder().release());
 
-      if (m_alternativeFinder)
+      auto routePtr = m_routingSession.GetRouteForTests();
+      if (m_alternativeFinder && routePtr)
       {
-        auto alternatives = m_alternativeFinder->Find(route, params);
-        if (!alternatives.empty())
+        uint64_t const generation = ++m_routeGeneration;
+        auto finder = m_alternativeFinder;  // shared_ptr copy for lambda
+
+        // Synchronous route calculation callback via RoutingSession
+        RouteCalculationFn calculateRoute = [this](Checkpoints const & checkpoints, Route & outRoute) -> RouterResultCode
         {
-          InsertAlternativeRoutes(alternatives);
-        }
+          return m_routingSession.CalculateRouteSync(checkpoints, outRoute);
+        };
+
+        GetPlatform().RunTask(Platform::Thread::Background, [this, routePtr, params, finder, calculateRoute, generation]()
+        {
+          auto alternatives = finder->Find(*routePtr, params, calculateRoute);
+          if (!alternatives.empty())
+          {
+            GetPlatform().RunTask(Platform::Thread::Gui, [this, alts = std::move(alternatives), generation]()
+            {
+              // W3: Check generation to discard stale results
+              if (generation == m_routeGeneration.load())
+                InsertAlternativeRoutes(alts);
+            });
+          }
+        });
       }
     }
   }
@@ -550,11 +572,21 @@ void RoutingManager::SetRouterImpl(RouterType type)
 
   std::unique_ptr<IRouter> router;
   if (type == RouterType::Ruler)
+  {
     router = make_unique<RulerRouter>();
+  }
   else
-    router = make_unique<IndexRouter>(
+  {
+    auto indexRouter = make_unique<IndexRouter>(
         vehicleType, m_loadAltitudes, m_callbacks.m_countryParentNameGetterFn, countryFileGetter, getMwmRectByName,
         numMwmIds, MakeNumMwmTree(*numMwmIds, m_callbacks.m_countryInfoGetter()), m_routingSession, dataSource);
+
+    // Pass traffic estimator for route segment coloring fallback
+    if (m_trafficEstimator)
+      indexRouter->SetTrafficEstimator(m_trafficEstimator);
+
+    router = std::move(indexRouter);
+  }
 
   m_routingSession.SetRoutingSettings(GetRoutingSettings(vehicleType));
   m_routingSession.SetRouter(std::move(router), std::move(regionsFinder));
@@ -1616,16 +1648,38 @@ void RoutingManager::InsertAlternativeRoutes(std::vector<AlternativeRoute> const
   // Clear any existing alternative subroutes
   ClearAlternativeRoutes();
 
-  // For now, we create simple subroutes for alternatives using a lighter style
-  // In Phase 4, we will add full polyline rendering from Route objects
-
   // Store alternatives in routing session
   std::vector<AlternativeRoute> altCopy = alternatives;
   m_routingSession.SetAlternatives(std::move(altCopy));
 
-  // TODO: In Phase 4, create actual subroutes from alternative route polylines
-  // For now, alternatives are stored but not rendered as full routes
-  // The UI will show alternative route cards with time/distance info
+  // Render each alternative as a subroute with alternative styling
+  for (auto const & alt : alternatives)
+  {
+    if (alt.polyline.GetSize() < 2)
+      continue;
+
+    auto subroute = make_unique_dp<df::Subroute>();
+    subroute->m_routeType = df::RouteType::Car;
+    subroute->m_polyline = alt.polyline;
+    subroute->m_baseDistance = 0.0;
+    subroute->m_baseDepthIndex = -1.0;  // Below primary route
+    subroute->m_headFakeDistance = 0.0;
+    subroute->m_tailFakeDistance = 0.0;
+
+    // Use alternative route style (gray with dashed pattern)
+    subroute->AddStyle(df::SubrouteStyle(df::kRouteAlternative, df::kRouteAlternativeOutline,
+                                          df::RoutePattern(8.0, 4.0)));
+
+    // Fill traffic data from route segments if available
+    if (!alt.routeSegments.empty())
+      FillTrafficForRendering(alt.routeSegments, subroute->m_traffic);
+
+    auto const subrouteId =
+        m_drapeEngine.SafeCallWithResult(&df::DrapeEngine::AddSubroute, df::SubrouteConstPtr(subroute.release()));
+
+    lock_guard<mutex> lock(m_drapeSubroutesMutex);
+    m_alternativeDrapeSubroutes.push_back(subrouteId);
+  }
 }
 
 /// @brief Select an alternative route as the new primary.
@@ -1667,12 +1721,14 @@ void RoutingManager::SelectAlternativeRoute(int index)
 
 void RoutingManager::ClearAlternativeRoutes()
 {
+  lock_guard<mutex> lock(m_drapeSubroutesMutex);
+
   // Remove all alternative subroutes from DrapeEngine
-  df::DrapeEngineLockGuard lock(m_drapeEngine);
-  if (lock)
+  df::DrapeEngineLockGuard drapeLock(m_drapeEngine);
+  if (drapeLock)
   {
     for (auto const & subrouteId : m_alternativeDrapeSubroutes)
-      lock.Get()->RemoveSubroute(subrouteId, false /* deactivateFollowing */);
+      drapeLock.Get()->RemoveSubroute(subrouteId, false /* deactivateFollowing */);
   }
 
   m_alternativeDrapeSubroutes.clear();
@@ -1691,28 +1747,21 @@ bool RoutingManager::HasAlternativeRoutes() const
 
 int RoutingManager::GetUsualRouteTime() const
 {
-  // TODO(mesh-traffic): Implement route-level historical baseline
-  // Currently returns current route time as placeholder.
-  // Full implementation requires:
-  // 1. Store historical route times by time-of-day/day-of-week
-  // 2. Query TrafficEstimator for route-specific historical data
-  // 3. Return weighted average of historical times
-  // Issue: https://github.com/organicmaps/organicmaps/issues/TBD
   if (!IsRouteBuilt())
     return 0;
 
-  FollowingInfo info;
-  m_routingSession.GetRouteFollowingInfo(info);
-  if (!info.IsValid())
+  // Route ETA already incorporates historical traffic via CarEstimator::CalcSegmentWeight().
+  // Return route total time as the "usual" time baseline.
+  auto const route = m_routingSession.GetRouteForTests();
+  if (!route || !route->IsValid())
     return 0;
 
-  int const currentTimeSeconds = info.m_time;
-  if (currentTimeSeconds <= 0)
+  int const routeTimeSec = static_cast<int>(route->GetTotalTimeSec());
+  if (routeTimeSec <= 0)
     return 0;
 
-  // Return current time as "usual" since we don't have historical baseline yet.
-  m_cachedUsualTimeSeconds = currentTimeSeconds;
-  return currentTimeSeconds;
+  m_cachedUsualTimeSeconds = routeTimeSec;
+  return routeTimeSec;
 }
 
 int RoutingManager::GetTrafficDeviationType() const

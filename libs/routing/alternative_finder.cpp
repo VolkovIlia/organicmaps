@@ -1,11 +1,14 @@
 #include "routing/alternative_finder.hpp"
 
+#include "geometry/distance_on_sphere.hpp"
 #include "geometry/mercator.hpp"
+#include "geometry/point2d.hpp"
 
 #include "base/logging.hpp"
 #include "base/timer.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <set>
@@ -33,19 +36,95 @@ std::vector<Segment> CollectRouteSegments(Route const & route)
   return segments;
 }
 
+/// @brief Perpendicular offset distances in meters.
+double const kOffsetDistancesM[] = {2000.0, 5000.0, 10000.0};
+size_t const kNumOffsets = std::size(kOffsetDistancesM);
+
+/// @brief Route sample points (fraction of total length).
+double const kSampleFractions[] = {0.25, 0.50, 0.75};
+size_t const kNumSamples = std::size(kSampleFractions);
+
+/// @brief Get a point on the route at a given fraction of total length.
+m2::PointD GetRoutePointAtFraction(Route const & route, double fraction)
+{
+  auto const & poly = route.GetPoly();
+  double const totalLen = poly.GetLength();
+  return poly.GetPointByDistance(totalLen * fraction);
+}
+
+/// @brief Get direction vector at a route point (normalized).
+m2::PointD GetRouteDirectionAtFraction(Route const & route, double fraction)
+{
+  auto const & poly = route.GetPoly();
+  double const totalLen = poly.GetLength();
+  double const targetLen = totalLen * fraction;
+
+  double accumulated = 0.0;
+  auto const & points = poly.GetPoints();
+
+  for (size_t i = 1; i < points.size(); ++i)
+  {
+    double const segLen = points[i - 1].Length(points[i]);
+    if (accumulated + segLen >= targetLen && segLen > 0.0)
+    {
+      auto dir = points[i] - points[i - 1];
+      double const len = dir.Length();
+      if (len > 0.0)
+        return dir / len;
+      break;
+    }
+    accumulated += segLen;
+  }
+
+  // Fallback: use last segment direction
+  if (points.size() >= 2)
+  {
+    auto dir = points.back() - points[points.size() - 2];
+    double const len = dir.Length();
+    if (len > 0.0)
+      return dir / len;
+  }
+  return {1.0, 0.0};
+}
+
+/// @brief Offset a point perpendicular to a direction in mercator.
+m2::PointD OffsetPerpendicular(m2::PointD const & point, m2::PointD const & direction,
+                                double offsetMeters, bool toRight)
+{
+  // Perpendicular direction (rotate 90 degrees)
+  m2::PointD perp = toRight ? m2::PointD(direction.y, -direction.x)
+                             : m2::PointD(-direction.y, direction.x);
+
+  // Convert offset from meters to mercator units using separate X/Y scale factors
+  double constexpr kEps = 1e-5;
+  double const metersPerMercatorX = mercator::DistanceOnEarth(point, point + m2::PointD(kEps, 0.0)) / kEps;
+  double const metersPerMercatorY = mercator::DistanceOnEarth(point, point + m2::PointD(0.0, kEps)) / kEps;
+
+  if (metersPerMercatorX <= 0.0 || metersPerMercatorY <= 0.0)
+    return point;
+
+  return point + m2::PointD(perp.x * offsetMeters / metersPerMercatorX,
+                             perp.y * offsetMeters / metersPerMercatorY);
+}
+
 }  // namespace
 
-/// @brief Implementation of k-SPwLO alternative route finder.
-/// Uses via-node approach: for each alternative, find a "via" node
-/// that forces the route to diverge from primary.
+/// @brief Implementation of alternative route finder using via-waypoint approach.
 class AlternativeFinder : public IAlternativeFinder
 {
 public:
   std::vector<AlternativeRoute> Find(
       Route const & primaryRoute,
-      AlternativeParams const & params) override
+      AlternativeParams const & params,
+      RouteCalculationFn const & calculateRoute) override
   {
     base::Timer timer;
+
+    if (!calculateRoute)
+    {
+      LOG(LDEBUG, ("No route calculation function provided"));
+      return {};
+    }
 
     if (!ValidateRouteLength(primaryRoute, params))
       return {};
@@ -57,8 +136,37 @@ public:
       return {};
     }
 
-    std::vector<AlternativeRoute> alternatives = EvaluateViaCandidates(
-        primaryRoute, primaryPath, params);
+    auto const start = primaryRoute.GetPoly().Front();
+    auto const finish = primaryRoute.GetPoly().Back();
+
+    std::vector<m2::PointD> viaCandidates = FindViaCandidates(primaryRoute, params.maxViaNodeCandidates);
+
+    std::vector<AlternativeRoute> alternatives;
+    double const primaryLength = primaryRoute.GetTotalDistanceMeters();
+    double const primaryDuration = primaryRoute.GetTotalTimeSec();
+
+    for (auto const & viaPoint : viaCandidates)
+    {
+      if (static_cast<int>(alternatives.size()) >= params.k - 1)
+        break;
+
+      auto candidate = TryBuildAlternative(
+          primaryRoute, start, finish, viaPoint, primaryPath, primaryLength,
+          primaryDuration, params, alternatives, calculateRoute);
+
+      if (candidate.has_value())
+      {
+        candidate->routeIndex = static_cast<int>(alternatives.size()) + 1;
+        candidate->diversityScore = 1.0 - candidate->overlapWithPrimary;
+
+        LOG(LDEBUG, ("Found alternative", candidate->routeIndex,
+            "overlap:", candidate->overlapWithPrimary,
+            "stretch:", candidate->GetStretchRatio(primaryLength),
+            "time diff:", primaryDuration - candidate->durationSeconds, "s"));
+
+        alternatives.push_back(std::move(*candidate));
+      }
+    }
 
     PopulateDecisionPoints(primaryRoute, alternatives);
 
@@ -69,7 +177,6 @@ public:
   }
 
 private:
-  /// @brief Validate that route is long enough for alternatives.
   bool ValidateRouteLength(Route const & route, AlternativeParams const & params) const
   {
     double const length = route.GetTotalDistanceMeters();
@@ -82,71 +189,90 @@ private:
     return true;
   }
 
-  /// @brief Evaluate via-node candidates and build valid alternatives.
-  std::vector<AlternativeRoute> EvaluateViaCandidates(
+  /// @brief Generate via-waypoints perpendicular to primary route.
+  std::vector<m2::PointD> FindViaCandidates(
       Route const & primaryRoute,
-      std::vector<Segment> const & primaryPath,
-      AlternativeParams const & params) const
+      int maxCandidates) const
   {
-    std::vector<AlternativeRoute> alternatives;
-    double const primaryLength = primaryRoute.GetTotalDistanceMeters();
-    double const primaryDuration = primaryRoute.GetTotalTimeSec();
+    std::vector<m2::PointD> candidates;
+    candidates.reserve(kNumSamples * kNumOffsets * 2);
 
-    std::unordered_set<Segment, std::hash<Segment>> primarySegmentSet(
-        primaryPath.begin(), primaryPath.end());
-
-    std::vector<uint32_t> viaCandidates = FindViaCandidates(
-        primaryRoute, primarySegmentSet, params.maxViaNodeCandidates);
-
-    for (uint32_t viaNode : viaCandidates)
+    for (size_t s = 0; s < kNumSamples; ++s)
     {
-      if (static_cast<int>(alternatives.size()) >= params.k - 1)
-        break;
+      double const fraction = kSampleFractions[s];
+      auto const point = GetRoutePointAtFraction(primaryRoute, fraction);
+      auto const direction = GetRouteDirectionAtFraction(primaryRoute, fraction);
 
-      auto candidate = TryAcceptCandidate(
-          primaryRoute, viaNode, primaryPath, primaryLength, primaryDuration, params, alternatives);
+      for (size_t o = 0; o < kNumOffsets; ++o)
+      {
+        if (static_cast<int>(candidates.size()) >= maxCandidates)
+          break;
 
-      if (candidate.has_value())
-        alternatives.push_back(std::move(candidate.value()));
+        // Offset to the right and left
+        candidates.push_back(OffsetPerpendicular(point, direction, kOffsetDistancesM[o], true));
+        candidates.push_back(OffsetPerpendicular(point, direction, kOffsetDistancesM[o], false));
+      }
     }
 
-    return alternatives;
+    return candidates;
   }
 
-  /// @brief Try to build and accept a candidate alternative through via-node.
-  std::optional<AlternativeRoute> TryAcceptCandidate(
+  /// @brief Try to build alternative route through via-waypoint.
+  std::optional<AlternativeRoute> TryBuildAlternative(
       Route const & primaryRoute,
-      uint32_t viaNode,
+      m2::PointD const & start,
+      m2::PointD const & finish,
+      m2::PointD const & viaPoint,
       std::vector<Segment> const & primaryPath,
       double primaryLength,
       double primaryDuration,
       AlternativeParams const & params,
-      std::vector<AlternativeRoute> const & existingAlternatives) const
+      std::vector<AlternativeRoute> const & existingAlternatives,
+      RouteCalculationFn const & calculateRoute) const
   {
-    auto candidateOpt = TryBuildAlternative(primaryRoute, viaNode, primaryPath, params);
-    if (!candidateOpt.has_value())
+    Route altRoute("alternative", 0 /* routeId */);
+
+    // Build route: start → via → finish
+    std::vector<m2::PointD> points = {start, viaPoint, finish};
+    Checkpoints viaCheckpoints(std::move(points));
+
+    auto const code = calculateRoute(viaCheckpoints, altRoute);
+    if (code != RouterResultCode::NoError || !altRoute.IsValid())
       return std::nullopt;
 
-    AlternativeRoute & candidate = candidateOpt.value();
-    candidate.routeIndex = static_cast<int>(existingAlternatives.size()) + 1;
+    // Extract segments and compute overlap
+    std::vector<Segment> altPath = CollectRouteSegments(altRoute);
+    if (altPath.empty())
+      return std::nullopt;
 
+    double const overlap = CalcOverlap(primaryPath, altPath);
+    double const altLength = altRoute.GetTotalDistanceMeters();
+    double const altDuration = altRoute.GetTotalTimeSec();
+
+    AlternativeRoute candidate;
+    candidate.distanceMeters = altLength;
+    candidate.durationSeconds = altDuration;
+    candidate.overlapWithPrimary = overlap;
+    candidate.path = std::move(altPath);
+
+    // Copy polyline for rendering
+    candidate.polyline = altRoute.GetPoly();
+
+    // Copy route segments for traffic rendering
+    auto const & routeSegs = altRoute.GetRouteSegments();
+    candidate.routeSegments.assign(routeSegs.begin(), routeSegs.end());
+
+    // Validate acceptance
     if (!candidate.IsAcceptable(params.overlapThreshold, params.maxLengthRatio, primaryLength))
       return std::nullopt;
 
+    // Check overlap with existing alternatives
     if (OverlapsExistingAlternative(candidate, existingAlternatives, params.overlapThreshold))
       return std::nullopt;
-
-    candidate.diversityScore = 1.0 - candidate.overlapWithPrimary;
-
-    LOG(LDEBUG, ("Found alternative", candidate.routeIndex,
-        "overlap:", candidate.overlapWithPrimary,
-        "stretch:", candidate.GetStretchRatio(primaryLength),
-        "time saving:", primaryDuration - candidate.durationSeconds, "s"));
 
     return candidate;
   }
 
-  /// @brief Check if candidate overlaps with any existing alternative.
   bool OverlapsExistingAlternative(
       AlternativeRoute const & candidate,
       std::vector<AlternativeRoute> const & existingAlternatives,
@@ -158,7 +284,6 @@ private:
         });
   }
 
-  /// @brief Populate decision points for all alternatives.
   void PopulateDecisionPoints(
       Route const & primaryRoute,
       std::vector<AlternativeRoute> & alternatives) const
@@ -177,7 +302,6 @@ private:
   }
 
 public:
-
   double CalcOverlap(
       std::vector<Segment> const & path1,
       std::vector<Segment> const & path2) const override
@@ -188,7 +312,6 @@ public:
     std::set<Segment> const edges1 = CollectEdgeSet(path1);
     std::set<Segment> const edges2 = CollectEdgeSet(path2);
 
-    // Calculate Jaccard similarity
     std::set<Segment> intersection;
     std::set_intersection(
         edges1.begin(), edges1.end(),
@@ -217,7 +340,6 @@ public:
 
     for (auto const & alt : alternatives)
     {
-      // Find first segment where alternative diverges from primary
       size_t const divergeIdx = FindDivergenceIndex(primaryPath, alt.path);
 
       if (divergeIdx > 0 && divergeIdx < primaryPath.size())
@@ -232,7 +354,6 @@ public:
       }
     }
 
-    // Sort by distance from start
     std::sort(points.begin(), points.end(),
         [](DecisionPoint const & a, DecisionPoint const & b) {
           return a.distanceFromStartMeters < b.distanceFromStartMeters;
@@ -242,70 +363,25 @@ public:
   }
 
 private:
-  /// @brief Find via-node candidates for alternative route generation.
-  /// In full implementation, this queries CCH high-level nodes.
-  std::vector<uint32_t> FindViaCandidates(
-      Route const & /* primaryRoute */,
-      std::unordered_set<Segment, std::hash<Segment>> const & /* primarySegments */,
-      int /* maxCandidates */) const
-  {
-    // Placeholder for CCH integration.
-    // Full implementation would:
-    // 1. Get high-level nodes from CCH topology
-    // 2. Filter out nodes on primary route
-    // 3. Score by distance from primary corridor and CCH level
-    // 4. Return top candidates
-    return {};
-  }
-
-  /// @brief Try to build alternative route through via-node.
-  std::optional<AlternativeRoute> TryBuildAlternative(
-      Route const & primaryRoute,
-      uint32_t /* viaNode */,
-      std::vector<Segment> const & primaryPath,
-      AlternativeParams const & /* params */) const
-  {
-    // Placeholder for CCH query integration.
-    // Full implementation would:
-    // 1. Query CCH: origin -> viaNode
-    // 2. Query CCH: viaNode -> destination
-    // 3. Concatenate paths
-    // 4. Calculate overlap with primary
-    // 5. Return candidate if valid
-
-    // For now, return empty to allow structure to compile and test
-    (void)primaryRoute;
-    (void)primaryPath;
-    return std::nullopt;
-  }
-
-  /// @brief Find index where alternative path diverges from primary.
   size_t FindDivergenceIndex(
       std::vector<Segment> const & primaryPath,
       std::vector<Segment> const & altPath) const
   {
     size_t i = 0;
     size_t const minSize = std::min(primaryPath.size(), altPath.size());
-
     while (i < minSize && primaryPath[i] == altPath[i])
       ++i;
-
     return i;
   }
 
-  /// @brief Get geographic position at route segment index.
   ms::LatLon GetPositionAtIndex(Route const & route, size_t idx) const
   {
     auto const & segments = route.GetRouteSegments();
     if (idx < segments.size())
-    {
-      auto const & junction = segments[idx].GetJunction();
-      return mercator::ToLatLon(junction.GetPoint());
-    }
+      return mercator::ToLatLon(segments[idx].GetJunction().GetPoint());
     return ms::LatLon();
   }
 
-  /// @brief Get distance from start at route segment index.
   double GetDistanceAtIndex(Route const & route, size_t idx) const
   {
     auto const & segments = route.GetRouteSegments();

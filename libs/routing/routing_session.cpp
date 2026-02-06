@@ -993,6 +993,11 @@ void RoutingSession::HandleCorridorRerouteDecision(RerouteDecisionResult const &
   }
 }
 
+RouterResultCode RoutingSession::CalculateRouteSync(Checkpoints const & checkpoints, Route & route)
+{
+  return m_router->CalculateRouteSync(checkpoints, route);
+}
+
 // Phase 4: Alternative routes implementation
 void RoutingSession::SetAlternatives(std::vector<AlternativeRoute> && alternatives)
 {

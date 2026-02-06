@@ -206,7 +206,7 @@ public:
   int GetTrafficDeviationType() const;
 
   /// @brief Get the traffic estimator for external use.
-  traffic::TrafficEstimator const & GetTrafficEstimator() const { return m_trafficEstimator; }
+  traffic::TrafficEstimator const & GetTrafficEstimator() const { return *m_trafficEstimator; }
 
   m2::PointD GetRouteEndPoint() const { return m_routingSession.GetEndPoint(); }
   /// Returns the most situable router engine type.
@@ -406,12 +406,13 @@ private:
   TransitRouteInfo m_transitRouteInfo;
 
   // Phase 4: Alternative routes
-  std::unique_ptr<routing::IAlternativeFinder> m_alternativeFinder;
-  std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;
+  std::shared_ptr<routing::IAlternativeFinder> m_alternativeFinder;
+  std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;  // Protected by m_drapeSubroutesMutex
   int m_selectedRouteIndex = 0;
+  std::atomic<uint64_t> m_routeGeneration{0};
 
-  // Traffic estimation for deviation display
-  traffic::TrafficEstimator m_trafficEstimator;
+  // Traffic estimation for deviation display and route segment coloring
+  std::shared_ptr<traffic::TrafficEstimator> m_trafficEstimator;
   mutable int m_cachedUsualTimeSeconds = 0;  // Cached for performance
 
   struct RoutePointsTransaction

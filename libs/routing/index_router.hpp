@@ -7,6 +7,8 @@
 #include "routing/base/routing_result.hpp"
 
 #include "routing/data_source.hpp"
+
+#include "traffic/traffic_estimator.hpp"
 #include "routing/directions_engine.hpp"
 #include "routing/edge_estimator.hpp"
 #include "routing/fake_edges_container.hpp"
@@ -95,6 +97,12 @@ public:
   void SetCurrentTimeGetter(T && getter)
   {
     m_currentTimeGetter = std::forward<T>(getter);
+  }
+
+  /// @brief Set traffic estimator for populating route segment traffic.
+  void SetTrafficEstimator(std::shared_ptr<traffic::TrafficEstimator> estimator)
+  {
+    m_trafficEstimator = std::move(estimator);
   }
 
   // Phase 4: Alternative routes
@@ -299,6 +307,9 @@ private:
   CountryParentNameGetterFn m_countryParentNameGetterFn;
 
   TimeGetterT m_currentTimeGetter;
+
+  // Traffic estimation for route segment coloring
+  std::shared_ptr<traffic::TrafficEstimator> m_trafficEstimator;
 
   // Phase 4: Alternative routes
   bool m_computeAlternatives = false;

@@ -95,6 +95,10 @@ void TrafficManager::SetEnabled(bool enabled)
     ChangeState(enabled ? TrafficState::Enabled : TrafficState::Disabled);
   }
 
+  // Toggle display mode: traffic layer button enables MapWide (historical on all roads),
+  // disabling returns to RouteOnly (traffic predictions on route segments only).
+  m_displayMode = enabled ? TrafficDisplayMode::MapWide : TrafficDisplayMode::RouteOnly;
+
   m_drapeEngine.SafeCall(&df::DrapeEngine::EnableTraffic, enabled);
 
   if (enabled)
@@ -359,8 +363,12 @@ void TrafficManager::OnTrafficRequestFailed(traffic::TrafficInfo && info)
     UpdateState();
   }
 
-  // Try historical fallback if enabled and real-time data unavailable
-  if (m_historicalFallbackEnabled && m_historicalProvider)
+  // Try historical fallback if enabled and real-time data unavailable.
+  // Only push historical data to the map layer in MapWide mode.
+  // In RouteOnly mode, historical data is used only for route segment coloring
+  // (handled by TrafficEstimator in IndexRouter::RedressRoute).
+  if (m_historicalFallbackEnabled && m_historicalProvider &&
+      m_displayMode == TrafficDisplayMode::MapWide)
   {
     auto historicalColoring = m_historicalProvider->GetColoring(mwmId);
     if (historicalColoring && !historicalColoring->empty())
@@ -597,6 +605,11 @@ std::string DebugPrint(TrafficManager::TrafficState state)
 void TrafficManager::SetHistoricalFallbackEnabled(bool enabled)
 {
   m_historicalFallbackEnabled = enabled;
+}
+
+void TrafficManager::SetTrafficDisplayMode(TrafficDisplayMode mode)
+{
+  m_displayMode = mode;
 }
 
 bool TrafficManager::HasHistoricalData(MwmSet::MwmId const & mwmId) const

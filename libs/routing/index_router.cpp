@@ -1691,6 +1691,25 @@ RouterResultCode IndexRouter::RedressRoute(vector<Segment> const & segments, bas
         if (m_trafficStash)
           routeSegment.SetTraffic(m_trafficStash->GetSpeedGroup(segment));
 
+        // Fallback: use TrafficEstimator for route segment coloring
+        // when real-time traffic (TrafficStash) has no data.
+        if (routeSegment.GetTraffic() == traffic::SpeedGroup::Unknown && m_trafficEstimator)
+        {
+          auto const mwmId = m_dataSource.GetMwmId(segment.GetMwmId());
+          auto const & roadGeom = worldGraph.GetIndexGraph(segment.GetMwmId())
+                                      .GetRoadGeometry(segment.GetFeatureId());
+          auto const hwType = roadGeom.GetHighwayType();
+          if (hwType)
+          {
+            bool const isInCity = !roadGeom.IsPassThroughAllowed();
+            auto const group = m_trafficEstimator->GetSpeedGroup(
+                mwmId, segment.GetFeatureId(), static_cast<uint16_t>(segment.GetSegmentIdx()),
+                segment.IsForward(), *hwType, isInCity);
+            if (group != traffic::SpeedGroup::Unknown)
+              routeSegment.SetTraffic(group);
+          }
+        }
+
         routeSegment.SetSpeedLimit(worldGraph.GetSpeedLimit(segment));
       }
     }
@@ -1807,44 +1826,13 @@ void IndexRouter::SetupAlgorithmMode(IndexGraphStarter & starter, bool guidesAct
 }
 
 // Phase 4: Alternative routes implementation
-void IndexRouter::CalculateAlternatives(Route & primaryRoute)
+// Note: Alternative route computation is now handled by RoutingManager::OnBuildRouteReady()
+// which has access to RoutingSession::CalculateRouteSync for the via-waypoint approach.
+// This IndexRouter method is kept as a no-op for API compatibility.
+void IndexRouter::CalculateAlternatives(Route & /* primaryRoute */)
 {
-  if (!m_computeAlternatives)
-    return;
-
-  // Only compute alternatives for car routing
-  if (m_vehicleType != VehicleType::Car)
-  {
-    LOG(LDEBUG, ("Alternatives only supported for car routing"));
-    return;
-  }
-
-  // Check minimum route length
-  double const primaryLength = primaryRoute.GetTotalDistanceMeters();
-  AlternativeParams params = AlternativeParams::Default();
-
-  if (primaryLength < params.minLengthMeters)
-  {
-    LOG(LDEBUG, ("Route too short for alternatives:",
-        primaryLength, "m <", params.minLengthMeters, "m"));
-    return;
-  }
-
-  // Create finder if not exists
-  if (!m_alternativeFinder)
-    m_alternativeFinder = CreateAlternativeFinder();
-
-  // Find alternatives using k-SPwLO algorithm
-  std::vector<AlternativeRoute> alternatives = m_alternativeFinder->Find(primaryRoute, params);
-
-  if (!alternatives.empty())
-  {
-    LOG(LINFO, ("Found", alternatives.size(), "alternative routes"));
-
-    // TODO: Store alternatives in Route for RoutingSession to access.
-    // For now, we just log that alternatives were found.
-    // Full integration requires Route class modification to store alternatives.
-  }
+  // Alternatives are computed at the RoutingManager level using
+  // RoutingSession::CalculateRouteSync as the route calculation callback.
 }
 
 }  // namespace routing

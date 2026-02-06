@@ -45,6 +45,15 @@ public:
     ExpiredApp
   };
 
+  /// @brief Controls what traffic data is shown on the map.
+  /// RouteOnly: Historical traffic is used only for route coloring (not pushed to map layer).
+  /// MapWide: Historical traffic is shown for all roads on the visible map area.
+  enum class TrafficDisplayMode
+  {
+    RouteOnly,  ///< Default: traffic predictions on route only
+    MapWide     ///< Traffic layer button: show traffic on all visible roads
+  };
+
   struct MyPosition
   {
     m2::PointD m_position = m2::PointD(0.0, 0.0);
@@ -92,6 +101,10 @@ public:
   /// \brief Enable/disable historical traffic fallback when real-time is unavailable.
   void SetHistoricalFallbackEnabled(bool enabled);
   bool IsHistoricalFallbackEnabled() const { return m_historicalFallbackEnabled; }
+
+  /// \brief Set traffic display mode (RouteOnly vs MapWide).
+  void SetTrafficDisplayMode(TrafficDisplayMode mode);
+  TrafficDisplayMode GetTrafficDisplayMode() const { return m_displayMode; }
 
   /// \brief Check if historical data is available for an MWM.
   bool HasHistoricalData(MwmSet::MwmId const & mwmId) const;
@@ -197,6 +210,9 @@ private:
   // Historical traffic fallback
   std::atomic<bool> m_historicalFallbackEnabled{true};
   std::unique_ptr<traffic::HistoricalTrafficProvider> m_historicalProvider;
+
+  // Traffic display mode: RouteOnly (default) or MapWide (traffic layer button)
+  std::atomic<TrafficDisplayMode> m_displayMode{TrafficDisplayMode::RouteOnly};
 };
 
 extern std::string DebugPrint(TrafficManager::TrafficState state);

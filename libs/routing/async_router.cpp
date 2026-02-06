@@ -181,6 +181,24 @@ void AsyncRouter::SetGuidesTracks(GuidesTracks && guides)
   m_guides = std::move(guides);
 }
 
+RouterResultCode AsyncRouter::CalculateRouteSync(Checkpoints const & checkpoints, Route & route)
+{
+  std::shared_ptr<IRouter> router;
+  {
+    lock_guard l(m_guard);
+    router = m_router;
+  }
+
+  if (!router)
+    return RouterResultCode::InternalError;
+
+  RouterDelegate delegate;
+  delegate.SetTimeout(30 /* seconds */);
+
+  return router->CalculateRoute(
+      checkpoints, m2::PointD::Zero(), false /* adjustToPrevRoute */, delegate, route);
+}
+
 void AsyncRouter::ClearState()
 {
   unique_lock ul(m_guard);
