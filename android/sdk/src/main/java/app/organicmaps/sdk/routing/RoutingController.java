@@ -47,6 +47,7 @@ public class RoutingController
     default void onRemovedStop() {}
     default void onResetToPlanningState() {}
     default void onBuiltRoute() {}
+    default void onAlternativesReady() {}
     default void onDrivingOptionsWarning() {}
 
     default void onCommonBuildError(int lastResultCode, @NonNull String[] lastMissingMaps) {}
@@ -130,6 +131,14 @@ public class RoutingController
   {
     if (success)
       prepare(getStartPoint(), getEndPoint());
+  };
+
+  @SuppressWarnings("FieldCanBeLocal")
+  private final AlternativesListener mAlternativesListener = () ->
+  {
+    Logger.d(TAG, "onAlternativesReady");
+    if (mContainer != null)
+      mContainer.onAlternativesReady();
   };
 
   public static RoutingController get()
@@ -243,6 +252,7 @@ public class RoutingController
         setStartPoint(locationHelper.getMyPosition());
     }));
     Framework.nativeSetRoutingLoadPointsListener(mRoutingLoadPointsListener);
+    Framework.nativeSetAlternativesListener(mAlternativesListener);
   }
 
   public void detach()

@@ -1622,6 +1622,13 @@ public class MwmActivity extends BaseMwmFragmentActivity
   }
 
   @Override
+  public void onAlternativesReady()
+  {
+    if (mRoutingPlanInplaceController != null)
+      mRoutingPlanInplaceController.updateAlternatives();
+  }
+
+  @Override
   public void onDrivingOptionsWarning()
   {
     if (mRoutingPlanInplaceController == null)

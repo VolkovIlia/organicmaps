@@ -21,6 +21,7 @@ import app.organicmaps.sdk.routing.RoutingProgressListener;
 import app.organicmaps.sdk.routing.RoutingRecommendationListener;
 import app.organicmaps.sdk.routing.TransitRouteInfo;
 import app.organicmaps.sdk.routing.AlternativeRouteInfo;
+import app.organicmaps.sdk.routing.AlternativesListener;
 import app.organicmaps.sdk.settings.SpeedCameraMode;
 import app.organicmaps.sdk.util.Constants;
 import dalvik.annotation.optimization.FastNative;
@@ -230,6 +231,8 @@ public class Framework
   public static native void nativeSetRoutingRecommendationListener(@NonNull RoutingRecommendationListener listener);
 
   public static native void nativeSetRoutingLoadPointsListener(@NonNull RoutingLoadPointsListener listener);
+
+  public static native void nativeSetAlternativesListener(@NonNull AlternativesListener listener);
 
   public static native void nativeShowCountry(String countryId, boolean zoomToDownloadButton);
 

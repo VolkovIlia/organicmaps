@@ -227,6 +227,11 @@ public class RoutingPlanController extends ToolbarController
     mRoutingBottomMenuController.updateAlternativeRoutes();
   }
 
+  public void updateAlternatives()
+  {
+    mRoutingBottomMenuController.updateAlternativeRoutes();
+  }
+
   public void updateBuildProgress(int progress, @NonNull Router router)
   {
     UiUtils.invisible(mProgressVehicle, mProgressPedestrian, mProgressTransit, mProgressBicycle, mProgressRuler);

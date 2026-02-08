@@ -1394,6 +1394,17 @@ JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRoutingLoadPointsList
     g_loadRouteHandler = nullptr;
 }
 
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetAlternativesListener(JNIEnv * env, jclass, jobject listener)
+{
+  frm()->GetRoutingManager().SetAlternativesReadyListener(
+      [rf = jni::make_global_ref(listener)]()
+  {
+    JNIEnv * env = jni::GetEnv();
+    jmethodID const method = jni::GetMethodID(env, *rf, "onAlternativesReady", "()V");
+    env->CallVoidMethod(*rf, method);
+  });
+}
+
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeDeactivatePopup(JNIEnv * env, jclass)
 {
   return g_framework->DeactivatePopup();

@@ -106,6 +106,7 @@ public:
   using RouteBuildingCallback = std::function<void(routing::RouterResultCode, storage::CountriesSet const &)>;
   using RouteSpeedCamShowCallback = std::function<void(m2::PointD const &, double)>;
   using RouteSpeedCamsClearCallback = std::function<void()>;
+  using AlternativesReadyListener = std::function<void()>;
 
   using RouteStartBuildCallback = std::function<void(std::vector<RouteMarkData> const & points)>;
 
@@ -195,6 +196,12 @@ public:
 
   /// @brief Check if alternatives are available.
   bool HasAlternativeRoutes() const;
+
+  /// @brief Set listener called when alternatives are ready (for JNI notification).
+  void SetAlternativesReadyListener(AlternativesReadyListener const & listener)
+  {
+    m_alternativesReadyListener = listener;
+  }
 
   // Traffic deviation UI support
   /// @brief Get usual route time based on historical traffic data.
@@ -406,6 +413,7 @@ private:
   TransitRouteInfo m_transitRouteInfo;
 
   // Phase 4: Alternative routes
+  AlternativesReadyListener m_alternativesReadyListener;
   std::shared_ptr<routing::IAlternativeFinder> m_alternativeFinder;
   std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;  // Protected by m_drapeSubroutesMutex
   int m_selectedRouteIndex = 0;

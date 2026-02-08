@@ -394,6 +394,8 @@ RoutingManager::RoutingManager(Callbacks && callbacks, Delegate & delegate)
     // Called on GUI thread
     m_routingSession.SetAlternatives(std::move(alternatives));
     InsertAlternativeRoutes(m_routingSession.GetAlternatives());
+    if (m_alternativesReadyListener)
+      m_alternativesReadyListener();
   });
 
   // Create shared traffic estimator for passing to IndexRouter
