@@ -387,6 +387,15 @@ RoutingManager::RoutingManager(Callbacks && callbacks, Delegate & delegate)
     });
   });
 
+  // Create alternative finder and wire callback for thread-safe computation
+  m_alternativeFinder = routing::CreateAlternativeFinder();
+  m_routingSession.SetAlternativeFinder(m_alternativeFinder);
+  m_routingSession.SetAlternativesCallback([this](std::vector<routing::AlternativeRoute> alternatives) {
+    // Called on GUI thread
+    m_routingSession.SetAlternatives(std::move(alternatives));
+    InsertAlternativeRoutes(m_routingSession.GetAlternatives());
+  });
+
   // Create shared traffic estimator for passing to IndexRouter
   m_trafficEstimator = std::make_shared<traffic::TrafficEstimator>();
 }
@@ -409,48 +418,6 @@ void RoutingManager::OnBuildRouteReady(Route const & route, RouterResultCode cod
 
   auto const hasWarnings = InsertRoute(route);
   m_drapeEngine.SafeCall(&df::DrapeEngine::StopLocationFollow);
-
-  // Phase 4: Compute alternative routes for car routing on long routes
-  if (m_currentRouterType == RouterType::Vehicle && route.IsValid())
-  {
-    double const routeDistanceMeters = route.GetTotalDistanceMeters();
-    AlternativeParams params = AlternativeParams::Default();
-
-    // Only compute alternatives for routes longer than minimum threshold
-    if (routeDistanceMeters >= params.minLengthMeters)
-    {
-      // Create alternative finder if not already created
-      if (!m_alternativeFinder)
-        m_alternativeFinder = std::shared_ptr<IAlternativeFinder>(CreateAlternativeFinder().release());
-
-      auto routePtr = m_routingSession.GetRouteForTests();
-      if (m_alternativeFinder && routePtr)
-      {
-        uint64_t const generation = ++m_routeGeneration;
-        auto finder = m_alternativeFinder;  // shared_ptr copy for lambda
-
-        // Synchronous route calculation callback via RoutingSession
-        RouteCalculationFn calculateRoute = [this](Checkpoints const & checkpoints, Route & outRoute) -> RouterResultCode
-        {
-          return m_routingSession.CalculateRouteSync(checkpoints, outRoute);
-        };
-
-        GetPlatform().RunTask(Platform::Thread::Background, [this, routePtr, params, finder, calculateRoute, generation]()
-        {
-          auto alternatives = finder->Find(*routePtr, params, calculateRoute);
-          if (!alternatives.empty())
-          {
-            GetPlatform().RunTask(Platform::Thread::Gui, [this, alts = std::move(alternatives), generation]()
-            {
-              // W3: Check generation to discard stale results
-              if (generation == m_routeGeneration.load())
-                InsertAlternativeRoutes(alts);
-            });
-          }
-        });
-      }
-    }
-  }
 
   // Validate route (in case of bicycle routing it can be invalid).
   ASSERT(route.IsValid(), ());

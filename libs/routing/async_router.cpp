@@ -1,4 +1,5 @@
 #include "routing/async_router.hpp"
+#include "routing/alternative_route.hpp"
 
 #include "geometry/mercator.hpp"
 
@@ -181,22 +182,16 @@ void AsyncRouter::SetGuidesTracks(GuidesTracks && guides)
   m_guides = std::move(guides);
 }
 
-RouterResultCode AsyncRouter::CalculateRouteSync(Checkpoints const & checkpoints, Route & route)
+void AsyncRouter::SetAlternativesCallback(AlternativesReadyCallback const & callback)
 {
-  std::shared_ptr<IRouter> router;
-  {
-    lock_guard l(m_guard);
-    router = m_router;
-  }
+  lock_guard l(m_guard);
+  m_alternativesCallback = callback;
+}
 
-  if (!router)
-    return RouterResultCode::InternalError;
-
-  RouterDelegate delegate;
-  delegate.SetTimeout(30 /* seconds */);
-
-  return router->CalculateRoute(
-      checkpoints, m2::PointD::Zero(), false /* adjustToPrevRoute */, delegate, route);
+void AsyncRouter::SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder)
+{
+  lock_guard l(m_guard);
+  m_alternativeFinder = std::move(finder);
 }
 
 void AsyncRouter::ClearState()
@@ -383,6 +378,34 @@ void AsyncRouter::CalculateRoute()
     else
     {
       GetPlatform().RunTask(Platform::Thread::Gui, [delegateProxy, code]() { delegateProxy->OnRemoveRoute(code); });
+    }
+    return;
+  }
+
+  // Compute alternatives on the same worker thread (safe: sequential, no data race).
+  // The primary route is done and dispatched; we still hold the router shared_ptr.
+  std::shared_ptr<IAlternativeFinder> altFinder;
+  AlternativesReadyCallback altCallback;
+  {
+    lock_guard l(m_guard);
+    altFinder = m_alternativeFinder;
+    altCallback = m_alternativesCallback;
+  }
+
+  if (altFinder && altCallback && route->GetTotalDistanceMeters() >= 5000.0)
+  {
+    auto calculateRouteFn = [&router](Checkpoints const & cp, Route & r) -> RouterResultCode {
+      RouterDelegate delegate;
+      delegate.SetTimeout(15 /* seconds per alternative */);
+      return router->CalculateRoute(cp, m2::PointD::Zero(), false /* adjustToPrevRoute */, delegate, r);
+    };
+
+    auto alternatives = altFinder->Find(*route, AlternativeParams::Default(), calculateRouteFn);
+    if (!alternatives.empty())
+    {
+      LOG(LINFO, ("Found", alternatives.size(), "alternative route(s)"));
+      GetPlatform().RunTask(Platform::Thread::Gui,
+          [altCallback, alts = std::move(alternatives)]() { altCallback(std::move(alts)); });
     }
   }
 }

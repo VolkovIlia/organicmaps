@@ -1,5 +1,6 @@
 #pragma once
 
+#include "routing/alternative_finder.hpp"
 #include "routing/alternative_route.hpp"
 #include "routing/async_router.hpp"
 #include "routing/corridor_tracker.hpp"
@@ -191,8 +192,11 @@ public:
   /// @brief Check if alternatives are available.
   bool HasAlternatives() const { return !m_alternatives.empty(); }
 
-  /// @brief Synchronous route calculation for alternative route finding.
-  RouterResultCode CalculateRouteSync(Checkpoints const & checkpoints, Route & route);
+  /// @brief Set callback for receiving computed alternatives.
+  void SetAlternativesCallback(AlternativesReadyCallback const & callback);
+
+  /// @brief Set the alternative finder implementation.
+  void SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder);
 
   /// @brief Set alternatives computed by IndexRouter.
   void SetAlternatives(std::vector<AlternativeRoute> && alternatives);

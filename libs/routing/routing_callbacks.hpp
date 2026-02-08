@@ -1,5 +1,6 @@
 #pragma once
 
+#include "routing/alternative_route.hpp"
 #include "routing/turns.hpp"
 
 #include "geometry/latlon.hpp"
@@ -84,6 +85,7 @@ using ChangeSessionStateCallback = std::function<void(SessionState previous, Ses
 using SpeedCameraShowCallback = std::function<void(m2::PointD const & point, double cameraSpeedKmPH)>;
 using SpeedCameraClearCallback = std::function<void()>;
 using OnNewTurn = std::function<void()>;
+using AlternativesReadyCallback = std::function<void(std::vector<AlternativeRoute>)>;
 
 inline std::string ToString(RouterResultCode code)
 {

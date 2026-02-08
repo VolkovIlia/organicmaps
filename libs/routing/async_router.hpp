@@ -1,6 +1,7 @@
 #pragma once
 
 #include "routing/absent_regions_finder.hpp"
+#include "routing/alternative_finder.hpp"
 #include "routing/checkpoints.hpp"
 #include "routing/route.hpp"
 #include "routing/router.hpp"
@@ -54,10 +55,8 @@ public:
 
   void SetGuidesTracks(GuidesTracks && guides);
 
-  /// @brief Synchronous route calculation using the stored router.
-  /// Must only be called when no async routing is in progress.
-  /// @note This is used by alternative route finder.
-  RouterResultCode CalculateRouteSync(Checkpoints const & checkpoints, Route & route);
+  void SetAlternativesCallback(AlternativesReadyCallback const & callback);
+  void SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder);
 
   /// Interrupt routing and clear buffers
   void ClearState();
@@ -127,5 +126,8 @@ private:
 
   PointCheckCallback const m_pointCheckCallback;
   uint64_t m_routeCounter = 0;
+
+  AlternativesReadyCallback m_alternativesCallback;
+  std::shared_ptr<IAlternativeFinder> m_alternativeFinder;
 };
 }  // namespace routing

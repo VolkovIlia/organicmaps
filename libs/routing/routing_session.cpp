@@ -993,9 +993,18 @@ void RoutingSession::HandleCorridorRerouteDecision(RerouteDecisionResult const &
   }
 }
 
-RouterResultCode RoutingSession::CalculateRouteSync(Checkpoints const & checkpoints, Route & route)
+void RoutingSession::SetAlternativesCallback(AlternativesReadyCallback const & callback)
 {
-  return m_router->CalculateRouteSync(checkpoints, route);
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  CHECK(m_router, ());
+  m_router->SetAlternativesCallback(callback);
+}
+
+void RoutingSession::SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  CHECK(m_router, ());
+  m_router->SetAlternativeFinder(std::move(finder));
 }
 
 // Phase 4: Alternative routes implementation
