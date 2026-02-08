@@ -52,6 +52,13 @@ public class NavigationController implements TrafficManager.TrafficCallback, Nav
 
   private final MapButtonsViewModel mMapButtonsViewModel;
 
+  @NonNull
+  private final View mDecisionPointBanner;
+  @NonNull
+  private final TextView mDecisionPointText;
+
+  private int mCurrentDecisionPointAltIndex = -1;
+
   private final NavMenu mNavMenu;
   View.OnClickListener mOnSettingsClickListener;
 
@@ -91,6 +98,20 @@ public class NavigationController implements TrafficManager.TrafficCallback, Nav
     mLanesView = topFrame.findViewById(R.id.lanes);
 
     mSpeedLimit = topFrame.findViewById(R.id.nav_speed_limit);
+
+    // Decision point banner
+    mDecisionPointBanner = topFrame.findViewById(R.id.nav_decision_point_banner);
+    mDecisionPointText = topFrame.findViewById(R.id.nav_decision_point_text);
+    topFrame.findViewById(R.id.nav_decision_point_switch).setOnClickListener(v -> {
+      if (mCurrentDecisionPointAltIndex > 0)
+        Framework.nativeSelectAlternativeRoute(mCurrentDecisionPointAltIndex);
+      hideDecisionPointBanner();
+    });
+    topFrame.findViewById(R.id.nav_decision_point_dismiss).setOnClickListener(v -> {
+      if (mCurrentDecisionPointAltIndex > 0)
+        Framework.nativeDismissAlternative(mCurrentDecisionPointAltIndex);
+      hideDecisionPointBanner();
+    });
 
     // Show a blank view below the navbar to hide the menu content
     final View navigationBarBackground = mFrame.findViewById(R.id.nav_bottom_sheet_nav_bar);
@@ -149,7 +170,33 @@ public class NavigationController implements TrafficManager.TrafficCallback, Nav
       updateVehicle(info);
 
     updateStreetView(info);
+    updateDecisionPoint();
     mNavMenu.update(info);
+  }
+
+  private void updateDecisionPoint()
+  {
+    int[] dp = Framework.nativeGetVisibleDecisionPoint();
+    if (dp != null && dp.length == 2)
+    {
+      int altIndex = dp[0];
+      int timeSavingSec = dp[1];
+      int timeSavingMin = Math.max(1, timeSavingSec / 60);
+      mCurrentDecisionPointAltIndex = altIndex;
+      mDecisionPointText.setText(mFrame.getContext().getString(
+          R.string.routing_decision_point_saves_time, timeSavingMin));
+      UiUtils.show(mDecisionPointBanner);
+    }
+    else
+    {
+      hideDecisionPointBanner();
+    }
+  }
+
+  private void hideDecisionPointBanner()
+  {
+    mCurrentDecisionPointAltIndex = -1;
+    UiUtils.hide(mDecisionPointBanner);
   }
 
   private void updateStreetView(@NonNull RoutingInfo info)

@@ -354,6 +354,8 @@
     <string name="dialog_routing_disclaimer_recommendations">— Suggested routes should only be understood as recommendations;</string>
     <string name="dialog_routing_disclaimer_borders">— Exercise caution with routes in border zones: the routes created by our app may sometimes cross country borders in unauthorized places.</string>
     <string name="dialog_routing_disclaimer_beware">Please stay alert and safe on the roads!</string>
+    <string name="routing_decision_point_switch">Switch</string>
+    <string name="routing_decision_point_saves_time">Faster route saves %d min</string>
     <string name="dialog_routing_check_gps">Check GPS signal</string>
     <string name="dialog_routing_error_location_not_found">Unable to create route. Current GPS coordinates could not be identified.</string>
     <string name="dialog_routing_location_turn_wifi">Please check your GPS signal. Enabling Wi-Fi will improve your location accuracy.</string>
