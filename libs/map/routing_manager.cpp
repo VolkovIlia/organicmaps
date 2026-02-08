@@ -1660,32 +1660,35 @@ void RoutingManager::SelectAlternativeRoute(int index)
     return;
 
   auto const & alternatives = m_routingSession.GetAlternatives();
-  // Validate index: must be >= 0, and if > 0, (index - 1) must be valid index into alternatives array
   if (index < 0 || (index > 0 && static_cast<size_t>(index - 1) >= alternatives.size()))
     return;
-
-  // TODO: In Phase 4, implement style swapping:
-  // 1. Change current selected route to alternative style (gray dashed)
-  // 2. Change new selected route to primary style (solid blue)
-  // 3. Use DrapeEngine::UpdateSubrouteStyle() when available
 
   int const prevIndex = m_selectedRouteIndex;
   m_selectedRouteIndex = index;
 
-  // If switching to an alternative (index > 0), trigger route switch in session
   if (index > 0)
   {
+    // SwitchToAlternative builds a new Route from the alternative's data,
+    // saves old primary as an alternative, and assigns new route to session.
     bool const switched = m_routingSession.SwitchToAlternative(index);
     if (!switched)
     {
-      // Revert if switch failed
       m_selectedRouteIndex = prevIndex;
       return;
     }
 
-    // Rebuild the route display with the new primary route
+    // Clear old alternative subroutes from the map.
+    ClearAlternativeRoutes();
+
+    // Re-render new primary route (blue) from session.
     m_routingSession.RouteCall([this](Route const & route) { InsertRoute(route); });
+
+    // Re-render remaining alternatives (gray dashed) — SwitchToAlternative
+    // saved old primary as alternatives[0].
+    InsertAlternativeRoutes(m_routingSession.GetAlternatives());
   }
+
+  m_selectedRouteIndex = 0;  // After switch, selected is always the new primary.
 }
 
 void RoutingManager::ClearAlternativeRoutes()

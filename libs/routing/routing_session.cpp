@@ -1022,15 +1022,52 @@ bool RoutingSession::SwitchToAlternative(int index)
   if (index < 1 || index > static_cast<int>(m_alternatives.size()))
     return false;
 
-  auto const & alt = m_alternatives[static_cast<size_t>(index - 1)];
+  auto const altIdx = static_cast<size_t>(index - 1);
+  auto & alt = m_alternatives[altIdx];
   if (!alt.IsValid())
     return false;
 
-  // TODO: In full implementation, create new Route from alternative path
-  // and call AssignRoute with the new route.
-  // For now, just clear alternatives after switch attempt.
+  // Save old primary route data as a new alternative.
+  AlternativeRoute oldPrimary;
+  oldPrimary.routeIndex = 0;
+  oldPrimary.polyline = m_route->GetPoly();
+  oldPrimary.routeSegments = m_route->GetRouteSegments();
+  oldPrimary.distanceMeters = m_route->GetTotalDistanceMeters();
+  oldPrimary.durationSeconds = m_route->GetTotalTimeSec();
+  // Mark as valid by setting a non-zero routeIndex and dummy path segment.
+  oldPrimary.path = alt.path;  // Reuse for IsValid() — path just needs to be non-empty.
+
+  // Build new Route from alternative data.
+  auto newRoute = std::make_shared<Route>(m_route->GetRouterId(), 0 /* routeId */);
+
+  // Extract polyline points for SetGeometry.
+  auto const & polyPoints = alt.polyline.GetPoints();
+  newRoute->SetGeometry(polyPoints.begin(), polyPoints.end());
+
+  // Set route segments (contains turn info, distance, time, etc.).
+  std::vector<RouteSegment> segments = std::move(alt.routeSegments);
+  newRoute->SetRouteSegments(std::move(segments));
+
+  // Set subroute attributes (single subroute covering all segments).
+  if (!polyPoints.empty() && newRoute->GetRouteSegments().size() > 0)
+  {
+    auto const startJunction = geometry::PointWithAltitude(polyPoints.front(), geometry::kDefaultAltitudeMeters);
+    auto const finishJunction = geometry::PointWithAltitude(polyPoints.back(), geometry::kDefaultAltitudeMeters);
+    newRoute->SetSubroteAttrs(std::vector<Route::SubrouteAttrs>(
+        {Route::SubrouteAttrs(startJunction, finishJunction, 0, newRoute->GetRouteSegments().size())}));
+  }
+
+  // Replace the selected alternative with old primary, remove all others.
+  m_alternatives[altIdx] = std::move(oldPrimary);
+  // Keep only the old primary as the single alternative (for switch-back).
+  AlternativeRoute savedOldPrimary = std::move(m_alternatives[altIdx]);
+  savedOldPrimary.routeIndex = 1;
   m_alternatives.clear();
+  m_alternatives.push_back(std::move(savedOldPrimary));
   m_dismissedAlternatives.clear();
+
+  // Assign the new route (resets session state to RouteNotStarted).
+  AssignRoute(newRoute, RouterResultCode::NoError);
 
   return true;
 }
