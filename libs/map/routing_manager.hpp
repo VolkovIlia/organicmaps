@@ -34,6 +34,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -196,6 +197,13 @@ public:
 
   /// @brief Check if alternatives are available.
   bool HasAlternativeRoutes() const;
+
+  /// @brief Get decision point if user is approaching a fork where alternative diverges.
+  /// @return DecisionPoint if within show range, nullopt otherwise.
+  std::optional<routing::DecisionPoint> GetVisibleDecisionPoint() const;
+
+  /// @brief Dismiss alternative at decision point (user chose to stay on primary).
+  void DismissAlternative(int alternativeIndex);
 
   /// @brief Set listener called when alternatives are ready (for JNI notification).
   void SetAlternativesReadyListener(AlternativesReadyListener const & listener)

@@ -1717,6 +1717,16 @@ bool RoutingManager::HasAlternativeRoutes() const
   return m_routingSession.HasAlternatives();
 }
 
+std::optional<DecisionPoint> RoutingManager::GetVisibleDecisionPoint() const
+{
+  return m_routingSession.GetVisibleDecisionPoint();
+}
+
+void RoutingManager::DismissAlternative(int alternativeIndex)
+{
+  m_routingSession.DismissAlternative(alternativeIndex);
+}
+
 int RoutingManager::GetUsualRouteTime() const
 {
   if (!IsRouteBuilt())

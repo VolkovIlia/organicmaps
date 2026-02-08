@@ -1493,6 +1493,24 @@ JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetTrafficDeviationType(
   return static_cast<jint>(rm.GetTrafficDeviationType());
 }
 
+JNIEXPORT jintArray Java_app_organicmaps_sdk_Framework_nativeGetVisibleDecisionPoint(JNIEnv * env, jclass)
+{
+  auto const dp = frm()->GetRoutingManager().GetVisibleDecisionPoint();
+  if (!dp)
+    return nullptr;
+
+  jintArray result = env->NewIntArray(2);
+  jint data[2] = {static_cast<jint>(dp->alternativeIndex),
+                  static_cast<jint>(dp->timeSavingSeconds)};
+  env->SetIntArrayRegion(result, 0, 2, data);
+  return result;
+}
+
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeDismissAlternative(JNIEnv *, jclass, jint alternativeIndex)
+{
+  frm()->GetRoutingManager().DismissAlternative(static_cast<int>(alternativeIndex));
+}
+
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute(JNIEnv *, jclass, jint routeIndex)
 {
   frm()->GetRoutingManager().SelectAlternativeRoute(static_cast<int>(routeIndex));
@@ -1887,6 +1905,11 @@ JNINativeMethod const frameworkMethods[] = {
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeHasAlternativeRoutes)},
     {"nativeGetSelectedRouteIndex", "()I",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex)},
+    // Decision points
+    {"nativeGetVisibleDecisionPoint", "()[I",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetVisibleDecisionPoint)},
+    {"nativeDismissAlternative", "(I)V",
+     reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeDismissAlternative)},
     // Traffic deviation
     {"nativeGetUsualRouteTime", "()I",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetUsualRouteTime)},

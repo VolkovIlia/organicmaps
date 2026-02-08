@@ -293,6 +293,19 @@ public class Framework
   public static native int nativeGetSelectedRouteIndex();
 
   /**
+   * Get visible decision point during navigation.
+   * @return int[2] = {alternativeIndex, timeSavingSeconds}, or null if none visible.
+   */
+  @Nullable
+  public static native int[] nativeGetVisibleDecisionPoint();
+
+  /**
+   * Dismiss alternative at a decision point (user chose to stay on primary).
+   * @param alternativeIndex 1-based alternative index.
+   */
+  public static native void nativeDismissAlternative(int alternativeIndex);
+
+  /**
    * Get usual route time based on historical traffic data.
    * @return Usual time in seconds, or 0 if not available.
    */
