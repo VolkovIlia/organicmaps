@@ -33,6 +33,7 @@
 #include "coding/file_reader.hpp"
 #include "coding/file_writer.hpp"
 
+#include "base/logging.hpp"
 #include "base/scope_guard.hpp"
 #include "base/string_utils.hpp"
 
@@ -387,9 +388,7 @@ RoutingManager::RoutingManager(Callbacks && callbacks, Delegate & delegate)
     });
   });
 
-  // Create alternative finder and wire callback for thread-safe computation
-  m_alternativeFinder = routing::CreateAlternativeFinder();
-  m_routingSession.SetAlternativeFinder(m_alternativeFinder);
+  // Wire callback for receiving alternatives computed inside IndexRouter::DoCalculateRoute.
   m_routingSession.SetAlternativesCallback([this](std::vector<routing::AlternativeRoute> alternatives) {
     // Called on GUI thread
     m_routingSession.SetAlternatives(std::move(alternatives));
@@ -553,6 +552,9 @@ void RoutingManager::SetRouterImpl(RouterType type)
     // Pass traffic estimator for route segment coloring fallback
     if (m_trafficEstimator)
       indexRouter->SetTrafficEstimator(m_trafficEstimator);
+
+    // Enable in-router alternative computation (reuses WorldGraph for speed).
+    indexRouter->SetComputeAlternatives(true);
 
     router = std::move(indexRouter);
   }
@@ -1683,9 +1685,11 @@ void RoutingManager::SelectAlternativeRoute(int index)
     // Re-render new primary route (blue) from session.
     m_routingSession.RouteCall([this](Route const & route) { InsertRoute(route); });
 
-    // Re-render remaining alternatives (gray dashed) — SwitchToAlternative
-    // saved old primary as alternatives[0].
+    // Re-render remaining alternatives (gray dashed).
     InsertAlternativeRoutes(m_routingSession.GetAlternatives());
+
+    // Notify UI to update route info (time, distance) in bottom panel.
+    CallRouteBuilded(RouterResultCode::NoError, {});
   }
 
   m_selectedRouteIndex = 0;  // After switch, selected is always the new primary.
@@ -1715,6 +1719,32 @@ std::vector<AlternativeRoute> RoutingManager::GetAlternativeRoutes() const
 bool RoutingManager::HasAlternativeRoutes() const
 {
   return m_routingSession.HasAlternatives();
+}
+
+int RoutingManager::FindAlternativeRouteAtPoint(m2::PointD const & point, double maxSquaredDist) const
+{
+  auto const & alternatives = m_routingSession.GetAlternatives();
+  if (alternatives.empty())
+    return -1;
+
+  int bestIndex = -1;
+  double bestSquaredDist = maxSquaredDist;
+
+  for (size_t i = 0; i < alternatives.size(); ++i)
+  {
+    auto const & polyline = alternatives[i].polyline;
+    if (polyline.GetSize() < 2)
+      continue;
+
+    auto const [squaredDist, segIdx] = polyline.CalcMinSquaredDistance(point);
+    if (squaredDist < bestSquaredDist)
+    {
+      bestSquaredDist = squaredDist;
+      bestIndex = static_cast<int>(i + 1);  // 1-based index for SelectAlternativeRoute
+    }
+  }
+
+  return bestIndex;
 }
 
 std::optional<DecisionPoint> RoutingManager::GetVisibleDecisionPoint() const

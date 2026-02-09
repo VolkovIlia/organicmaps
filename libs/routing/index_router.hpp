@@ -89,6 +89,11 @@ public:
   bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                    EdgeProj & proj) override;
 
+  std::vector<AlternativeRoute> TakeAlternativeCandidates() override
+  {
+    return std::move(m_precomputedAlternatives);
+  }
+
   bool GetBestOutgoingEdges(m2::PointD const & checkpoint, WorldGraph & graph, std::vector<Edge> & edges);
 
   VehicleType GetVehicleType() const { return m_vehicleType; }
@@ -280,8 +285,12 @@ private:
 
   std::vector<Segment> GetBestOutgoingSegments(m2::PointD const & checkpoint, WorldGraph & graph);
 
-  // Phase 4: Calculate alternatives using k-SPwLO algorithm
-  void CalculateAlternatives(Route & primaryRoute);
+  // Phase 4: Calculate alternatives reusing the live WorldGraph from primary route.
+  void CalculateAlternatives(Route & primaryRoute, WorldGraph & graph);
+
+  // Lightweight route computation reusing an existing WorldGraph (no MakeWorldGraph, no guides).
+  RouterResultCode CalculateRouteWithGraph(WorldGraph & graph, Checkpoints const & checkpoints,
+                                           RouterDelegate const & delegate, Route & route);
 
   VehicleType m_vehicleType;
   bool m_loadAltitudes;
@@ -314,5 +323,8 @@ private:
   // Phase 4: Alternative routes
   bool m_computeAlternatives = false;
   std::unique_ptr<IAlternativeFinder> m_alternativeFinder;
+
+  // Pre-computed alternative routes from within DoCalculateRoute (reusing WorldGraph).
+  std::vector<AlternativeRoute> m_precomputedAlternatives;
 };
 }  // namespace routing

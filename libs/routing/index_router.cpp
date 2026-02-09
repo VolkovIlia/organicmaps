@@ -182,6 +182,20 @@ bool IsDeadEndCached(Segment const & segment, bool isOutgoing, bool useRoutingOp
 
   return false;
 }
+
+void CollapseForward_ReverseLoops(std::vector<Segment> & path)
+{
+  for (size_t i = 1; i < path.size() - 2;)
+  {
+    auto const beg = path.begin() + i;
+    auto const end = path.end() - 1;
+    auto j = std::find(beg + 1, end, path[i].GetReversed());
+    if (j != end)
+      path.erase(beg, j + 1);
+    else
+      ++i;
+  }
+}
 }  // namespace
 
 // IndexRouter::BestEdgeComparator ----------------------------------------------------------------
@@ -634,6 +648,11 @@ RouterResultCode IndexRouter::DoCalculateRoute(Checkpoints const & checkpoints, 
 
   m_lastFakeEdges = make_unique<FakeEdgesContainer>(std::move(*starter));
 
+  // Compute alternatives reusing the live WorldGraph (IndexGraph cache avoids re-deserialization).
+  m_precomputedAlternatives.clear();
+  if (m_computeAlternatives)
+    CalculateAlternatives(route, *graph);
+
   return RouterResultCode::NoError;
 }
 
@@ -743,23 +762,6 @@ RouterResultCode IndexRouter::CalculateSubrouteNoLeapsMode(IndexGraphStarter & s
   subroute = std::move(routingResult.m_path);
   return result;
 }
-
-namespace
-{
-void CollapseForward_ReverseLoops(std::vector<Segment> & path)
-{
-  for (size_t i = 1; i < path.size() - 2;)
-  {
-    auto const beg = path.begin() + i;
-    auto const end = path.end() - 1;
-    auto j = std::find(beg + 1, end, path[i].GetReversed());
-    if (j != end)
-      path.erase(beg, j + 1);
-    else
-      ++i;
-  }
-}
-}  // namespace
 
 RouterResultCode IndexRouter::CalculateSubrouteLeapsOnlyMode(Checkpoints const & checkpoints, size_t subrouteIdx,
                                                              IndexGraphStarter & starter,
@@ -1825,14 +1827,119 @@ void IndexRouter::SetupAlgorithmMode(IndexGraphStarter & starter, bool guidesAct
   }
 }
 
-// Phase 4: Alternative routes implementation
-// Note: Alternative route computation is now handled by RoutingManager::OnBuildRouteReady()
-// which has access to RoutingSession::CalculateRouteSync for the via-waypoint approach.
-// This IndexRouter method is kept as a no-op for API compatibility.
-void IndexRouter::CalculateAlternatives(Route & /* primaryRoute */)
+// Phase 4: Lightweight route computation reusing an existing WorldGraph.
+// Skips absent country check, WorldGraph creation, and guides — used for alternative routes.
+RouterResultCode IndexRouter::CalculateRouteWithGraph(WorldGraph & graph, Checkpoints const & checkpoints,
+                                                      RouterDelegate const & delegate, Route & route)
 {
-  // Alternatives are computed at the RoutingManager level using
-  // RoutingSession::CalculateRouteSync as the route calculation callback.
+  vector<Segment> segments;
+  size_t subrouteSegmentsBegin = 0;
+  vector<Route::SubrouteAttrs> subroutes;
+  PushPassedSubroutes(checkpoints, subroutes);
+
+  unique_ptr<IndexGraphStarter> starter;
+  auto progress = make_shared<AStarProgress>();
+  double const checkpointsLength = checkpoints.GetSummaryLengthBetweenPointsMeters();
+
+  PointsOnEdgesSnapping snapping(*this, graph);
+  size_t const subroutesCount = checkpoints.GetNumSubroutes();
+
+  for (size_t i = checkpoints.GetPassedIdx(); i < subroutesCount; ++i)
+  {
+    auto const & startCheckpoint = checkpoints.GetPoint(i);
+    auto const & finishCheckpoint = checkpoints.GetPoint(i + 1);
+
+    FakeEnding startFakeEnding;
+    FakeEnding finishFakeEnding;
+
+    bool isStartSegmentStrictForward = (m_vehicleType == VehicleType::Car);
+    bool const isLastSubroute = (i == subroutesCount - 1);
+    bool startIsCodirectional = false;
+
+    switch (snapping.Snap(startCheckpoint, finishCheckpoint, m2::PointD::Zero(),
+                          startFakeEnding, finishFakeEnding, startIsCodirectional))
+    {
+    case 1: return RouterResultCode::StartPointNotFound;
+    case 2: return isLastSubroute ? RouterResultCode::EndPointNotFound : RouterResultCode::IntermediatePointNotFound;
+    }
+
+    if (i == checkpoints.GetPassedIdx())
+      isStartSegmentStrictForward = startIsCodirectional;
+
+    uint32_t const fakeNumerationStart = starter ? starter->GetNumFakeSegments() : 0;
+    IndexGraphStarter subrouteStarter(startFakeEnding, finishFakeEnding, fakeNumerationStart,
+                                      isStartSegmentStrictForward, graph);
+
+    vector<Segment> subroute;
+    double contributionCoef = kAlmostZeroContribution;
+    if (!AlmostEqualAbs(checkpointsLength, 0.0, 1e-5))
+      contributionCoef = mercator::DistanceOnEarth(startCheckpoint, finishCheckpoint) / checkpointsLength;
+
+    AStarSubProgress subProgress(mercator::ToLatLon(startCheckpoint), mercator::ToLatLon(finishCheckpoint),
+                                 contributionCoef);
+    progress->AppendSubProgress(subProgress);
+    SCOPE_GUARD(eraseProgress, [&progress]() { progress->PushAndDropLastSubProgress(); });
+
+    auto const result = CalculateSubroute(checkpoints, i, delegate, progress, subrouteStarter, subroute, false);
+    if (result != RouterResultCode::NoError)
+      return result;
+
+    IndexGraphStarter::CheckValidRoute(subroute);
+    segments.insert(segments.end(), subroute.begin(), subroute.end());
+
+    size_t subrouteSegmentsEnd = segments.size();
+    subroutes.emplace_back(subrouteStarter.GetStartJunction().ToPointWithAltitude(),
+                           subrouteStarter.GetFinishJunction().ToPointWithAltitude(), subrouteSegmentsBegin,
+                           subrouteSegmentsEnd);
+    subrouteSegmentsBegin = subrouteSegmentsEnd;
+
+    Segment nextSegment;
+    CHECK(GetLastRealOrPart(subrouteStarter, subroute, nextSegment), ("No real or part of real segments in route."));
+    snapping.SetNextStartSegment(nextSegment);
+
+    if (!starter)
+      starter = make_unique<IndexGraphStarter>(std::move(subrouteStarter));
+    else
+      starter->Append(FakeEdgesContainer(std::move(subrouteStarter)));
+  }
+
+  route.SetCurrentSubrouteIdx(checkpoints.GetPassedIdx());
+  route.SetSubroteAttrs(std::move(subroutes));
+
+  IndexGraphStarter::CheckValidRoute(segments);
+
+  auto redressResult = RedressRoute(segments, delegate.GetCancellable(), *starter, route);
+  if (redressResult != RouterResultCode::NoError)
+    return redressResult;
+
+  return RouterResultCode::NoError;
+}
+
+// Phase 4: Compute alternatives inside DoCalculateRoute reusing the live WorldGraph.
+void IndexRouter::CalculateAlternatives(Route & primaryRoute, WorldGraph & graph)
+{
+  if (primaryRoute.GetTotalDistanceMeters() < 5000.0)
+    return;
+
+  if (!m_alternativeFinder)
+    m_alternativeFinder = CreateAlternativeFinder();
+
+  base::Timer timer;
+
+  auto calculateRouteFn = [this, &graph](Checkpoints const & cp, Route & r) -> RouterResultCode {
+    RouterDelegate delegate;
+    delegate.SetTimeout(10);
+    return CalculateRouteWithGraph(graph, cp, delegate, r);
+  };
+
+  AlternativeParams params;
+  params.k = 2;                    // primary + 1 alternative
+  params.maxViaNodeCandidates = 6; // 3 fractions x 1 offset x 2 sides
+
+  m_precomputedAlternatives = m_alternativeFinder->Find(primaryRoute, params, calculateRouteFn);
+
+  LOG(LINFO, ("Pre-computed", m_precomputedAlternatives.size(), "alternatives in",
+      timer.ElapsedSeconds() * 1000, "ms (reusing WorldGraph)"));
 }
 
 }  // namespace routing

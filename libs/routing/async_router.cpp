@@ -188,12 +188,6 @@ void AsyncRouter::SetAlternativesCallback(AlternativesReadyCallback const & call
   m_alternativesCallback = callback;
 }
 
-void AsyncRouter::SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder)
-{
-  lock_guard l(m_guard);
-  m_alternativeFinder = std::move(finder);
-}
-
 void AsyncRouter::ClearState()
 {
   unique_lock ul(m_guard);
@@ -382,30 +376,21 @@ void AsyncRouter::CalculateRoute()
     return;
   }
 
-  // Compute alternatives on the same worker thread (safe: sequential, no data race).
-  // The primary route is done and dispatched; we still hold the router shared_ptr.
-  std::shared_ptr<IAlternativeFinder> altFinder;
+  // Try pre-computed alternatives first (computed inside DoCalculateRoute reusing WorldGraph).
   AlternativesReadyCallback altCallback;
   {
     lock_guard l(m_guard);
-    altFinder = m_alternativeFinder;
     altCallback = m_alternativesCallback;
   }
 
-  if (altFinder && altCallback && route->GetTotalDistanceMeters() >= 5000.0)
+  if (altCallback)
   {
-    auto calculateRouteFn = [&router](Checkpoints const & cp, Route & r) -> RouterResultCode {
-      RouterDelegate delegate;
-      delegate.SetTimeout(15 /* seconds per alternative */);
-      return router->CalculateRoute(cp, m2::PointD::Zero(), false /* adjustToPrevRoute */, delegate, r);
-    };
-
-    auto alternatives = altFinder->Find(*route, AlternativeParams::Default(), calculateRouteFn);
-    if (!alternatives.empty())
+    auto precomputed = router->TakeAlternativeCandidates();
+    if (!precomputed.empty())
     {
-      LOG(LINFO, ("Found", alternatives.size(), "alternative route(s)"));
+      LOG(LINFO, ("Using", precomputed.size(), "pre-computed alternative(s) (fast path)"));
       GetPlatform().RunTask(Platform::Thread::Gui,
-          [altCallback, alts = std::move(alternatives)]() { altCallback(std::move(alts)); });
+          [altCallback, alts = std::move(precomputed)]() { altCallback(std::move(alts)); });
     }
   }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "routing/alternative_route.hpp"
 #include "routing/checkpoints.hpp"
 #include "routing/road_graph.hpp"
 #include "routing/router_delegate.hpp"
@@ -80,6 +81,10 @@ public:
 
   virtual bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                            EdgeProj & proj) = 0;
+
+  /// @brief Take pre-computed alternative routes from last CalculateRoute.
+  /// Moves the data out — subsequent calls return empty.
+  virtual std::vector<AlternativeRoute> TakeAlternativeCandidates();
 };
 
 }  // namespace routing

@@ -2145,6 +2145,23 @@ void Framework::OnTapEvent(place_page::BuildInfo const & buildInfo)
     return;
   }
 
+  // Check if tap hits an alternative route polyline (before place page).
+  if (!buildInfo.m_isLongTap && !isRoutePoint && m_drapeEngine != nullptr &&
+      m_routingManager.HasAlternativeRoutes())
+  {
+    auto const touchRect = df::TapInfo::GetDefaultTapRect(buildInfo.m_mercator, m_currentModelView).GetGlobalRect();
+    double const halfSize = std::max(touchRect.SizeX(), touchRect.SizeY()) * 0.5;
+    double const maxSquaredDist = halfSize * halfSize;
+
+    int const altIndex = m_routingManager.FindAlternativeRouteAtPoint(buildInfo.m_mercator, maxSquaredDist);
+    if (altIndex > 0)
+    {
+      DeactivateMapSelection();
+      m_routingManager.SelectAlternativeRoute(altIndex);
+      return;
+    }
+  }
+
   if (buildInfo.m_isLongTap)
   {
     SwitchFullScreen();

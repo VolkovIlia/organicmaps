@@ -1000,12 +1000,6 @@ void RoutingSession::SetAlternativesCallback(AlternativesReadyCallback const & c
   m_router->SetAlternativesCallback(callback);
 }
 
-void RoutingSession::SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder)
-{
-  CHECK_THREAD_CHECKER(m_threadChecker, ());
-  CHECK(m_router, ());
-  m_router->SetAlternativeFinder(std::move(finder));
-}
 
 // Phase 4: Alternative routes implementation
 void RoutingSession::SetAlternatives(std::vector<AlternativeRoute> && alternatives)
@@ -1057,13 +1051,14 @@ bool RoutingSession::SwitchToAlternative(int index)
         {Route::SubrouteAttrs(startJunction, finishJunction, 0, newRoute->GetRouteSegments().size())}));
   }
 
-  // Replace the selected alternative with old primary, remove all others.
+  // Replace the selected alternative with old primary, keep all others.
+  oldPrimary.routeIndex = static_cast<int>(altIdx + 1);
   m_alternatives[altIdx] = std::move(oldPrimary);
-  // Keep only the old primary as the single alternative (for switch-back).
-  AlternativeRoute savedOldPrimary = std::move(m_alternatives[altIdx]);
-  savedOldPrimary.routeIndex = 1;
-  m_alternatives.clear();
-  m_alternatives.push_back(std::move(savedOldPrimary));
+
+  // Re-number remaining alternatives.
+  for (size_t i = 0; i < m_alternatives.size(); ++i)
+    m_alternatives[i].routeIndex = static_cast<int>(i + 1);
+
   m_dismissedAlternatives.clear();
 
   // Assign the new route (resets session state to RouteNotStarted).

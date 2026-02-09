@@ -2,6 +2,8 @@
 
 namespace routing
 {
+std::vector<AlternativeRoute> IRouter::TakeAlternativeCandidates() { return {}; }
+
 std::string ToString(RouterType type)
 {
   switch (type)

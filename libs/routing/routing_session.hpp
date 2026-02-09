@@ -1,6 +1,5 @@
 #pragma once
 
-#include "routing/alternative_finder.hpp"
 #include "routing/alternative_route.hpp"
 #include "routing/async_router.hpp"
 #include "routing/corridor_tracker.hpp"
@@ -194,9 +193,6 @@ public:
 
   /// @brief Set callback for receiving computed alternatives.
   void SetAlternativesCallback(AlternativesReadyCallback const & callback);
-
-  /// @brief Set the alternative finder implementation.
-  void SetAlternativeFinder(std::shared_ptr<IAlternativeFinder> finder);
 
   /// @brief Set alternatives computed by IndexRouter.
   void SetAlternatives(std::vector<AlternativeRoute> && alternatives);

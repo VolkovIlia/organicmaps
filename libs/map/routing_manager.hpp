@@ -6,7 +6,6 @@
 #include "map/transit/transit_display.hpp"
 #include "map/transit/transit_reader.hpp"
 
-#include "routing/alternative_finder.hpp"
 #include "routing/alternative_route.hpp"
 #include "routing/following_info.hpp"
 #include "routing/route.hpp"
@@ -197,6 +196,12 @@ public:
 
   /// @brief Check if alternatives are available.
   bool HasAlternativeRoutes() const;
+
+  /// @brief Find if a tap point hits an alternative route polyline.
+  /// @param point Tap point in mercator coordinates.
+  /// @param maxSquaredDist Maximum squared distance threshold (in mercator squared units).
+  /// @return Alternative route index (1-based) if hit, or -1 if no hit.
+  int FindAlternativeRouteAtPoint(m2::PointD const & point, double maxSquaredDist) const;
 
   /// @brief Get decision point if user is approaching a fork where alternative diverges.
   /// @return DecisionPoint if within show range, nullopt otherwise.
@@ -422,7 +427,6 @@ private:
 
   // Phase 4: Alternative routes
   AlternativesReadyListener m_alternativesReadyListener;
-  std::shared_ptr<routing::IAlternativeFinder> m_alternativeFinder;
   std::vector<dp::DrapeID> m_alternativeDrapeSubroutes;  // Protected by m_drapeSubroutesMutex
   int m_selectedRouteIndex = 0;
   std::atomic<uint64_t> m_routeGeneration{0};
