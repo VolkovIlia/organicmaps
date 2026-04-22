@@ -12,7 +12,6 @@
 #include <memory>
 #include <optional>
 #include <set>
-#include <unordered_set>
 
 namespace routing
 {
@@ -35,14 +34,6 @@ std::vector<Segment> CollectRouteSegments(Route const & route)
 
   return segments;
 }
-
-/// @brief Perpendicular offset distances in meters.
-double const kOffsetDistancesM[] = {2000.0, 5000.0, 10000.0};
-size_t const kNumOffsets = std::size(kOffsetDistancesM);
-
-/// @brief Route sample points (fraction of total length).
-double const kSampleFractions[] = {0.25, 0.50, 0.75};
-size_t const kNumSamples = std::size(kSampleFractions);
 
 /// @brief Get a point on the route at a given fraction of total length.
 m2::PointD GetRoutePointAtFraction(Route const & route, double fraction)
@@ -109,7 +100,17 @@ m2::PointD OffsetPerpendicular(m2::PointD const & point, m2::PointD const & dire
 
 }  // namespace
 
-/// @brief Implementation of alternative route finder using via-waypoint approach.
+/// @brief A corridor candidate — two via-points on the same side forming a parallel corridor.
+struct CorridorCandidate
+{
+  std::vector<m2::PointD> viaPoints;  // 2 via-points defining the corridor
+  double offsetMeters = 0;
+  bool isRight = false;
+};
+
+/// @brief Implementation of alternative route finder using corridor-based via-waypoints.
+/// Uses TWO via-points on the same side to force routes onto a parallel corridor
+/// instead of creating loops from single via-point detours.
 class AlternativeFinder : public IAlternativeFinder
 {
 public:
@@ -121,37 +122,37 @@ public:
     base::Timer timer;
 
     if (!calculateRoute)
-    {
-      LOG(LDEBUG, ("No route calculation function provided"));
       return {};
-    }
 
     if (!ValidateRouteLength(primaryRoute, params))
       return {};
 
     std::vector<Segment> const primaryPath = CollectRouteSegments(primaryRoute);
     if (primaryPath.empty())
-    {
-      LOG(LDEBUG, ("Primary route has no segments"));
       return {};
-    }
 
     auto const start = primaryRoute.GetPoly().Front();
     auto const finish = primaryRoute.GetPoly().Back();
 
-    std::vector<m2::PointD> viaCandidates = FindViaCandidates(primaryRoute, params.maxViaNodeCandidates);
+    auto corridors = GenerateCorridors(primaryRoute);
 
     std::vector<AlternativeRoute> alternatives;
     double const primaryLength = primaryRoute.GetTotalDistanceMeters();
     double const primaryDuration = primaryRoute.GetTotalTimeSec();
 
-    for (auto const & viaPoint : viaCandidates)
+    for (size_t ci = 0; ci < corridors.size(); ++ci)
     {
       if (static_cast<int>(alternatives.size()) >= params.k - 1)
         break;
 
-      auto candidate = TryBuildAlternative(
-          primaryRoute, start, finish, viaPoint, primaryPath, primaryLength,
+      auto const & corridor = corridors[ci];
+      LOG(LINFO, ("Trying corridor", ci, ": offset", corridor.offsetMeters, "m",
+          corridor.isRight ? "right" : "left",
+          "via", mercator::ToLatLon(corridor.viaPoints[0]),
+          "and", mercator::ToLatLon(corridor.viaPoints[1])));
+
+      auto candidate = TryBuildCorridor(
+          start, finish, corridor, primaryPath, primaryLength,
           primaryDuration, params, alternatives, calculateRoute);
 
       if (candidate.has_value())
@@ -159,7 +160,7 @@ public:
         candidate->routeIndex = static_cast<int>(alternatives.size()) + 1;
         candidate->diversityScore = 1.0 - candidate->overlapWithPrimary;
 
-        LOG(LDEBUG, ("Found alternative", candidate->routeIndex,
+        LOG(LINFO, ("Found alternative", candidate->routeIndex,
             "overlap:", candidate->overlapWithPrimary,
             "stretch:", candidate->GetStretchRatio(primaryLength),
             "time diff:", primaryDuration - candidate->durationSeconds, "s"));
@@ -189,40 +190,45 @@ private:
     return true;
   }
 
-  /// @brief Generate via-waypoints perpendicular to primary route.
-  std::vector<m2::PointD> FindViaCandidates(
-      Route const & primaryRoute,
-      int maxCandidates) const
+  /// @brief Generate corridor candidates — pairs of via-points on the same side.
+  /// Two via-points at fractions 0.30 and 0.70 force the route onto a parallel corridor
+  /// for the middle 40% of the route, avoiding single-point loop artifacts.
+  std::vector<CorridorCandidate> GenerateCorridors(Route const & primaryRoute) const
   {
-    std::vector<m2::PointD> candidates;
-    candidates.reserve(kNumSamples * kNumOffsets * 2);
+    // Offset distances to try: medium (nearby parallel road), larger (ring road level).
+    double constexpr kOffsets[] = {3000.0, 5000.0, 1500.0};
+    // Via-point fractions: early third and late third of the route.
+    double constexpr kFrac1 = 0.30;
+    double constexpr kFrac2 = 0.70;
 
-    for (size_t s = 0; s < kNumSamples; ++s)
+    auto const pt1 = GetRoutePointAtFraction(primaryRoute, kFrac1);
+    auto const dir1 = GetRouteDirectionAtFraction(primaryRoute, kFrac1);
+    auto const pt2 = GetRoutePointAtFraction(primaryRoute, kFrac2);
+    auto const dir2 = GetRouteDirectionAtFraction(primaryRoute, kFrac2);
+
+    std::vector<CorridorCandidate> corridors;
+    for (auto const offset : kOffsets)
     {
-      double const fraction = kSampleFractions[s];
-      auto const point = GetRoutePointAtFraction(primaryRoute, fraction);
-      auto const direction = GetRouteDirectionAtFraction(primaryRoute, fraction);
-
-      for (size_t o = 0; o < kNumOffsets; ++o)
+      for (bool toRight : {true, false})
       {
-        if (static_cast<int>(candidates.size()) >= maxCandidates)
-          break;
-
-        // Offset to the right and left
-        candidates.push_back(OffsetPerpendicular(point, direction, kOffsetDistancesM[o], true));
-        candidates.push_back(OffsetPerpendicular(point, direction, kOffsetDistancesM[o], false));
+        CorridorCandidate c;
+        c.offsetMeters = offset;
+        c.isRight = toRight;
+        c.viaPoints = {
+          OffsetPerpendicular(pt1, dir1, offset, toRight),
+          OffsetPerpendicular(pt2, dir2, offset, toRight)
+        };
+        corridors.push_back(std::move(c));
       }
     }
-
-    return candidates;
+    return corridors;
   }
 
-  /// @brief Try to build alternative route through via-waypoint.
-  std::optional<AlternativeRoute> TryBuildAlternative(
-      Route const & primaryRoute,
+  /// @brief Try to build alternative route through a corridor (2 via-points).
+  std::optional<AlternativeRoute> TryBuildCorridor(
       m2::PointD const & start,
       m2::PointD const & finish,
-      m2::PointD const & viaPoint,
+      CorridorCandidate const & corridor,
       std::vector<Segment> const & primaryPath,
       double primaryLength,
       double primaryDuration,
@@ -232,15 +238,20 @@ private:
   {
     Route altRoute("alternative", 0 /* routeId */);
 
-    // Build route: start → via → finish
-    std::vector<m2::PointD> points = {start, viaPoint, finish};
-    Checkpoints viaCheckpoints(std::move(points));
+    // Build route: start → via1 → via2 → finish (4-point corridor)
+    std::vector<m2::PointD> points = {start, corridor.viaPoints[0], corridor.viaPoints[1], finish};
+    Checkpoints checkpoints(std::move(points));
 
-    auto const code = calculateRoute(viaCheckpoints, altRoute);
+    base::Timer candidateTimer;
+    auto const code = calculateRoute(checkpoints, altRoute);
+    double const routeTimeMs = candidateTimer.ElapsedSeconds() * 1000;
+
     if (code != RouterResultCode::NoError || !altRoute.IsValid())
+    {
+      LOG(LINFO, ("  Corridor routing failed:", code, "in", routeTimeMs, "ms"));
       return std::nullopt;
+    }
 
-    // Extract segments and compute overlap
     std::vector<Segment> altPath = CollectRouteSegments(altRoute);
     if (altPath.empty())
       return std::nullopt;
@@ -248,25 +259,28 @@ private:
     double const overlap = CalcOverlap(primaryPath, altPath);
     double const altLength = altRoute.GetTotalDistanceMeters();
     double const altDuration = altRoute.GetTotalTimeSec();
+    double const stretch = primaryLength > 0 ? altLength / primaryLength : 0;
+
+    LOG(LINFO, ("  Corridor result:", altLength, "m, overlap:", overlap,
+        "stretch:", stretch, "in", routeTimeMs, "ms"));
 
     AlternativeRoute candidate;
     candidate.distanceMeters = altLength;
     candidate.durationSeconds = altDuration;
     candidate.overlapWithPrimary = overlap;
     candidate.path = std::move(altPath);
-
-    // Copy polyline for rendering
     candidate.polyline = altRoute.GetPoly();
 
-    // Copy route segments for traffic rendering
     auto const & routeSegs = altRoute.GetRouteSegments();
     candidate.routeSegments.assign(routeSegs.begin(), routeSegs.end());
 
-    // Validate acceptance
     if (!candidate.IsAcceptable(params.overlapThreshold, params.maxLengthRatio, primaryLength))
+    {
+      LOG(LINFO, ("  Rejected: overlap", overlap, ">", params.overlapThreshold,
+          "or stretch", stretch, ">", params.maxLengthRatio));
       return std::nullopt;
+    }
 
-    // Check overlap with existing alternatives
     if (OverlapsExistingAlternative(candidate, existingAlternatives, params.overlapThreshold))
       return std::nullopt;
 

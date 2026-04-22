@@ -1933,8 +1933,8 @@ void IndexRouter::CalculateAlternatives(Route & primaryRoute, WorldGraph & graph
   };
 
   AlternativeParams params;
-  params.k = 2;                    // primary + 1 alternative
-  params.maxViaNodeCandidates = 6; // 3 fractions x 1 offset x 2 sides
+  params.k = 2;                     // primary + 1 alternative
+  params.maxViaNodeCandidates = 12; // 3 fractions x 2 offsets x 2 sides
 
   m_precomputedAlternatives = m_alternativeFinder->Find(primaryRoute, params, calculateRouteFn);
 

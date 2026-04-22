@@ -89,8 +89,8 @@ struct AlternativeRoute
 struct AlternativeParams
 {
   int k = 3;                        ///< Total routes (1 primary + k-1 alternatives)
-  double overlapThreshold = 0.6;    ///< Max overlap with primary (Jaccard similarity)
-  double maxLengthRatio = 1.3;      ///< Max stretch factor vs primary
+  double overlapThreshold = 0.45;   ///< Max overlap with primary (Jaccard similarity)
+  double maxLengthRatio = 1.5;      ///< Max stretch factor vs primary (ring road alternatives may be longer)
   double minLengthMeters = 5000;    ///< Minimum route length to compute alternatives (5km)
   int maxViaNodeCandidates = 100;   ///< Max via-nodes to evaluate
   double minTimeSavingSeconds = 60; ///< Min time saving to show decision point (1 min)
