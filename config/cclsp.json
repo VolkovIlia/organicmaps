@@ -1,0 +1,9 @@
+{
+  "servers": [
+    {
+      "extensions": ["cpp", "cc", "cxx", "c", "h", "hpp", "hxx"],
+      "command": ["clangd", "--background-index"],
+      "rootDir": "."
+    }
+  ]
+}
