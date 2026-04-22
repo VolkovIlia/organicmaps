@@ -1,0 +1,1 @@
+{"agent_id": "git-workflow", "outcome": "success", "timestamp": "2026-04-22T15:51:29.873523+00:00", "task": "rollback-26020403", "task_hash": 1964932535, "tokens_total": 0, "tokens_prompt": 0, "tokens_completion": 0, "cost_usd": 0.0, "latency_ms": 0, "advancement_score": 1.0, "retry_count": 0, "error_type": null, "error_detail": null}
