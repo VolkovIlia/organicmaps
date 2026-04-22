@@ -152,7 +152,7 @@
     <string name="description">Notlar</string>
     <!-- Email Subject when sharing bookmark list -->
     <string name="share_bookmarks_email_subject">Seninle paylaşılan Organic Maps yer imleri</string>
-    <string name="share_bookmarks_email_body">Merhaba! \n \nEktekiler yer imlerim, lütfen bunları Organic Maps\'te açın. Eğer uygulama kurulu değilse, şu bağlantıyla iOS ve Android aygıtınıza kurabilirsiniz: https://omaps.app/get?kmz \n \nOrganic Maps ile gezmenin tadını çıkarın!</string>
+    <string name="share_bookmarks_email_body">Merhaba! \n \nEktekiler yer imlerim, lütfen bunları Organic Maps\'te açın. Eğer uygulama kurulmamışsa, şu bağlantıyla iOS ve Android aygıtınıza kurabilirsiniz: https://omaps.app/get?kmz\n \nOrganic Maps ile gezintinin tadını çıkarın!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">Yer İmleri Yükleniyor</string>
     <!-- Kmz file successful loading -->
@@ -282,8 +282,6 @@
     <string name="downloader_downloading">İndiriliyor:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">Haritayı silmek için lütfen navigasyonu durdurun.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">Rotalar yalnızca tümüyle tek bir bölgenin haritası içinde oluşturulabilir.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">Haritayı indir</string>
     <!-- Item status in downloader. -->
@@ -296,10 +294,6 @@
     <string name="google_play_services">Google Play Konum Hizmetleri</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">Bluetooth, WiFi veya mobil ağ üzerinden yaklaşık konumunuzu hızlıca belirleyin</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">Rota üzerindeki tüm haritaları indir</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">Rota oluşturabilmemiz için bulunduğunuz yerden hedefinize dek tüm haritaları indirmemiz ve güncellememiz gerekiyor.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">Yeterli alan yok</string>
     <!-- location service disabled -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">Açık</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">Koyu</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">Şafaktan gün batımına kadar açık</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">Milyonlarca kullanıcıya reklamsız ve ücretsiz haritalar hediye edin!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— Önerilen rotalar yalnızca öneri olarak kabul edilmelidir;</string>
     <string name="dialog_routing_disclaimer_borders">— Sınır bölgelerinde rotalar konusunda dikkatli olun: uygulamamızca oluşturulan rotalar bazen izin verilmeyen yerlerdeki ülke sınırlarından geçebilir.</string>
     <string name="dialog_routing_disclaimer_beware">Lütfen yolda özenli ve güvenli olun!</string>
-    <string name="dialog_routing_check_gps">GPS sinyalini denetle</string>
-    <string name="dialog_routing_error_location_not_found">Rota oluşturulamıyor. Şu anki GPS koordinatları tanımlanamadı.</string>
     <string name="dialog_routing_location_turn_wifi">Lütfen GPS sinyalinizi denetleyin. Wi-Fi\'ı etkinleştirmek konum doğruluğunu artırır.</string>
-    <string name="dialog_routing_location_turn_on">Konum hizmetlerini etkinleştir</string>
-    <string name="dialog_routing_location_unknown_turn_on">Şu anki GPS koordinatları belirlenemiyor. Rota hesaplamak için konum hizmetlerini etkinleştirin.</string>
-    <string name="dialog_routing_unable_locate_route">Rota belirlenemiyor</string>
-    <string name="dialog_routing_cant_build_route">Rota oluşturulamıyor.</string>
-    <string name="dialog_routing_change_start_or_end">Lütfen başlangıç noktanızı veya hedefinizi ayarlayın.</string>
-    <string name="dialog_routing_change_start">Başlangıç noktasını ayarla</string>
-    <string name="dialog_routing_start_not_determined">Rota oluşturulamadı. Başlangıç noktası belirlenemiyor.</string>
-    <string name="dialog_routing_select_closer_start">Lütfen yola daha yakın bir başlangıç noktası seçin.</string>
-    <string name="dialog_routing_change_end">Hedefinizi ayarlayın</string>
-    <string name="dialog_routing_end_not_determined">Rota oluşturulamadı. Hedef belirlenemiyor.</string>
-    <string name="dialog_routing_select_closer_end">Lütfen yola daha yakın hedef noktası seçin.</string>
-    <string name="dialog_routing_change_intermediate">Ara nokta bulunamadı.</string>
-    <string name="dialog_routing_intermediate_not_determined">Lütfen ara noktanızı ayarlayın.</string>
     <string name="dialog_routing_system_error">Sistem hatası</string>
-    <string name="dialog_routing_application_error">Uygulama hatası nedeniyle rota oluşturulamadı.</string>
-    <string name="dialog_routing_try_again">Lütfen yeniden deneyin</string>
     <string name="not_now">Şimdi Değil</string>
-    <string name="dialog_routing_download_and_build_cross_route">Haritayı indirerek birden çok haritaya uzanan daha uygun bir rota oluşturmak ister misiniz?</string>
-    <string name="dialog_routing_download_cross_route">Bu haritanın bir bölümünden geçen daha uygun rota oluşturmak için harita indir.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">Aramak ve rota oluşturmaya başlamak için lütfen haritayı indirin. İndirdikten sonra internet bağlantısına gerek kalmayacak.</string>
@@ -473,7 +450,6 @@
     <string name="level_value_generic">Kat sayısı: %s</string>
     <string name="downloader_delete_map_dialog">Harita ile birlikte tüm harita değişiklikleri de silinecektir.</string>
     <string name="downloader_update_maps">Haritaları güncelle</string>
-    <string name="downloader_mwm_migration_dialog">Rota oluşturmak için tüm haritaları güncellemeli ve rotayı yeniden planlamalısınız.</string>
     <string name="downloader_search_field_hint">Harita bul</string>
     <string name="common_check_internet_connection_dialog">Lütfen aygıtınızın internete bağlandığından emin olun.</string>
     <string name="downloader_no_space_title">Yeterli alan yok</string>
@@ -510,7 +486,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">OpenStreetMap gönüllülerine not (isteğe bağlı)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Haritadaki hataları veya Organik Haritalar ile düzenlenemeyen şeyleri tanımlayın</string>
+    <string name="editor_note_hint">Organic Maps ile haritadaki hataları veya düzenlenemeyen öğeleri açıklayın</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Düzenlemeleriniz halka açık <a href="https://wiki.openstreetmap.org/wiki/Tr:About">OpenStreetMap</a> veri tabanına yüklenir. Lütfen kişisel ya da telif hakkıyla korunan bilgi eklemeyin.</string>
     <string name="editor_more_about_osm">OpenStreetMap ile ilgili ek bilgi</string>
@@ -650,6 +626,10 @@
     <string name="layers_title">Harita Stilleri ve Katmanlar</string>
     <string name="bookmarks_empty_list_title">Bu liste boş</string>
     <string name="bookmarks_empty_list_message">Yer imi eklemek için önce haritadaki bir yere sonrasında ise yıldız simgesine dokunun</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">Tüm yer imlerinin rengini değiştir</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">Tüm izlerin rengini değiştir</string>
     <string name="category_desc_more">…daha fazla</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">KMZ Olarak Dışa Aktar</string>
@@ -728,6 +708,7 @@
     <string name="moreyear_ago_sorttype">Bir yıldan daha önce</string>
     <string name="near_me_sorttype">Bana yakınlarda</string>
     <string name="others_sorttype">Diğerleri</string>
+    <string name="editor_add_select_category_all_subtitle">Tüm kategoriler</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">Yiyecek</string>
@@ -747,12 +728,9 @@
     <string name="search_in_the_list">Listede ara</string>
     <string name="religious_places">Dini yerler</string>
     <string name="select_list">Liste seç</string>
-    <string name="transit_not_found">Metro navigasyonu henüz bu bölgede kullanılamaz</string>
-    <string name="dialog_pedestrian_route_is_long_header">Metro rotası bulunamadı</string>
-    <string name="dialog_pedestrian_route_is_long_message">Metro istasyonuna en yakın rotanın başlangıç veya bitiş noktasını seçin</string>
-    <string name="button_layer_isolines">Arazi</string>
+    <string name="button_layer_isolines">İzohipsler</string>
     <string name="isolines_activation_error_dialog">Arazi katmanını etkinleştirmek ve kullanmak için lütfen haritayı güncelleyin veya indirin</string>
-    <string name="isolines_location_error_dialog">Arazi katmanı henüz bu bölgede kullanılamaz</string>
+    <string name="isolines_location_error_dialog">İzohipsler henüz bu bölgede kullanılamaz</string>
     <string name="elevation_profile_ascent">Tırmanış</string>
     <string name="elevation_profile_descent">İniş</string>
     <string name="elevation_profile_min_elevation">Min. yükselti</string>
@@ -764,7 +742,7 @@
     <string name="downloader_loading_ios">İndiriliyor</string>
     <string name="download_map_title">Dünya genel görünüm haritasını indir</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disk_error">Dahili aygıtın belleğinde veya SD kartta klasör oluşturulamıyor ve dosyalar taşınamıyor</string>
+    <string name="disk_error">Aygıtın iç belleğinde ya da SD kartta klasör oluşturulamıyor ve dosyalar taşınamıyor</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="disk_error_title">Disk hatası</string>
     <!-- Used in DownloadResources startup screen -->
@@ -828,8 +806,6 @@
     <string name="aa_location_permissions_request">Organic Maps konum erişimine gereksinir. Güvenliyken, telefonunuzdaki bildirime bakın.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Bu uygulama izninize gereksiniyor</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">Android Auto\'daki Organic Maps etkin çalışmak için konum iznine gereksiniyor</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">İzinleri Verin</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
@@ -888,4 +864,16 @@
     <string name="share_track">İz Paylaş</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">%s Silinsin Mi?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">Şifre ile giriş yapın</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">Tarayıcı kullanarak giriş yapın</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">Son Kullanılanlar</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">Yer imi rengi değiştirildi</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">İz rengi değiştirildi</string>
 </resources>

@@ -5,10 +5,10 @@
 #include "base/logging.hpp"
 #include "base/string_utils.hpp"
 
+#include "defines.hpp"
+
 namespace search
 {
-using namespace std;
-
 namespace
 {
 // Calls |fn| on each node name on the way from |id| to the root of
@@ -39,15 +39,11 @@ void GetPathToRoot(storage::CountryId const & id, storage::CountryTree const & c
 void RegionInfoGetter::LoadCountriesTree()
 {
   using namespace storage;
-  Affiliations affiliations;
-  CountryNameSynonyms countryNameSynonyms;
-  MwmTopCityGeoIds mwmTopCityGeoIds;
-  MwmTopCountryGeoIds mwmTopCountryGeoIds;
-  LoadCountriesFromFile(COUNTRIES_FILE, m_countries, affiliations, countryNameSynonyms, mwmTopCityGeoIds,
-                        mwmTopCountryGeoIds);
+  CountriesInfo countriesInfo;
+  LoadCountriesFromFile(COUNTRIES_FILE, m_countries, countriesInfo);
 }
 
-void RegionInfoGetter::SetLocale(string const & locale)
+void RegionInfoGetter::SetLocale(std::string const & locale)
 {
   m_nameGetter = platform::GetTextByIdFactory(platform::TextSource::Countries, locale);
 }
@@ -91,7 +87,7 @@ void RegionInfoGetter::GetLocalizedFullName(storage::CountryId const & id, NameB
     nameParts.push_back(std::move(name));
 }
 
-string RegionInfoGetter::GetLocalizedFullName(storage::CountryId const & id) const
+std::string RegionInfoGetter::GetLocalizedFullName(storage::CountryId const & id) const
 {
   NameBufferT parts;
   GetLocalizedFullName(id, parts);
@@ -99,7 +95,7 @@ string RegionInfoGetter::GetLocalizedFullName(storage::CountryId const & id) con
   return strings::JoinStrings(parts, ", ");
 }
 
-string RegionInfoGetter::GetLocalizedCountryName(storage::CountryId const & id) const
+std::string RegionInfoGetter::GetLocalizedCountryName(storage::CountryId const & id) const
 {
   if (!m_nameGetter)
     return {};

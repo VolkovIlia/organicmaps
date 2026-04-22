@@ -313,7 +313,7 @@
     <string name="type.cuisine.mediterranean">Sredozemska</string>
     <string name="type.cuisine.mexican">Mehiška</string>
     <string name="type.cuisine.moroccan">Maroška</string>
-    <string name="type.cuisine.noodles">Rezanci</string>
+    <string name="type.cuisine.noodle">Rezanci</string>
     <string name="type.cuisine.oriental">Vzhodnoazijska</string>
     <string name="type.cuisine.pancake">Palačinka</string>
     <string name="type.cuisine.pasta">Testenine</string>
@@ -328,12 +328,14 @@
     <string name="type.cuisine.sausage">Klobasa</string>
     <string name="type.cuisine.savory_pancakes">Slane palačinke</string>
     <string name="type.cuisine.seafood">Morska hrana</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.spanish">Španska</string>
     <string name="type.cuisine.steak_house">Zrezkarna</string>
     <string name="type.cuisine.sushi">Suši</string>
     <string name="type.cuisine.tea">Čaj</string>
     <string name="type.cuisine.thai">Tajska</string>
     <string name="type.cuisine.turkish">Turška</string>
+    <string name="type.cuisine.uzbek">Uzbeška</string>
     <string name="type.cuisine.vegan">Veganska</string>
     <string name="type.cuisine.vegetarian">Vegetarijanska</string>
     <string name="type.cuisine.vietnamese">Vietnamska</string>
@@ -426,6 +428,7 @@
     <string name="type.highway.pedestrian.bridge">Most za pešce</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Predor za pešce</string>
+    <string name="type.highway.platform">Peron</string>
     <string name="type.highway.primary">Glavna cesta</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Most</string>
@@ -728,7 +731,9 @@
     <string name="type.natural.wetland.marsh">Močvirje</string>
     <string name="type.noexit">Slepa ulica</string>
     <string name="type.office">Pisarna</string>
+    <string name="type.office.architect">Arhitekturni biro</string>
     <string name="type.office.company">Pisarna podjetja</string>
+    <string name="type.office.educational_institution">Izobraževalna ustanova</string>
     <string name="type.office.estate_agent">Nepremičninska agencija</string>
     <string name="type.office.government">Vladna pisarna</string>
     <string name="type.office.insurance">Zavarovalniška pisarna</string>
@@ -804,6 +809,7 @@
     <string name="type.railway.crossing">Železniški prehod</string>
     <string name="type.railway.disused">Neuporabljena železnica</string>
     <string name="type.railway.disused.bridge">Neuporabljen železniški most</string>
+    <string name="type.railway.disused.tunnel">Neuporabljen železniški predor</string>
     <string name="type.railway.funicular">Vzpenjača</string>
     <string name="type.railway.funicular.bridge">Most vzpenjače</string>
     <string name="type.railway.funicular.tunnel">Predor vzpenjače</string>
@@ -1115,6 +1121,15 @@
     <string name="type.shop.chemist">Drogerija</string>
     <string name="type.shop.chocolate">Čokoladnica</string>
     <string name="type.shop.clothes">Trgovina z oblačili</string>
+    <string name="type.shop.clothes.children">Otroška oblačila</string>
+    <string name="type.shop.clothes.fashion">Modni butik</string>
+    <string name="type.shop.clothes.hats">Klobučarstvo</string>
+    <string name="type.shop.clothes.men">Moška oblačila</string>
+    <string name="type.shop.clothes.sports">Sportna oblačila</string>
+    <string name="type.shop.clothes.suits">Obleke</string>
+    <string name="type.shop.clothes.underwear">Spodnje perilo</string>
+    <string name="type.shop.clothes.wedding">Poročna oblačila</string>
+    <string name="type.shop.clothes.women">Ženska oblačila</string>
     <string name="type.shop.coffee">Kavarna</string>
     <string name="type.shop.computer">Računalniška trgovina</string>
     <string name="type.shop.confectionery">Slaščičarna</string>
@@ -1135,6 +1150,7 @@
     <string name="type.shop.funeral_directors">Pogrebno podjetje</string>
     <string name="type.shop.furniture">Pohištvena trgovina</string>
     <string name="type.shop.garden_centre">Vrtni center</string>
+    <string name="type.shop.games">Trgovina z igrami</string>
     <string name="type.shop.gas">Trgovina s plinom</string>
     <string name="type.shop.gift">Trgovina z darili</string>
     <string name="type.shop.greengrocer">Zelenjavar</string>
@@ -1149,6 +1165,7 @@
     <string name="type.shop.jewelry">Zlatarna</string>
     <string name="type.shop.kitchen">Kuhinjska trgovina</string>
     <string name="type.shop.laundry">Pralnica</string>
+    <string name="type.shop.leather">Trgovina z usnjenimi izdelki</string>
     <string name="type.shop.mall">Nakupovalni center</string>
     <string name="type.shop.massage">Masažni salon</string>
     <string name="type.shop.mobile_phone">Trgovina z mobilnimi telefoni</string>
@@ -1167,6 +1184,7 @@
     <string name="type.shop.pet">Trgovina za male živali</string>
     <string name="type.shop.pet_grooming">Nega malih živali</string>
     <string name="type.shop.photo">Foto studio</string>
+    <string name="type.shop.religion">Trgovina z verskimi predmeti</string>
     <string name="type.shop.rental">Izposojevalnica</string>
     <string name="type.amenity.bicycle_rental.shop">Izposojevalnica koles</string>
     <string name="type.shop.seafood">Ribarnica</string>

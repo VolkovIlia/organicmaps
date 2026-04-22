@@ -5,6 +5,7 @@
 
 #include "drape_frontend/visual_params.hpp"
 
+#include "indexer/classificator_loader.hpp"
 #include "indexer/feature_utils.hpp"
 #include "indexer/mwm_set.hpp"
 
@@ -17,6 +18,7 @@
 
 #include "base/file_name_utils.hpp"
 #include "base/scope_guard.hpp"
+#include "base/timer.hpp"
 
 #include <array>
 #include <cstring>  // strlen
@@ -30,9 +32,39 @@ namespace bookmarks_test
 {
 using namespace std;
 
-using Runner = Platform::ThreadRunner;
-
 static FrameworkParams const kFrameworkParams(false /* m_enableDiffs */);
+
+/// Redirects SettingsDir to a temporary test directory so that bookmark files
+/// don't pollute the default data/bookmarks/. The directory is cleaned up on destruction.
+class ScopedBookmarksDir
+{
+public:
+  ScopedBookmarksDir()
+  {
+    auto & platform = GetPlatform();
+    m_origSettingsDir = platform.SettingsDir();
+    m_testSettingsDir = base::JoinPath(platform.WritableDir(), "test_bookmarks");
+    TEST(Platform::MkDirRecursively(base::JoinPath(m_testSettingsDir, "bookmarks")), ());
+    platform.SetSettingsDir(m_testSettingsDir);
+  }
+
+  ~ScopedBookmarksDir()
+  {
+    GetPlatform().SetSettingsDir(m_origSettingsDir);
+    Platform::RmDirRecursively(m_testSettingsDir);
+  }
+
+private:
+  string m_origSettingsDir;
+  string m_testSettingsDir;
+};
+
+class BookmarksTestFixture : public Platform::ThreadRunner
+{
+  ScopedBookmarksDir m_dir;
+};
+
+using Runner = BookmarksTestFixture;
 
 char const * kmlString =
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -213,15 +245,8 @@ UNIT_CLASS_TEST(Runner, Bookmarks_ImportKML)
 
 UNIT_CLASS_TEST(Runner, Bookmarks_ExportKML)
 {
-  string const dir = GetBookmarksDirectory();
-  bool const delDirOnExit = Platform::MkDir(dir) == Platform::ERR_OK;
-  SCOPE_GUARD(dirDeleter, [&]()
-  {
-    if (delDirOnExit)
-      (void)Platform::RmDir(dir);
-  });
   string const ext = ".kmb";
-  string const fileName = base::JoinPath(dir, "UnitTestBookmarks" + ext);
+  string const fileName = base::JoinPath(GetBookmarksDirectory(), "UnitTestBookmarks" + ext);
   SCOPE_GUARD(fileDeleter, [&]() { (void)base::DeleteFileX(fileName); });
 
   BookmarkManager bmManager(BM_CALLBACKS);
@@ -285,33 +310,20 @@ UNIT_CLASS_TEST(Runner, Bookmarks_ExportKML)
 
 namespace
 {
-void DeleteCategoryFiles(vector<string> const & arrFiles)
-{
-  string const path = GetBookmarksDirectory();
-  string const extension = ".kmb";
-  for (auto const & fileName : arrFiles)
-    FileWriter::DeleteFileX(base::JoinPath(path, fileName + extension));
-}
-
+// Same as in Framework::BuildPlacePageInfo.
 UserMark const * GetMark(Framework & fm, m2::PointD const & pt)
 {
-  m2::AnyRectD rect;
-  fm.GetTouchRect(fm.GtoP(pt), 20, rect);
-
-  return fm.GetBookmarkManager().FindNearestUserMark(rect);
+  double constexpr kEps = 1.0E-7;
+  m2::AnyRectD const rect(pt, ang::AngleD(0.0), m2::RectD(-kEps, -kEps, kEps, kEps));
+  return fm.GetBookmarkManager().FindNearestUserMark([&rect](UserMark::Type) { return rect; },
+                                                     [](UserMark::Type) { return false; });
 }
 
 Bookmark const * GetBookmark(Framework & fm, m2::PointD const & pt)
 {
   auto const * mark = GetMark(fm, pt);
-  ASSERT(mark, ());
-  ASSERT(mark->GetMarkType() == UserMark::BOOKMARK, ());
+  TEST(mark && mark->GetMarkType() == UserMark::BOOKMARK, ());
   return dynamic_cast<Bookmark const *>(mark);
-}
-
-Bookmark const * GetBookmarkPxPoint(Framework & fm, m2::PointD const & pt)
-{
-  return GetBookmark(fm, fm.PtoG(pt));
 }
 
 bool IsValidBookmark(Framework & fm, m2::PointD const & pt)
@@ -323,6 +335,7 @@ bool IsValidBookmark(Framework & fm, m2::PointD const & pt)
 
 UNIT_TEST(Bookmarks_Timestamp)
 {
+  ScopedBookmarksDir scopedDir;
   Framework fm(kFrameworkParams);
   df::VisualParams::Init(1.0, 1024);
 
@@ -367,12 +380,11 @@ UNIT_TEST(Bookmarks_Timestamp)
 
   TEST_EQUAL(bmManager.GetUserMarkIds(cat1).size(), 2, ());
   TEST_EQUAL(bmManager.GetUserMarkIds(cat2).size(), 1, ());
-
-  DeleteCategoryFiles(arrCat);
 }
 
 UNIT_TEST(Bookmarks_ChangeColorForImportedBookmark)
 {
+  ScopedBookmarksDir scopedDir;
   Framework fm(kFrameworkParams);
   BookmarkManager & bmManager = fm.GetBookmarkManager();
   bmManager.EnableTestMode(true);
@@ -394,6 +406,7 @@ UNIT_TEST(Bookmarks_ChangeColorForImportedBookmark)
 
 UNIT_TEST(Bookmarks_Getting)
 {
+  ScopedBookmarksDir scopedDir;
   Framework fm(kFrameworkParams);
   df::VisualParams::Init(1.0, 1024);
   fm.OnSize(800, 400);
@@ -432,14 +445,12 @@ UNIT_TEST(Bookmarks_Getting)
 
   TEST_EQUAL(bmManager.GetBmGroupsCount(), 3, ());
 
-  TEST(IsValidBookmark(fm, m2::PointD(40, 20)), ());
-  Bookmark const * mark = GetBookmark(fm, m2::PointD(40, 20));
+  Bookmark const * mark = GetBookmark(fm, m2::PointD(41, 20));
   TEST_EQUAL(bmManager.GetCategoryName(mark->GetGroupId()), "cat2", ());
 
   TEST(!IsValidBookmark(fm, m2::PointD(0, 0)), ());
   TEST(!IsValidBookmark(fm, m2::PointD(800, 400)), ());
 
-  TEST(IsValidBookmark(fm, m2::PointD(41, 40)), ());
   mark = GetBookmark(fm, m2::PointD(41, 40));
   TEST_EQUAL(bmManager.GetCategoryName(mark->GetGroupId()), "cat3", ());
 
@@ -461,8 +472,6 @@ UNIT_TEST(Bookmarks_Getting)
   TEST_EQUAL(bmManager.GetUserMarkIds(mark->GetGroupId()).size(), 2, ());
   bmManager.GetEditSession().DeleteBookmark(mark->GetId());
   TEST_EQUAL(bmManager.GetUserMarkIds(cat3).size(), 1, ());
-
-  DeleteCategoryFiles(arrCat);
 }
 
 namespace
@@ -547,12 +556,12 @@ UNIT_TEST(Bookmarks_UniqueFileName)
 
 UNIT_TEST(Bookmarks_AddingMoving)
 {
+  ScopedBookmarksDir scopedDir;
   Framework fm(kFrameworkParams);
   fm.OnSize(800, 400);
   fm.ShowRect(m2::RectD(0, 0, 80, 40));
 
-  m2::PointD constexpr globalPoint = m2::PointD(40, 20);
-  m2::PointD const pixelPoint = fm.GtoP(globalPoint);
+  m2::PointD constexpr globalPoint(40, 20);
 
   BookmarkManager & bmManager = fm.GetBookmarkManager();
   bmManager.EnableTestMode(true);
@@ -565,7 +574,7 @@ UNIT_TEST(Bookmarks_AddingMoving)
   kml::SetDefaultStr(bm1.m_name, "name");
   bm1.m_point = globalPoint;
   auto const * pBm1 = bmManager.GetEditSession().CreateBookmark(std::move(bm1), cat1);
-  Bookmark const * mark = GetBookmarkPxPoint(fm, pixelPoint);
+  Bookmark const * mark = GetBookmark(fm, globalPoint);
   TEST_EQUAL(bmManager.GetCategoryName(mark->GetGroupId()), "cat1", ());
 
   kml::BookmarkData bm2;
@@ -574,7 +583,7 @@ UNIT_TEST(Bookmarks_AddingMoving)
   bm2.m_color.m_predefinedColor = kml::PredefinedColor::Blue;
   auto const * pBm11 = bmManager.GetEditSession().CreateBookmark(std::move(bm2), cat1);
   TEST_EQUAL(pBm1->GetGroupId(), pBm11->GetGroupId(), ());
-  mark = GetBookmarkPxPoint(fm, pixelPoint);
+  mark = GetBookmark(fm, globalPoint);
   TEST_EQUAL(bmManager.GetCategoryName(mark->GetGroupId()), "cat1", ());
   TEST_EQUAL(kml::GetDefaultStr(mark->GetName()), "name2", ());
   TEST_EQUAL(mark->GetColor(), kml::PredefinedColor::Blue, ());
@@ -587,17 +596,16 @@ UNIT_TEST(Bookmarks_AddingMoving)
   auto const * pBm2 = bmManager.GetEditSession().CreateBookmark(std::move(bm3), cat2);
   TEST_NOT_EQUAL(pBm1->GetGroupId(), pBm2->GetGroupId(), ());
   TEST_EQUAL(bmManager.GetBmGroupsCount(), 2, ());
-  mark = GetBookmarkPxPoint(fm, pixelPoint);
+  mark = GetBookmark(fm, globalPoint);
   TEST_EQUAL(bmManager.GetCategoryName(mark->GetGroupId()), "cat1", ());
   TEST_EQUAL(bmManager.GetUserMarkIds(cat1).size(), 2, ("Bookmark wasn't moved from one category to another"));
   TEST_EQUAL(kml::GetDefaultStr(mark->GetName()), "name2", ());
   TEST_EQUAL(mark->GetColor(), kml::PredefinedColor::Blue, ());
-
-  DeleteCategoryFiles(arrCat);
 }
 
 UNIT_TEST(Bookmarks_Sorting)
 {
+  ScopedBookmarksDir scopedDir;
   Framework fm({} /* params */, false /* loadMaps */);
   fm.RegisterMap(platform::LocalCountryFile::MakeForTesting("World"));
 
@@ -617,11 +625,8 @@ UNIT_TEST(Bookmarks_Sorting)
     for (auto const & readableType : readableTypes)
     {
       auto const type = c.GetTypeByReadableObjectName(readableType);
-      if (c.IsTypeValid(type))
-      {
-        auto const typeInd = c.GetIndexForType(type);
-        bmData.m_featureTypes.push_back(typeInd);
-      }
+      TEST(type != Classificator::INVALID_TYPE, ());
+      bmData.m_featureTypes.push_back(type);
     }
   };
 
@@ -943,6 +948,15 @@ UNIT_TEST(Bookmarks_Sorting)
   }
 }
 
+UNIT_TEST(Bookmarks_GetBookmarkMatchInfo)
+{
+  classificator::Load();
+  auto const & cl = classif();
+
+  uint32_t const type = cl.GetTypeByPath({"aeroway", "aerodrome", "international"});
+  TEST(GetBookmarkMatchInfo(type) == BookmarkMatchInfo(kml::BookmarkIcon::Airport, BookmarkBaseType::None), ());
+}
+
 namespace
 {
 char const * kmlString2 =
@@ -1002,9 +1016,6 @@ UNIT_CLASS_TEST(Runner, BookmarkCategory_EmptyName)
   bmManager.GetEditSession().SetCategoryName(catId, "xxx");
 
   TEST(bmManager.SaveBookmarkCategory(catId), ());
-
-  vector<string> const arrFiles = {"Bookmarks", "xxx"};
-  DeleteCategoryFiles(arrFiles);
 }
 
 namespace
@@ -1399,9 +1410,6 @@ UNIT_CLASS_TEST(Runner, Bookmarks_AutoSave)
   TEST(kmlData2 != nullptr, ());
   TEST_EQUAL(kmlData2->m_bookmarksData.size(), 1, ());
   TEST_EQUAL(kml::GetDefaultStr(kmlData2->m_bookmarksData.front().m_name), "name 3", ());
-
-  TEST(base::DeleteFileX(fileName), ());
-  TEST(base::DeleteFileX(fileName2), ());
 }
 
 UNIT_CLASS_TEST(Runner, ExportAll)
@@ -1558,26 +1566,68 @@ UNIT_CLASS_TEST(Runner, ExportSingleGpx)
   bmManager.PrepareFileForSharing(std::move(categories), checker, FileType::Gpx);
 }
 
-UNIT_CLASS_TEST(Runner, Bookmarks_BrokenFile)
+UNIT_CLASS_TEST(Runner, Bookmarks_MM_BrokenFile)
 {
   string const fileName = GetPlatform().TestsDataPathForFile("test_data/broken_bookmarks.kmb.test");
   auto kmlData = LoadKmlFile(fileName, FileType::Kmb);
   TEST(kmlData == nullptr, ());
 }
 
+UNIT_CLASS_TEST(Runner, Tracks_MM)
+{
+  // Both fixtures are gx:MultiTrack exports captured inside MapsMe with three segments of
+  // 5 / 4 / 4 points. The "withts" variant carries per-point capture times; the "nots" variant
+  // omits them. The per-segment size assertions below guard the V11 timestamp-distribution path
+  // in TrackDataV9MM::ConvertToLatestVersion against regressions.
+  std::vector<size_t> const kExpectedLineSizes = {5, 4, 4};
+
+  {
+    string const fileName = GetPlatform().TestsDataPathForFile("test_data/track_MM_nots.kmb.test");
+    auto kmlData = LoadKmlFile(fileName, FileType::Kmb);
+    TEST(kmlData && kmlData->m_tracksData.size() == 1, ());
+
+    auto const & geometry = kmlData->m_tracksData.front().m_geometry;
+    TEST_EQUAL(geometry.m_lines.size(), kExpectedLineSizes.size(), ());
+    TEST_EQUAL(geometry.m_timestamps.size(), kExpectedLineSizes.size(), ());
+    for (size_t i = 0; i < kExpectedLineSizes.size(); ++i)
+    {
+      TEST_EQUAL(geometry.m_lines[i].size(), kExpectedLineSizes[i], ("line", i));
+      TEST(geometry.m_timestamps[i].empty(), ("line", i, "should have no per-point times"));
+    }
+    TEST(!geometry.HasTimestamps(), ());
+  }
+  {
+    string const fileName = GetPlatform().TestsDataPathForFile("test_data/track_MM_withts.kmb.test");
+    auto kmlData = LoadKmlFile(fileName, FileType::Kmb);
+    TEST(kmlData && kmlData->m_tracksData.size() == 1, ());
+
+    auto const & geometry = kmlData->m_tracksData.front().m_geometry;
+    TEST_EQUAL(geometry.m_lines.size(), kExpectedLineSizes.size(), ());
+    TEST_EQUAL(geometry.m_timestamps.size(), kExpectedLineSizes.size(), ());
+
+    // Each segment carries exactly one timestamp per point, and timestamps increase
+    // monotonically by a second both within a segment and across the flattened sequence — confirming that
+    // the deserializer split the flat V11 timestamps vector across lines in the right order.
+    time_t timestamp = base::StringToTimestamp("2026-04-20T00:00:00Z");
+    for (size_t i = 0; i < kExpectedLineSizes.size(); ++i)
+    {
+      TEST_EQUAL(geometry.m_lines[i].size(), kExpectedLineSizes[i], ("line", i));
+      TEST_EQUAL(geometry.m_timestamps[i].size(), kExpectedLineSizes[i], ("timestamps", i));
+      for (size_t j = 0; j < geometry.m_timestamps[i].size(); ++j)
+      {
+        TEST_EQUAL(geometry.m_timestamps[i][j], timestamp, ("line", i, "point", j));
+        timestamp += 1;
+      }
+    }
+  }
+}
+
 UNIT_CLASS_TEST(Runner, Bookmarks_RecentlyDeleted)
 {
   BookmarkManager bmManager(BM_CALLBACKS);
   bmManager.EnableTestMode(true);
-  auto const dir = GetBookmarksDirectory();
-  bool const delDirOnExit = Platform::MkDir(dir) == Platform::ERR_OK;
-  SCOPE_GUARD(dirDeleter, [&]()
-  {
-    if (delDirOnExit)
-      (void)Platform::RmDir(dir);
-  });
 
-  std::string const filePath = base::JoinPath(dir, "file" + std::string{kKmlExtension});
+  std::string const filePath = base::JoinPath(GetBookmarksDirectory(), "file" + std::string{kKmlExtension});
   BookmarkManager::KMLDataCollection kmlDataCollection;
   kmlDataCollection.emplace_back(filePath, LoadKmlData(MemReader(kmlString, std::strlen(kmlString)), FileType::Kml));
 

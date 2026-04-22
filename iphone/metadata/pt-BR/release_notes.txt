@@ -1,16 +1,23 @@
-• NOVO: Cores de tema escuro com maior contraste
-• Dados do OpenStreetMap atualizados (11 de janeiro)
-• Cassinos excluídos da categoria "Entretenimento"
-• Reduzida a espessura das linhas de metrô
-• Adicionada informação de capacidade aos resultados de busca para estacionamento de motos, aluguel de bicicletas, carregamento de bicicletas e carregamento de carros
-• Mostrar o nível do andar nos resultados de busca
-• Botões de planejamento de rota mais largos
+• Dados do mapa OSM em 10 de março
+• Dados da Wikipedia em 1º de março
+• Adicionado suporte para limites de velocidade condicionais
+• Isolinha de elevação mais detalhada para províncias chinesas
+• Adicionadas lojas de couro e lojas que vendem artigos religiosos
+• Adicionadas fileiras de árvores
+• Adicionadas plataformas de transporte público sem pontos de ônibus próximos
+• Corrigido o cálculo do progresso do download do país
+• Dividida a Tanzânia em regiões menores
+• Adicionado histórico de categorias usadas recentemente no Editor
+• Melhoria no deslizar para cima na tela de planejamento de rota
+• Correção da posição da régua para CarPlay
+• Correção de várias falhas, melhoria da estabilidade e do desempenho
 
 ### Traduções
 
-• Adicionadas traduções do aplicativo e orientação por voz em albanês
-• FAQ atualizado e adicionadas traduções do FAQ para árabe, tcheco, holandês, farsi, grego, hebraico, hindi, húngaro, indonésio, italiano, lituano, marathi, sueco e telugu
-• Melhoradas as traduções do aplicativo e FAQ em alemão
-• Adicionados sinônimos de busca em búlgaro
-• Renomeada a configuração "Botões de zoom" para maior clareza
-• Correções de tradução de colaboradores do Weblate para vários idiomas
+• Melhoria nas descrições dos países
+• Aplicação das correções em romeno de Eugen Dedu
+• Atualização dos nomes dos países
+• Atualização das traduções dos colaboradores do Weblate
+• Correção da tradução em ucraniano
+
+Agradecemos a todos que estão contribuindo, doando e apoiando o Organic Maps! Vamos construir os melhores mapas juntos!

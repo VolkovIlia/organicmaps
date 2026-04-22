@@ -45,7 +45,7 @@
     <string name="type.amenity.gambling">Коцкарница</string>
     <string name="type.leisure.adult_gaming_centre">Центар за игру одраслих</string>
     <string name="type.leisure.amusement_arcade">Играоница за одрасле</string>
-    <string name="type.amenity.charging_station">Станица за пуњење ЕВ</string>
+    <string name="type.amenity.charging_station">Пуњач за електрична возила</string>
     <string name="type.amenity.charging_station.bicycle">Станица за пуњење бицикала</string>
     <string name="type.amenity.charging_station.motorcar">Станица за пуњење аутомобила</string>
     <string name="type.amenity.childcare">Вртић</string>
@@ -70,7 +70,7 @@
     <string name="type.amenity.fast_food">Брза храна</string>
     <string name="type.amenity.ferry_terminal">Трајект</string>
     <string name="type.amenity.fire_station">Ватрогасна станица</string>
-    <string name="type.amenity.food_court">Ресторанска башта</string>
+    <string name="type.amenity.food_court">Простор за исхрану</string>
     <string name="type.amenity.fountain">Фонтана</string>
     <string name="type.amenity.fuel">Бензинска станица</string>
     <!-- In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. -->
@@ -95,7 +95,7 @@
     <string name="type.amenity.parking.no.access">Приватни паркинг</string>
     <string name="type.amenity.parking.permissive">Приватни паркинг</string>
     <string name="type.amenity.parking.private">Приватни паркинг</string>
-    <string name="type.amenity.parking.park_and_ride">Паркирај и вози паркинг</string>
+    <string name="type.amenity.parking.park_and_ride">Паркирај и вози</string>
     <string name="type.amenity.parking.underground">Подземни паркинг</string>
     <string name="type.amenity.parking.underground.fee">Подземни паркинг</string>
     <string name="type.amenity.parking.underground.private">Приватни подземни паркинг</string>
@@ -136,7 +136,7 @@
     <string name="type.amenity.recycling.centre">Центар за рециклажу</string>
     <string name="type.amenity.recycling">Контејнер за рециклажу</string>
     <string name="type.amenity.recycling.container">Контејнер за рециклажу</string>
-    <string name="type.recycling.batteries">Бетерије</string>
+    <string name="type.recycling.batteries">Батерије</string>
     <string name="type.recycling.clothes">Стара одећа</string>
     <string name="type.recycling.glass_bottles">Стаклене флаше</string>
     <string name="type.recycling.paper">Папир</string>
@@ -150,7 +150,7 @@
     <string name="type.recycling.green_waste">Биолошки отпад</string>
     <string name="type.recycling.cartons">Картон и папир</string>
     <string name="type.amenity.restaurant">Ресторан</string>
-    <string name="type.amenity.sanitary_dump_station">Станица за одлагање резервоара</string>
+    <string name="type.amenity.sanitary_dump_station">Станица за пражњење отпадних резервоара</string>
     <string name="type.amenity.school">Школа</string>
     <!-- Weather shelter (including sun shelters and natural rock shelters). -->
     <string name="type.amenity.shelter">Склониште</string>
@@ -322,7 +322,7 @@
     <string name="type.cuisine.mediterranean">Медитеранска</string>
     <string name="type.cuisine.mexican">Мексичка</string>
     <string name="type.cuisine.moroccan">Мароканска</string>
-    <string name="type.cuisine.noodles">Нудле</string>
+    <string name="type.cuisine.noodle">Нудле</string>
     <string name="type.cuisine.oriental">Оријентална</string>
     <string name="type.cuisine.pancake">Палачинке</string>
     <string name="type.cuisine.pasta">Паста</string>
@@ -338,6 +338,7 @@
     <string name="type.cuisine.sausage">Кобасица</string>
     <string name="type.cuisine.savory_pancakes">Слане палачинке</string>
     <string name="type.cuisine.seafood">Морски плодови</string>
+    <string name="type.cuisine.shawarma">Шаварма</string>
     <string name="type.cuisine.soba">Соба</string>
     <string name="type.cuisine.spanish">Шпанска</string>
     <string name="type.cuisine.steak_house">Стек</string>
@@ -346,6 +347,7 @@
     <string name="type.cuisine.tea">Чај</string>
     <string name="type.cuisine.thai">Тајландска</string>
     <string name="type.cuisine.turkish">Турска</string>
+    <string name="type.cuisine.uzbek">Узбечка</string>
     <string name="type.cuisine.vegan">Веганска</string>
     <string name="type.cuisine.vegetarian">Вегетаријанска</string>
     <string name="type.cuisine.vietnamese">Вијетнамска</string>
@@ -441,6 +443,7 @@
     <string name="type.highway.pedestrian.bridge">Пешачки мост</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Пешачки тунел</string>
+    <string name="type.highway.platform">Стајалиште јавног превоза</string>
     <string name="type.highway.primary">Пут прве класе</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Мост</string>
@@ -541,8 +544,6 @@
     <string name="type.area_highway.track">Макадам</string>
     <string name="type.area_highway.trunk">Улица</string>
     <string name="type.area_highway.unclassified">Некласификовани пут</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Историјски објекат</string>
@@ -751,7 +752,9 @@
     <string name="type.natural.wetland.marsh">Мочвара</string>
     <string name="type.noexit">Крај пута</string>
     <string name="type.office">Канцеларија</string>
+    <string name="type.office.architect">Архитектонски биро</string>
     <string name="type.office.company">Компанија</string>
+    <string name="type.office.educational_institution">Образовна установа</string>
     <string name="type.office.estate_agent">Агент за некретнине</string>
     <string name="type.office.government">Владина канцеларија</string>
     <string name="type.office.insurance">Осигурање</string>
@@ -833,6 +836,7 @@
     <string name="type.railway.crossing">Пружни прелаз</string>
     <string name="type.railway.disused">Напуштена пруга</string>
     <string name="type.railway.disused.bridge">Напуштен железнички мост</string>
+    <string name="type.railway.disused.tunnel">Напуштен железнички тунел</string>
     <string name="type.railway.funicular">Успињача</string>
     <string name="type.railway.funicular.bridge">Мост успињаче</string>
     <string name="type.railway.funicular.tunnel">Тунел успињаче</string>
@@ -1143,6 +1147,15 @@
     <string name="type.shop.chemist">Кућна хемија</string>
     <string name="type.shop.chocolate">Чоколада</string>
     <string name="type.shop.clothes">Одећа</string>
+    <string name="type.shop.clothes.children">Дечија одећа</string>
+    <string name="type.shop.clothes.fashion">Модни бутик</string>
+    <string name="type.shop.clothes.hats">Продавница шешира</string>
+    <string name="type.shop.clothes.men">Мушка одећа</string>
+    <string name="type.shop.clothes.sports">Спортска одећа</string>
+    <string name="type.shop.clothes.suits">Продавница одела</string>
+    <string name="type.shop.clothes.underwear">Доње рубље</string>
+    <string name="type.shop.clothes.wedding">Продавница венчаница</string>
+    <string name="type.shop.clothes.women">Женска одећа</string>
     <string name="type.shop.coffee">Кафа</string>
     <string name="type.shop.computer">Компјутери</string>
     <string name="type.shop.confectionery">Слаткиши</string>
@@ -1163,6 +1176,7 @@
     <string name="type.shop.funeral_directors">Погребна опрема</string>
     <string name="type.shop.furniture">Намештај</string>
     <string name="type.shop.garden_centre">Баштенски производи</string>
+    <string name="type.shop.games">Продавница игара</string>
     <string name="type.shop.gas">Индустријски гасови</string>
     <string name="type.shop.gift">Даротека</string>
     <string name="type.shop.greengrocer">Поврће и воће</string>
@@ -1178,6 +1192,7 @@
     <string name="type.shop.kiosk">Киоск</string>
     <string name="type.shop.kitchen">Кухињска опрема</string>
     <string name="type.shop.laundry">Перионица веша</string>
+    <string name="type.shop.leather">Продавница кожне галантерије</string>
     <string name="type.shop.mall">Тржни центар</string>
     <string name="type.shop.massage">Масажа</string>
     <string name="type.shop.mobile_phone">Мобилни телефони</string>
@@ -1196,6 +1211,7 @@
     <string name="type.shop.pet">Пет шоп</string>
     <string name="type.shop.pet_grooming">Грумер</string>
     <string name="type.shop.photo">Фотограф</string>
+    <string name="type.shop.religion">Продавница верских предмета</string>
     <string name="type.shop.rental">Центар за изнајмљивање</string>
     <string name="type.shop.rental.bicycle">Изнајмљивање бицикала</string>
     <string name="type.amenity.bicycle_rental.shop">Изнајмљивање бицикала</string>

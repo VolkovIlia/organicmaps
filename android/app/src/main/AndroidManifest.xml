@@ -48,9 +48,6 @@
   //-->
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-  <uses-permission android:name="androidx.car.app.NAVIGATION_TEMPLATES"/>
-  <uses-permission android:name="androidx.car.app.ACCESS_SURFACE"/>
-
   <queries>
     <intent>
       <action android:name="android.intent.action.TTS_SERVICE"/>
@@ -71,6 +68,7 @@
 
   <!-- "android:resizeableActivity" allows free-form and split-screen modes -->
   <application
+      android:appCategory="maps"
       android:name=".MwmApplication"
       android:allowBackup="true"
       android:backupInForeground="true"
@@ -541,7 +539,7 @@
     <activity
         android:name="app.organicmaps.car.screens.permissions.RequestPermissionsActivity"/>
     <service
-        android:name="app.organicmaps.car.CarAppService"
+        android:name="app.organicmaps.car.AndroidAutoService"
         android:exported="true"
         tools:ignore="ExportedService">
       <intent-filter>
@@ -555,13 +553,6 @@
         <data android:scheme="geo.offline" />
       </intent-filter>
     </service>
-
-    <service
-        android:name=".routing.NavigationService"
-        android:foregroundServiceType="location|mediaPlayback"
-        android:exported="false"
-        android:enabled="true"
-        android:stopWithTask="false"/>
 
     <service android:name=".location.TrackRecordingService"
       android:foregroundServiceType="location"
@@ -599,11 +590,10 @@
 
     <meta-data
         android:name="com.google.android.gms.car.application"
-        android:resource="@xml/automotive_app_desc"/>
+        android:resource="@xml/automotive_app_desc" />
 
     <meta-data
         android:name="androidx.car.app.minCarApiLevel"
-        android:value="5"/>
-
+        android:value="7" />
   </application>
 </manifest>

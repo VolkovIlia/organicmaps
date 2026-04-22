@@ -20,7 +20,7 @@
     <string name="type.amenity.bicycle_repair_station">trạm sửa xe đạp</string>
     <string name="type.amenity.biergarten">Vườn bia</string>
     <string name="type.amenity.brothel">Giải trí</string>
-    <string name="type.amenity.bureau_de_change">Tỉ giá hiện tại</string>
+    <string name="type.amenity.bureau_de_change">Quầy đổi tiền</string>
     <string name="type.amenity.bus_station">Trạm xe buýt</string>
     <string name="type.amenity.cafe">Cà phê</string>
     <string name="type.amenity.car_rental">Ô tô</string>
@@ -62,7 +62,7 @@
     <string name="type.amenity.grave_yard">Bãi tha ma</string>
     <!-- In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. -->
     <string name="type.amenity.grave_yard.christian">Bãi tha ma</string>
-    <string name="type.amenity.hospital">Bệnhviện</string>
+    <string name="type.amenity.hospital">Bệnh viện</string>
     <string name="type.amenity.hunting_stand">Điểm săn bắn</string>
     <string name="type.amenity.ice_cream">Quầy kem</string>
     <string name="type.amenity.internet_cafe">Quán Internet</string>
@@ -99,7 +99,7 @@
     <string name="type.amenity.parking_space.underground">Chỗ để xe</string>
     <string name="type.amenity.parking_space.disabled">Chỗ đậu xe dành cho người khuyết tật</string>
     <string name="type.amenity.payment_terminal">Thiết bị thanh toán</string>
-    <string name="type.amenity.pharmacy">3Hiệu thuốc</string>
+    <string name="type.amenity.pharmacy">Nhà thuốc</string>
     <string name="type.amenity.place_of_worship">Chùa</string>
     <string name="type.amenity.place_of_worship.buddhist">Đền</string>
     <string name="type.amenity.place_of_worship.christian">Chùa</string>
@@ -209,7 +209,7 @@
     <string name="type.craft.photographer">Thợ chụp ảnh</string>
     <string name="type.shop.camera">Cửa hàng máy ảnh</string>
     <string name="type.craft.plumber">Thợ đường ống</string>
-    <string name="type.craft.sawmill">Sumel</string>
+    <string name="type.craft.sawmill">Xưởng cưa</string>
     <string name="type.craft.shoemaker">Sửa giày</string>
     <string name="type.craft.winery">Nhà máy rượu</string>
     <string name="type.craft.tailor">Thợ may</string>
@@ -271,7 +271,7 @@
     <string name="type.cuisine.mediterranean">Ẩm thực địa trung hải</string>
     <string name="type.cuisine.mexican">Ẩm thực mexico</string>
     <string name="type.cuisine.moroccan">Ẩm thực ma-rốc</string>
-    <string name="type.cuisine.noodles">Mì</string>
+    <string name="type.cuisine.noodle">Mì</string>
     <string name="type.cuisine.oriental">Ẩm thực phương đông</string>
     <string name="type.cuisine.pancake">Bánh kếp</string>
     <string name="type.cuisine.pasta">Mỳ ống</string>
@@ -287,14 +287,16 @@
     <string name="type.cuisine.sausage">Xúc xích</string>
     <string name="type.cuisine.savory_pancakes">Bánh kếp rau thơm</string>
     <string name="type.cuisine.seafood">Hải sản</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Mì soba</string>
     <string name="type.cuisine.spanish">Ẩm thực tây ban nha</string>
-    <string name="type.cuisine.steak_house">Steak house</string>
+    <string name="type.cuisine.steak_house">Nhà hàng bít tết</string>
     <string name="type.cuisine.sushi">Sushi</string>
     <string name="type.cuisine.tapas">Tapas</string>
     <string name="type.cuisine.tea">Trà</string>
     <string name="type.cuisine.thai">Ẩm thực thái lan</string>
     <string name="type.cuisine.turkish">Ẩm thực thổ nhĩ kỳ</string>
+    <string name="type.cuisine.uzbek">Uzbekistan</string>
     <string name="type.cuisine.vegan">Ẩm thực chay</string>
     <string name="type.cuisine.vegetarian">Ẩm thực chay</string>
     <string name="type.cuisine.vietnamese">Ẩm thực việt</string>
@@ -494,8 +496,8 @@
     <string name="type.historic.castle.defensive">Lâu đài</string>
     <string name="type.historic.castle.fortified_church">Nhà thờ kiên cố</string>
     <string name="type.historic.castle.fortress">Pháo đài</string>
-    <string name="type.historic.castle.hillfort">Hillfort</string>
-    <string name="type.historic.castle.kremlin">Kremli</string>
+    <string name="type.historic.castle.hillfort">Pháo đài trên đồi</string>
+    <string name="type.historic.castle.kremlin">Kremlin</string>
     <string name="type.historic.castle.manor">Trang viên</string>
     <string name="type.historic.castle.palace">Cung điện</string>
     <string name="type.historic.castle.shiro">Lâu đài nhật bản</string>
@@ -517,9 +519,9 @@
     <string name="type.historic.monument">Tượng đài</string>
     <string name="type.historic.pillory">Thuốc viên</string>
     <string name="type.historic.ruins">Phế tích</string>
-    <string name="type.historic.ship">Diểm tham quan</string>
+    <string name="type.historic.ship">Tàu lịch sử</string>
     <string name="type.historic.tank">Xe tăng lịch sử</string>
-    <string name="type.historic.tomb">Diểm tham quan</string>
+    <string name="type.historic.tomb">Mộ</string>
     <!-- Usually has no historic and sometimes no religious context. E.g. a mountain summit cross. -->
     <string name="type.man_made.cross">Thập tự</string>
     <!-- Usually a Christian historical cross placed along a road. -->
@@ -544,7 +546,7 @@
     <string name="type.landuse.railway">Cơ sở đường sắt</string>
     <string name="type.landuse.reservoir">Nước</string>
     <string name="type.leisure.dog_park">Nơi cho chó đi dạo</string>
-    <string name="type.leisure.fitness_centre">Phòng Tập</string>
+    <string name="type.leisure.fitness_centre">Trung tâm thể hình</string>
     <string name="type.leisure.fitness_station">Trạm tập thể hình</string>
     <string name="type.leisure.dance">Vũ trường</string>
     <string name="type.leisure.garden">Điểm khảo cổ</string>
@@ -567,8 +569,8 @@
     <string name="type.leisure.stadium">Sân vận động</string>
     <string name="type.leisure.swimming_pool">Bể bơi</string>
     <string name="type.leisure.swimming_pool.private">Bể bơi</string>
-    <string name="type.leisure.water_park">Công Viên Nước</string>
-    <string name="type.man_made.chimney">Ống Khói Nhà Máy</string>
+    <string name="type.leisure.water_park">Công viên nước</string>
+    <string name="type.man_made.chimney">Ống khói nhà máy</string>
     <string name="type.man_made.lighthouse">Hải đăng</string>
     <string name="type.man_made.surveillance">Camera giám sát</string>
     <string name="type.man_made.tower">Tháp</string>
@@ -633,7 +635,9 @@
     <string name="type.natural.wetland.bog">Đầm lầy toan</string>
     <string name="type.natural.wetland.marsh">Đầm lầy cỏ</string>
     <string name="type.office">Văn phòng</string>
+    <string name="type.office.architect">Văn phòng kiến trúc</string>
     <string name="type.office.company">Văn phòng công ty</string>
+    <string name="type.office.educational_institution">Cơ sở giáo dục</string>
     <string name="type.office.estate_agent">Đại Lý Bất Động Sản</string>
     <string name="type.office.government">Văn phòng chính phủ</string>
     <string name="type.office.insurance">Văn phòng bảo hiểm</string>
@@ -688,6 +692,7 @@
     <string name="type.power.substation">Trạm biến áp</string>
     <!-- A tower or pylon carrying high voltage electricity cables. -->
     <string name="type.power.tower">Trụ Điện</string>
+    <string name="type.railway.disused.tunnel">Hầm đường sắt ngưng sử dụng</string>
     <string name="type.railway.funicular">Đường sắt leo núi</string>
     <string name="type.railway.halt">Đường tàu hỏa</string>
     <string name="type.railway.level_crossing">Chỗ qua đường sắt</string>
@@ -974,6 +979,15 @@
     <string name="type.shop.chemist">Cửa hàng Hóa chất</string>
     <string name="type.shop.chocolate">Cửa hàng socola</string>
     <string name="type.shop.clothes">Cửa hàng quần áo</string>
+    <string name="type.shop.clothes.children">Cửa hàng quần áo trẻ em</string>
+    <string name="type.shop.clothes.fashion">Cửa hàng thời trang</string>
+    <string name="type.shop.clothes.hats">Cửa hàng mũ</string>
+    <string name="type.shop.clothes.men">Cửa hàng quần áo nam</string>
+    <string name="type.shop.clothes.sports">Cửa hàng quần áo thể thao</string>
+    <string name="type.shop.clothes.suits">Cửa hàng vest</string>
+    <string name="type.shop.clothes.underwear">Cửa hàng đồ lót</string>
+    <string name="type.shop.clothes.wedding">Cửa hàng váy cưới</string>
+    <string name="type.shop.clothes.women">Cửa hàng quần áo nữ</string>
     <string name="type.shop.coffee">Quán cà phê</string>
     <string name="type.shop.computer">Cửa hàng máy tính</string>
     <string name="type.shop.confectionery">Cửa hàng kẹo</string>
@@ -994,6 +1008,7 @@
     <string name="type.shop.funeral_directors">Tổ chức tang lễ</string>
     <string name="type.shop.furniture">Cửa hàng nội thất</string>
     <string name="type.shop.garden_centre">Nhà trẻ</string>
+    <string name="type.shop.games">Cửa hàng trò chơi</string>
     <string name="type.shop.gas">Cửa hàng gas</string>
     <string name="type.shop.gift">Cửa hàng quà tặng</string>
     <string name="type.shop.greengrocer">Cửa hàng rau củ</string>
@@ -1008,6 +1023,7 @@
     <string name="type.shop.kiosk">Cửa hàng</string>
     <string name="type.shop.kitchen">Cửa hàng nhà bếp</string>
     <string name="type.shop.laundry">Giặt là</string>
+    <string name="type.shop.leather">Cửa hàng đồ da</string>
     <string name="type.shop.mall">Khu mua sắm</string>
     <string name="type.shop.massage">Quán massage</string>
     <string name="type.shop.mobile_phone">Cửa hàng điện thoại di động</string>
@@ -1026,6 +1042,7 @@
     <string name="type.shop.pet">Cửa Hàng Vật Nuôi</string>
     <string name="type.shop.pet_grooming">Chải lông thú cưng</string>
     <string name="type.shop.photo">Hiệu Ảnh</string>
+    <string name="type.shop.religion">Cửa hàng vật phẩm tôn giáo</string>
     <string name="type.shop.rental">Cửa hàng cho thuê</string>
     <string name="type.shop.rental.bicycle">Cửa hàng cho thuê xe đạp</string>
     <string name="type.amenity.bicycle_rental.shop">Cửa hàng cho thuê xe đạp</string>
@@ -1128,7 +1145,7 @@
     <string name="type.tourism.caravan_site">Khu lễ hội hóa trang</string>
     <!-- A rentable countryside vacation house. -->
     <string name="type.tourism.chalet">Nha nghi</string>
-    <string name="type.tourism.gallery">Diểm tham quan</string>
+    <string name="type.tourism.gallery">Phòng trưng bày nghệ thuật</string>
     <string name="type.tourism.guest_house">Nhà khách</string>
     <string name="type.tourism.hostel">Nhà trọ</string>
     <string name="type.tourism.hotel">Khách sạn</string>
@@ -1142,7 +1159,7 @@
     <string name="type.tourism.museum">Bảo tàng</string>
     <string name="type.tourism.picnic_site">Điểm cắm trại</string>
     <string name="type.leisure.resort">Khu nghỉ dưỡng</string>
-    <string name="type.tourism.theme_park">Diểm tham quan</string>
+    <string name="type.tourism.theme_park">Công viên chủ đề</string>
     <string name="type.tourism.viewpoint">Điểm nhìn</string>
     <!-- Typically more basic, not staffed and free (compared to alpine_hut). -->
     <string name="type.tourism.wilderness_hut">Nhà tạm trú</string>

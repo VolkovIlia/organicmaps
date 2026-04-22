@@ -3,7 +3,6 @@
 #include "base/math.hpp"
 
 #include <cstdint>
-#include <sstream>
 #include <string>
 
 namespace dp
@@ -63,6 +62,10 @@ struct Color
   {
     return {ExtractByte(rgba, 3), ExtractByte(rgba, 2), ExtractByte(rgba, 1), ExtractByte(rgba, 0)};
   }
+  constexpr static Color FromFloat(float red, float green, float blue)
+  {
+    return {uint8_t(red * kMaxChannelValue), uint8_t(green * kMaxChannelValue), uint8_t(blue * kMaxChannelValue)};
+  }
 
 private:
   constexpr static uint8_t ExtractByte(uint32_t number, uint8_t byteIdx) { return (number >> (8 * byteIdx)) & 0xFF; }
@@ -76,11 +79,18 @@ private:
   uint32_t m_rgba;
 };
 
-inline std::string DebugPrint(Color const & c)
+std::string DebugPrint(Color const & c);
+
+// Hue, Saturation, Lightness
+struct HSL
 {
-  std::ostringstream out;
-  out << "[R = " << static_cast<uint32_t>(c.GetRed()) << ", G = " << static_cast<uint32_t>(c.GetGreen())
-      << ", B = " << static_cast<uint32_t>(c.GetBlue()) << ", A = " << static_cast<uint32_t>(c.GetAlpha()) << "]";
-  return out.str();
-}
+  float h, s, l;  // h: 0-360, s/l: 0-1
+
+  bool IsDark() const { return l < 0.4f; }
+  bool AdjustLightness(bool isLightTheme);
+};
+
+HSL Color2HSL(Color c);
+Color HSL2Color(HSL const & hsl);
+
 }  // namespace dp

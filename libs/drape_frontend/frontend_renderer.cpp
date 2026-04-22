@@ -25,8 +25,6 @@
 #include "indexer/drawing_rules.hpp"
 #include "indexer/scales.hpp"
 
-#include "geometry/any_rect2d.hpp"
-
 #include "platform/trace.hpp"
 
 #include "base/assert.hpp"
@@ -44,7 +42,6 @@
 #include <limits>
 #include <memory>
 #include <thread>
-#include <utility>
 
 namespace df
 {
@@ -772,7 +769,7 @@ void FrontendRenderer::AcceptMessage(ref_ptr<Message> message)
           zoom = scales::GetAddNewPlaceScale();
         AddUserEvent(make_unique_dp<SetCenterEvent>(
             pt ? *pt : m_userEventStream.GetCurrentScreen().GlobalRect().Center(), zoom, true /* isAnim */,
-            true /* trackVisibleViewport */, nullptr /* parallelAnimCreator */));
+            !pt /* trackVisibleViewport */, nullptr /* parallelAnimCreator */));
       }
       else
       {
@@ -1323,6 +1320,7 @@ void FrontendRenderer::ProcessSelection(ref_ptr<SelectObjectMessage> msg)
       dp::TOverlayContainer selectResult;
       if (m_overlayTree->IsNeedUpdate())
         BuildOverlayTree(modelView);
+      // Expect that msg->GetPosition() is in canonical mercator coordinates.
       m_overlayTree->Select(msg->GetPosition(), selectResult);
       for (ref_ptr<dp::OverlayHandle> const & handle : selectResult)
         offsetZ = std::max(offsetZ, handle->GetPivotZ());
@@ -1435,7 +1433,7 @@ void FrontendRenderer::RenderScene(ScreenBase const & modelView, bool activeFram
 
     m_context->Clear(dp::ClearBits::DepthBit, dp::kClearBitsStoreAll);
 
-    if (m_selectionShape && IsValidCurrentZoom())
+    if (m_selectionShape)
     {
       SelectionShape::ESelectedObject selectedObject = m_selectionShape->GetSelectedObject();
       if (selectedObject == SelectionShape::OBJECT_MY_POSITION)
@@ -1455,16 +1453,13 @@ void FrontendRenderer::RenderScene(ScreenBase const & modelView, bool activeFram
       RenderOverlayLayer(modelView);
     }
 
-    if (IsValidCurrentZoom())
-    {
-      m_gpsTrackRenderer->RenderTrack(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(),
-                                      m_frameValues);
+    m_gpsTrackRenderer->RenderTrack(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(),
+                                    m_frameValues);
 
-      if (m_selectionShape && (m_selectionShape->GetSelectedObject() == SelectionShape::OBJECT_USER_MARK ||
-                               m_selectionShape->GetSelectedObject() == SelectionShape::OBJECT_TRACK))
-      {
-        m_selectionShape->Render(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(), m_frameValues);
-      }
+    if (m_selectionShape && (m_selectionShape->GetSelectedObject() == SelectionShape::OBJECT_USER_MARK ||
+                             m_selectionShape->GetSelectedObject() == SelectionShape::OBJECT_TRACK))
+    {
+      m_selectionShape->Render(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(), m_frameValues);
     }
 
     if (hasTransitRouteData)
@@ -1490,7 +1485,6 @@ void FrontendRenderer::RenderScene(ScreenBase const & modelView, bool activeFram
   if (!m_postprocessRenderer->EndFrame(m_context, make_ref(m_gpuProgramManager), m_viewport))
     return;
 
-  if (IsValidCurrentZoom())
   {
     uint32_t clearBits = dp::ClearBits::DepthBit;
     if (m_apiVersion == dp::ApiVersion::OpenGLES3)
@@ -1514,11 +1508,8 @@ void FrontendRenderer::RenderTileBackgroundLayer(ScreenBase const & modelView)
 {
   TRACE_SECTION("[drape] RenderTileBackgroundLayer");
   DEBUG_LABEL(m_context, "Tile Background");
-  if (IsValidCurrentZoom())
-  {
-    m_tileBackgroundRenderer->Render(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(),
-                                     m_frameValues);
-  }
+  m_tileBackgroundRenderer->Render(m_context, make_ref(m_gpuProgramManager), modelView, GetCurrentZoom(),
+                                   m_frameValues);
 }
 
 void FrontendRenderer::Render2dLayer(ScreenBase const & modelView)
@@ -1748,6 +1739,10 @@ void FrontendRenderer::RenderFrame()
   if (viewportChanged || m_needRestoreSize)
     OnResize(modelView);
 
+  bool const zoomChanged = ResolveZoomLevel(modelView);
+  /// @todo Put ResolveZoomLevel under modelViewChanged after testing.
+  ASSERT(!zoomChanged || modelViewChanged, ());
+
   if (!m_context->BeginRendering())
     return;
 
@@ -1783,14 +1778,18 @@ void FrontendRenderer::RenderFrame()
 
   m_context->EndRendering();
 
-  auto const hasForceUpdate = m_forceUpdateScene || m_forceUpdateUserMarks;
+  bool const hasForceUpdate = m_forceUpdateScene || m_forceUpdateUserMarks;
   isActiveFrame |= hasForceUpdate;
 #if defined(SCENARIO_ENABLE)
   isActiveFrame = true;
 #endif
 
   if (modelViewChanged || hasForceUpdate)
+  {
+    if (zoomChanged)
+      UpdateCanBeDeletedStatus();
     UpdateScene(modelView);
+  }
 
   InterpolationHolder::Instance().Advance(m_frameData.m_frameTime);
   AnimationSystem::Instance().Advance(m_frameData.m_frameTime);
@@ -1868,9 +1867,6 @@ void FrontendRenderer::RenderFrame()
 void FrontendRenderer::BuildOverlayTree(ScreenBase const & modelView)
 {
   TRACE_SECTION("[drape] BuildOverlayTree");
-  if (!IsValidCurrentZoom())
-    return;
-
   BeginUpdateOverlayTree(modelView);
   for (auto const layerId :
        {DepthLayer::OverlayLayer, DepthLayer::RoutingBottomMarkLayer, DepthLayer::RoutingMarkLayer})
@@ -1966,17 +1962,16 @@ void FrontendRenderer::CheckIsometryMinScale(ScreenBase const & screen)
   }
 }
 
-void FrontendRenderer::ResolveZoomLevel(ScreenBase const & screen)
+bool FrontendRenderer::ResolveZoomLevel(ScreenBase const & screen)
 {
   int const prevZoomLevel = m_currentZoomLevel;
   m_currentZoomLevel = GetDrawTileScale(screen);
   gui::DrapeGui::Instance().GetScaleFpsHelper().SetScale(m_currentZoomLevel);
 
-  if (prevZoomLevel != m_currentZoomLevel)
-    UpdateCanBeDeletedStatus();
-
   CheckIsometryMinScale(screen);
   UpdateDisplacementEnabled();
+
+  return prevZoomLevel != m_currentZoomLevel;
 }
 
 void FrontendRenderer::UpdateDisplacementEnabled()
@@ -1999,8 +1994,7 @@ void FrontendRenderer::OnTap(m2::PointD const & pt, bool isLongTap)
   ScreenBase const & screen = m_userEventStream.GetCurrentScreen();
   bool isMyPosition = false;
 
-  m2::PointD const pxPoint2d = screen.P3dtoP(pt);
-  m2::PointD mercator = screen.PtoG(pxPoint2d);
+  m2::PointD mercator = PtoGWrap(screen.P3dtoP(pt), screen);
 
   // Long tap should show/hide the interface. There is no need to detect tapped features.
   if (isLongTap)
@@ -2011,7 +2005,7 @@ void FrontendRenderer::OnTap(m2::PointD const & pt, bool isLongTap)
 
   if (m_myPositionController->IsModeHasPosition())
   {
-    m2::PointD const pixelPos = screen.PtoP3d(screen.GtoP(m_myPositionController->Position()));
+    m2::PointD const pixelPos = screen.PtoP3d(GtoPWrap(m_myPositionController->Position(), screen));
     isMyPosition = selectRect.IsPointInside(pixelPos);
     if (isMyPosition)
       mercator = m_myPositionController->Position();
@@ -2536,6 +2530,11 @@ ScreenBase const & FrontendRenderer::ProcessEvents(bool & modelViewChanged, bool
   ScreenBase const & modelView = m_userEventStream.ProcessEvents(modelViewChanged, viewportChanged, needActiveFrame);
   gui::DrapeGui::Instance().SetInUserAction(m_userEventStream.IsInUserAction());
 
+  // modelViewChanged == false and m_currentZoomLevel == -1 is possible on the first render ..
+  // Set modelViewChanged flag is logical here ATM.
+  if (!IsValidCurrentZoom())
+    modelViewChanged = true;
+
   // Location- or compass-update could have changed model view on the previous frame.
   // So we have to check it here.
   if (m_lastReadedModelView != modelView)
@@ -2557,8 +2556,6 @@ void FrontendRenderer::PrepareScene(ScreenBase const & modelView)
 void FrontendRenderer::UpdateScene(ScreenBase const & modelView)
 {
   TRACE_SECTION("[drape] UpdateScene");
-  ResolveZoomLevel(modelView);
-
   m_gpsTrackRenderer->Update();
 
   auto removePredicate = [this](drape_ptr<RenderGroup> const & group)
@@ -2692,10 +2689,8 @@ void FrontendRenderer::RenderLayer::Sort(ref_ptr<dp::OverlayTree> overlayTree)
 // static
 m2::AnyRectD TapInfo::GetDefaultTapRect(m2::PointD const & mercator, ScreenBase const & screen)
 {
-  m2::AnyRectD result;
-  double const halfSize = VisualParams::Instance().GetTouchRectRadius();
-  screen.GetTouchRect(screen.GtoP(mercator), halfSize, result);
-  return result;
+  double const r = VisualParams::Instance().GetTouchRectRadius() * screen.GetScale();
+  return m2::AnyRectD(mercator, screen.GetAngleD(), m2::RectD(-r, -r, r, r));
 }
 
 // static
@@ -2703,13 +2698,13 @@ m2::AnyRectD TapInfo::GetBookmarkTapRect(m2::PointD const & mercator, ScreenBase
 {
   static int constexpr kBmTouchPixelIncrease = 20;
 
-  m2::AnyRectD result;
   double const bmAddition = kBmTouchPixelIncrease * VisualParams::Instance().GetVisualScale();
   double const halfSize = VisualParams::Instance().GetTouchRectRadius();
   double const pxWidth = halfSize;
   double const pxHeight = halfSize + bmAddition;
-  screen.GetTouchRect(screen.GtoP(mercator) + m2::PointD(0, bmAddition), pxWidth, pxHeight, result);
-  return result;
+
+  // No need in GtoPWrap since screen.GetTouchRect makes PtoG inside :)
+  return screen.GetTouchRect(screen.GtoP(mercator) + m2::PointD(0, bmAddition), pxWidth, pxHeight);
 }
 
 // static
@@ -2717,11 +2712,11 @@ m2::AnyRectD TapInfo::GetRoutingPointTapRect(m2::PointD const & mercator, Screen
 {
   static int constexpr kRoutingPointTouchPixelIncrease = 20;
 
-  m2::AnyRectD result;
-  double const bmAddition = kRoutingPointTouchPixelIncrease * VisualParams::Instance().GetVisualScale();
-  double const halfSize = VisualParams::Instance().GetTouchRectRadius();
-  screen.GetTouchRect(screen.GtoP(mercator), halfSize + bmAddition, result);
-  return result;
+  double const r = (kRoutingPointTouchPixelIncrease * VisualParams::Instance().GetVisualScale() +
+                    VisualParams::Instance().GetTouchRectRadius()) *
+                   screen.GetScale();
+
+  return m2::AnyRectD(mercator, screen.GetAngleD(), m2::RectD(-r, -r, r, r));
 }
 
 // static

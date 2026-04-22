@@ -1,8 +1,6 @@
 #include "routing/maxspeeds.hpp"
 #include "routing/maxspeeds_serialization.hpp"
 
-#include "platform/measurement_utils.hpp"
-
 #include "coding/files_container.hpp"
 
 #include "base/assert.hpp"
@@ -39,7 +37,7 @@ Maxspeed Maxspeeds::GetMaxspeed(uint32_t fid) const
   if (range.second == range.first)
     return Maxspeed();  // No maxspeed for |fid| is set. Returns an invalid Maxspeed instance.
 
-  CHECK_EQUAL(range.second - range.first, 1, ());
+  ASSERT_EQUAL(range.second - range.first, 1, ());
   return range.first->GetMaxspeed();
 }
 

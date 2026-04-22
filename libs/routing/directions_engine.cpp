@@ -8,21 +8,17 @@
 
 #include "indexer/ftypes_matcher.hpp"
 
-#include "coding/string_utf8_multilang.hpp"
-
 #include "geometry/point2d.hpp"
 
 namespace routing
 {
 using namespace ftypes;
 using namespace routing::turns;
-using namespace std;
-
 namespace
 {
 bool IsFakeFeature(uint32_t featureId)
 {
-  return routing::FakeFeatureIds::IsGuidesFeature(featureId) || routing::FakeFeatureIds::IsTransitFeature(featureId);
+  return FakeFeatureIds::IsGuidesFeature(featureId) || FakeFeatureIds::IsTransitFeature(featureId);
 }
 
 feature::Metadata::EType GetLanesMetadataTag(FeatureType & ft, bool isForward)
@@ -57,7 +53,7 @@ void DirectionsEngine::Clear()
   m_pathSegments.clear();
 }
 
-unique_ptr<FeatureType> DirectionsEngine::GetFeature(FeatureID const & featureId)
+std::unique_ptr<FeatureType> DirectionsEngine::GetFeature(FeatureID const & featureId)
 {
   if (IsFakeFeature(featureId.m_index))
     return nullptr;
@@ -144,11 +140,10 @@ void DirectionsEngine::GetSegmentRangeAndAdjacentEdges(IRoadGraph::EdgeListT con
   }
 
   if (outgoingTurns.isCandidatesAngleValid)
-    sort(outgoingTurns.candidates.begin(), outgoingTurns.candidates.end(), base::LessBy(&TurnCandidate::m_angle));
+    std::sort(outgoingTurns.candidates.begin(), outgoingTurns.candidates.end(), base::LessBy(&TurnCandidate::m_angle));
 }
 
-void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const & graph,
-                                                           vector<geometry::PointWithAltitude> const & path,
+void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const & graph, RouteJunctions const & path,
                                                            IRoadGraph::EdgeVector const & routeEdges,
                                                            base::Cancellable const & cancellable)
 {
@@ -157,12 +152,12 @@ void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const 
   CHECK_EQUAL(routeEdges.size() + 1, pathSize, ());
 
   // Filling |m_adjacentEdges|.
-  auto constexpr kInvalidSegId = numeric_limits<uint32_t>::max();
+  auto constexpr kInvalidSegId = std::numeric_limits<uint32_t>::max();
   // |startSegId| is a value to keep start segment id of a new instance of LoadedPathSegment.
   uint32_t startSegId = kInvalidSegId;
 
-  vector<geometry::PointWithAltitude> prevJunctions;
-  vector<Segment> prevSegments;
+  RouteJunctions prevJunctions;
+  std::vector<Segment> prevSegments;
   for (size_t i = 1; i < pathSize; ++i)
   {
     if (cancellable.IsCancelled())
@@ -192,7 +187,7 @@ void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const 
       continue;
     }
 
-    CHECK_EQUAL(prevJunctions.size(), static_cast<size_t>(abs(int(inSegId) - int(startSegId)) + 1), ());
+    CHECK_EQUAL(prevJunctions.size(), static_cast<size_t>(std::abs(int(inSegId) - int(startSegId)) + 1), ());
 
     prevJunctions.push_back(currJunction);
 
@@ -213,7 +208,7 @@ void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const 
 
     if (!segmentRange.IsEmpty())
     {
-      /// @todo By VNG: Here was mostly investigational CHECK.
+      /// @todo Controversial CHECK here.
       /// Entry already exists, when start-end points are on the same fake segments.
 
       // bool const isEmpty = adjacentEdges.m_outgoingTurns.candidates.empty();
@@ -229,8 +224,8 @@ void DirectionsEngine::FillPathSegmentsAndAdjacentEdgesMap(IndexRoadGraph const 
   }
 }
 
-bool DirectionsEngine::Generate(IndexRoadGraph const & graph, vector<geometry::PointWithAltitude> const & path,
-                                base::Cancellable const & cancellable, vector<RouteSegment> & routeSegments)
+bool DirectionsEngine::Generate(IndexRoadGraph const & graph, RouteJunctions const & path,
+                                base::Cancellable const & cancellable, std::vector<RouteSegment> & routeSegments)
 {
   CHECK(m_numMwmIds, ());
 
@@ -309,7 +304,7 @@ bool DirectionsEngine::Generate(IndexRoadGraph const & graph, vector<geometry::P
 // and minimal |turnsDir| is - single ReachedYourDestination with m_index == 5.
 
 void DirectionsEngine::MakeTurnAnnotation(IndexRoadGraph::EdgeVector const & routeEdges,
-                                          vector<RouteSegment> & routeSegments)
+                                          std::vector<RouteSegment> & routeSegments)
 {
   CHECK_GREATER_OR_EQUAL(routeEdges.size(), 2, ());
 
@@ -334,13 +329,14 @@ void DirectionsEngine::MakeTurnAnnotation(IndexRoadGraph::EdgeVector const & rou
     CHECK_EQUAL(loadedSegment.m_segments.size() + 1, loadedSegment.m_path.size(), ());
 
     auto rni = loadedSegment.m_roadNameInfo;
+    ASSERT_EQUAL(rni.m_isLink, loadedSegment.m_isLink, ());
 
     for (size_t i = 0; i < loadedSegment.m_segments.size() - 1; ++i)
     {
       auto const & junction = loadedSegment.m_path[i + 1];
       routeSegments.emplace_back(loadedSegment.m_segments[i], TurnItem(), junction, rni);
       if (i == 0)
-        rni = {"", "", "", "", "", loadedSegment.m_isLink};
+        rni.ClearUselessStringsForTailSegments();
     }
 
     // For the last segment of current loadedSegment put info about turn

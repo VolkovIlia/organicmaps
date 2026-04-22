@@ -102,7 +102,13 @@ extern "C" char * strptime(char const * s, char const * f, std::tm * tm)
 bool GetTimeTuple(std::string const & strTime, std::string const & fmt, std::tm & tm)
 {
   auto const rc = strptime(strTime.data(), fmt.data(), &tm);
-  return rc != nullptr;
+  if (rc == nullptr)
+    return false;
+  // strptime doesn't set tm_isdst. Set to -1 so mktime auto-detects DST,
+  // otherwise mktime assumes standard time (tm_isdst=0) and shifts the
+  // timestamp by 1 hour during DST periods, potentially crossing midnight.
+  tm.tm_isdst = -1;
+  return true;
 }
 
 struct GetTimeError: std::exception
@@ -1695,7 +1701,7 @@ BOOST_AUTO_TEST_CASE(OpeningHours_TestIsOpen)
     BOOST_CHECK(IsOpen(rules, "2017-05-31 23:35"));
     BOOST_CHECK(!IsOpen(rules, "2017-02-10 05:35"));
     BOOST_CHECK(!IsOpen(rules, "2017-05-21 06:01"));
-  } 
+  }
   {
     TRuleSequences rules;
     BOOST_CHECK(Parse("Mo-Su 00:00-24:00; Mo-We 00:00-24:00 off", rules));
@@ -1802,5 +1808,17 @@ BOOST_AUTO_TEST_CASE(OpeningHours_TestOpeningHours)
 
     BOOST_CHECK(GetTimeTuple("2016-05-31 10:30", fmt, time));
     BOOST_CHECK(oh.IsClosed(mktime(&time)));
+  }
+  {
+    /// @todo Make valid years range (construction). https://www.openstreetmap.org/way/273985562
+    OpeningHours oh("2025-08-04 - 2026-12-13");
+    BOOST_CHECK(!oh.IsValid());
+
+    // std::tm time = {};
+    // BOOST_CHECK(GetTimeTuple("2026-02-20 12:00", fmt, time));
+    // BOOST_CHECK(oh.IsOpen(mktime(&time)));
+
+    // BOOST_CHECK(GetTimeTuple("2027-02-20 12:00", fmt, time));
+    // BOOST_CHECK(!oh.IsOpen(mktime(&time)));
   }
 }

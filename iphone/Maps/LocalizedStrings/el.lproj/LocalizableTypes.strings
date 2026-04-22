@@ -7,10 +7,10 @@
 "type.addr_interpolation.odd" = "Διεύθυνση/Τετράγωνο";
 "type.aerialway" = "Τελεφερίκ";
 "type.aerialway.cable_car" = "Τελεφερίκ";
-"type.aerialway.chair_lift" = "Τελεφερίκ";
-"type.aerialway.drag_lift" = "Τελεφερίκ";
-"type.aerialway.gondola" = "Τελεφερίκ";
-"type.aerialway.mixed_lift" = "Τελεφερίκ";
+"type.aerialway.chair_lift" = "Αναβατήρας καρεκλών";
+"type.aerialway.drag_lift" = "Συρόμενος αναβατήρας";
+"type.aerialway.gondola" = "Γόνδολα";
+"type.aerialway.mixed_lift" = "Συνδυασμένος αναβατήρας";
 "type.aerialway.station" = "Σταθμός τελεφερίκ";
 "type.aeroway" = "Υποδομή εναέριου χώρου";
 "type.aeroway.aerodrome" = "Αεροδρόμιο";
@@ -182,7 +182,7 @@
 "type.toilets.yes" = "Τουαλέτα";
 "type.amenity.townhall" = "Δημαρχείο";
 "type.amenity.university" = "Πανεπιστήμιο";
-"type.amenity.vending_machine" = "Μηχανή αυτόματου πωλητή";
+"type.amenity.vending_machine" = "Αυτόματος πωλητής";
 "type.amenity.vending_machine.cigarettes" = "Αυτόματος πωλητής τσιγάρων";
 "type.amenity.vending_machine.coffee" = "Διανεμητής καφέ";
 "type.amenity.vending_machine.condoms" = "Διανεμητής προφυλακτικών";
@@ -190,7 +190,7 @@
 "type.amenity.vending_machine.food" = "Διανεμητής τροφίμων";
 "type.amenity.vending_machine.newspapers" = "Διανεμητής εφημερίδων";
 "type.amenity.vending_machine.parking_tickets" = "Παρκόμετρο";
-"type.amenity.vending_machine.public_transport_tickets" = "Μηχάνημα αυτόματης πώλησης εισιτηρίων για ΜΜΕ";
+"type.amenity.vending_machine.public_transport_tickets" = "Αυτόματος πωλητής εισιτηρίων";
 "type.amenity.vending_machine.sweets" = "Διανεμητής γλυκών";
 "type.amenity.vending_machine.excrement_bags" = "Διανεμητής σακουλών περιττωμάτων";
 "type.amenity.parcel_locker" = "Θυρίδα δεμάτων";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Μεσογειακή";
 "type.cuisine.mexican" = "Μεξικάνικη";
 "type.cuisine.moroccan" = "Μαροκινή";
-"type.cuisine.noodles" = "Χυλοπίτες";
+"type.cuisine.noodle" = "Χυλοπίτες";
 "type.cuisine.oriental" = "Άπω Ανατολής";
 "type.cuisine.pancake" = "Τηγανίτα";
 "type.cuisine.pasta" = "Ζυμαρικά";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Λουκάνικο";
 "type.cuisine.savory_pancakes" = "Αλμυρές τηγανίτες";
 "type.cuisine.seafood" = "Θαλασσινά";
+"type.cuisine.shawarma" = "Σαουαρμά";
 "type.cuisine.soba" = "Σόμπα (λεπτά μακαρόνια)";
 "type.cuisine.spanish" = "Ισπανική";
 "type.cuisine.steak_house" = "Μπριζολάδικο";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Τσάι";
 "type.cuisine.thai" = "Ταϊλανδική";
 "type.cuisine.turkish" = "Τουρκική";
+"type.cuisine.uzbek" = "Ουζμπεκική";
 "type.cuisine.vegan" = "Για χορτοφάγους";
 "type.cuisine.vegetarian" = "Χορτοφαγική";
 "type.cuisine.vietnamese" = "Βιετναμέζικη";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Σήραγγα πεζών";
+"type.highway.platform" = "Πλατφόρμα";
 "type.highway.primary" = "Πρωτεύων δρόμος";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -601,7 +604,7 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.unclassified.tunnel" = "Σήραγγα";
 "type.area_highway.cycleway" = "Ποδηλατόδρομος";
-"type.area_highway.footway" = "Μονοπάτι πεζοπορίας";
+"type.area_highway.footway" = "Μονοπάτι πεζών";
 "type.area_highway.living_street" = "Οδός ήπιας κυκλοφορίας";
 "type.area_highway.motorway" = "Αυτοκινητόδρομος";
 "type.area_highway.path" = "Μονοπάτι";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Έλος";
 "type.noexit" = "Αδιέξοδο";
 "type.office" = "Γραφείο";
+"type.office.architect" = "Αρχιτεκτονικό γραφείο";
 "type.office.company" = "Γραφείο επιχείρησης";
+"type.office.educational_institution" = "Εκπαιδευτικό ίδρυμα";
 "type.office.estate_agent" = "Κτηματομεσίτης";
 "type.office.government" = "Κυβερνητικό γραφείο";
 "type.office.insurance" = "Ασφαλιστικό γραφείο";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Σιδηροδρομική διάβαση";
 "type.railway.disused" = "Αχρησιμοποίητος σιδηρόδρομος";
 "type.railway.disused.bridge" = "Αχρησιμοποίητη σιδηροδρομική γέφυρα";
+"type.railway.disused.tunnel" = "Αχρησιμοποίητη σιδηροδρομική σήραγγα";
 "type.railway.funicular" = "Τελεφερίκ";
 "type.railway.funicular.bridge" = "Γέφυρα τελεφερίκ";
 "type.railway.funicular.tunnel" = "Σήραγγα τελεφερίκ";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Χημικά προϊόντα";
 "type.shop.chocolate" = "Σοκολατοποιία";
 "type.shop.clothes" = "Κατάστημα ρούχων";
+"type.shop.clothes.children" = "Κατάστημα παιδικών ρούχων";
+"type.shop.clothes.fashion" = "Μπουτίκ μόδας";
+"type.shop.clothes.hats" = "Κατάστημα καπέλων";
+"type.shop.clothes.men" = "Κατάστημα ανδρικών ρούχων";
+"type.shop.clothes.sports" = "Κατάστημα αθλητικών ρούχων";
+"type.shop.clothes.suits" = "Κατάστημα κοστουμιών";
+"type.shop.clothes.underwear" = "Κατάστημα εσωρούχων";
+"type.shop.clothes.wedding" = "Κατάστημα νυφικών";
+"type.shop.clothes.women" = "Κατάστημα γυναικείων ρούχων";
 "type.shop.coffee" = "Καφεκοπτείο";
 "type.shop.computer" = "Κατάστημα υπολογιστών";
 "type.shop.confectionery" = "Γλυκά";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Γραφεία τελετών";
 "type.shop.furniture" = "Κατάστημα επίπλων";
 "type.shop.garden_centre" = "Κατάστημα ειδών κήπου";
+"type.shop.games" = "Κατάστημα παιχνιδιών";
 "type.shop.gas" = "Κατάστημα υγραερίου";
 "type.shop.gift" = "Είδη δώρου";
 "type.shop.greengrocer" = "Μανάβικο";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Περίπτερο";
 "type.shop.kitchen" = "Κατάστημα κουζίνας";
 "type.shop.laundry" = "Άπλυτα";
+"type.shop.leather" = "Κατάστημα δερμάτινων ειδών";
 "type.shop.mall" = "Εμπορικό κέντρο";
 "type.shop.massage" = "Αίθουσα μασάζ";
 "type.shop.mobile_phone" = "Κινητή Τηλεφωνία";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Κατάστημα για κατοικίδια";
 "type.shop.pet_grooming" = "Περιποίηση κατοικίδιων ζώων";
 "type.shop.photo" = "Φωτογραφείο";
+"type.shop.religion" = "Κατάστημα θρησκευτικών ειδών";
 "type.shop.rental" = "Κατάστημα ενοικίασης";
 "type.shop.rental.bicycle" = "Κατάστημα ενοικίασης ποδηλάτων";
 "type.amenity.bicycle_rental.shop" = "Κατάστημα ενοικίασης ποδηλάτων";

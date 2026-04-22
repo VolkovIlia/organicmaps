@@ -139,7 +139,7 @@
     <!-- Search category for post offices; any changes should be duplicated in categories.txt @category_post! -->
     <string name="category_post">우편</string>
     <!-- Search category for police; any changes should be duplicated in categories.txt @category_police! -->
-    <string name="category_police">치안대</string>
+    <string name="category_police">경찰</string>
     <!-- Search category for recycling; any changes should be duplicated in categories.txt @category_recycling! -->
     <string name="category_recycling">재활용</string>
     <!-- Search category for water; any changes should be duplicated in categories.txt @category_water! also used to sort bookmarks by type -->
@@ -152,7 +152,7 @@
     <string name="description">메모</string>
     <!-- Email Subject when sharing bookmark list -->
     <string name="share_bookmarks_email_subject">귀하와 공유된 Organic Maps 즐겨찾기</string>
-    <string name="share_bookmarks_email_body">안녕하세요!\n\n북마크가 첨부되어 있으니 오가닉 맵에서 열어주세요. 아직 설치하지 않았다면 여기에서 다운로드하세요: https://omaps.app/get?kmz\n\n오가닉 맵으로 여행을 즐겨보세요!</string>
+    <string name="share_bookmarks_email_body">안녕하세요!\n\n제 북마크를 첨부했습니다. Organic Maps에서 열어주세요. 설치되어 있지 않다면 여기에서 다운로드할 수 있습니다: https://omaps.app/get?kmz\n\nOrganic Maps와 함께 즐거운 여행 되세요!</string>
     <!-- message title of loading file -->
     <string name="load_kmz_title">즐겨찾기 로드</string>
     <!-- Kmz file successful loading -->
@@ -172,7 +172,7 @@
     <!-- Alert message that downloading is in progress. -->
     <string name="downloading_is_active">국가 다운로드가 지금 진행 중입니다.</string>
     <!-- Share my position using SMS, %1$@ contains om:// and %2$@ https://omaps.app link WITHOUT NAME. @NOTE non-ascii symbols in the link will result in max 70 characters SMS instead of 140. -->
-    <string name="my_position_share_sms">현재 위치를 알아 보십시오. %1$s 또는 %2$s 열기</string>
+    <string name="my_position_share_sms">Organic Maps에서 현재 위치를 확인해 보세요! %1$s 또는 %2$s 오프라인 지도가 없으신가요? 여기에서 다운로드하세요: https://omaps.app/get</string>
     <!-- Subject for emailed bookmark -->
     <string name="bookmark_share_email_subject">Organic Maps 지도에서 내 핀 보기</string>
     <!-- Subject for emailed position -->
@@ -282,8 +282,6 @@
     <string name="downloader_downloading">다운로드 중:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">지도를 삭제하시려면 길 찾기를 멈추세요.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">경로는 하나의 지도에 완전히 포함되도록만 생성할 수 있습니다.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">지도 다운로드</string>
     <!-- Item status in downloader. -->
@@ -297,15 +295,11 @@
     <!-- Preference text -->
     <string name="pref_use_google_play">블루투스, WiFi 또는 모바일 네트워크를 통해 대략적인 위치를 빠르게 파악할 수 있습니다</string>
     <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">경로를 따라 지도 다운로드</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">경로를 만드는 것은 사용자의 위치에서의 모든 지도를 다운로드되고 업데이트된 대상으로 필요합니다.</string>
-    <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">여유 공간 부족</string>
     <!-- location service disabled -->
     <string name="enable_location_services">위치 서비스를 작동시켜 주십시요.</string>
     <string name="save">저장</string>
-    <string name="create">만들기기</string>
+    <string name="create">만들기</string>
     <!-- red color -->
     <string name="red">빨간색</string>
     <!-- yellow color -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">라이트</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">다크</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">새벽부터 해질녘까지 라이트</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">수백만 명의 사용자에게 광고 없는 무료 지도를 선물하세요!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— 제안된 경로는 권장 사항으로만 참고하세요;</string>
     <string name="dialog_routing_disclaimer_borders">— 국경 지역에서 경로를 주의하십시오: 앱에 의해 생성된 경로는 허가받지 않은 장소에서 국가 경계에 걸쳐 종종 일어날 수 있습니다;</string>
     <string name="dialog_routing_disclaimer_beware">항상 안전에 주의하세요!</string>
-    <string name="dialog_routing_check_gps">GPS 신호 확인</string>
-    <string name="dialog_routing_error_location_not_found">경로를 설정할 수 없습니다. 현재 GPS 좌표를 확인할 수 없습니다.</string>
     <string name="dialog_routing_location_turn_wifi">GPS 신호를 확인해주세요. Wi-Fi를 켜면 위치 정확도가 높아집니다.</string>
-    <string name="dialog_routing_location_turn_on">위치 서비스 활성화</string>
-    <string name="dialog_routing_location_unknown_turn_on">현재 GPS 좌표를 찾을 수 없습니다. 경로를 계산하려면 위치 서비스를 활성화하세요.</string>
-    <string name="dialog_routing_unable_locate_route">경로를 찾을 수 없습니다</string>
-    <string name="dialog_routing_cant_build_route">경로를 찾을 수 없습니다.</string>
-    <string name="dialog_routing_change_start_or_end">출발지나 목적지를 조정하세요.</string>
-    <string name="dialog_routing_change_start">출발지 조정</string>
-    <string name="dialog_routing_start_not_determined">경로가 설정되지 않았습니다. 출발지를 찾을 수 없습니다.</string>
-    <string name="dialog_routing_select_closer_start">도로와 가까운 출발지를 지정해주세요.</string>
-    <string name="dialog_routing_change_end">목적지 조정</string>
-    <string name="dialog_routing_end_not_determined">경로가 설정되지 않았습니다. 목적지를 찾을 수 없습니다.</string>
-    <string name="dialog_routing_select_closer_end">도로와 가까운 목적지를 지정해주세요.</string>
-    <string name="dialog_routing_change_intermediate">중간 지점을 찾을 수 없습니다.</string>
-    <string name="dialog_routing_intermediate_not_determined">중간 지점을 조정하세요.</string>
     <string name="dialog_routing_system_error">시스템 오류</string>
-    <string name="dialog_routing_application_error">애플리케이션 오류로 인해 경로를 설정하지 못했습니다.</string>
-    <string name="dialog_routing_try_again">다시 시도해주세요.</string>
     <string name="not_now">나중에</string>
-    <string name="dialog_routing_download_and_build_cross_route">지도를 다운로드하여, 두 개 이상의 지도를 통과하는 더 최적화된 경로를 설정하시겠습니까?</string>
-    <string name="dialog_routing_download_cross_route">이 지도의 경계를 통과하는 더 최적화된 경로를 설정하려면 지도를 다운로드하세요.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">경로를 검색하고 만들기시작하려면, 지도를 다운로드하십시오. 그러면, 더 이상 인터넷 연결이 필요하지 않습니다.</string>
@@ -392,6 +369,10 @@
     <string name="search_history_title">검색 기록</string>
     <string name="search_history_text">최근 검색 쿼리에 신속하게 액세스할 수 있습니다.</string>
     <string name="clear_search">이력 검색 지우기</string>
+    <!-- Place Page link to Wikipedia article (if map object has it). -->
+    <string name="read_in_wikipedia">위키백과</string>
+    <!-- Place Page link to Wikimedia Commons. -->
+    <string name="wikimedia_commons">위키미디어 공용</string>
     <string name="p2p_your_location">위치</string>
     <string name="p2p_start">시작</string>
     <string name="p2p_from_here">출발지</string>
@@ -469,7 +450,6 @@
     <string name="level_value_generic">레벨: %s</string>
     <string name="downloader_delete_map_dialog">모든 지도의 변경 사항은 지도와 함께 삭제됩니다.</string>
     <string name="downloader_update_maps">지도 업데이트</string>
-    <string name="downloader_mwm_migration_dialog">경로를 만들려면, 모든 지도를 업데이트한 다음, 다시 경로를 계획해야 합니다.</string>
     <string name="downloader_search_field_hint">지도 찾기</string>
     <string name="common_check_internet_connection_dialog">설정을 확인하고 장치가 인터넷에 연결되어 있는지 확인하십시오.</string>
     <string name="downloader_no_space_title">충분하지 않은 여유 공간</string>
@@ -491,7 +471,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">커뮤니티에서 만든 오픈스트리트맵 데이터(%s 기준). 지도를 편집하고 업데이트하는 방법에 대한 자세한 내용은 OpenStreetMap.org에서 확인하세요.</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">오픈스트리트맵(OSM)은 무료 오픈스트리트맵을 구축하기 위한 커뮤니티 프로젝트입니다. 오가닉 맵의 지도 데이터의 주요 소스이며 위키백과와 유사하게 작동합니다. 장소를 추가하거나 편집하면 전 세계 수백만 명의 사용자가 사용할 수 있습니다.\n커뮤니티에 참여하여 모두를 위한 더 나은 지도를 만드는 데 도움을 주세요!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org(OSM)는 무료 개방형 지도를 구축하기 위한 커뮤니티 프로젝트입니다. 이 프로젝트는 Organic Maps의 주요 지도 데이터 소스이며, 위키백과와 유사한 방식으로 운영됩니다. 사용자는 장소를 추가하거나 편집할 수 있으며, 이러한 정보는 전 세계 수백만 명의 사용자가 이용할 수 있게 됩니다.\n커뮤니티에 참여하여 모두를 위한 더 나은 지도를 만드는 데 힘을 보태주세요!</string>
     <string name="login_to_make_edits_visible">오픈스트리트맵 계정을 만들거나 로그인하여 지도 편집 내용을 전 세계에 공개하세요.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%2$d중의 %1$d</string>
@@ -506,7 +486,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">오픈스트리트맵 자원 봉사자 참고 사항(선택 사항)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">지도의 오류 또는 오가닉 맵으로 편집할 수 없는 항목에 대해 설명합니다.</string>
+    <string name="editor_note_hint">Organic Maps를 사용하여 지도상의 오류나 편집할 수 없는 항목을 설명하십시오</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">수정한 내용은 공개 <a href="https://wiki.openstreetmap.org/wiki/Ko:OpenStreetMap_소개">OpenStreetMap</a> 데이터베이스에 업로드됩니다. 개인 정보나 저작권이 있는 정보는 추가하지 마세요.</string>
     <string name="editor_more_about_osm">OpenStreetMap 정보</string>
@@ -516,7 +496,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">연산자: %s</string>
     <string name="editor_category_unsuitable_title">적합한 카테고리를 찾을 수 없나요?</string>
-    <string name="editor_category_unsuitable_text">오가닉 지도에서는 단순한 포인트 카테고리만 추가할 수 있으므로 도시, 도로, 호수, 건물 윤곽선 등은 추가할 수 없습니다. 이러한 카테고리는 <a href="https://www.openstreetmap.org">OpenStreetMap.org</a> 에 직접 추가하세요. 자세한 단계별 지침은 <a href="https://organicmaps.app/faq/editing/advanced-map-editing">가이드</a>를 참조하세요.</string>
+    <string name="editor_category_unsuitable_text">Organic Maps 단순한 지점 카테고리만 추가할 수 있습니다. 즉, 도시, 도로, 호수, 건물 윤곽선 등은 추가할 수 없습니다. 이러한 카테고리는 <a href="https://www.openstreetmap.org">OpenStreetMap.org</a>에 직접 추가해 주십시오. 자세한 단계별 안내는 <a href="https://organicmaps.app/faq/editing/advanced-map-editing">가이드를</a> 확인해 주세요.</string>
     <string name="downloader_no_downloaded_maps_title">지도를 다운로드하지 않았습니다</string>
     <string name="downloader_no_downloaded_maps_message">오프라인으로 위치를 검색하려면 지도를 다운로드하세요.</string>
     <string name="current_location_unknown_error_title">현재 위치를 알 수 없습니다.</string>
@@ -642,6 +622,10 @@
     <string name="layers_title">맵 스타일 및 레이어</string>
     <string name="bookmarks_empty_list_title">이 목록은 비어있습니다.</string>
     <string name="bookmarks_empty_list_message">북마크를 추가하려면 맵에서 장소를 탭하고 별 모양 아이콘을 탭하세요.</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">모든 북마크 색상 변경</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">모든 트랙 색상 변경</string>
     <string name="category_desc_more">…기타 정보</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">KMZ 내보내기</string>
@@ -720,6 +704,7 @@
     <string name="moreyear_ago_sorttype">1년 그 이상 전</string>
     <string name="near_me_sorttype">나와 가까운 곳</string>
     <string name="others_sorttype">기타</string>
+    <string name="editor_add_select_category_all_subtitle">모든 카테고리</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">음식</string>
@@ -739,9 +724,6 @@
     <string name="search_in_the_list">리스트에서 검색</string>
     <string name="religious_places">종교적 장소</string>
     <string name="select_list">목록 선택</string>
-    <string name="transit_not_found">이 지역의 지하철 노선 기능이 아직 없습니다</string>
-    <string name="dialog_pedestrian_route_is_long_header">지하철 루트가 발견되지 않았습니다</string>
-    <string name="dialog_pedestrian_route_is_long_message">지하철역에서 가까운 출발점 또는 종점을 선택하세요</string>
     <string name="button_layer_isolines">지형</string>
     <string name="isolines_activation_error_dialog">지형 레이어를 활성화하고 사용하려면 해당 지역의 지도를 업데이트하거나 다운로드하십시오</string>
     <string name="isolines_location_error_dialog">이 지역의 지형 레이어는 아직 사용할 수 없습니다</string>
@@ -776,6 +758,8 @@
     <string name="splash_subtitle">OpenStreetMap의 지도 데이터</string>
     <!-- Link to OSM wiki for Editor, Profile and About pages -->
     <string name="osm_wiki_about_url">https://wiki.openstreetmap.org/wiki/Ko:OpenStreetMap_소개</string>
+    <!-- A number of bookmarks and a number of tracks, separated by comma, like: 1 bookmark, 5 tracks -->
+    <string name="comma_separated_pair">%1$s, %2$s</string>
     <!-- App Tip #00 -->
     <string name="app_tip_00">커뮤니티에서 제작한 지도를 이용해 주셔서 감사합니다!</string>
     <!-- App tip #01 -->
@@ -797,9 +781,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">우리의 주요 목표는 귀하가 좋아할 빠르고 개인 정보 보호에 중점을 두고 사용하기 쉬운 지도를 구축하는 것입니다.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">이제 휴대폰 화면에서 유기적 지도를 사용하고 있습니다</string>
+    <string name="car_used_on_the_phone_screen">현재 휴대폰 화면에서 Organic Maps을 이용 중입니다</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">이제 자동차 화면에서 유기적 지도를 사용하고 있습니다</string>
+    <string name="car_used_on_the_car_screen">현재 차량 화면에서 Organic Maps을 이용 중입니다</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">Android Auto에 연결되어 있습니다.</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -807,11 +791,9 @@
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">차량 화면으로 이동</string>
     <!-- Ask user to grant location permissions -->
-    <string name="aa_location_permissions_request">오가닉 지도에는 위치 액세스 권한이 필요합니다. 안전해지면 휴대폰에서 알림을 확인합니다.</string>
+    <string name="aa_location_permissions_request">Organic Maps 위치 정보 접근 권한이 필요합니다. 안전한 환경에서 휴대폰의 알림을 확인해 주세요.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">이 앱은 사용자의 승인이 필요합니다.</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">안드로이드 오토의 오가닉 맵이 효과적으로 작동하려면 위치 권한이 필요합니다.</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">권한 부여</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
@@ -852,7 +834,7 @@
     <!-- Title for the "Stop Without Saving" action for the alert when saving a track recording. -->
     <string name="stop_without_saving">저장하지 않고 중지</string>
     <!-- Title for the "Stop Without Saving" action for the alert when saving a track recording. -->
-    <string name="continue_recording">녹화 계속하기</string>
+    <string name="continue_recording">기록 계속하기</string>
     <!-- Title for the alert when saving a track recording. -->
     <string name="track_recording_alert_title">북마크 및 트랙에 저장하시겠습니까?</string>
     <!-- Message for the toast when saving the track recording is finished but nothing to save. -->
@@ -863,11 +845,23 @@
     <string name="edit_track">경로 편집</string>
     <string name="uri_open_location_failed">위치를 열 수 있는 앱이 설치되어 있지 않습니다.</string>
     <!-- preference string for using auto theme only in navigation mode -->
-    <string name="nav_auto">내비게이션에서 자동</string>
+    <string name="nav_auto">내비게이션 중 자동</string>
     <!-- Setting option to sync the app's theme with the operating system's dark/light mode -->
     <string name="follow_system">시스템 설정 따름</string>
     <!-- Title of the bottom sheet when sharing the track -->
     <string name="share_track">트랙 공유</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">삭제 %s?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">비밀번호로 로그인</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">브라우저를 사용하여 로그인</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">최근 사용</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">북마크 색상이 변경됨</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">트랙 색상이 변경됨</string>
 </resources>

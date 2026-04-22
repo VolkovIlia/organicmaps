@@ -9,8 +9,8 @@ set(SRC
 if (${PLATFORM_MAC})
   append(SRC
     main.mm
-    ../iphone/Maps/Classes/MetalContextFactory.h
-    ../iphone/Maps/Classes/MetalContextFactory.mm
+    ../iphone/Maps/Core/MapRendering/MetalContextFactory.h
+    ../iphone/Maps/Core/MapRendering/MetalContextFactory.mm
   )
 
   file(GLOB_RECURSE SHADER_SOURCES_FILES ${OMIM_ROOT}/libs/shaders/Metal/*.metal)
@@ -115,7 +115,6 @@ copy_resources(
   WorldCoasts.mwm
 )
 
-if (NOT PLATFORM_LINUX)
-  # On Linux, ICU data is loaded from the shared library.
+if (NOT WITH_SYSTEM_PROVIDED_3PARTY)
   copy_resources(icudt78l.dat)
 endif()

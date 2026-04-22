@@ -282,8 +282,6 @@
     <string name="downloader_downloading">Ladataan:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">Pysäytä navigointi poistaaksesi kartan.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">Vain kokonaisuudessaan yhdelle kartalle mahtuvia reittejä voidaan luoda.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">Lataa kartta</string>
     <!-- Item status in downloader. -->
@@ -296,10 +294,6 @@
     <string name="google_play_services">Google Play Sijaintipalvelut</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">Määritä nopeasti likimääräinen sijaintisi Bluetoothin, WiFin tai matkapuhelinverkon kautta</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">Lataa karttoja matkalla</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">Reitin luominen vaatii karttojen lataamisen ja päivityksen oman sijaintisi ja kohteeen väliltä.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">Ei tarpeeksi tilaa</string>
     <!-- location service disabled -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">Vaalea</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">Tumma</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">Vaalea aamusta iltaan</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">Lahjoita ilmaiset ja mainoksettomat kartat miljoonille käyttäjille!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— Ehdotettuja reittejä tulee pitää vain suosituksina;</string>
     <string name="dialog_routing_disclaimer_borders">— Ole varovainen reittien kanssa raja-alueilla: sovelluksemme luomat reitit voivat joskus ylittää maiden rajoja luvattomissa paikoissa.</string>
     <string name="dialog_routing_disclaimer_beware">Pysy tarkkana ja liiku turvallisesti!</string>
-    <string name="dialog_routing_check_gps">Tarkista GPS-signaali</string>
-    <string name="dialog_routing_error_location_not_found">Reittiä ei voi luoda. Tämänhetkisiä GPS-koordinaatteja ei löydy.</string>
     <string name="dialog_routing_location_turn_wifi">Tarkista GPS-signaali. Wi-Fi-signaalin käyttöönotto parantaa sijainnin tarkkuutta.</string>
-    <string name="dialog_routing_location_turn_on">Ota sijaintipalvelut käyttöön</string>
-    <string name="dialog_routing_location_unknown_turn_on">Tämänhetkisiä GPS-koordinaatteja ei löydy. Ota sijaintipalvelut käyttöön reitin laskemista varten.</string>
-    <string name="dialog_routing_unable_locate_route">Reitin paikannus ei onnistu</string>
-    <string name="dialog_routing_cant_build_route">Reitin luonti ei onnistu.</string>
-    <string name="dialog_routing_change_start_or_end">Muuta aloituskohtaa tai määränpäätä.</string>
-    <string name="dialog_routing_change_start">Muuta aloituskohtaa</string>
-    <string name="dialog_routing_start_not_determined">Reittiä ei luotu. Aloituskohdan paikannus ei onnistu.</string>
-    <string name="dialog_routing_select_closer_start">Valitse lähempänä tietä oleva aloituskohta.</string>
-    <string name="dialog_routing_change_end">Muuta määränpäätä</string>
-    <string name="dialog_routing_end_not_determined">Reittiä ei luotu. Määränpään paikannus ei onnistu.</string>
-    <string name="dialog_routing_select_closer_end">Valitse lähempänä tietä oleva määränpää.</string>
-    <string name="dialog_routing_change_intermediate">Välipisteen paikallistaminen ei onnistunut.</string>
-    <string name="dialog_routing_intermediate_not_determined">Siirrä välipistettä.</string>
     <string name="dialog_routing_system_error">Järjestelmävirhe</string>
-    <string name="dialog_routing_application_error">Reittiä ei voi luoda sovellusvirheen vuoksi.</string>
-    <string name="dialog_routing_try_again">Yritä uudelleen</string>
     <string name="not_now">Ei nyt</string>
-    <string name="dialog_routing_download_and_build_cross_route">Haluatko ladata kartan ja luoda paremman reitin, joka ulottuu usealle kartalle?</string>
-    <string name="dialog_routing_download_cross_route">Lataa kartta ja luo parempi reitti, joka ylittää tämän kartan reunan.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">Lataa kartta jotta voit käyttää hakua ja luoda reittejä. Tämän jälkeen et tarvitse enää Internet-yhteyttä.</string>
@@ -473,7 +450,6 @@
     <string name="level_value_generic">Kerros: %s</string>
     <string name="downloader_delete_map_dialog">Kaikki karttaan tehdyt muutokset poistetaan kartan mukana.</string>
     <string name="downloader_update_maps">Päivitä kartat</string>
-    <string name="downloader_mwm_migration_dialog">Sinun täytyy päivittää kaikki kartat ja suunnitella reitti uudelleen luodaksesi uuden reitin.</string>
     <string name="downloader_search_field_hint">Etsi kartta</string>
     <string name="common_check_internet_connection_dialog">Varmista, että laitteesi on yhteydessä Internetiin.</string>
     <string name="downloader_no_space_title">Ei tarpeeksi tilaa</string>
@@ -585,14 +561,14 @@
     <!-- Settings: "Send general feedback" button -->
     <string name="feedback_general">Yleinen palaute</string>
     <string name="prefs_languages_information">Käytämme ääniohjeisiin tekstistä puheeksi -järjestelmää. Monet Android-laitteet käyttävät Googlen tekstistä puheeksi -sovellusta, jonka voit ladata tai päivittää Google Playssä</string>
-    <string name="prefs_languages_information_off">Joidenkin kielien osalta sinun täytyy asentaa toinen puhesyntetisaattori tai lisäkielipaketti sovelluskaupasta (Google Play, Galaxy Store, App Gallery, FDroid).\nAvaa laitteen asetukset → Kieli ja syöttötapa → Puhe → Teksistä puheeksi -toisto. \nTäällä voit hallita puhesynteesin asetuksia (esimerkiksi ladata offline-tilassa käytettävän kielipaketin) ja valita toisen tekstistä puheeksi -moottorin.</string>
+    <string name="prefs_languages_information_off">Joidenkin kielten kohdalla sinun täytyy asentaa puhesyntetisaattori tai ylimääräinen kielipaketti sovelluskaupasta (Google Play, Galaxy Store, App Gallery, FDroid).\nAvaa laitteesi asetukset → Kieli ja syöttö → Puhe → Tekstistä puheeksi.\nTäällä voit hallita puhesynteesiasetuksia (esimerkiksi ladata kielipaketin offline-käyttöä varten) ja valita toisen tekstistä puheeksi -moottorin.</string>
     <string name="prefs_languages_information_off_link">Lisätietoja saat tästä oppaasta.</string>
     <string name="transliteration_title">Translitterointi latinalaisiksi aakkosiksi</string>
     <string name="learn_more">Lisätietoja</string>
     <!-- User selected the destination by pressing Route To, but the current position is unknown. User needs to select a starting point of a route using search or by tapping on the map and then pressing "Route From". -->
-    <string name="routing_add_start_point">Käytä hakua tai napauta karttaa lisätäksesi reitin lähtöpisteen</string>
+    <string name="routing_add_start_point">Käytä hakua, valitse kirjanmerkki tai napauta karttaa lisätäksesi reitin lähtöpisteen</string>
     <!-- User selected the start of a route by pressing Route From. Now the destination of a route should be selected using search or by tapping on the map and then pressing "Route To". -->
-    <string name="routing_add_finish_point">Käytä hakua tai napauta karttaa lisätäksesi kohdepisteen</string>
+    <string name="routing_add_finish_point">Käytä hakua, valitse kirjanmerkki tai napauta karttaa lisätäksesi reitin määränpään</string>
     <string name="planning_route_manage_route">Hallitse reittiä</string>
     <string name="button_plan">Suunnittele</string>
     <string name="placepage_remove_stop">Poista pysähdys</string>
@@ -648,6 +624,10 @@
     <string name="layers_title">Karttatyylit ja tasot</string>
     <string name="bookmarks_empty_list_title">Luettelo on tyhjä</string>
     <string name="bookmarks_empty_list_message">Lisätäksesi kirjanmerkin, paina kartasta ja sitten paina tähden kuvaa</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">Vaihda kaikkien kirjanmerkkien väri</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">Vaihda kaikkien reittien väri</string>
     <string name="category_desc_more">…lisää</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">Vie KMZ</string>
@@ -726,6 +706,7 @@
     <string name="moreyear_ago_sorttype">Yli vuosi sitten</string>
     <string name="near_me_sorttype">Lähelläni</string>
     <string name="others_sorttype">Muut</string>
+    <string name="editor_add_select_category_all_subtitle">Kaikki kategoriat</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">Ruoka</string>
@@ -745,9 +726,6 @@
     <string name="search_in_the_list">Etsi luettelosta</string>
     <string name="religious_places">Uskonnolliset paikat</string>
     <string name="select_list">Valitse luettelo</string>
-    <string name="transit_not_found">Metron reittiohjeet eivät ole vielä saatavilla tällä alueella</string>
-    <string name="dialog_pedestrian_route_is_long_header">Metroreittiä ei löytynyt</string>
-    <string name="dialog_pedestrian_route_is_long_message">Valitse reitin aloitus- tai loppupiste lähemmäksi metroasemaa</string>
     <string name="button_layer_isolines">Maasto</string>
     <string name="isolines_activation_error_dialog">Päivitä tai lataa haluamasi alueen kartta käyttääksesi korkeuskäyriä</string>
     <string name="isolines_location_error_dialog">Korkeuskäyrät eivät ole vielä saatavilla tällä alueella</string>
@@ -824,8 +802,6 @@
     <string name="aa_location_permissions_request">Organic Maps tarvitsee sijaintitietoja. Kun se on turvallista, tarkista puhelimesi ilmoitus.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Tämä sovellus tarvitsee lupasi</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">Organic Maps tarvitsee luvan käyttää sijantia toimiakseen tehokkaasti Android Autossa</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">Lupien myöntäminen</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
@@ -881,7 +857,19 @@
     <!-- Setting option to sync the app's theme with the operating system's dark/light mode -->
     <string name="follow_system">Järjestelmän oletus</string>
     <!-- Title of the bottom sheet when sharing the track -->
-    <string name="share_track">Jaa rata</string>
+    <string name="share_track">Jaa reitti</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">Poista %s?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">Kirjaudu sisään salasanalla</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">Sisäänkirjautuminen selaimella</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">Äskettäin käytetty</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">Kirjanmerkkien väri vaihdettu</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">Reittien väri vaihdettu</string>
 </resources>

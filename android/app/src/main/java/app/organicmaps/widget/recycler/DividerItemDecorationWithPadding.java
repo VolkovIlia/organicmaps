@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 import app.organicmaps.R;
-import app.organicmaps.bookmarks.Holders;
 import java.util.Objects;
 
 public class DividerItemDecorationWithPadding extends RecyclerView.ItemDecoration
@@ -23,6 +23,16 @@ public class DividerItemDecorationWithPadding extends RecyclerView.ItemDecoratio
   {
     mDivider = Objects.requireNonNull(AppCompatResources.getDrawable(context, R.drawable.divider_base));
     mStartMargin = context.getResources().getDimensionPixelSize(R.dimen.margin_quadruple_plus_half);
+  }
+
+  private boolean useFullWidth(@Nullable RecyclerView.ViewHolder holder)
+  {
+    return holder instanceof DividerBehavior && ((DividerBehavior) holder).useFullWidthDivider();
+  }
+
+  private boolean skipDivider(@NonNull RecyclerView.ViewHolder holder)
+  {
+    return holder instanceof DividerBehavior && ((DividerBehavior) holder).skipDivider();
   }
 
   @Override
@@ -47,11 +57,24 @@ public class DividerItemDecorationWithPadding extends RecyclerView.ItemDecoratio
       int top = child.getBottom();
       int bottom = top + dividerHeight;
 
-      if (viewHolder instanceof Holders.SectionViewHolder || viewHolder instanceof Holders.HeaderViewHolder
-          || viewHolderNext instanceof Holders.SectionViewHolder || viewHolderNext instanceof Holders.HeaderViewHolder
-          || viewHolderNext instanceof Holders.GeneralViewHolder)
-        mDivider.setBounds(0, top, right, bottom);
-      else if (i == childCount - 1)
+      // Full-width has priority
+      if (useFullWidth(viewHolder) || useFullWidth(viewHolderNext))
+      {
+        // For last item, shift divider up to match old behavior
+        if (i == childCount - 1)
+          mDivider.setBounds(0, top - dividerHeight, right, bottom);
+        else
+          mDivider.setBounds(0, top, right, bottom);
+        mDivider.draw(c);
+        continue;
+      }
+
+      // Skip if current item wants to skip
+      if (skipDivider(viewHolder))
+        continue;
+
+      // Default: divider with margin (or full-width for last item)
+      if (i == childCount - 1)
         mDivider.setBounds(0, top - dividerHeight, right, bottom);
       else
         mDivider.setBounds(mStartMargin, top, right, bottom);

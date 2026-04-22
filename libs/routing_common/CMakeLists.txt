@@ -22,6 +22,7 @@ target_link_libraries(${PROJECT_NAME}
   PUBLIC
     base
     indexer
+    opening_hours
     platform
 )
 

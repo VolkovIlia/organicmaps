@@ -651,6 +651,12 @@
 "button_layer_subway" = "Metró";
 "layers_title" = "Térképstílusok és rétegek";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Összes könyvjelző színének módosítása";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Összes nyomvonal színének módosítása";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Exportálás KMZ-fájlba";
 
@@ -947,7 +953,7 @@
 "car_continue_in_the_car" = "Az autó képernyőjére";
 
 /* Outdoors/hiking map style (activity) name in the Styles and Layers dialog */
-"button_layer_outdoor" = "Szabadtéri";
+"button_layer_outdoor" = "Kültéri";
 
 /* Bookmark categories screen, button that opens share dialog to export all bookmarks and tracks */
 "bookmarks_export" = "Összes könyvjelző és nyomvonal exportálása";
@@ -1072,10 +1078,10 @@
 
 
 /* A text for current gps location point/arrow selected on the map */
-"core_my_position" = "Saját tartózkodási helyszín";
+"core_my_position" = "Saját pozícióm";
 
 /* Default bookmark list name */
-"core_my_places" = "Saját helyszínek";
+"core_my_places" = "Saját helyeim";
 
 /* Search category for WiFi access; any changes should be duplicated in categories.txt @category_wifi! */
 "category_wifi" = "Wi-Fi";
@@ -1105,4 +1111,23 @@
 "subway_data_unavailable" = "A metrótérkép nem érhető el";
 
 /* Settings/Highlight downloaded regions on the map */
-"show_downloaded_regions" = "Lila letöltött régiók";
+"show_downloaded_regions" = "Lila színnel jelölt letöltött régiók";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Bejelentkezés jelszóval";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Bejelentkezés böngésző használatával";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Legutóbb használt";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "A könyvjelzők színe megváltozott";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "A nyomvonalak színe megváltozott";

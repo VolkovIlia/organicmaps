@@ -1,6 +1,6 @@
 #import "MWMMapDownloaderTableViewCell.h"
 #import "MWMCircularProgress.h"
-#import "NSString+Categories.h"
+#import "NSString+Ranges.h"
 
 #import <CoreApi/MWMCommon.h>
 #import <CoreApi/MWMFrameworkHelper.h>
@@ -108,9 +108,9 @@
     break;
   }
   case MWMMapNodeStatusDownloading:
-    progress.progress =
-        kMaxProgress * nodeAttrs.downloadedSize /
-        (isModeDownloaded ? nodeAttrs.totalUpdateSizeBytes : nodeAttrs.totalSize - nodeAttrs.downloadingSize);
+    CGFloat const downloadProgress = nodeAttrs.downloadingProgress;
+    if (downloadProgress > 0)
+      [self setDownloadProgress:downloadProgress];
     break;
   case MWMMapNodeStatusApplying:
   case MWMMapNodeStatusInQueue: progress.state = MWMCircularProgressStateSpinner; break;

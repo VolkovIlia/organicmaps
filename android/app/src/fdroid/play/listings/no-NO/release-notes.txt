@@ -1,11 +1,10 @@
-• NYTT: Mørkere temafarger med høyere kontrast
-• NYTT: Google Assistant for navigasjon og søk
-• OSM-kartdata per 11. januar
-• Navigasjonstema-innstillingen "Auto" følger systemets mørke/lyse modus
-• Tynnere T-banelinjer
-• Søkeresultater viser kapasitet for motorsykkelparkering, sykkelutleie, sykkellading og billading
-• Vis etasjenivå i søkeresultater
-• Albanske oversettelser og TTS-taleveiledning
-• Oppdaterte FAQ og app-oversettelser
-• Fikset krasj
-…mer på omaps.org/news
+• OSM-kartdata per 10. mars, Wikipedia per 1. mars
+• Mer detaljerte høyde-isoliner for kinesiske provinser
+• Lagt til rader med trær, lærbutikker og butikker som selger religiøse varer
+• Lagt til støtte for betingede fartsgrenser
+• Tanzania delt inn i mindre regioner
+• Forbedret visning av virksomhetens åpningstider
+• Fikset flere krasj
+• Forbedrede oversettelser av app- og landnavn
+• Lagt til holdeplasser for offentlig transport uten bussholdeplasser i nærheten
+omaps.org/news

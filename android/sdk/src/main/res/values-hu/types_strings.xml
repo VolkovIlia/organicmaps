@@ -34,7 +34,7 @@
     <string name="type.amenity.bicycle_repair_station">Kerékpárjavító állomás</string>
     <string name="type.amenity.biergarten">Sörkert</string>
     <string name="type.amenity.brothel">Bordélyház</string>
-    <string name="type.amenity.love_hotel">Szeretőszálló</string>
+    <string name="type.amenity.love_hotel">Szerelmi szálló</string>
     <string name="type.amenity.bureau_de_change">Pénzváltó</string>
     <string name="type.amenity.bus_station">Buszállomás</string>
     <string name="type.amenity.cafe">Kávézó</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Mediterrán</string>
     <string name="type.cuisine.mexican">Mexikói</string>
     <string name="type.cuisine.moroccan">Marokkói</string>
-    <string name="type.cuisine.noodles">Tészta (noodle)</string>
+    <string name="type.cuisine.noodle">Tészta (noodle)</string>
     <string name="type.cuisine.oriental">Kelet-ázsiai</string>
     <string name="type.cuisine.pancake">Palacsinta</string>
     <string name="type.cuisine.pasta">Olasz tészta (pasta)</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Kolbász</string>
     <string name="type.cuisine.savory_pancakes">Sós palacsinta</string>
     <string name="type.cuisine.seafood">Tenger gyümölcsei</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Szo-ba</string>
     <string name="type.cuisine.spanish">Spanyol</string>
     <string name="type.cuisine.steak_house">Steak ház</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Tea</string>
     <string name="type.cuisine.thai">Thai</string>
     <string name="type.cuisine.turkish">Török</string>
+    <string name="type.cuisine.uzbek">Üzbég</string>
     <string name="type.cuisine.vegan">Vegán</string>
     <string name="type.cuisine.vegetarian">Vegetáriánus</string>
     <string name="type.cuisine.vietnamese">Vietnámi</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Híd</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Alagút</string>
+    <string name="type.highway.platform">Peron</string>
     <string name="type.highway.primary">Utca</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Híd</string>
@@ -533,22 +536,20 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Alagút</string>
     <string name="type.area_highway.cycleway">Kerékpárút</string>
-    <string name="type.area_highway.footway">Ösvény</string>
+    <string name="type.area_highway.footway">Gyalogút</string>
     <string name="type.area_highway.living_street">Lakó-pihenő övezet</string>
     <string name="type.area_highway.motorway">Autópálya</string>
     <string name="type.area_highway.path">Ösvény</string>
     <string name="type.area_highway.pedestrian">Sétálóutca</string>
-    <string name="type.area_highway.primary">Első- vagy másodrendű főút</string>
-    <string name="type.area_highway.residential">Lakóövezeti utca</string>
-    <string name="type.area_highway.secondary">Összekötő út</string>
+    <string name="type.area_highway.primary">Utca</string>
+    <string name="type.area_highway.residential">Utca</string>
+    <string name="type.area_highway.secondary">Utca</string>
     <string name="type.area_highway.service">Szervizút</string>
     <string name="type.area_highway.tertiary">Bekötőút</string>
     <string name="type.area_highway.steps">Lépcső</string>
-    <string name="type.area_highway.track">Mzg. vagy erdészeti út</string>
+    <string name="type.area_highway.track">Mezőgazdasági vagy erdészeti út</string>
     <string name="type.area_highway.trunk">Autóút</string>
     <string name="type.area_highway.unclassified">Egyéb közút</string>
-    <string name="type.highway.world_level">út-világszint</string>
-    <string name="type.highway.world_towns_level">út-világvárosok szint</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Történelmi objektum</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Mocsár</string>
     <string name="type.noexit">Zsákutca</string>
     <string name="type.office">Iroda</string>
+    <string name="type.office.architect">Építészeti iroda</string>
     <string name="type.office.company">Vállalati iroda</string>
+    <string name="type.office.educational_institution">Oktatási intézmény</string>
     <string name="type.office.estate_agent">Ingatlanügynök</string>
     <string name="type.office.government">Állami iroda</string>
     <string name="type.office.insurance">Biztosítóiroda</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Gyalogos vasúti átjáró</string>
     <string name="type.railway.disused">Használaton kívüli vasútvonal</string>
     <string name="type.railway.disused.bridge">Használaton kívüli vasúti híd</string>
+    <string name="type.railway.disused.tunnel">Használaton kívüli vasúti alagút</string>
     <string name="type.railway.funicular">Sikló</string>
     <string name="type.railway.funicular.bridge">Sikló hídja</string>
     <string name="type.railway.funicular.tunnel">Síkló alagútja</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Drogéria</string>
     <string name="type.shop.chocolate">Csokoládébolt</string>
     <string name="type.shop.clothes">Ruházati bolt</string>
+    <string name="type.shop.clothes.children">Gyerekruhaszalon</string>
+    <string name="type.shop.clothes.fashion">Divatboutique</string>
+    <string name="type.shop.clothes.hats">Kalapüzlet</string>
+    <string name="type.shop.clothes.men">Férfiruházati bolt</string>
+    <string name="type.shop.clothes.sports">Sportruházati bolt</string>
+    <string name="type.shop.clothes.suits">Öltönyüzlet</string>
+    <string name="type.shop.clothes.underwear">Fehérnemű üzlet</string>
+    <string name="type.shop.clothes.wedding">Menyasszonyi ruha szalon</string>
+    <string name="type.shop.clothes.women">Női ruházati bolt</string>
     <string name="type.shop.coffee">Kávébolt</string>
     <string name="type.shop.computer">Számítógépüzlet</string>
     <string name="type.shop.confectionery">Édességbolt</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Temetkezési vállalkozó</string>
     <string name="type.shop.furniture">Bútorbolt</string>
     <string name="type.shop.garden_centre">Kertészet</string>
+    <string name="type.shop.games">Játékbolt</string>
     <string name="type.shop.gas">Palackozottgáz-bolt</string>
     <string name="type.shop.gift">Ajándékbolt (souvenir)</string>
     <string name="type.shop.greengrocer">Zöldséges</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Trafik</string>
     <string name="type.shop.kitchen">Konyhafelszerelés-bolt</string>
     <string name="type.shop.laundry">Mosoda</string>
+    <string name="type.shop.leather">Bőráruüzlet</string>
     <string name="type.shop.mall">Bevásárlóközpont</string>
     <string name="type.shop.massage">Masszázsszalon</string>
     <string name="type.shop.mobile_phone">Mobiltelefon-üzlet</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Házikedvenc-üzlet</string>
     <string name="type.shop.pet_grooming">Kisállatápolás</string>
     <string name="type.shop.photo">Fotóüzlet</string>
+    <string name="type.shop.religion">Vallási kegytárgyak boltja</string>
     <string name="type.shop.rental">Kölcsönző</string>
     <string name="type.shop.rental.bicycle">Kerékpárkölcsönző</string>
     <string name="type.amenity.bicycle_rental.shop">Kerékpárkölcsönző</string>

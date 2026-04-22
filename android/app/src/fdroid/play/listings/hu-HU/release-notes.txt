@@ -1,9 +1,9 @@
-• ÚJ: Nagyobb kontrasztú sötét téma színek
-• ÚJ: Google Assistant navigációhoz és kereséshez
-• OSM térképadatok január 11-i állapot szerint
-• Az „Auto” navigációs téma beállítás követi a rendszer sötét/világos módját
-• Vékonyabb metróvonalak
-• A keresési eredmények mutatják a motorkerékpár-parkoló, kerékpárkölcsönző, kerékpártöltő és autótöltő kapacitását
-• Emeletszint megjelenítése a keresési eredményekben
-• Albán fordítások és TTS hangos navigáció
-…továbbiak itt omaps.org/hu/news
+• OSM térképadatok március 10-én, Wikipédia március 1-jén
+• Részletesebb magassági izolációk a kínai tartományokhoz
+• Fasorok, bőrüzletek és vallási árukat árusító üzletek hozzáadása
+• Hozzáadott támogatás a feltételes sebességkorlátozásokhoz
+• Tanzánia felosztása kisebb régiókra
+• A nyitvatartási idő jobb megjelenítése
+• Több összeomlást javítottunk
+• Továbbfejlesztett alkalmazás- és országnevek fordítása
+omaps.org/hu/news

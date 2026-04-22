@@ -18,7 +18,7 @@ namespace kml
 {
 enum class PredefinedColor : uint8_t
 {
-  None = 0,
+  None = 0,  // GetRandomPredefinedColor() relies on this enum.
   Red,
   Blue,
   Purple,
@@ -41,7 +41,7 @@ enum class PredefinedColor : uint8_t
   Count
 };
 
-static std::array constexpr kOrderedPredefinedColors = {
+inline std::array constexpr kOrderedPredefinedColors = {
     // clang-format off
     PredefinedColor::None,
     PredefinedColor::Red,
@@ -73,7 +73,7 @@ static_assert(base::HasUniqueElements(kOrderedPredefinedColors), "All values mus
  * kOrderedPredefinedColors[kColorIndexMap[base::E2I(PredefinedColor::Red)]] == PredefinedColor::Red
  * @endcode
  */
-static std::array constexpr kColorIndexMap = [] consteval
+inline std::array constexpr kColorIndexMap = [] consteval
 {
   std::array<int, static_cast<std::size_t>(PredefinedColor::Count)> map{};
   for (std::size_t i = 0; i < kOrderedPredefinedColors.size(); ++i)
@@ -301,6 +301,17 @@ struct ColorData
   uint32_t m_rgba = 0;
 };
 
+class ClassifierTypes : public std::vector<uint32_t>
+{
+public:
+  using std::vector<uint32_t>::vector;
+
+  friend std::string DebugPrint(ClassifierTypes const & types)
+  {
+    return DebugPrintSequence(types.begin(), types.end());
+  }
+};
+
 // This structure is used in FileDataV6 because
 // its binary format is the same as in kmb version 6.
 // Make a copy of this structure in a file types_v<n>.hpp
@@ -338,9 +349,10 @@ struct BookmarkData
   LocalizableString m_name;
   // Bookmark's description.
   LocalizableString m_description;
-  // Bound feature's types: type indices sorted by importance, the most
-  // important one goes first.
-  std::vector<uint32_t> m_featureTypes;
+  // Bound feature's classifier types, sorted by importance (most important first).
+  // On-disk format (KMB) stores indices for backward compatibility; see
+  // BookmarkSerializerVisitor / BookmarkDeserializerVisitor in visitors.hpp.
+  ClassifierTypes m_featureTypes;
   // Custom bookmark's name.
   LocalizableString m_customName;
   // Bookmark's color.
@@ -389,7 +401,7 @@ struct TrackLayer
 
 struct MultiGeometry
 {
-  using LineT = std::vector<geometry::PointWithAltitude>;
+  using LineT = TrackGeometry;
   using TimeInt = time_t;
   using TimeT = std::vector<TimeInt>;
 

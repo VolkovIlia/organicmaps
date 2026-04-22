@@ -61,7 +61,7 @@ public:
   RouteWeight CalcLeapWeight(ms::LatLon const & from, ms::LatLon const & to, NumMwmId mwmId) const override;
   RouteWeight CalcOffroadWeight(ms::LatLon const & from, ms::LatLon const & to,
                                 EdgeEstimator::Purpose purpose) const override;
-  double CalculateETA(Segment const & from, Segment const & to) override;
+  double CalculateETA(Segment const & from, Segment const & to, time_t arrivalTime) override;
   double CalculateETAWithoutPenalty(Segment const & segment) override;
 
   std::unique_ptr<TransitInfo> GetTransitInfo(Segment const & segment) override;
@@ -70,7 +70,7 @@ public:
 
 private:
   // WorldGraph overrides:
-  void GetTwinsInner(Segment const & s, bool isOutgoing, std::vector<Segment> & twins) override;
+  void GetTwinsInner(Segment const & s, bool isOutgoing, TwinSegmentsListT & twins) override;
 
   static double MaxPedestrianTimeSec(double startToFinishDistanceM)
   {

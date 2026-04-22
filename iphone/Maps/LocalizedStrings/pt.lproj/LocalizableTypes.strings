@@ -12,7 +12,7 @@
 "type.aerialway.gondola" = "Telecabine";
 "type.aerialway.mixed_lift" = "Teleférico híbrido";
 "type.aerialway.station" = "Estação de teleférico";
-"type.aeroway" = "Via aérea";
+"type.aeroway" = "Infraestrutura do espaço aéreo";
 "type.aeroway.aerodrome" = "Aeroporto ou aeródromo";
 "type.aeroway.aerodrome.international" = "Aeroporto internacional";
 "type.aeroway.apron" = "Plataforma de estacionamento de aviões";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Cozinha mediterrânea";
 "type.cuisine.mexican" = "Cozinha mexicana";
 "type.cuisine.moroccan" = "Cozinha marroquina";
-"type.cuisine.noodles" = "Massa asiática";
+"type.cuisine.noodle" = "Massa asiática";
 "type.cuisine.oriental" = "Cozinha oriental";
 "type.cuisine.pancake" = "Crepes";
 "type.cuisine.pasta" = "Massa";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Salsichas";
 "type.cuisine.savory_pancakes" = "Tortas salgadas";
 "type.cuisine.seafood" = "Frutos do mar";
+"type.cuisine.shawarma" = "Xauarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Cozinha espanhola";
 "type.cuisine.steak_house" = "Churrasqueira";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Chás";
 "type.cuisine.thai" = "Cozinha tailandesa";
 "type.cuisine.turkish" = "Cozinha turca";
+"type.cuisine.uzbek" = "Uzbeque";
 "type.cuisine.vegan" = "Cozinha vegana";
 "type.cuisine.vegetarian" = "Cozinha vegetariana";
 "type.cuisine.vietnamese" = "Cozinha vietnamita";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Túnel";
+"type.highway.platform" = "Plataforma de transporte público";
 "type.highway.primary" = "Estrada primária";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -612,7 +615,7 @@
 "type.area_highway.service" = "Estrada de acesso ou serviço";
 "type.area_highway.tertiary" = "Estrada terciária";
 "type.area_highway.steps" = "Escadas";
-"type.area_highway.track" = "Pista para desportos não motorizados";
+"type.area_highway.track" = "Carreiro florestal ou agrícola";
 "type.area_highway.trunk" = "Via rápida";
 "type.area_highway.unclassified" = "Estrada sem classificação";
 "type.highway.world_level" = "highway-world_level";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Brejo";
 "type.noexit" = "Via sem saída";
 "type.office" = "Escritório";
+"type.office.architect" = "Escritório de arquitetura";
 "type.office.company" = "Empresa";
+"type.office.educational_institution" = "Instituição de ensino";
 "type.office.estate_agent" = "Imobiliária";
 "type.office.government" = "Órgão governamental";
 "type.office.insurance" = "Agente de seguros";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Passagem de pedestre";
 "type.railway.disused" = "Ferrovia em desuso";
 "type.railway.disused.bridge" = "Ponte de Ferrovia em desuso";
+"type.railway.disused.tunnel" = "Túnel de Ferrovia em desuso";
 "type.railway.funicular" = "Funicular";
 "type.railway.funicular.bridge" = "Ponte Funicular";
 "type.railway.funicular.tunnel" = "Túnel Funicular";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Parafarmácia";
 "type.shop.chocolate" = "Loja de chocolates";
 "type.shop.clothes" = "Loja de roupas";
+"type.shop.clothes.children" = "Loja de roupas infantis";
+"type.shop.clothes.fashion" = "Boutique de moda";
+"type.shop.clothes.hats" = "Chapelaria";
+"type.shop.clothes.men" = "Loja de roupas masculinas";
+"type.shop.clothes.sports" = "Loja de roupas esportivas";
+"type.shop.clothes.suits" = "Loja de fatos";
+"type.shop.clothes.underwear" = "Loja de roupa íntima";
+"type.shop.clothes.wedding" = "Loja de vestidos de noiva";
+"type.shop.clothes.women" = "Loja de roupas femininas";
 "type.shop.coffee" = "Loja de café";
 "type.shop.computer" = "Loja de informática";
 "type.shop.confectionery" = "Confeitaria";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Funerária";
 "type.shop.furniture" = "Loja de móveis";
 "type.shop.garden_centre" = "Loja de jardinagem ou viveiro";
+"type.shop.games" = "Loja de jogos";
 "type.shop.gas" = "Distribuidora de gás";
 "type.shop.gift" = "Loja de lembranças";
 "type.shop.greengrocer" = "Loja de frutas e verduras";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Quiosque";
 "type.shop.kitchen" = "Loja de cozinha";
 "type.shop.laundry" = "Lavandaria";
+"type.shop.leather" = "Loja de artigos de couro";
 "type.shop.mall" = "Centro comercial";
 "type.shop.massage" = "Salão de massagens";
 "type.shop.mobile_phone" = "Loja de telemóveis";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Loja de animais de estimação";
 "type.shop.pet_grooming" = "Salão de banhos e tosquia";
 "type.shop.photo" = "Loja de fotografia";
+"type.shop.religion" = "Loja de artigos religiosos";
 "type.shop.rental" = "Locadora";
 "type.shop.rental.bicycle" = "Loja de aluguel de bicicletas";
 "type.amenity.bicycle_rental.shop" = "Loja de aluguel de bicicletas";
@@ -1565,7 +1583,7 @@
 "type.railway.miniature" = "Caminho de ferro em miniatura";
 "type.amenity.kneipp_water_cure" = "Cura pela água Kneipp";
 "type.area_highway.traffic_island" = "Ilha de tráfego";
-"type.man_made.monitoring_station" = "Estação de controlo";
+"type.man_made.monitoring_station" = "Estação de monitorização";
 "type.man_made.monitoring_station.water_level" = "Estação de monitorização do nível da água";
 "type.man_made.monitoring_station.weather" = "Estação de monitorização meteorológica";
 "type.amenity.student_accommodation" = "Alojamento para estudantes";

@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Middelhavskøkken</string>
     <string name="type.cuisine.mexican">Mexicansk</string>
     <string name="type.cuisine.moroccan">Marokkansk</string>
-    <string name="type.cuisine.noodles">Nudler</string>
+    <string name="type.cuisine.noodle">Nudler</string>
     <string name="type.cuisine.oriental">Orientalsk</string>
     <string name="type.cuisine.pancake">Pandekage</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Pølse</string>
     <string name="type.cuisine.savory_pancakes">Madpandekage</string>
     <string name="type.cuisine.seafood">Fisk og skaldyr</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Spansk</string>
     <string name="type.cuisine.steak_house">Bøfhus</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Te</string>
     <string name="type.cuisine.thai">Thailandsk</string>
     <string name="type.cuisine.turkish">Tyrkisk</string>
+    <string name="type.cuisine.uzbek">Usbekisk</string>
     <string name="type.cuisine.vegan">Vegansk</string>
     <string name="type.cuisine.vegetarian">Vegetarisk</string>
     <string name="type.cuisine.vietnamese">Vietnamesisk</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Bro</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Tunnel</string>
+    <string name="type.highway.platform">Stoppested</string>
     <string name="type.highway.primary">Hovedvej</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Bro</string>
@@ -533,20 +536,20 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Tunnel</string>
     <string name="type.area_highway.cycleway">Cykelsti</string>
-    <string name="type.area_highway.footway">Sti</string>
+    <string name="type.area_highway.footway">Gangsti</string>
     <string name="type.area_highway.living_street">Legegade</string>
     <string name="type.area_highway.motorway">Motorvej</string>
     <string name="type.area_highway.path">Sti</string>
     <string name="type.area_highway.pedestrian">Gågade</string>
     <string name="type.area_highway.primary">Hovedvej</string>
     <string name="type.area_highway.residential">Gade</string>
-    <string name="type.area_highway.secondary">Sekundær hovedvej</string>
+    <string name="type.area_highway.secondary">Sækunder hovedvej</string>
     <string name="type.area_highway.service">Servicevej</string>
     <string name="type.area_highway.tertiary">Tertiær hovedvej</string>
     <string name="type.area_highway.steps">Trappe</string>
     <string name="type.area_highway.track">Hjulspor</string>
     <string name="type.area_highway.trunk">Motortrafikvej</string>
-    <string name="type.area_highway.unclassified">Mindre vej</string>
+    <string name="type.area_highway.unclassified">Vej</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Historisk objekt</string>
@@ -757,7 +760,9 @@
     <string name="type.natural.wetland.marsh">Marsk</string>
     <string name="type.noexit">Blind vej</string>
     <string name="type.office">Kontor</string>
+    <string name="type.office.architect">Arkitektkontor</string>
     <string name="type.office.company">Selskabskontor</string>
+    <string name="type.office.educational_institution">Uddannelsesinstitution</string>
     <string name="type.office.estate_agent">Ejendomsmægler</string>
     <string name="type.office.government">Regeringskontor</string>
     <string name="type.office.insurance">Forsikringskontor</string>
@@ -834,7 +839,8 @@
     <string name="type.railway.crossing">Jernbaneovergang</string>
     <string name="type.railway.disused">Ubenyttet jernbane</string>
     <string name="type.railway.disused.bridge">Ubenyttet jernbanebro</string>
-    <string name="type.railway.funicular">Funicular</string>
+    <string name="type.railway.disused.tunnel">Ubenyttet jernbanetunnel</string>
+    <string name="type.railway.funicular">Funikular</string>
     <string name="type.railway.funicular.bridge">Kabelbanebro</string>
     <string name="type.railway.funicular.tunnel">Kabelbanetunnel</string>
     <string name="type.railway.halt">Togstation</string>
@@ -1145,6 +1151,15 @@
     <string name="type.shop.chemist">Materialist</string>
     <string name="type.shop.chocolate">Chokoladebutik</string>
     <string name="type.shop.clothes">Tøjbutik</string>
+    <string name="type.shop.clothes.children">Børnetøjsbutik</string>
+    <string name="type.shop.clothes.fashion">Modebutik</string>
+    <string name="type.shop.clothes.hats">Hattebutik</string>
+    <string name="type.shop.clothes.men">Herretøjsbutik</string>
+    <string name="type.shop.clothes.sports">Sportsklæderbutik</string>
+    <string name="type.shop.clothes.suits">Jakkesætbutik</string>
+    <string name="type.shop.clothes.underwear">Undertøjsbutik</string>
+    <string name="type.shop.clothes.wedding">Brudetøjsbutik</string>
+    <string name="type.shop.clothes.women">Dametøjsbutik</string>
     <string name="type.shop.coffee">Kaffehandel</string>
     <string name="type.shop.computer">Computerforretning</string>
     <string name="type.shop.confectionery">Slikbutik</string>
@@ -1160,11 +1175,12 @@
     <string name="type.shop.erotic">Erotikbutik</string>
     <string name="type.shop.fabric">Stofbutik</string>
     <string name="type.shop.farm">Foderhandel</string>
-    <string name="type.shop.fashion_accessories">Accessory-butik</string>
+    <string name="type.shop.fashion_accessories">Tilbehørsbutik</string>
     <string name="type.shop.florist">Blomsterbutik</string>
     <string name="type.shop.funeral_directors">Bedemand</string>
     <string name="type.shop.furniture">Møbelbutik</string>
     <string name="type.shop.garden_centre">Havecenter</string>
+    <string name="type.shop.games">Spilbutik</string>
     <string name="type.shop.gas">Gas butik</string>
     <string name="type.shop.gift">Gavebutik</string>
     <string name="type.shop.greengrocer">Grønthandler</string>
@@ -1180,6 +1196,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Køkkenforretning</string>
     <string name="type.shop.laundry">Vaskeri</string>
+    <string name="type.shop.leather">Læderbutik</string>
     <string name="type.shop.mall">Indkøbscenter</string>
     <string name="type.shop.massage">Massageklinik</string>
     <string name="type.shop.mobile_phone">Mobiltelefonbutik</string>
@@ -1198,6 +1215,7 @@
     <string name="type.shop.pet">Dyrehandel</string>
     <string name="type.shop.pet_grooming">Kæledyrspleje</string>
     <string name="type.shop.photo">Fotobutik</string>
+    <string name="type.shop.religion">Religionsbutik</string>
     <string name="type.shop.rental">Udlejningsbutik</string>
     <string name="type.shop.rental.bicycle">Cykeludlejningsbutik</string>
     <string name="type.amenity.bicycle_rental.shop">Cykeludlejningsbutik</string>
@@ -1323,7 +1341,7 @@
     <!-- Typically more basic, not staffed and free (compared to alpine_hut). -->
     <string name="type.tourism.wilderness_hut">Vildmarkshytte</string>
     <string name="type.tourism.zoo">Zoologisk have</string>
-    <string name="type.tourism.zoo.petting">Petting Zoo</string>
+    <string name="type.tourism.zoo.petting">Dyrepark med klappedyr</string>
     <string name="type.traffic_calming">Trafiksanering</string>
     <string name="type.traffic_calming.bump">Vejbump</string>
     <string name="type.traffic_calming.hump">Vejbump</string>

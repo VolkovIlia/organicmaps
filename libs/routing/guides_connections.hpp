@@ -1,6 +1,5 @@
 #pragma once
 
-#include "routing/edge_estimator.hpp"
 #include "routing/fake_ending.hpp"
 #include "routing/fake_vertex.hpp"
 #include "routing/guides_graph.hpp"
@@ -12,9 +11,7 @@
 #include "geometry/point2d.hpp"
 #include "geometry/point_with_altitude.hpp"
 
-#include <cstdint>
 #include <map>
-#include <utility>
 #include <vector>
 
 namespace routing
@@ -64,13 +61,13 @@ class GuidesConnections
 {
 public:
   GuidesConnections() = default;
-  GuidesConnections(GuidesTracks const & guides);
+  GuidesConnections(GuidesTracks && guides) : m_allTracks(std::move(guides)) {}
 
   // Sets mwm id and speed values for guides graph.
   void SetGuidesGraphParams(NumMwmId mwmId, double maxSpeed);
 
   // Finds closest guides tracks for checkpoints, fills guides graph.
-  void ConnectToGuidesGraph(std::vector<m2::PointD> const & checkpoints);
+  void ConnectToGuidesGraph(CheckpointsGeometry const & checkpoints);
 
   // Overwrites osm connections for checkpoint by its index |checkpointIdx|.
   void UpdateOsmConnections(size_t checkpointIdx, std::vector<ConnectionToOsm> const & links);
@@ -111,14 +108,14 @@ private:
                           bool fromCheckpoint);
 
   // Attaches checkpoints to the nearest guides tracks if possible.
-  void PullCheckpointsToTracks(std::vector<m2::PointD> const & checkpoints);
+  void PullCheckpointsToTracks(CheckpointsGeometry const & checkpoints);
 
   // Attaches terminal point on the track to the terminal checkpoint: start to start;
   // finish - to finish.
   void AddTerminalGuidePoint(size_t checkpointIdx, size_t neighbourIdx, m2::PointD const & curPoint);
 
   // Attaches neighbour terminal checkpoints for those which are already attached.
-  void PullAdditionalCheckpointsToTracks(std::vector<m2::PointD> const & checkpoints);
+  void PullAdditionalCheckpointsToTracks(CheckpointsGeometry const & checkpoints);
 
   GuidesTracks m_allTracks;
   Projections m_checkpointsOnTracks;

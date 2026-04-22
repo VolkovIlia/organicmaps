@@ -1,16 +1,23 @@
-• YENİ: Daha yüksek kontrastlı koyu tema renkleri
-• OpenStreetMap verileri güncellendi (11 Ocak)
-• Kumarhaneler "Eğlence" kategorisinden çıkarıldı
-• Metro hatlarının kalınlığı azaltıldı
-• Motosiklet park yeri, bisiklet kiralama, bisiklet şarjı ve araç şarjı için arama sonuçlarına kapasite bilgisi eklendi
-• Arama sonuçlarında kat bilgisini göster
-• Daha geniş rota planlama düğmeleri
+• 10 Mart itibarıyla OSM harita verileri
+• 1 Mart itibarıyla Wikipedia verileri
+• Koşullu hız sınırları için destek eklendi
+• Çin eyaletleri için daha ayrıntılı yükseklik izolinerleri
+• Deri mağazaları ve dini ürünler satan mağazalar eklendi
+• Ağaç sıraları eklendi
+• Yakınında otobüs durağı olmayan toplu taşıma durağı platformları eklendi
+• Ülke indirme ilerleme hesaplaması düzeltildi
+• Tanzanya daha küçük bölgelere ayrıldı
+• Editörde son kullanılan kategoriler geçmişi eklendi
+• Rota planlama ekranında yukarı kaydırma iyileştirildi
+• CarPlay için cetvel konumu düzeltildi
+• Birkaç çökme düzeltildi, kararlılık ve performans iyileştirildi
 
 ### Çeviriler
 
-• Arnavutça uygulama çevirileri ve sesli yönlendirme eklendi
-• SSS güncellendi ve Arapça, Çekçe, Felemenkçe, Farsça, Yunanca, İbranice, Hintçe, Macarca, Endonezce, İtalyanca, Litvanca, Marathi, İsveççe, Telugu dilleri için SSS çevirileri eklendi
-• Almanca uygulama ve SSS çevirileri iyileştirildi
-• Bulgarca arama eşanlamlıları eklendi
-• Netlik için "Yakınlaştırma düğmeleri" ayarı yeniden adlandırıldı
-• Çeşitli diller için Weblate katkıda bulunanlardan çeviri düzeltmeleri
+• Ülke açıklamaları iyileştirildi
+• Eugen Dedu'dan Romence düzeltmeler uygulandı
+• Ülke isimleri güncellendi
+• Weblate katkıcılarından gelen çeviriler güncellendi
+• Ukraynaca çeviri düzeltildi
+
+Organic Maps'e katkıda bulunan, bağış yapan ve destekleyen herkese teşekkür ederiz! Gelin birlikte en iyi haritaları oluşturalım!

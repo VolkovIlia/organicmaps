@@ -43,10 +43,13 @@ struct PreRankingInfo
   // Matched parts of the query.
   std::array<TokenRange, Model::TYPE_COUNT> m_tokenRanges;
 
-  // Different geo-parts extracted from query.  Currently only poi,
-  // building and street ids are in |m_geoParts|.
+  // Postcode token range (if any). Stored separately because postcodes don't map to Model::Type.
+  TokenRange m_postcodeRange;
+
+  // Different geo-parts extracted from query.
   IntersectionResult m_geoParts;
 
+  /// @todo Move to IntersectionResult ?
   // Id of the matched city, if any.
   FeatureID m_cityId;
 

@@ -5,17 +5,16 @@ android {
   compileSdk = propCompileSdkVersion.toInteger()
   ndkVersion = propNdkVersion
 
+  enableKotlin = false
+
   defaultConfig {
     minSdk = propMinSdkVersion.toInteger()
     targetSdk = propTargetSdkVersion.toInteger()
 
     buildTypes {
-      debug {
-        // Enable jni debug build
-        jniDebuggable true
-      }
+      debug {}
       beta {
-        matchingFallbacks = ['debug', 'release']
+        matchingFallbacks = ['release', 'debug']
       }
       release {}
     }

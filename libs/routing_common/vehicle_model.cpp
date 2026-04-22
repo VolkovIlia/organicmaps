@@ -6,12 +6,9 @@
 #include "base/assert.hpp"
 
 #include <algorithm>
-#include <sstream>
 
 namespace routing
 {
-using namespace std;
-
 namespace
 {
 template <double const & (*F)(double const &, double const &), typename WeightAndETA>
@@ -22,7 +19,7 @@ WeightAndETA Pick(WeightAndETA const & lhs, WeightAndETA const & rhs)
 
 SpeedKMpH Max(SpeedKMpH const & lhs, InOutCitySpeedKMpH const & rhs)
 {
-  return Pick<max>(lhs, Pick<max>(rhs.m_inCity, rhs.m_outCity));
+  return Pick<std::max>(lhs, Pick<std::max>(rhs.m_inCity, rhs.m_outCity));
 }
 }  // namespace
 
@@ -53,7 +50,7 @@ VehicleModel::VehicleModel(Classificator const & classif, LimitsInitList const &
     ASSERT_GREATER(speedFactor.m_eta, 0.0, ());
     m_surfaceFactors.Insert(classif.GetTypeByPath(v.m_type), speedFactor);
 
-    if (v.m_type[1] == "paved_bad")
+    if (*(v.m_type.begin() + 1) == std::string_view("paved_bad"))
       m_minSurfaceFactorForMaxspeed = speedFactor;
   }
 }
@@ -91,7 +88,7 @@ double VehicleModel::GetMaxWeightSpeed() const
   return m_maxModelSpeed.m_weight;
 }
 
-optional<HighwayType> VehicleModel::GetHighwayType(uint32_t type) const
+std::optional<HighwayType> VehicleModel::GetHighwayType(uint32_t type) const
 {
   auto const * value = m_roadTypes.Find(type);
   if (value)
@@ -103,7 +100,7 @@ void VehicleModel::GetSurfaceFactor(uint32_t type, SpeedFactor & factor) const
 {
   auto const * surface = m_surfaceFactors.Find(type);
   if (surface)
-    factor = Pick<min>(factor, *surface);
+    factor = Pick<std::min>(factor, *surface);
 
   ASSERT_LESS_OR_EQUAL(factor.m_weight, 1.0, ());
   ASSERT_LESS_OR_EQUAL(factor.m_eta, 1.0, ());
@@ -111,7 +108,7 @@ void VehicleModel::GetSurfaceFactor(uint32_t type, SpeedFactor & factor) const
   ASSERT_GREATER(factor.m_eta, 0.0, ());
 }
 
-void VehicleModel::GetAdditionalRoadSpeed(uint32_t type, bool isCityRoad, optional<SpeedKMpH> & speed) const
+void VehicleModel::GetAdditionalRoadSpeed(uint32_t type, bool isCityRoad, std::optional<SpeedKMpH> & speed) const
 {
   auto const * s = m_addRoadTypes.Find(type);
   if (s)
@@ -126,9 +123,9 @@ void VehicleModel::GetAdditionalRoadSpeed(uint32_t type, bool isCityRoad, option
 SpeedKMpH VehicleModel::GetTypeSpeedImpl(FeatureTypes const & types, SpeedParams const & params, bool isCar) const
 {
   bool const isCityRoad = params.m_inCity;
-  optional<HighwayType> hwType;
+  std::optional<HighwayType> hwType;
   SpeedFactor surfaceFactor;
-  optional<SpeedKMpH> additionalRoadSpeed;
+  std::optional<SpeedKMpH> additionalRoadSpeed;
   for (uint32_t t : types)
   {
     ftype::TruncValue(t, 2);
@@ -143,11 +140,9 @@ SpeedKMpH VehicleModel::GetTypeSpeedImpl(FeatureTypes const & types, SpeedParams
   SpeedKMpH speed;
   if (hwType)
   {
-    if (isCar && params.m_maxspeed.IsValid())
+    if (isCar && params.m_maxSpeedKmPH != kInvalidSpeed)
     {
-      MaxspeedType const s = params.m_maxspeed.GetSpeedKmPH(params.m_forward);
-      ASSERT(s != kInvalidSpeed, (*hwType, params.m_forward, params.m_maxspeed));
-      speed = {static_cast<double>(s)};
+      speed = {static_cast<double>(params.m_maxSpeedKmPH)};
 
       // Looks like a crutch, limit surface factor if maxspeed is set.
       /// @see USA_UseDirt_WithMaxspeed test.
@@ -176,7 +171,7 @@ SpeedKMpH VehicleModel::GetTypeSpeedImpl(FeatureTypes const & types, SpeedParams
       {
         // Take additional speed for bicycle and pedestrian only.
         if (additionalRoadSpeed)
-          speed = Pick<max>(speed, *additionalRoadSpeed);
+          speed = Pick<std::max>(speed, *additionalRoadSpeed);
       }
     }
 
@@ -251,16 +246,16 @@ VehicleModelFactory::VehicleModelFactory(CountryParentNameGetterFn const & count
   : m_countryParentNameGetterFn(countryParentNameGetterFn)
 {}
 
-shared_ptr<VehicleModelInterface> VehicleModelFactory::GetVehicleModel() const
+std::shared_ptr<VehicleModelInterface> VehicleModelFactory::GetVehicleModel() const
 {
   auto const itr = m_models.find("");
   ASSERT(itr != m_models.end(), ());
   return itr->second;
 }
 
-shared_ptr<VehicleModelInterface> VehicleModelFactory::GetVehicleModelForCountry(string const & country) const
+std::shared_ptr<VehicleModelInterface> VehicleModelFactory::GetVehicleModelForCountry(std::string const & country) const
 {
-  string parent = country;
+  std::string parent = country;
   while (!parent.empty())
   {
     auto it = m_models.find(parent);
@@ -273,10 +268,10 @@ shared_ptr<VehicleModelInterface> VehicleModelFactory::GetVehicleModelForCountry
   return GetVehicleModel();
 }
 
-string VehicleModelFactory::GetParent(string const & country) const
+std::string VehicleModelFactory::GetParent(std::string const & country) const
 {
   if (!m_countryParentNameGetterFn)
-    return string();
+    return std::string();
   return m_countryParentNameGetterFn(country);
 }
 
@@ -303,49 +298,37 @@ HighwayBasedFactors GetOneFactorsForBicycleAndPedestrianModel()
       {HighwayType::HighwayLadder, InOutCityFactor(1.0)},
       {HighwayType::HighwaySteps, InOutCityFactor(1.0)},
       {HighwayType::HighwayPedestrian, InOutCityFactor(1.0)},
+      {HighwayType::HighwayPlatform, InOutCityFactor(1.0)},
       {HighwayType::HighwayFootway, InOutCityFactor(1.0)},
       {HighwayType::ManMadePier, InOutCityFactor(1.0)},
       {HighwayType::RouteFerry, InOutCityFactor(1.0)},
   };
 }
 
-string DebugPrint(SpeedKMpH const & speed)
+std::string DebugPrint(SpeedKMpH const & speed)
 {
-  ostringstream oss;
-  oss << "SpeedKMpH [ ";
-  oss << "weight:" << speed.m_weight << ", ";
-  oss << "eta:" << speed.m_eta << " ]";
-  return oss.str();
+  return "SpeedKMpH [ weight:" + std::to_string(speed.m_weight) + ", eta:" + std::to_string(speed.m_eta) + " ]";
 }
 
 std::string DebugPrint(SpeedFactor const & speedFactor)
 {
-  ostringstream oss;
-  oss << "SpeedFactor [ ";
-  oss << "weight:" << speedFactor.m_weight << ", ";
-  oss << "eta:" << speedFactor.m_eta << " ]";
-  return oss.str();
+  return "SpeedFactor [ weight:" + std::to_string(speedFactor.m_weight) + ", eta:" + std::to_string(speedFactor.m_eta) +
+         " ]";
 }
 
-string DebugPrint(InOutCitySpeedKMpH const & speed)
+std::string DebugPrint(InOutCitySpeedKMpH const & speed)
 {
-  ostringstream oss;
-  oss << "InOutCitySpeedKMpH [ ";
-  oss << "inCity:" << DebugPrint(speed.m_inCity) << ", ";
-  oss << "outCity:" << DebugPrint(speed.m_outCity) << " ]";
-  return oss.str();
+  return "InOutCitySpeedKMpH [ inCity:" + DebugPrint(speed.m_inCity) + ", outCity:" + DebugPrint(speed.m_outCity) +
+         " ]";
 }
 
-string DebugPrint(InOutCityFactor const & speedFactor)
+std::string DebugPrint(InOutCityFactor const & speedFactor)
 {
-  ostringstream oss;
-  oss << "InOutCityFactor [ ";
-  oss << "inCity:" << DebugPrint(speedFactor.m_inCity) << ", ";
-  oss << "outCity:" << DebugPrint(speedFactor.m_outCity) << " ]";
-  return oss.str();
+  return "InOutCityFactor [ inCity:" + DebugPrint(speedFactor.m_inCity) +
+         ", outCity:" + DebugPrint(speedFactor.m_outCity) + " ]";
 }
 
-string DebugPrint(HighwayType type)
+std::string DebugPrint(HighwayType type)
 {
   switch (type)
   {
@@ -367,6 +350,7 @@ string DebugPrint(HighwayType type)
   case HighwayType::HighwaySteps: return "highway-steps";
   case HighwayType::HighwayTrunk: return "highway-trunk";
   case HighwayType::HighwayPedestrian: return "highway-pedestrian";
+  case HighwayType::HighwayPlatform: return "highway-platform";
   case HighwayType::HighwayTrunkLink: return "highway-trunk_link";
   case HighwayType::HighwayPrimaryLink: return "highway-primary_link";
   case HighwayType::ManMadePier: return "man_made-pier";

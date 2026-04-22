@@ -245,12 +245,6 @@ public class Utils
         Toast.makeText(context, context.getString(failMessage), Toast.LENGTH_LONG).show();
       Logger.e(TAG, "ActivityNotFoundException", e);
     }
-    catch (AndroidRuntimeException e)
-    {
-      Logger.e(TAG, "AndroidRuntimeException", e);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      context.startActivity(intent);
-    }
   }
 
   private static boolean isHttpOrHttpsScheme(@NonNull String url)
@@ -351,28 +345,6 @@ public class Utils
       return;
 
     fragment.getParentFragmentManager().beginTransaction().detach(fragment).commit();
-  }
-
-  public static String capitalize(@Nullable String src)
-  {
-    if (TextUtils.isEmpty(src))
-      return src;
-
-    if (src.length() == 1)
-      return Character.toString(Character.toUpperCase(src.charAt(0)));
-
-    return Character.toUpperCase(src.charAt(0)) + src.substring(1);
-  }
-
-  public static String unCapitalize(@Nullable String src)
-  {
-    if (TextUtils.isEmpty(src))
-      return src;
-
-    if (src.length() == 1)
-      return Character.toString(Character.toLowerCase(src.charAt(0)));
-
-    return Character.toLowerCase(src.charAt(0)) + src.substring(1);
   }
   public static String getLocalizedLevel(@NonNull Context context, @Nullable String level)
   {
@@ -485,7 +457,7 @@ public class Utils
     String hour = context.getString(R.string.hour);
     SpannableStringBuilder displayedH = Utils.formatTime(context, textSize, unitsSize, String.valueOf(hours), hour);
     SpannableStringBuilder displayedM = Utils.formatTime(context, textSize, unitsSize, String.valueOf(minutes), min);
-    return hours == 0 ? displayedM : TextUtils.concat(displayedH + "\u00A0", displayedM);
+    return hours == 0 ? displayedM : TextUtils.concat(displayedH, "\u00A0", displayedM);
   }
 
   @NonNull

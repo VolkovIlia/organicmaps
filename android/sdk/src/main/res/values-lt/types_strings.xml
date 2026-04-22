@@ -6,9 +6,9 @@
     <string name="type.addr_interpolation.even">Adresas / blokas</string>
     <string name="type.addr_interpolation.odd">Adresas / blokas</string>
     <string name="type.aerialway">Keltuvas</string>
-    <string name="type.aerialway.cable_car">Cable Car</string>
-    <string name="type.aerialway.chair_lift">Kėdė Liftas</string>
-    <string name="type.aerialway.drag_lift">Pasipriešinimas Liftas</string>
+    <string name="type.aerialway.cable_car">Kabininis keltuvas</string>
+    <string name="type.aerialway.chair_lift">Kėdutinis keltuvas</string>
+    <string name="type.aerialway.drag_lift">Vilkimo keltuvas</string>
     <string name="type.aerialway.gondola">Gondola</string>
     <string name="type.aerialway.mixed_lift">Mišrus keltuvas</string>
     <string name="type.aerialway.station">Keltuvo stotis</string>
@@ -18,7 +18,7 @@
     <string name="type.aeroway.apron">Peronas</string>
     <string name="type.aeroway.gate">Vartai</string>
     <string name="type.aeroway.helipad">Sraigtasparnių aikštelė</string>
-    <string name="type.aeroway.runway">Runway</string>
+    <string name="type.aeroway.runway">Kilimo ir tūpimo takas</string>
     <string name="type.aeroway.taxiway">Riedėjimo takas</string>
     <string name="type.aeroway.terminal">Terminalas</string>
     <string name="type.amenity">Paslaugos</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Viduržemio jūros virtuvė</string>
     <string name="type.cuisine.mexican">Meksikiečių virtuvė</string>
     <string name="type.cuisine.moroccan">Maroko virtuvė</string>
-    <string name="type.cuisine.noodles">Makaronai</string>
+    <string name="type.cuisine.noodle">Makaronai</string>
     <string name="type.cuisine.oriental">Rytų Azijos virtuvė</string>
     <string name="type.cuisine.pancake">Blynai</string>
     <string name="type.cuisine.pasta">Makaronai</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Dešrelės</string>
     <string name="type.cuisine.savory_pancakes">Nesaldūs blynai</string>
     <string name="type.cuisine.seafood">Jūros gėrybės</string>
+    <string name="type.cuisine.shawarma">Šavarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Ispanų virtuvė</string>
     <string name="type.cuisine.steak_house">Kepsnių restoranas</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Arbata</string>
     <string name="type.cuisine.thai">Tajų virtuvė</string>
     <string name="type.cuisine.turkish">Turkų virtuvė</string>
+    <string name="type.cuisine.uzbek">Uzbekų</string>
     <string name="type.cuisine.vegan">Veganiška virtuvė</string>
     <string name="type.cuisine.vegetarian">Vegetariška virtuvė</string>
     <string name="type.cuisine.vietnamese">Vietnamiečių virtuvė</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Tiltas</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Tunelis</string>
+    <string name="type.highway.platform">Platforma</string>
     <string name="type.highway.primary">Pagrindinis kelias</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Tiltas</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Lauko kelias</string>
     <string name="type.area_highway.trunk">Svarbus užmiesčio kelias</string>
     <string name="type.area_highway.unclassified">Kitas kelias</string>
-    <string name="type.highway.world_level">Pasaulinio lygio kelias</string>
-    <string name="type.highway.world_towns_level">Vietinės reikšmės kelias</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Istorinis objektas</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Liūnas</string>
     <string name="type.noexit">Akligatvis</string>
     <string name="type.office">Biuras</string>
+    <string name="type.office.architect">Architektūros biuras</string>
     <string name="type.office.company">Įmonės biuras</string>
+    <string name="type.office.educational_institution">Švietimo įstaiga</string>
     <string name="type.office.estate_agent">Nekilnojamojo turto agentūra</string>
     <string name="type.office.government">Valstybinė įstaiga</string>
     <string name="type.office.insurance">Draudimo agentūra</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Geležinkelio perėja</string>
     <string name="type.railway.disused">Nenaudojamas geležinkelis</string>
     <string name="type.railway.disused.bridge">Nenaudojamo geležinkelio tiltas</string>
+    <string name="type.railway.disused.tunnel">Nenaudojamo geležinkelio tunelis</string>
     <string name="type.railway.funicular">Funikulierius</string>
     <string name="type.railway.funicular.bridge">Funikulieriaus tiltas</string>
     <string name="type.railway.funicular.tunnel">Funikulieriaus tunelis</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Buitinė chemija</string>
     <string name="type.shop.chocolate">Šokolado parduotuvė</string>
     <string name="type.shop.clothes">Drabužių parduotuvė</string>
+    <string name="type.shop.clothes.children">Vaikų drabužių parduotuvė</string>
+    <string name="type.shop.clothes.fashion">Mados parduotuvė</string>
+    <string name="type.shop.clothes.hats">Kepurių parduotuvė</string>
+    <string name="type.shop.clothes.men">Vyriškų drabužių parduotuvė</string>
+    <string name="type.shop.clothes.sports">Sporto drabužių parduotuvė</string>
+    <string name="type.shop.clothes.suits">Kostiumų parduotuvė</string>
+    <string name="type.shop.clothes.underwear">Apatinių rūbų parduotuvė</string>
+    <string name="type.shop.clothes.wedding">Vestuvių drabužių parduotuvė</string>
+    <string name="type.shop.clothes.women">Moteriškų drabužių parduotuvė</string>
     <string name="type.shop.coffee">Kavos parduotuvė</string>
     <string name="type.shop.computer">Kompiuterių parduotuvė</string>
     <string name="type.shop.confectionery">Saldumynų parduotuvė</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Laidojimo paslaugos</string>
     <string name="type.shop.furniture">Baldai</string>
     <string name="type.shop.garden_centre">Sodo centras</string>
+    <string name="type.shop.games">Žaidimų parduotuvė</string>
     <string name="type.shop.gas">Dujų parduotuvė</string>
     <string name="type.shop.gift">Dovanų parduotuvė</string>
     <string name="type.shop.greengrocer">Vaisiai ir daržovės</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Kioskas</string>
     <string name="type.shop.kitchen">Virtuvės reikmenys</string>
     <string name="type.shop.laundry">Skalbykla</string>
+    <string name="type.shop.leather">Odos gaminių parduotuvė</string>
     <string name="type.shop.mall">Prekybos centras</string>
     <string name="type.shop.massage">Masažo salonas</string>
     <string name="type.shop.mobile_phone">Mobiliųjų telefonų salonas</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Gyvūnų prekės</string>
     <string name="type.shop.pet_grooming">Gyvūnų kirpykla</string>
     <string name="type.shop.photo">Foto prekės</string>
+    <string name="type.shop.religion">Religinių reikmenų parduotuvė</string>
     <string name="type.shop.rental">Nuomos parduotuvė</string>
     <string name="type.shop.rental.bicycle">Dviračių nuomos parduotuvė</string>
     <string name="type.amenity.bicycle_rental.shop">Dviračių nuomos parduotuvė</string>

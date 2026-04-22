@@ -27,8 +27,8 @@ import app.organicmaps.MwmApplication;
 import app.organicmaps.R;
 import app.organicmaps.sdk.location.LocationHelper;
 import app.organicmaps.sdk.location.LocationListener;
+import app.organicmaps.sdk.location.LocationUtils;
 import app.organicmaps.sdk.location.TrackRecorder;
-import app.organicmaps.sdk.util.LocationUtils;
 import app.organicmaps.sdk.util.log.Logger;
 
 public class TrackRecordingService extends Service implements LocationListener
@@ -110,7 +110,7 @@ public class TrackRecordingService extends Service implements LocationListener
             .setOngoing(true)
             .setShowWhen(true)
             .setOnlyAlertOnce(true)
-            .setSmallIcon(R.drawable.ic_splash)
+            .setSmallIcon(app.organicmaps.branding.R.drawable.ic_splash)
             .setContentTitle(context.getString(R.string.track_recording))
             .addAction(0, context.getString(R.string.navigation_stop_button), getExitPendingIntent(context))
             .setContentIntent(getPendingIntent(context))

@@ -651,6 +651,12 @@
 "button_layer_subway" = "Metro";
 "layers_title" = "Style i warstwy mapy";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Zmień kolor wszystkich zakładek";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Zmień kolor wszystkich tras";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Eksportuj KMZ";
 
@@ -804,7 +810,7 @@
 "traffic_update_app_message" = "Aby wyświetlić dane o ruchu, należy zaktualizować aplikację.";
 "log_file_size" = "Rozmiar pliku dziennika: %@";
 "planning_route_remove_title" = "Przeciągnij tu, aby usunąć";
-"placepage_replace_stop" = "Replace Stop";
+"placepage_replace_stop" = "Zastąp przystanek";
 "start_from_my_position" = "Zacznij od";
 
 /* For iOS message 'alert_reauth_message' should be splitted in two parts: message + link. Here's first part */
@@ -849,7 +855,7 @@
 "not_all_shown_bookmarks_carplay" = "Nie wszystkie zakładki są wyświetlane";
 "switch_to_phone_bookmarks_carplay" = "Przełącz się na telefon, aby zobaczyć wszystkie zakładki";
 "speedcams_alert_title_carplay_1" = "Kamery";
-"speedcams_alert_title_carplay_2" = "Info o kamerach";
+"speedcams_alert_title_carplay_2" = "Ostrzeżenia o fotoradarach";
 "download_map_carplay" = "Pobierz mapy do aplikacji Organic Maps na swoje urządzenie";
 "carplay_roundabout_exit" = "%@ zjazd";
 
@@ -947,7 +953,7 @@
 "car_continue_in_the_car" = "Do ekranu samochodu";
 
 /* Outdoors/hiking map style (activity) name in the Styles and Layers dialog */
-"button_layer_outdoor" = "Turystyka piesza";
+"button_layer_outdoor" = "Aktywność outdoorowa";
 
 /* Bookmark categories screen, button that opens share dialog to export all bookmarks and tracks */
 "bookmarks_export" = "Eksportuj wszystkie zakładki i ścieżki";
@@ -996,10 +1002,10 @@
 "placepage_delete_track_button" = "Usuń trasę";
 
 /* The track deletion confirmaion alert message. */
-"placepage_delete_track_confirmation_alert_message" = "Czy na pewno chce Pan/Pani usunąć ten utwór?";
+"placepage_delete_track_confirmation_alert_message" = "Czy na pewno chcesz usunąć ten ślad?";
 
 /* Placeholder for track name input on track edit screen */
-"placepage_track_name_hint" = "Nazwa trasy";
+"placepage_track_name_hint" = "Nazwa śladu";
 
 /* move track or bookmark from the list button text */
 "move" = "Przenieś";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Fioletowe pobrane regiony";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Proszę zalogować się przy użyciu hasła";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Logowanie za pomocą przeglądarki";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Ostatnio używane";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Kolor zakładek zmieniony";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "Kolor tras zmieniony";

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -22,7 +23,6 @@ import app.organicmaps.sdk.bookmarks.data.MapObject;
 import app.organicmaps.sdk.routing.JunctionInfo;
 import app.organicmaps.sdk.routing.RoutingController;
 import app.organicmaps.sdk.util.Config;
-import app.organicmaps.sdk.util.LocationUtils;
 import app.organicmaps.sdk.util.NetworkPolicy;
 import app.organicmaps.sdk.util.log.Logger;
 import org.chromium.base.ObserverList;
@@ -55,14 +55,16 @@ public class LocationHelper implements BaseLocationProvider.Listener
   private Location mSavedLocation;
   private MapObject mMyPosition;
   @NonNull
+  private final LocationProviderFactory mLocationProviderFactory = new LocationProviderFactory();
+  @NonNull
   private BaseLocationProvider mLocationProvider;
   @Nullable
   private BaseLocationProvider mOldLocationProvider;
   private long mInterval;
   private boolean mInFirstRun;
   private boolean mActive;
-  private Handler mHandler;
-  private Runnable mLocationTimeoutRunnable = this::notifyLocationUpdateTimeout;
+  private final Handler mHandler;
+  private final Runnable mLocationTimeoutRunnable = this::notifyLocationUpdateTimeout;
 
   @NonNull
   private final GnssStatusCompat.Callback mGnssStatusCallback = new GnssStatusCompat.Callback() {
@@ -101,13 +103,12 @@ public class LocationHelper implements BaseLocationProvider.Listener
     }
   };
 
-  public LocationHelper(@NonNull Context context, @NonNull SensorHelper sensorHelper,
-                        @NonNull LocationProviderFactory locationProviderFactory)
+  public LocationHelper(@NonNull Context context, @NonNull SensorHelper sensorHelper)
   {
     mContext = context;
     mSensorHelper = sensorHelper;
-    mLocationProvider = locationProviderFactory.getProvider(mContext, this);
-    mHandler = new Handler();
+    mLocationProvider = mLocationProviderFactory.getProvider(mContext, this);
+    mHandler = new Handler(Looper.getMainLooper());
   }
 
   /**
@@ -171,10 +172,11 @@ public class LocationHelper implements BaseLocationProvider.Listener
       return;
     }
 
-    LocationState.nativeLocationUpdated(mSavedLocation.getTime(), mSavedLocation.getLatitude(),
-                                        mSavedLocation.getLongitude(), mSavedLocation.getAccuracy(),
-                                        mSavedLocation.getAltitude(), mSavedLocation.getSpeed(),
-                                        mSavedLocation.getBearing());
+    final LocationCompatExtractor.Altitude altitude = LocationCompatExtractor.getAltitude(mSavedLocation);
+    LocationState.nativeLocationUpdated(
+        mSavedLocation.getTime(), mSavedLocation.getLatitude(), mSavedLocation.getLongitude(),
+        mSavedLocation.getAccuracy(), altitude != null ? altitude.altitude() : 0,
+        altitude != null ? altitude.accuracy() : -1, mSavedLocation.getSpeed(), mSavedLocation.getBearing());
   }
 
   private void notifyLocationUpdateTimeout()
@@ -508,5 +510,10 @@ public class LocationHelper implements BaseLocationProvider.Listener
       Logger.d(TAG, "Current location is available, so play the nice zoom animation");
       Framework.nativeRunFirstLaunchAnimation();
     }
+  }
+
+  public boolean isGmsLocationProviderAvailable()
+  {
+    return mLocationProviderFactory.isGmsLocationProviderAvailable(mContext);
   }
 }

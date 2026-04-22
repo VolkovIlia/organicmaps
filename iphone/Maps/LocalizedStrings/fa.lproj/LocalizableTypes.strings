@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterranean";
 "type.cuisine.mexican" = "Mexican";
 "type.cuisine.moroccan" = "Moroccan";
-"type.cuisine.noodles" = "Noodles";
+"type.cuisine.noodle" = "Noodles";
 "type.cuisine.oriental" = "East Asian";
 "type.cuisine.pancake" = "Pancake";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "سوسیس";
 "type.cuisine.savory_pancakes" = "Savory Pancakes";
 "type.cuisine.seafood" = "غذای دریایی";
+"type.cuisine.shawarma" = "شاورما";
 "type.cuisine.soba" = "سوبا­­";
 "type.cuisine.spanish" = "اسپانیایی";
 "type.cuisine.steak_house" = "خانه استیک";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "چای";
 "type.cuisine.thai" = "تایلندی";
 "type.cuisine.turkish" = "ترکی";
+"type.cuisine.uzbek" = "ازبکی";
 "type.cuisine.vegan" = "گیاهخوار";
 "type.cuisine.vegetarian" = "گیاه خوار";
 "type.cuisine.vietnamese" = "ویتنامی";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "تونل";
+"type.highway.platform" = "سکو";
 "type.highway.primary" = "جاده";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -600,7 +603,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.unclassified.tunnel" = "تونل";
-"type.area_highway.cycleway" = "مسیر دوچرخه";
+"type.area_highway.cycleway" = "Cycle Path";
 "type.area_highway.footway" = "مسیر";
 "type.area_highway.living_street" = "جاده";
 "type.area_highway.motorway" = "جاده";
@@ -615,7 +618,7 @@
 "type.area_highway.track" = "جاده";
 "type.area_highway.trunk" = "جاده";
 "type.area_highway.unclassified" = "جاده";
-"type.highway.world_level" = "بزرگراه جهانی";
+"type.highway.world_level" = "highway-world_level";
 "type.highway.world_towns_level" = "highway-world_towns_level";
 
 
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "مرداب";
 "type.noexit" = "بن‌بست";
 "type.office" = "اداره";
+"type.office.architect" = "دفتر معماری";
 "type.office.company" = "دفتر شرکت";
+"type.office.educational_institution" = "مؤسسه آموزشی";
 "type.office.estate_agent" = "بنگاه معاملات ملکی";
 "type.office.government" = "اداره دولتی";
 "type.office.insurance" = "دفتر بیمه";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "گذرگاه راه‌آهن";
 "type.railway.disused" = "راه‌آهن رها شده";
 "type.railway.disused.bridge" = "پل راه‌آهن رها شده";
+"type.railway.disused.tunnel" = "تونل راهآهن رها شده";
 "type.railway.funicular" = "فونیکولور";
 "type.railway.funicular.bridge" = "پل کابلی";
 "type.railway.funicular.tunnel" = "تونل کابلی";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "فروشگاه";
 "type.shop.chocolate" = "فروشگاه";
 "type.shop.clothes" = "لباس فروشی";
+"type.shop.clothes.children" = "فروشگاه لباس کودک";
+"type.shop.clothes.fashion" = "بوتیک مد";
+"type.shop.clothes.hats" = "کلاه فروشی";
+"type.shop.clothes.men" = "فروشگاه لباس مردانه";
+"type.shop.clothes.sports" = "فروشگاه لباس ورزشی";
+"type.shop.clothes.suits" = "فروشگاه کت و شلوار";
+"type.shop.clothes.underwear" = "فروشگاه لباس زیر";
+"type.shop.clothes.wedding" = "فروشگاه لباس عروس";
+"type.shop.clothes.women" = "فروشگاه لباس زنانه";
 "type.shop.coffee" = "فروشگاه";
 "type.shop.computer" = "فروشگاه";
 "type.shop.confectionery" = "فروشگاه";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "مسئول تشییع جنازه";
 "type.shop.furniture" = "فروشگاه";
 "type.shop.garden_centre" = "فروشگاه";
+"type.shop.games" = "فروشگاه بازی";
 "type.shop.gas" = "فروشگاه گاز";
 "type.shop.gift" = "فروشگاه";
 "type.shop.greengrocer" = "فروشگاه";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "دَکهِ";
 "type.shop.kitchen" = "ﻪﻧﺎﺧﺰﭙﺷﺁ ﻩﺎﮕﺷﻭﺮﻓ";
 "type.shop.laundry" = "لباس شویی";
+"type.shop.leather" = "فروشگاه محصولات چرمی";
 "type.shop.mall" = "فروشگاه";
 "type.shop.massage" = "سالن ماساژ";
 "type.shop.mobile_phone" = "فروشگاه";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "فروشگاه";
 "type.shop.pet_grooming" = "نظافت حیوانات خانگی";
 "type.shop.photo" = "فروشگاه";
+"type.shop.religion" = "فروشگاه لوازم مذهبی";
 "type.shop.rental" = "مغازه اجاره ای";
 "type.shop.rental.bicycle" = "مغازه اجاره دوچرخه";
 "type.amenity.bicycle_rental.shop" = "مغازه اجاره دوچرخه";

@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import app.organicmaps.R;
 import app.organicmaps.sdk.bookmarks.data.BookmarkManager;
-import app.organicmaps.sdk.bookmarks.data.ElevationInfo;
 import app.organicmaps.sdk.bookmarks.data.MapObject;
 import app.organicmaps.sdk.bookmarks.data.Track;
 import app.organicmaps.util.UiUtils;
@@ -78,12 +77,15 @@ public class PlacePageTrackFragment extends Fragment
     // opened and clicks on a non-Track POI.
     // This callback would be called before the fragment had time to be destroyed
     if (mapObject == null || !mapObject.isTrack())
+    {
+      mTrack = null;
       return;
+    }
 
     Track track = (Track) mapObject;
     if (track.getElevationInfo() != null)
     {
-      if (mTrack == null || mTrack.getTrackId() != track.getTrackId())
+      if (mTrack == null || mTrack.getTrackId() != track.getTrackId() || track.isTempRelationTrack())
       {
         mElevationProfileViewRenderer.render(track, track.getElevationInfo(), track.getTrackStatistics());
         UiUtils.show(mElevationProfileView);
@@ -100,9 +102,9 @@ public class PlacePageTrackFragment extends Fragment
     if (mTrack == null)
       return;
     mElevationProfileViewRenderer.onChartElevationActivePointChanged();
-    final ElevationInfo.Point point = mTrack.getElevationActivePointCoordinates();
-    mTrack.setLat(point.getLatitude());
-    mTrack.setLon(point.getLongitude());
+    final double[] coords = mTrack.getElevationActivePointCoordinates();
+    mTrack.setLat(coords[0]);
+    mTrack.setLon(coords[1]);
   }
 
   @Override

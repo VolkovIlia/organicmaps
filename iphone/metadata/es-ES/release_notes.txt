@@ -1,16 +1,23 @@
-• NUEVO: Colores de tema oscuro con mayor contraste
-• Datos de OpenStreetMap actualizados (11 de enero)
-• Se han excluido los casinos de la categoría "Entretenimiento"
-• Reducido el grosor de las líneas de metro
-• Añadida información de capacidad en los resultados de búsqueda para aparcamiento de motos, alquiler de bicicletas, carga de bicicletas y carga de coches
-• Mostrar el nivel del piso en los resultados de búsqueda
-• Botones de planificación de rutas más anchos
+• Datos cartográficos de OSM a fecha de 10 de marzo
+• Datos de Wikipedia a fecha de 1 de marzo
+• Se ha añadido compatibilidad con límites de velocidad condicionales
+• Isólineas de elevación más detalladas para las provincias chinas
+• Se han añadido tiendas de cuero y tiendas que venden artículos religiosos
+• Se han añadido hileras de árboles
+• Se han añadido plataformas de transporte público sin paradas de autobús cercanas
+• Se ha corregido el cálculo del progreso de descarga de países
+• Se ha dividido Tanzania en regiones más pequeñas
+• Se ha añadido el historial de categorías utilizadas recientemente en el Editor
+• Se ha mejorado el deslizamiento hacia arriba en la pantalla de planificación de rutas
+• Se ha corregido la posición de la regla para CarPlay
+• Se han corregido varios fallos y se ha mejorado la estabilidad y el rendimiento
 
 ### Traducciones
 
-• Añadidas traducciones de la aplicación y guía de voz en albanés
-• Actualizadas las preguntas frecuentes (FAQ) y añadidas traducciones para árabe, checo, holandés, persa, griego, hebreo, hindi, húngaro, indonesio, italiano, lituano, marathi, sueco y telugu
-• Mejoradas las traducciones de la aplicación y FAQ en alemán
-• Añadidos sinónimos de búsqueda en búlgaro
-• Renombrada la configuración "Botones de zoom" para mayor claridad
-• Correcciones de traducción de colaboradores de Weblate para varios idiomas
+• Se han mejorado las descripciones de los países
+• Se han aplicado correcciones en rumano de Eugen Dedu
+• Se han actualizado los nombres de los países
+• Se han actualizado las traducciones de los colaboradores de Weblate
+• Se ha corregido la traducción al ucraniano
+
+¡Gracias a todos los que contribuyen, donan y apoyan a Organic Maps! ¡Construyamos juntos los mejores mapas!

@@ -37,6 +37,8 @@ std::pair<ChunksDownloadStrategy::ChunkT *, int> ChunksDownloadStrategy::GetChun
 
 void ChunksDownloadStrategy::InitChunks(int64_t fileSize, int64_t chunkSize, ChunkStatusT status)
 {
+  m_requiredFileSize = 0;
+  m_chunks.clear();
   m_chunks.reserve(static_cast<size_t>(fileSize / chunkSize + 2));
   for (int64_t i = 0; i < fileSize; i += chunkSize)
     m_chunks.push_back(ChunkT(i, status));
@@ -103,18 +105,31 @@ int64_t ChunksDownloadStrategy::LoadOrInitChunks(std::string const & fName, int6
         auto const count = static_cast<size_t>(size / stSize);
         ASSERT_EQUAL(size, stSize * count, ());
 
-        m_chunks.resize(count);
-        src.Read(&m_chunks[0], stSize * count);
+        if (count == 0)
+        {
+          LOG(LWARNING, ("Corrupted resume file: zero chunks in", fName));
+        }
+        else
+        {
+          m_chunks.resize(count);
+          src.Read(&m_chunks[0], stSize * count);
 
-        // Reset status "downloading" to "free".
-        int64_t downloadedSize = 0;
-        for (size_t i = 0; i < count - 1; ++i)
-          if (m_chunks[i].m_status != CHUNK_COMPLETE)
-            m_chunks[i].m_status = CHUNK_FREE;
-          else
-            downloadedSize += (m_chunks[i + 1].m_pos - m_chunks[i].m_pos);
+          // Reset status "downloading" to "free".
+          int64_t downloadedSize = 0;
+          m_requiredFileSize = 0;
+          for (size_t i = 0; i < count - 1; ++i)
+          {
+            if (m_chunks[i].m_status != CHUNK_COMPLETE)
+              m_chunks[i].m_status = CHUNK_FREE;
+            else
+            {
+              downloadedSize += (m_chunks[i + 1].m_pos - m_chunks[i].m_pos);
+              m_requiredFileSize = m_chunks[i + 1].m_pos;
+            }
+          }
 
-        return downloadedSize;
+          return downloadedSize;
+        }
       }
     }
     catch (FileReader::Exception const & e)

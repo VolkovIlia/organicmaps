@@ -73,7 +73,19 @@ void PrepareClassRefs(JNIEnv * env)
                                                    "([Lapp/organicmaps/sdk/bookmarks/data/SortedBlock;J)V");
   g_onBookmarksSortingCancelled = jni::GetMethodID(env, bookmarkManagerInstance, "onBookmarksSortingCancelled", "(J)V");
   g_bookmarkInfoClass = jni::GetGlobalClassRef(env, "app/organicmaps/sdk/bookmarks/data/BookmarkInfo");
-  g_bookmarkInfoConstructor = jni::GetConstructorID(env, g_bookmarkInfoClass, "(JJ)V");
+  g_bookmarkInfoConstructor = jni::GetConstructorID(env, g_bookmarkInfoClass,
+                                                    "("
+                                                    "J"                   // categoryId
+                                                    "J"                   // bookmarkId
+                                                    "Ljava/lang/String;"  // title
+                                                    "Ljava/lang/String;"  // description
+                                                    "Ljava/lang/String;"  // featureType
+                                                    "I"                   // color
+                                                    "I"                   // iconType
+                                                    "Lapp/organicmaps/sdk/bookmarks/data/ParcelablePointD;"  // coords
+                                                    "D"                                                      // scale
+                                                    "Ljava/lang/String;"                                     // address
+                                                    ")V");
 
   g_onElevationCurrentPositionChangedMethod =
       jni::GetMethodID(env, bookmarkManagerInstance, "onElevationCurrentPositionChanged", "()V");
@@ -278,9 +290,9 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_BookmarkManager_native
 
   kml::BookmarkData bmData;
   bmData.m_name = info.FormatNewBookmarkName();
-  bmData.m_color.m_predefinedColor = frm()->LastEditedBMColor();
   bmData.m_point = mercator::FromLatLon(lat, lon);
   auto const lastEditedCategory = frm()->LastEditedBMCategory();
+  bmData.m_color.m_predefinedColor = frm()->LastEditedBMColor();
 
   if (info.IsFeature())
     SaveFeatureTypes(info.GetTypes(), bmData);
@@ -347,8 +359,19 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_BookmarkManager_native
   auto const bookmark = frm()->GetBookmarkManager().GetBookmark(static_cast<kml::MarkId>(bmkId));
   if (!bookmark)
     return nullptr;
+
+  auto title = jni::ToJavaString(env, bookmark->GetPreferredName());
+  auto description = jni::ToJavaString(env, bookmark->GetDescription());
+  auto featureType = jni::ToJavaString(env, kml::GetLocalizedFeatureType(bookmark->GetData().m_featureTypes));
+  auto color = static_cast<jint>(kml::kColorIndexMap[base::E2I(bookmark->GetColor())]);
+  auto iconType = static_cast<jint>(bookmark->GetData().m_icon);
+  auto coords = jni::GetNewParcelablePointD(env, bookmark->GetPivot());
+  auto scale = static_cast<jdouble>(bookmark->GetScale());
+  auto address = jni::ToJavaString(env, frm()->GetAddressAtPoint(bookmark->GetPivot()).FormatAddress());
+
   return env->NewObject(g_bookmarkInfoClass, g_bookmarkInfoConstructor, static_cast<jlong>(bookmark->GetGroupId()),
-                        static_cast<jlong>(bmkId));
+                        static_cast<jlong>(bmkId), title, description, featureType, color, iconType, coords, scale,
+                        address);
 }
 
 static uint32_t shift(uint32_t v, uint8_t bitCount)
@@ -506,11 +529,10 @@ Java_app_organicmaps_sdk_bookmarks_data_BookmarkManager_nativeRemoveElevationCur
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_bookmarks_data_BookmarkManager_nativeSetElevationActivePoint(
-    JNIEnv *, jclass, jlong trackId, jdouble distanceInMeters, jdouble latitude, jdouble longitude)
+    JNIEnv *, jclass, jlong trackId, jdouble distanceInMeters)
 {
   auto & bm = frm()->GetBookmarkManager();
-  bm.SetElevationActivePoint(static_cast<kml::TrackId>(trackId), {latitude, longitude},
-                             static_cast<double>(distanceInMeters));
+  bm.SetElevationActivePoint(static_cast<kml::TrackId>(trackId), static_cast<double>(distanceInMeters));
 }
 
 JNIEXPORT void JNICALL

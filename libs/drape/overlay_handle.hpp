@@ -39,9 +39,12 @@ uint64_t constexpr kPriorityMaskAll = std::numeric_limits<uint64_t>::max();
 
 struct OverlayID
 {
+  // Should be the same as TileKey::NoCoordinates()
+  static m2::PointI NoCoordinates() { return {-1, -1}; }
+
   FeatureID m_featureId;
   kml::MarkId m_markId = kml::kInvalidMarkId;
-  m2::PointI m_tileCoords{-1, -1};
+  m2::PointI m_tileCoords = NoCoordinates();
   uint32_t m_index = 0;
 
   OverlayID() = default;
@@ -184,8 +187,6 @@ private:
     bool operator()(uint8_t node1, TOffsetNode const & node2) const { return node1 < node2.first.GetID(); }
     bool operator()(TOffsetNode const & node1, uint8_t node2) const { return node1.first.GetID() < node2; }
   };
-
-  struct OffsetNodeFinder;
 
   std::set<TOffsetNode, LessOffsetNode> m_offsets;
 

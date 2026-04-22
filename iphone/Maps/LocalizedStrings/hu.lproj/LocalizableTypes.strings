@@ -34,7 +34,7 @@
 "type.amenity.bicycle_repair_station" = "Kerékpárjavító állomás";
 "type.amenity.biergarten" = "Sörkert";
 "type.amenity.brothel" = "Bordélyház";
-"type.amenity.love_hotel" = "Szeretőszálló";
+"type.amenity.love_hotel" = "Szerelmi szálló";
 "type.amenity.bureau_de_change" = "Pénzváltó";
 "type.amenity.bus_station" = "Buszállomás";
 "type.amenity.cafe" = "Kávézó";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterrán";
 "type.cuisine.mexican" = "Mexikói";
 "type.cuisine.moroccan" = "Marokkói";
-"type.cuisine.noodles" = "Tészta (noodle)";
+"type.cuisine.noodle" = "Tészta (noodle)";
 "type.cuisine.oriental" = "Kelet-ázsiai";
 "type.cuisine.pancake" = "Palacsinta";
 "type.cuisine.pasta" = "Olasz tészta (pasta)";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Kolbász";
 "type.cuisine.savory_pancakes" = "Sós palacsinta";
 "type.cuisine.seafood" = "Tenger gyümölcsei";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Szo-ba";
 "type.cuisine.spanish" = "Spanyol";
 "type.cuisine.steak_house" = "Steak ház";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Tea";
 "type.cuisine.thai" = "Thai";
 "type.cuisine.turkish" = "Török";
+"type.cuisine.uzbek" = "Üzbég";
 "type.cuisine.vegan" = "Vegán";
 "type.cuisine.vegetarian" = "Vegetáriánus";
 "type.cuisine.vietnamese" = "Vietnámi";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Alagút";
+"type.highway.platform" = "Peron";
 "type.highway.primary" = "Utca";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -601,22 +604,22 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.unclassified.tunnel" = "Alagút";
 "type.area_highway.cycleway" = "Kerékpárút";
-"type.area_highway.footway" = "Ösvény";
+"type.area_highway.footway" = "Gyalogút";
 "type.area_highway.living_street" = "Lakó-pihenő övezet";
 "type.area_highway.motorway" = "Autópálya";
 "type.area_highway.path" = "Ösvény";
 "type.area_highway.pedestrian" = "Sétálóutca";
-"type.area_highway.primary" = "Első- vagy másodrendű főút";
-"type.area_highway.residential" = "Lakóövezeti utca";
-"type.area_highway.secondary" = "Összekötő út";
+"type.area_highway.primary" = "Utca";
+"type.area_highway.residential" = "Utca";
+"type.area_highway.secondary" = "Utca";
 "type.area_highway.service" = "Szervizút";
 "type.area_highway.tertiary" = "Bekötőút";
 "type.area_highway.steps" = "Lépcső";
-"type.area_highway.track" = "Mzg. vagy erdészeti út";
+"type.area_highway.track" = "Mezőgazdasági vagy erdészeti út";
 "type.area_highway.trunk" = "Autóút";
 "type.area_highway.unclassified" = "Egyéb közút";
-"type.highway.world_level" = "út-világszint";
-"type.highway.world_towns_level" = "út-világvárosok szint";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Mocsár";
 "type.noexit" = "Zsákutca";
 "type.office" = "Iroda";
+"type.office.architect" = "Építészeti iroda";
 "type.office.company" = "Vállalati iroda";
+"type.office.educational_institution" = "Oktatási intézmény";
 "type.office.estate_agent" = "Ingatlanügynök";
 "type.office.government" = "Állami iroda";
 "type.office.insurance" = "Biztosítóiroda";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Gyalogos vasúti átjáró";
 "type.railway.disused" = "Használaton kívüli vasútvonal";
 "type.railway.disused.bridge" = "Használaton kívüli vasúti híd";
+"type.railway.disused.tunnel" = "Használaton kívüli vasúti alagút";
 "type.railway.funicular" = "Sikló";
 "type.railway.funicular.bridge" = "Sikló hídja";
 "type.railway.funicular.tunnel" = "Síkló alagútja";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Drogéria";
 "type.shop.chocolate" = "Csokoládébolt";
 "type.shop.clothes" = "Ruházati bolt";
+"type.shop.clothes.children" = "Gyerekruhaszalon";
+"type.shop.clothes.fashion" = "Divatboutique";
+"type.shop.clothes.hats" = "Kalapüzlet";
+"type.shop.clothes.men" = "Férfiruházati bolt";
+"type.shop.clothes.sports" = "Sportruházati bolt";
+"type.shop.clothes.suits" = "Öltönyüzlet";
+"type.shop.clothes.underwear" = "Fehérnemű üzlet";
+"type.shop.clothes.wedding" = "Menyasszonyi ruha szalon";
+"type.shop.clothes.women" = "Női ruházati bolt";
 "type.shop.coffee" = "Kávébolt";
 "type.shop.computer" = "Számítógépüzlet";
 "type.shop.confectionery" = "Édességbolt";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Temetkezési vállalkozó";
 "type.shop.furniture" = "Bútorbolt";
 "type.shop.garden_centre" = "Kertészet";
+"type.shop.games" = "Játékbolt";
 "type.shop.gas" = "Palackozottgáz-bolt";
 "type.shop.gift" = "Ajándékbolt (souvenir)";
 "type.shop.greengrocer" = "Zöldséges";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Trafik";
 "type.shop.kitchen" = "Konyhafelszerelés-bolt";
 "type.shop.laundry" = "Mosoda";
+"type.shop.leather" = "Bőráruüzlet";
 "type.shop.mall" = "Bevásárlóközpont";
 "type.shop.massage" = "Masszázsszalon";
 "type.shop.mobile_phone" = "Mobiltelefon-üzlet";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Házikedvenc-üzlet";
 "type.shop.pet_grooming" = "Kisállatápolás";
 "type.shop.photo" = "Fotóüzlet";
+"type.shop.religion" = "Vallási kegytárgyak boltja";
 "type.shop.rental" = "Kölcsönző";
 "type.shop.rental.bicycle" = "Kerékpárkölcsönző";
 "type.amenity.bicycle_rental.shop" = "Kerékpárkölcsönző";

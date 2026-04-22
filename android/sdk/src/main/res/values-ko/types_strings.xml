@@ -31,7 +31,7 @@
     <string name="type.amenity.gambling">도박</string>
     <string name="type.leisure.adult_gaming_centre">성인 게임 센터</string>
     <string name="type.leisure.amusement_arcade">아케이드</string>
-    <string name="type.amenity.charging_station">충전 역</string>
+    <string name="type.amenity.charging_station">충전소</string>
     <string name="type.amenity.charging_station.bicycle">자전거 충전소</string>
     <string name="type.amenity.charging_station.motorcar">자동차 충전소</string>
     <string name="type.amenity.childcare">보육</string>
@@ -44,7 +44,7 @@
     <string name="type.amenity.conference_centre">컨퍼런스 센터</string>
     <string name="type.amenity.courthouse">법원</string>
     <string name="type.amenity.dentist">치과</string>
-    <string name="type.amenity.doctors">개인병원</string>
+    <string name="type.amenity.doctors">의원</string>
     <string name="type.amenity.drinking_water">음수대</string>
     <string name="type.drinking_water.yes">음수대</string>
     <string name="type.amenity.driving_school">운전학원</string>
@@ -104,7 +104,7 @@
     <string name="type.amenity.place_of_worship.buddhist">불교 사원</string>
     <string name="type.amenity.place_of_worship.christian">교회</string>
     <string name="type.amenity.place_of_worship.christian.mormon">예수 그리스도 후기 성도 교회</string>
-    <string name="type.amenity.place_of_worship.christian.jehovahs_witness">예수 그리스도의 후기 성도 국회당</string>
+    <string name="type.amenity.place_of_worship.christian.jehovahs_witness">여호와의 증인 왕국회관</string>
     <string name="type.amenity.place_of_worship.hindu">힌두교 사원</string>
     <string name="type.amenity.place_of_worship.jewish">유태교 회당</string>
     <string name="type.amenity.place_of_worship.muslim">모스크</string>
@@ -140,17 +140,17 @@
     <string name="type.amenity.public_bath">대중목욕탕</string>
     <string name="type.amenity.shower">샤워시설</string>
     <string name="type.amenity.stripclub">스트립클럽</string>
-    <string name="type.amenity.taxi">택시</string>
+    <string name="type.amenity.taxi">택시 승차장</string>
     <string name="type.amenity.telephone">전화</string>
-    <string name="type.amenity.theatre">연극</string>
+    <string name="type.amenity.theatre">극장</string>
     <string name="type.amenity.toilets">화장실</string>
     <string name="type.toilets.yes">화장실</string>
     <string name="type.amenity.townhall">시청</string>
     <string name="type.amenity.university">대학</string>
     <string name="type.amenity.vending_machine.cigarettes">담배자판기</string>
     <string name="type.amenity.vending_machine.drinks">음료자동판매기</string>
-    <string name="type.amenity.vending_machine.parking_tickets">주차티켓판매기</string>
-    <string name="type.amenity.vending_machine.public_transport_tickets">대중교통표 자동판매기</string>
+    <string name="type.amenity.vending_machine.parking_tickets">주차요금 미터기</string>
+    <string name="type.amenity.vending_machine.public_transport_tickets">대중교통 승차권 판매기</string>
     <string name="type.amenity.vehicle_inspection">차량검사</string>
     <string name="type.amenity.veterinary">동물병원</string>
     <string name="type.amenity.waste_basket">쓰레기통</string>
@@ -162,7 +162,7 @@
     <string name="type.barrier.border_control">국경통제소</string>
     <string name="type.barrier.city_wall">도시의 벽</string>
     <string name="type.waterway.ditch">배수구</string>
-    <string name="type.natural.water.moat">\"해자 외호\"</string>
+    <string name="type.natural.water.moat">해자</string>
     <string name="type.natural.water.wastewater">폐수</string>
     <string name="type.barrier.entrance">입구</string>
     <string name="type.barrier.gate">게이트</string>
@@ -187,7 +187,7 @@
     <string name="type.building.has_parts">건물</string>
     <string name="type.building_part">건물</string>
     <string name="type.building.garage">차고</string>
-    <string name="type.building.train_station">역 빌딩</string>
+    <string name="type.building.train_station">역사</string>
     <string name="type.cemetery.grave">무덤</string>
     <string name="type.craft">공예</string>
     <string name="type.craft.beekeeper">양봉가</string>
@@ -272,7 +272,7 @@
     <string name="type.cuisine.mediterranean">지중해식 음식</string>
     <string name="type.cuisine.mexican">멕시코식 음식</string>
     <string name="type.cuisine.moroccan">모로코식 음식</string>
-    <string name="type.cuisine.noodles">국수</string>
+    <string name="type.cuisine.noodle">국수</string>
     <string name="type.cuisine.oriental">극동식 음식</string>
     <string name="type.cuisine.pancake">팬케이크</string>
     <string name="type.cuisine.pasta">파스타</string>
@@ -288,6 +288,7 @@
     <string name="type.cuisine.sausage">소시지</string>
     <string name="type.cuisine.savory_pancakes">맛좋은 팬케이크</string>
     <string name="type.cuisine.seafood">해산물</string>
+    <string name="type.cuisine.shawarma">샤와르마</string>
     <string name="type.cuisine.soba">메밀 국수</string>
     <string name="type.cuisine.spanish">스페인식 음식</string>
     <string name="type.cuisine.steak_house">스테이크 하우스</string>
@@ -296,6 +297,7 @@
     <string name="type.cuisine.tea">차</string>
     <string name="type.cuisine.thai">타이식 음식</string>
     <string name="type.cuisine.turkish">터키식 음식</string>
+    <string name="type.cuisine.uzbek">우즈베크</string>
     <string name="type.cuisine.vegan">비건 음식</string>
     <string name="type.cuisine.vegetarian">채식주의자 음식</string>
     <string name="type.cuisine.vietnamese">베트남식 음식</string>
@@ -637,7 +639,9 @@
     <string name="type.natural.wetland.bog">수렁</string>
     <string name="type.natural.wetland.marsh">소택</string>
     <string name="type.office">사무실</string>
+    <string name="type.office.architect">건축 사무소</string>
     <string name="type.office.company">회사</string>
+    <string name="type.office.educational_institution">교육 기관</string>
     <string name="type.office.estate_agent">부동산중개사</string>
     <string name="type.office.government">관공서</string>
     <string name="type.office.insurance">보험 사무실</string>
@@ -692,6 +696,7 @@
     <string name="type.power.substation">변전소</string>
     <!-- A tower or pylon carrying high voltage electricity cables. -->
     <string name="type.power.tower">전봇대</string>
+    <string name="type.railway.disused.tunnel">폐철도 터널</string>
     <string name="type.railway.funicular">케이블카</string>
     <string name="type.railway.halt">기차역</string>
     <string name="type.railway.level_crossing">철도 건널목</string>
@@ -978,6 +983,15 @@
     <string name="type.shop.chemist">화학물질 가게</string>
     <string name="type.shop.chocolate">초콜릿 가게</string>
     <string name="type.shop.clothes">옷 가게</string>
+    <string name="type.shop.clothes.children">아동복 가게</string>
+    <string name="type.shop.clothes.fashion">패션 부티크</string>
+    <string name="type.shop.clothes.hats">모자 가게</string>
+    <string name="type.shop.clothes.men">남성복 가게</string>
+    <string name="type.shop.clothes.sports">스포츠 의류 매장</string>
+    <string name="type.shop.clothes.suits">양복점</string>
+    <string name="type.shop.clothes.underwear">속옷 가게</string>
+    <string name="type.shop.clothes.wedding">웨딩 드레스 가게</string>
+    <string name="type.shop.clothes.women">여성복 가게</string>
     <string name="type.shop.coffee">커피숍</string>
     <string name="type.shop.computer">컴퓨터 판매점</string>
     <string name="type.shop.confectionery">제과점</string>
@@ -998,6 +1012,7 @@
     <string name="type.shop.funeral_directors">장의사</string>
     <string name="type.shop.furniture">가구 상점</string>
     <string name="type.shop.garden_centre">식물 상점</string>
+    <string name="type.shop.games">게임 상점</string>
     <string name="type.shop.gas">주유소</string>
     <string name="type.shop.gift">선물 가게</string>
     <string name="type.shop.greengrocer">청과상</string>
@@ -1012,6 +1027,7 @@
     <string name="type.shop.kiosk">정자</string>
     <string name="type.shop.kitchen">\"주방용품점\"</string>
     <string name="type.shop.laundry">세탁소</string>
+    <string name="type.shop.leather">가죽 제품점</string>
     <string name="type.shop.mall">몰</string>
     <string name="type.shop.massage">마사지샵</string>
     <string name="type.shop.mobile_phone">휴대폰 대리점</string>
@@ -1030,6 +1046,7 @@
     <string name="type.shop.pet">펫샵</string>
     <string name="type.shop.pet_grooming">애완동물 미용</string>
     <string name="type.shop.photo">사진 가게</string>
+    <string name="type.shop.religion">종교 용품점</string>
     <string name="type.shop.rental">렌탈샵</string>
     <string name="type.shop.rental.bicycle">자전거 대여점</string>
     <string name="type.amenity.bicycle_rental.shop">자전거 대여점</string>
@@ -1139,7 +1156,7 @@
     <string name="type.tourism.hotel">호텔</string>
     <string name="type.tourism.information">관광 정보</string>
     <string name="type.tourism.information.board">정보 게시판</string>
-    <string name="type.tourism.information.guidepost">도표</string>
+    <string name="type.tourism.information.guidepost">이정표</string>
     <string name="type.tourism.information.map">관광안내도</string>
     <string name="type.tourism.information.office">관광정보센터</string>
     <string name="type.tourism.information.visitor_centre">방문자 센터</string>

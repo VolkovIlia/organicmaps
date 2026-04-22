@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Sukaldaritza mediterraneoa";
 "type.cuisine.mexican" = "Mexikoko sukaldea";
 "type.cuisine.moroccan" = "Marokoko sukaldaritza";
-"type.cuisine.noodles" = "Fideoak";
+"type.cuisine.noodle" = "Fideoak";
 "type.cuisine.oriental" = "Ekialdeko sukaldaritza";
 "type.cuisine.pancake" = "Krepeak";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Saltxitxak";
 "type.cuisine.savory_pancakes" = "Krepe gaziak";
 "type.cuisine.seafood" = "Itsaskiak";
+"type.cuisine.shawarma" = "Xawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Espainiar sukaldaritza";
 "type.cuisine.steak_house" = "Txu";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Tea";
 "type.cuisine.thai" = "Thai sukaldaritza";
 "type.cuisine.turkish" = "Turkiar sukaldaritza";
+"type.cuisine.uzbek" = "Uzbekiarra";
 "type.cuisine.vegan" = "Sukaldaritza beganoa";
 "type.cuisine.vegetarian" = "Sukaldaritza begetarianoa";
 "type.cuisine.vietnamese" = "Vietnamgo sukaldaritza";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Oinezkoen tunela";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Errepide nagusia";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -600,13 +603,13 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.unclassified.tunnel" = "Tunel";
-"type.area_highway.cycleway" = "Bizikletabidea";
+"type.area_highway.cycleway" = "Bidegorri edo bizikleta-bidea";
 "type.area_highway.footway" = "Bidea";
 "type.area_highway.living_street" = "Kalea";
-"type.area_highway.motorway" = "Kalea";
+"type.area_highway.motorway" = "Autobidea";
 "type.area_highway.path" = "Bidea";
-"type.area_highway.pedestrian" = "Kalea";
-"type.area_highway.primary" = "Kalea";
+"type.area_highway.pedestrian" = "Oinezkoen kalea";
+"type.area_highway.primary" = "Errepide nagusia";
 "type.area_highway.residential" = "Kalea";
 "type.area_highway.secondary" = "Kalea";
 "type.area_highway.service" = "Kalea";
@@ -615,8 +618,8 @@
 "type.area_highway.track" = "Kalea";
 "type.area_highway.trunk" = "Kalea";
 "type.area_highway.unclassified" = "Kalea";
-"type.highway.world_level" = "Mundu mailako errepidea";
-"type.highway.world_towns_level" = "Herri mailako errepidea";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -817,7 +820,7 @@
 "type.man_made.petroleum_well" = "Petrolio edo gas putzua";
 
 /* A tower/mast constructed to burn off excess gas. */
-"type.man_made.flare" = "Gas zuzia|Gas sugarra";
+"type.man_made.flare" = "Gas zuzia";
 "type.man_made.wastewater_plant" = "Wastewater Treatment Plant";
 "type.man_made.water_tap" = "Ura hartzea";
 "type.man_made.water_tap.drinking_water_no" = "Ura hartzea";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Padura";
 "type.noexit" = "Dead End";
 "type.office" = "Bulegoa";
+"type.office.architect" = "Arkitekto bulegoa";
 "type.office.company" = "Bulegoa";
+"type.office.educational_institution" = "Hezkuntza erakundea";
 "type.office.estate_agent" = "Higiezinen agentea";
 "type.office.government" = "Gobernu bulegoa";
 "type.office.insurance" = "Aseguru-bulegoa";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "Erabilerarik gabeko trenbide-tunela";
 "type.railway.funicular" = "Funikularra";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Parafarmazia";
 "type.shop.chocolate" = "Txokolate Denda";
 "type.shop.clothes" = "Arropa denda";
+"type.shop.clothes.children" = "Haurrentzako arropa denda";
+"type.shop.clothes.fashion" = "Moda boutique";
+"type.shop.clothes.hats" = "Kapelu denda";
+"type.shop.clothes.men" = "Gizonezkoen arropa denda";
+"type.shop.clothes.sports" = "Kirol arropa denda";
+"type.shop.clothes.suits" = "Traje denda";
+"type.shop.clothes.underwear" = "Barneko arropa denda";
+"type.shop.clothes.wedding" = "Ezkontza arroparen denda";
+"type.shop.clothes.women" = "Emakumezkoen arropa denda";
 "type.shop.coffee" = "Kafe Denda";
 "type.shop.computer" = "Informatika-denda";
 "type.shop.confectionery" = "Gozokiak";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Ehorztetxea";
 "type.shop.furniture" = "Altzari denda";
 "type.shop.garden_centre" = "Haurtzaindegia";
+"type.shop.games" = "Jolastokia denda";
 "type.shop.gas" = "Gas biltegia";
 "type.shop.gift" = "Opari denda";
 "type.shop.greengrocer" = "Barazki eta fruta-denda";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kioskoa";
 "type.shop.kitchen" = "Sukalde-denda";
 "type.shop.laundry" = "Garbitegia";
+"type.shop.leather" = "Larruzko produktuen denda";
 "type.shop.mall" = "Merkataritza-gune";
 "type.shop.massage" = "Masaje gela";
 "type.shop.mobile_phone" = "Mugikorra";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Animali denda";
 "type.shop.pet_grooming" = "Animalien apainketa";
 "type.shop.photo" = "Argazkilaritza artikuluak";
+"type.shop.religion" = "Erlijio-artikuluen denda";
 "type.shop.rental" = "Alokairu-denda";
 "type.shop.rental.bicycle" = "Bizikletak alokatzeko denda";
 "type.amenity.bicycle_rental.shop" = "Bizikletak alokatzeko denda";
@@ -1560,7 +1578,7 @@
 "type.barrier.log" = "Enbor hesia";
 "type.amenity.boat_rental" = "Itsasontz";
 "type.shop.telecommunication" = "Telekomunikazioen denda";
-"type.leisure.indoor_play" = "Play Center";
+"type.leisure.indoor_play" = "Jolasgunea";
 "type.tourism.camp_pitch" = "Kanpin-lekua";
 "type.railway.miniature" = "Miniaturazko trenbidea";
 "type.amenity.kneipp_water_cure" = "Kneipp Ur Sendapena";

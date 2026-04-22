@@ -1,9 +1,9 @@
-• BARU: Warna tema gelap kontras lebih tinggi
-• BARU: Google Assistant untuk navigasi dan carian
-• Data peta OSM setakat 11 Januari
-• Tetapan tema navigasi "Auto" mengikut mod gelap/cerah sistem
-• Garisan kereta api bawah tanah yang lebih nipis
-• Keputusan carian menunjukkan kapasiti untuk tempat letak kereta motosikal, penyewaan basikal, pengecasan basikal dan pengecasan kereta
-• Tunjukkan aras lantai dalam keputusan carian
-• Terjemahan Albania dan panduan suara TTS
-…lagi di omaps.org/news
+• Data peta OSM pada 10 Mac, Wikipedia pada 1 Mac
+• Pengasingan ketinggian yang lebih terperinci untuk wilayah China
+• Menambah deretan pokok, kedai kulit dan kedai menjual barangan keagamaan
+• Menambah sokongan untuk had laju bersyarat
+• Tanzania dibahagikan kepada kawasan yang lebih kecil
+• Paparan waktu buka perniagaan yang lebih baik
+• Memperbaiki beberapa ranap sistem
+• Terjemahan apl dan nama negara yang dipertingkatkan
+omaps.org/news

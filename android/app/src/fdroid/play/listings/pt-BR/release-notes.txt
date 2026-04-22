@@ -1,8 +1,9 @@
-• NOVO: Cores de tema escuro de maior contraste
-• NOVO: Google Assistant para navegação e pesquisa
-• Dados do mapa OSM de 11 de janeiro
-• A configuração do tema de navegação "Auto" segue o modo escuro/claro do sistema
-• Linhas de metrô mais finas
-• Os resultados da pesquisa mostram a capacidade para estacionamento de motocicletas, aluguel de bicicletas, carregamento de bicicletas e carregamento de carros
-• Mostrar nível do andar nos resultados da pesquisa
-…mais em omaps.org/pt-BR/news
+• Dados do mapa OSM em 10 de março, Wikipédia em 1º de março
+• Isolinhas de elevação mais detalhadas para províncias chinesas
+• Adicionadas fileiras de árvores, lojas de couro e lojas que vendem produtos religiosos
+• Adicionado suporte para limites de velocidade condicionais
+• Tanzânia dividida em regiões menores
+• Melhor exibição do horário de funcionamento comercial
+• Várias falhas corrigidas
+• Traduções aprimoradas de nomes de aplicativos e países
+omaps.org/pt-BR/news

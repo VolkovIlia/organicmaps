@@ -1,9 +1,10 @@
-• JANA: Joğary kontrastty qara taqyryp tüsteri
-• JANA: Navigaçija jäne izdeu üşin Google Assistant
-• 11 qańtardağı OSM karta derekteri
-• "Avto" navigaçija taqyryby jújesi sistemanıń qara/jaryq rejimine säikes keledi
-• Juqa metro jelileri
-• Izdeu nätijeleri motosikl turağı, velosiped jalğa alu, velosipedti qattau jäne kòlikti qattau syiymdylyğın kòrsetedi
-• Izdeu nätijelerinde qabat deńgeiin kòrsetu
-• Alban audarmalary jäne TTS dauystyq nusqau
-…толығырақ omaps.org/news
+• 10 наурыздағы OSM картасы деректері, 1 наурыздағы Wikipedia
+• Қытай провинциялары үшін толығырақ биіктік изосызықтары
+• Қатар ағаштар, тері дүкендері мен діни тауарлар сататын дүкендер қосылды
+• Шартты жылдамдық шектеулеріне қолдау қосылды
+• Танзания кішірек аймақтарға бөлінді
+• Бизнестің жұмыс уақытын көрсету жақсартылды
+• Бірнеше бұзылулар түзетілді
+• Жақсартылған қолданба және ел атауларының аудармалары
+• Жақын жерде аялдамаларсыз қоғамдық көлік аялдамалары қосылды
+omaps.org/news

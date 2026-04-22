@@ -21,7 +21,7 @@
 "type.aeroway.runway" = "Runway";
 "type.aeroway.taxiway" = "Taxiway";
 "type.aeroway.terminal" = "Terminal";
-"type.amenity" = "Ruang berfasilitas";
+"type.amenity" = "Fasilitas";
 "type.amenity.arts_centre" = "Pusat kesenian";
 "type.amenity.atm" = "ATM";
 "type.amenity.bank" = "Bank";
@@ -33,7 +33,7 @@
 "type.amenity.bicycle_rental" = "Penyewaan Sepeda";
 "type.amenity.bicycle_repair_station" = "Bicycle Repair Station";
 "type.amenity.biergarten" = "Biergarten";
-"type.amenity.brothel" = "Hiburan";
+"type.amenity.brothel" = "Bordil";
 "type.amenity.love_hotel" = "Love Hotel";
 "type.amenity.bureau_de_change" = "Pertukaran valuta";
 "type.amenity.bus_station" = "Stasiun bus";
@@ -42,7 +42,7 @@
 "type.amenity.motorcycle_rental" = "Penyewaan Sepeda Motor";
 "type.amenity.car_sharing" = "Berbagi mobil";
 "type.amenity.car_wash" = "Cuci Mobil";
-"type.amenity.casino" = "Hiburan";
+"type.amenity.casino" = "Kasino";
 "type.amenity.gambling" = "Berjudi";
 "type.leisure.adult_gaming_centre" = "Pusat Permainan Dewasa";
 "type.leisure.amusement_arcade" = "Arkade";
@@ -54,7 +54,7 @@
 "type.amenity.studio" = "Studio";
 "type.leisure.bowling_alley" = "Arena Bowling";
 "type.amenity.clinic" = "Klinik";
-"type.amenity.college" = "Kampus";
+"type.amenity.college" = "Perguruan tinggi";
 "type.amenity.community_centre" = "Pusat komunitas";
 "type.amenity.compressed_air" = "Udara terkompresi";
 "type.amenity.conference_centre" = "Pusat konferensi";
@@ -82,7 +82,7 @@
 /* In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. */
 "type.amenity.grave_yard.christian" = "Pemakaman";
 "type.amenity.hospital" = "Rumahsakit";
-"type.amenity.hunting_stand" = "Lokasi berburu";
+"type.amenity.hunting_stand" = "Pos berburu";
 "type.amenity.ice_cream" = "Kios Es Krim";
 "type.amenity.internet_cafe" = "Kafe Internet";
 "type.amenity.kindergarten" = "Taman kanak-kanak";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Masakan mediterania";
 "type.cuisine.mexican" = "Masakan meksiko";
 "type.cuisine.moroccan" = "Masakan maroko";
-"type.cuisine.noodles" = "Bakmi";
+"type.cuisine.noodle" = "Bakmi";
 "type.cuisine.oriental" = "Masakan oriental";
 "type.cuisine.pancake" = "Panekuk";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Sosis";
 "type.cuisine.savory_pancakes" = "Panekuk gurih";
 "type.cuisine.seafood" = "Hidangan laut";
+"type.cuisine.shawarma" = "Syawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Masakan spanyol";
 "type.cuisine.steak_house" = "Restoran_steik";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Teh";
 "type.cuisine.thai" = "Masakan thailand";
 "type.cuisine.turkish" = "Masakan turki";
+"type.cuisine.uzbek" = "Uzbek";
 "type.cuisine.vegan" = "Masakan vegan";
 "type.cuisine.vegetarian" = "Masakan vegetarian";
 "type.cuisine.vietnamese" = "Masakan vietnam";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Terowongan";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Jalan";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Paya";
 "type.noexit" = "Dead End";
 "type.office" = "Kantor";
+"type.office.architect" = "Kantor arsitek";
 "type.office.company" = "Kantor perusahaan";
+"type.office.educational_institution" = "Lembaga pendidikan";
 "type.office.estate_agent" = "Agen ril estat";
 "type.office.government" = "Kantor pemerintah";
 "type.office.insurance" = "Kantor Asuransi";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "Terowongan kereta api nonaktif";
 "type.railway.funicular" = "Kereta gantung";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Toko Bahan Kimia";
 "type.shop.chocolate" = "Toko Cokelat";
 "type.shop.clothes" = "Toko baju";
+"type.shop.clothes.children" = "Toko pakaian anak";
+"type.shop.clothes.fashion" = "Butik mode";
+"type.shop.clothes.hats" = "Toko topi";
+"type.shop.clothes.men" = "Toko pakaian pria";
+"type.shop.clothes.sports" = "Toko pakaian olahraga";
+"type.shop.clothes.suits" = "Toko jas";
+"type.shop.clothes.underwear" = "Toko pakaian dalam";
+"type.shop.clothes.wedding" = "Toko baju pengantin";
+"type.shop.clothes.women" = "Toko pakaian wanita";
 "type.shop.coffee" = "Toko kopi";
 "type.shop.computer" = "Toko komputer";
 "type.shop.confectionery" = "Penganan";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Direktur Pemakaman";
 "type.shop.furniture" = "Toko mebel";
 "type.shop.garden_centre" = "Penitipan anak";
+"type.shop.games" = "Toko permainan";
 "type.shop.gas" = "Toko gas";
 "type.shop.gift" = "Toko hadiah";
 "type.shop.greengrocer" = "Penjual sayuran";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kios";
 "type.shop.kitchen" = "Toko Dapur";
 "type.shop.laundry" = "Londri";
+"type.shop.leather" = "Toko Produk Kulit";
 "type.shop.mall" = "Mall";
 "type.shop.massage" = "Tempat Pijat";
 "type.shop.mobile_phone" = "Toko telepon";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Toko hewan";
 "type.shop.pet_grooming" = "Perawatan Hewan Peliharaan";
 "type.shop.photo" = "Studio Foto";
+"type.shop.religion" = "Toko Perlengkapan Agama";
 "type.shop.rental" = "Toko Sewa";
 "type.shop.rental.bicycle" = "Toko Penyewaan Sepeda";
 "type.amenity.bicycle_rental.shop" = "Toko Penyewaan Sepeda";

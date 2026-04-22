@@ -43,7 +43,7 @@ final class ChartPointInfoView: UIView {
 
   override var backgroundColor: UIColor? {
     didSet {
-      maskLayer.fillColor = backgroundColor?.cgColor
+      maskLayer.fillColor = backgroundColor?.resolvedColor(with: traitCollection).cgColor
     }
   }
 
@@ -61,6 +61,8 @@ final class ChartPointInfoView: UIView {
 
     stackView.alignment = .leading
     stackView.axis = .vertical
+
+    translatesAutoresizingMaskIntoConstraints = false
     stackView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(stackView)
 

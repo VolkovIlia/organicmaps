@@ -7,12 +7,12 @@
     <string name="type.addr_interpolation.odd">Адрес/Блок</string>
     <string name="type.aerialway">Канатная дорога</string>
     <string name="type.aerialway.cable_car">Канатная дорога</string>
-    <string name="type.aerialway.chair_lift">Кресельная канатная дорога</string>
-    <string name="type.aerialway.drag_lift">Бугельная канатная дорога</string>
+    <string name="type.aerialway.chair_lift">Кресельный подъёмник</string>
+    <string name="type.aerialway.drag_lift">Бугельный подъёмник</string>
     <string name="type.aerialway.gondola">Канатная дорога</string>
     <string name="type.aerialway.mixed_lift">Канатная дорога</string>
     <string name="type.aerialway.station">Канатная дорога</string>
-    <string name="type.aeroway">Аэрокосмическая инфраструктура</string>
+    <string name="type.aeroway">Инфраструктура воздушного пространства</string>
     <string name="type.aeroway.aerodrome">Аэропорт</string>
     <string name="type.aeroway.aerodrome.international">Международный аэропорт</string>
     <string name="type.aeroway.apron">Перрон</string>
@@ -274,7 +274,7 @@
     <string name="type.cuisine.argentinian">Аргентинская кухня</string>
     <string name="type.cuisine.asian">Азиатская кухня</string>
     <string name="type.cuisine.austrian">Австрийская кухня</string>
-    <string name="type.cuisine.bagel">Бeйглы</string>
+    <string name="type.cuisine.bagel">Бейглы</string>
     <string name="type.cuisine.balkan">Балканская кухня</string>
     <string name="type.cuisine.barbecue">Барбекю</string>
     <string name="type.cuisine.bavarian">Баварская кухня</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Средиземноморская кухня</string>
     <string name="type.cuisine.mexican">Мексиканская кухня</string>
     <string name="type.cuisine.moroccan">Марокканская кухня</string>
-    <string name="type.cuisine.noodles">Лапшичная</string>
+    <string name="type.cuisine.noodle">Лапшичная</string>
     <string name="type.cuisine.oriental">Восточная кухня</string>
     <string name="type.cuisine.pancake">Блинная</string>
     <string name="type.cuisine.pasta">Паста</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Сосисочная</string>
     <string name="type.cuisine.savory_pancakes">Несладкие блинчики</string>
     <string name="type.cuisine.seafood">Морепродукты</string>
+    <string name="type.cuisine.shawarma">Шаурма</string>
     <string name="type.cuisine.soba">Соба</string>
     <string name="type.cuisine.spanish">Испанская кухня</string>
     <string name="type.cuisine.steak_house">Стейк-хаус</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Чайная</string>
     <string name="type.cuisine.thai">Тайская кухня</string>
     <string name="type.cuisine.turkish">Турецкая кухня</string>
+    <string name="type.cuisine.uzbek">Узбекская</string>
     <string name="type.cuisine.vegan">Веганская кухня</string>
     <string name="type.cuisine.vegetarian">Вегетарианская кухня</string>
     <string name="type.cuisine.vietnamese">Вьетнамская кухня</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Пешеходный мост</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Пешеходный тоннель</string>
+    <string name="type.highway.platform">Платформа</string>
     <string name="type.highway.primary">Шоссе</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Мост</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Грунтовка</string>
     <string name="type.area_highway.trunk">Трасса</string>
     <string name="type.area_highway.unclassified">Небольшая дорога</string>
-    <string name="type.highway.world_level">Шоссе мирового значения</string>
-    <string name="type.highway.world_towns_level">Шоссе местного значения</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Исторический объект</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Болото</string>
     <string name="type.noexit">Тупик</string>
     <string name="type.office">Офис</string>
+    <string name="type.office.architect">Архитектурное бюро</string>
     <string name="type.office.company">Организация</string>
+    <string name="type.office.educational_institution">Образовательное учреждение</string>
     <string name="type.office.estate_agent">Агентство недвижимости</string>
     <string name="type.office.government">Госучреждение</string>
     <string name="type.office.insurance">Страховая компания</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Пешеходный переход</string>
     <string name="type.railway.disused">Неиспользуемая железная дорога</string>
     <string name="type.railway.disused.bridge">Заброшенный железнодорожный мост</string>
+    <string name="type.railway.disused.tunnel">Недействующий железнодорожный туннель</string>
     <string name="type.railway.funicular">Фуникулер</string>
     <string name="type.railway.funicular.bridge">Фуникулер</string>
     <string name="type.railway.funicular.tunnel">Фуникулер</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Бытовая химия</string>
     <string name="type.shop.chocolate">Магазин шоколада</string>
     <string name="type.shop.clothes">Магазин одежды</string>
+    <string name="type.shop.clothes.children">Детская одежда</string>
+    <string name="type.shop.clothes.fashion">Бутик</string>
+    <string name="type.shop.clothes.hats">Магазин головных уборов</string>
+    <string name="type.shop.clothes.men">Мужская одежда</string>
+    <string name="type.shop.clothes.sports">Спортивная одежда</string>
+    <string name="type.shop.clothes.suits">Магазин костюмов</string>
+    <string name="type.shop.clothes.underwear">Магазин нижнего белья</string>
+    <string name="type.shop.clothes.wedding">Свадебный салон</string>
+    <string name="type.shop.clothes.women">Женская одежда</string>
     <string name="type.shop.coffee">Магазин кофе</string>
     <string name="type.shop.computer">Компьютерный магазин</string>
     <string name="type.shop.confectionery">Кондитерская</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Ритуальные услуги</string>
     <string name="type.shop.furniture">Магазин мебели</string>
     <string name="type.shop.garden_centre">Садовые товары</string>
+    <string name="type.shop.games">Магазин игр</string>
     <string name="type.shop.gas">Газовый магазин</string>
     <string name="type.shop.gift">Магазин сувениров</string>
     <string name="type.shop.greengrocer">Овощи и фрукты</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Киоск</string>
     <string name="type.shop.kitchen">Кухонный магазин</string>
     <string name="type.shop.laundry">Прачечная</string>
+    <string name="type.shop.leather">Магазин кожаных изделий</string>
     <string name="type.shop.mall">Торговый центр</string>
     <string name="type.shop.massage">Массажный салон</string>
     <string name="type.shop.mobile_phone">Мобильные телефоны</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Зоотовары</string>
     <string name="type.shop.pet_grooming">Груминг</string>
     <string name="type.shop.photo">Фототовары</string>
+    <string name="type.shop.religion">Магазин религиозных товаров</string>
     <string name="type.shop.rental">Прокат</string>
     <string name="type.shop.rental.bicycle">Прокат велосипедов</string>
     <string name="type.amenity.bicycle_rental.shop">Прокат велосипедов</string>

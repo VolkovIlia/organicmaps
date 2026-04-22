@@ -1,8 +1,8 @@
-• NUOVO: Colori del tema scuro a contrasto più elevato
-• NUOVO: Google Assistant per navigazione e ricerca
-• Dati mappe OSM aggiornati all'11 gennaio
-• L'impostazione del tema di navigazione "Auto" segue la modalità scura/chiara del sistema
-• Linee della metropolitana più sottili
-• I risultati di ricerca mostrano la capacità per parcheggio moto, noleggio bici, ricarica bici e ricarica auto
-• Mostra il piano nei risultati di ricerca
-…altro su omaps.org/it/news
+• Dati cartografici OSM al 10 marzo, Wikipedia al 1 marzo
+• Isolinee di elevazione più dettagliate per le province cinesi
+• Aggiunti filari di alberi, negozi di pelletteria e negozi che vendono articoli religiosi
+• Aggiunto il supporto per i limiti di velocità condizionali
+• La Tanzania è stata suddivisa in regioni più piccole
+• Migliorata la visualizzazione degli orari di apertura delle attività
+• Risolti diversi arresti anomali
+omaps.org/it/news

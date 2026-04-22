@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Міжземнаморская</string>
     <string name="type.cuisine.mexican">Мексіканская</string>
     <string name="type.cuisine.moroccan">Мараканская</string>
-    <string name="type.cuisine.noodles">Локшына</string>
+    <string name="type.cuisine.noodle">Локшына</string>
     <string name="type.cuisine.oriental">Усходнеазіяцкая</string>
     <string name="type.cuisine.pancake">Блінніца</string>
     <string name="type.cuisine.pasta">Паста</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Каўбасная</string>
     <string name="type.cuisine.savory_pancakes">Несалодкія бліны</string>
     <string name="type.cuisine.seafood">Морапрадукты</string>
+    <string name="type.cuisine.shawarma">Шаўрма</string>
     <string name="type.cuisine.soba">Соба</string>
     <string name="type.cuisine.spanish">Іспанская</string>
     <string name="type.cuisine.steak_house">Стэйк-хаус</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Чай</string>
     <string name="type.cuisine.thai">Тайская</string>
     <string name="type.cuisine.turkish">Турэцкая</string>
+    <string name="type.cuisine.uzbek">Узбекская</string>
     <string name="type.cuisine.vegan">Веганская</string>
     <string name="type.cuisine.vegetarian">Вегетарыянская</string>
     <string name="type.cuisine.vietnamese">В\'етнамская</string>
@@ -362,7 +364,7 @@
     <!-- A place where a lifeguard is on duty. -->
     <string name="type.emergency.lifeguard">Ратавальнік</string>
     <!-- A mountain rescue base for search and rescue activities. -->
-    <string name="type.emergency.mountain_rescue">ГорныГ ратавальны пункт</string>
+    <string name="type.emergency.mountain_rescue">Горны ратавальны пункт</string>
     <!-- This is for secondary entrances, for main entrances see type.entrance.main -->
     <string name="type.entrance">Уваход</string>
     <!-- This is for main/primary entrances, for secondary entrances see type.entrance -->
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Мост</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Тунэль</string>
+    <string name="type.highway.platform">Платформа</string>
     <string name="type.highway.primary">Галоўная дарога</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Мост</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Грунтоўка</string>
     <string name="type.area_highway.trunk">Траса</string>
     <string name="type.area_highway.unclassified">Малая дарога</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Гістарычны аб\'ект</string>
@@ -759,7 +760,9 @@
     <string name="type.natural.wetland.marsh">Балота</string>
     <string name="type.noexit">Тупік</string>
     <string name="type.office">Офіс</string>
+    <string name="type.office.architect">Архітэктурнае бюро</string>
     <string name="type.office.company">Офіс кампаніі</string>
+    <string name="type.office.educational_institution">Адукацыйная ўстанова</string>
     <string name="type.office.estate_agent">Агент па нерухомасці</string>
     <string name="type.office.government">Урадавая ўстанова</string>
     <string name="type.office.insurance">Страхавое бюро</string>
@@ -841,6 +844,7 @@
     <string name="type.railway.crossing">Чыгуначны пераезд</string>
     <string name="type.railway.disused">Закінутая чыгунка</string>
     <string name="type.railway.disused.bridge">Закінуты чыгуначны мост</string>
+    <string name="type.railway.disused.tunnel">Закінуты чыгуначны тунэль</string>
     <string name="type.railway.funicular">Фунікулёр</string>
     <string name="type.railway.funicular.bridge">Фунікулярны мост</string>
     <string name="type.railway.funicular.tunnel">Фунікулярны тунэль</string>
@@ -1153,6 +1157,15 @@
     <string name="type.shop.chemist">Бытавая хімія</string>
     <string name="type.shop.chocolate">Крама шакалада</string>
     <string name="type.shop.clothes">Крама адзення</string>
+    <string name="type.shop.clothes.children">Дзіцячая крама адзення</string>
+    <string name="type.shop.clothes.fashion">Модны бутык</string>
+    <string name="type.shop.clothes.hats">Крама галаўных убораў</string>
+    <string name="type.shop.clothes.men">Мужчынская крама адзення</string>
+    <string name="type.shop.clothes.sports">Крама спартыўнага адзення</string>
+    <string name="type.shop.clothes.suits">Крама касцюмаў</string>
+    <string name="type.shop.clothes.underwear">Крама бялізны</string>
+    <string name="type.shop.clothes.wedding">Вясельны салон</string>
+    <string name="type.shop.clothes.women">Жаночая крама адзення</string>
     <string name="type.shop.coffee">Крама кавы</string>
     <string name="type.shop.computer">Камп\'ютэрная крама</string>
     <string name="type.shop.confectionery">Цукерня</string>
@@ -1173,6 +1186,7 @@
     <string name="type.shop.funeral_directors">Рытуальныя паслугі</string>
     <string name="type.shop.furniture">Мэблевая крама</string>
     <string name="type.shop.garden_centre">Тавары для саду</string>
+    <string name="type.shop.games">Крама гульняў</string>
     <string name="type.shop.gas">Газавая крама</string>
     <string name="type.shop.gift">Сувенірная крама</string>
     <string name="type.shop.greengrocer">Крама гародніны і садавіны</string>
@@ -1188,6 +1202,7 @@
     <string name="type.shop.kiosk">Кіёск</string>
     <string name="type.shop.kitchen">Крама для кухні</string>
     <string name="type.shop.laundry">Пральня</string>
+    <string name="type.shop.leather">Крама скураных вырабаў</string>
     <string name="type.shop.mall">Гандлёвы цэнтр</string>
     <string name="type.shop.massage">Масажны салон</string>
     <string name="type.shop.mobile_phone">Крама мабільных тэлефонаў</string>
@@ -1206,6 +1221,7 @@
     <string name="type.shop.pet">Зоамагазін</string>
     <string name="type.shop.pet_grooming">Грумінг</string>
     <string name="type.shop.photo">Фотамагазін</string>
+    <string name="type.shop.religion">Крама рэлігійных тавараў</string>
     <string name="type.shop.rental">Пракат</string>
     <string name="type.shop.rental.bicycle">Пракат ровараў</string>
     <string name="type.amenity.bicycle_rental.shop">Пракат ровараў</string>

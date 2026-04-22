@@ -46,11 +46,11 @@
 "type.amenity.gambling" = "Gambling";
 "type.leisure.adult_gaming_centre" = "Adult Gaming Centre";
 "type.leisure.amusement_arcade" = "Arcade";
-"type.amenity.charging_station" = "Charging Station";
+"type.amenity.charging_station" = "Estación de carga";
 "type.amenity.charging_station.bicycle" = "Bicycle Charging Station";
 "type.amenity.charging_station.motorcar" = "Car Charging Station";
 "type.amenity.childcare" = "Nursery";
-"type.amenity.cinema" = "Cinema";
+"type.amenity.cinema" = "Cine";
 "type.amenity.studio" = "Estudiu";
 "type.leisure.bowling_alley" = "Bowling Alley";
 "type.amenity.clinic" = "Clínica";
@@ -63,15 +63,15 @@
 "type.amenity.doctors" = "Doctor";
 "type.amenity.drinking_water" = "Drinking Water";
 "type.drinking_water.yes" = "Drinking Water";
-"type.amenity.driving_school" = "Driving School";
+"type.amenity.driving_school" = "Autoescuela";
 "type.amenity.exhibition_centre" = "Exhibition Center";
 "type.amenity.money_transfer" = "Tresferencia de dineru";
-"type.amenity.music_school" = "Escuela de música";
+"type.amenity.music_school" = "Conservatoriu";
 "type.amenity.language_school" = "Escuela de llingües";
 "type.office.diplomatic" = "Embaxada";
 "type.amenity.fast_food" = "Comida rápido";
 "type.amenity.ferry_terminal" = "Tresbordador";
-"type.amenity.fire_station" = "Fire Station";
+"type.amenity.fire_station" = "Parque de bomberos";
 "type.amenity.food_court" = "Plaza de restoranes";
 "type.amenity.fountain" = "Fonte";
 "type.amenity.fuel" = "Gasolinera";
@@ -91,7 +91,7 @@
 "type.amenity.luggage_locker" = "Luggage Locker";
 "type.amenity.marketplace" = "Marketplace";
 "type.amenity.motorcycle_parking" = "Aparcaderu pa motocicletes";
-"type.amenity.nightclub" = "Nightclub";
+"type.amenity.nightclub" = "Club nocherniegu";
 "type.amenity.nursing_home" = "Nursing Home";
 "type.amenity.parking" = "Aparcaderu";
 "type.amenity.parking.fee" = "Aparcaderu";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterranean";
 "type.cuisine.mexican" = "Mexicana";
 "type.cuisine.moroccan" = "Moroccan";
-"type.cuisine.noodles" = "Noodles";
+"type.cuisine.noodle" = "Noodles";
 "type.cuisine.oriental" = "East Asian";
 "type.cuisine.pancake" = "Pancake";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Sausage";
 "type.cuisine.savory_pancakes" = "Savory Pancakes";
 "type.cuisine.seafood" = "Seafood";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Spanish";
 "type.cuisine.steak_house" = "Steak House";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Tea";
 "type.cuisine.thai" = "Thai";
 "type.cuisine.turkish" = "Turkish";
+"type.cuisine.uzbek" = "Uzbeca";
 "type.cuisine.vegan" = "Vegan";
 "type.cuisine.vegetarian" = "Vegetarian";
 "type.cuisine.vietnamese" = "Vietnamina";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Túnel peonil";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Primary Road";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Marsh";
 "type.noexit" = "Dead End";
 "type.office" = "Office";
+"type.office.architect" = "Architect Office";
 "type.office.company" = "Company Office";
+"type.office.educational_institution" = "Educational Institution";
 "type.office.estate_agent" = "Estate Agent";
 "type.office.government" = "Government Office";
 "type.office.insurance" = "Insurance Office";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "Túnel ferroviariu en desusu";
 "type.railway.funicular" = "Funicular";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Chemist";
 "type.shop.chocolate" = "Chicolatería";
 "type.shop.clothes" = "Clothes Shop";
+"type.shop.clothes.children" = "Children's Clothes Shop";
+"type.shop.clothes.fashion" = "Fashion Boutique";
+"type.shop.clothes.hats" = "Hat Shop";
+"type.shop.clothes.men" = "Men's Clothes Shop";
+"type.shop.clothes.sports" = "Sports Clothes Shop";
+"type.shop.clothes.suits" = "Suits Shop";
+"type.shop.clothes.underwear" = "Underwear Shop";
+"type.shop.clothes.wedding" = "Wedding Clothes Shop";
+"type.shop.clothes.women" = "Women's Clothes Shop";
 "type.shop.coffee" = "Coffee Shop";
 "type.shop.computer" = "Computer Store";
 "type.shop.confectionery" = "Candy Shop";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Funeral Directors";
 "type.shop.furniture" = "Furniture Store";
 "type.shop.garden_centre" = "Centru de xardinería";
+"type.shop.games" = "Games Shop";
 "type.shop.gas" = "Gas Store";
 "type.shop.gift" = "Gift Shop";
 "type.shop.greengrocer" = "Greengrocer";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Quioscu";
 "type.shop.kitchen" = "Kitchen Store";
 "type.shop.laundry" = "Laundry";
+"type.shop.leather" = "Leather Shop";
 "type.shop.mall" = "Centru comercial";
 "type.shop.massage" = "Massage Salon";
 "type.shop.mobile_phone" = "Cell Phone Store";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Pet Store";
 "type.shop.pet_grooming" = "Pet Grooming";
 "type.shop.photo" = "Photo Shop";
+"type.shop.religion" = "Religion Shop";
 "type.shop.rental" = "Rental Shop";
 "type.shop.rental.bicycle" = "Bicycle Rental Shop";
 "type.amenity.bicycle_rental.shop" = "Bicycle Rental Shop";
@@ -1438,7 +1456,7 @@
 "type.tourism.artwork.sculpture" = "Sculpture";
 "type.tourism.artwork.statue" = "Statue";
 "type.tourism.attraction" = "Atraición";
-"type.attraction.amusement_ride" = "Barraca";
+"type.attraction.amusement_ride" = "Atracción";
 "type.attraction.animal" = "Animal Enclosure";
 "type.attraction.bumper_car" = "Bumper Car";
 "type.attraction.big_wheel" = "Big Wheel";

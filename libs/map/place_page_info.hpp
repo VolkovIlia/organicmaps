@@ -85,7 +85,6 @@ struct BuildInfo
   kml::TrackId m_trackId = kml::kInvalidTrackId;
   bool m_isGeometrySelectionAllowed = false;
   bool m_needAnimationOnSelection = true;
-  std::string m_postcode;
 };
 
 class Info : public osm::MapObject
@@ -265,7 +264,7 @@ private:
   std::string m_address;
 
   /// Routing
-  RouteMarkType m_routeMarkType;
+  RouteMarkType m_routeMarkType = RouteMarkType::Start;
   size_t m_intermediateIndex = 0;
   bool m_isRoutePoint = false;
 

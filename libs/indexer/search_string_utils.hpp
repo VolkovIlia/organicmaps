@@ -11,7 +11,7 @@
 
 namespace search
 {
-inline constexpr size_t GetMaxErrorsForTokenLength(size_t length)
+inline constexpr uint8_t GetMaxErrorsForTokenLength(size_t length)
 {
   if (length < 4)
     return 0;
@@ -20,7 +20,7 @@ inline constexpr size_t GetMaxErrorsForTokenLength(size_t length)
   return 2;
 }
 
-inline constexpr size_t GetMaxErrorsForToken_Category(size_t length)
+inline constexpr uint8_t GetMaxErrorsForToken_Category(size_t length)
 {
   if (length < 7)
     return 0;
@@ -29,7 +29,7 @@ inline constexpr size_t GetMaxErrorsForToken_Category(size_t length)
   return 2;
 }
 
-size_t GetMaxErrorsForToken(strings::UniString const & token);
+uint8_t GetMaxErrorsForToken(strings::UniString const & token);
 
 strings::LevenshteinDFA BuildLevenshteinDFA(strings::UniString const & s);
 strings::LevenshteinDFA BuildLevenshteinDFA_Category(strings::UniString const & s);
@@ -98,6 +98,11 @@ bool IsStreetSynonym(strings::UniString const & s);
 bool IsStreetSynonymPrefix(strings::UniString const & s);
 bool IsStreetSynonymWithMisprints(strings::UniString const & s);
 bool IsStreetSynonymPrefixWithMisprints(strings::UniString const & s);
+
+/// Checks if |s| is a street type synonym ("street", "avenue", "road", "улица", etc.)
+/// or a cardinal direction ("north", "south", "west", "east", etc.).
+/// These tokens are never standalone street names — they are always modifiers.
+bool IsStreetSynonymOrAffixOnly(strings::UniString const & s);
 
 /// Normalizes both str and substr, and then returns true if substr is found in str.
 /// Used in native platform code for search in localized strings (cuisines, categories, strings etc.).

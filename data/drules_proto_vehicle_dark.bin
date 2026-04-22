@@ -2462,26 +2462,26 @@ monument-m  *
 	remains-m’*
 
 æÌ™(8‚Åÿÿÿÿÿÿÿ
-Ü
-historic-city_gate"
-	remains-mž"
-	remains-mž."
-	remains-mž *
+ì
+historic-city_gate"
+city_gate-mž"
+city_gate-mž0"
+city_gate-mž *
 
-æÌ™(8ŽÁÿÿÿÿÿÿÿ."
-	remains-mž *
+æÌ™(8ŽÁÿÿÿÿÿÿÿ0"
+city_gate-mž *
 
-æÌ™(8ŽÁÿÿÿÿÿÿÿ."
-	remains-mž *
+æÌ™(8ŽÁÿÿÿÿÿÿÿ0"
+city_gate-mž *
 
-æÌ™(8ŽÁÿÿÿÿÿÿÿ."
-	remains-mž *
+æÌ™(8ŽÁÿÿÿÿÿÿÿ0"
+city_gate-mž *
 
-æÌ™(8ŽÁÿÿÿÿÿÿÿ."
-	remains-mž *
+æÌ™(8ŽÁÿÿÿÿÿÿÿ0"
+city_gate-mž *
 
-æÌ™(8ŽÁÿÿÿÿÿÿÿ."
-	remains-mž *
+æÌ™(8ŽÁÿÿÿÿÿÿÿ0"
+city_gate-mž *
 
 æÌ™(8ŽÁÿÿÿÿÿÿÿ
 ¶
@@ -8684,7 +8684,7 @@ d
 æÌ™(8Šºÿÿÿÿÿÿÿ3"
 christmas_tree-mš*
 
-æÌ™(8ŠºÿÿÿÿÿÿÿÎ
+æÌ™(8ŠºÿÿÿÿÿÿÿŸ
 
 Arrow3Dÿ‘‡
 
@@ -8792,6 +8792,12 @@ RatingTextÿÿÿ
 "RouteFirstSegmentArrowsMaskBicycleŒ—ýÿ
 &
 RouteFirstSegmentArrowsMaskCarÍ¿•ø
+
+RouteMarkInterBgµØ
+
+RouteMarkInterOutlineÿÿÿ
+
+RouteMarkInterTextÿÿÿ
 
 RouteMarkPrimaryTextˆ‘¢
 

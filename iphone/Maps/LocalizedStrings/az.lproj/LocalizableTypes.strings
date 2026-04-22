@@ -8,7 +8,7 @@
 "type.aerialway" = "Teleferik";
 "type.aerialway.cable_car" = "Teleferik";
 "type.aerialway.chair_lift" = "Kreslo lifti";
-"type.aerialway.drag_lift" = "Bugle teleferik";
+"type.aerialway.drag_lift" = "Bügel lifti";
 "type.aerialway.gondola" = "Qondol";
 "type.aerialway.mixed_lift" = "Teleferik";
 "type.aerialway.station" = "Hava yolu stansiyası";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Aralıq dənizi mətbəxi";
 "type.cuisine.mexican" = "Meksika mətbəxi";
 "type.cuisine.moroccan" = "Mərakeş mətbəxi";
-"type.cuisine.noodles" = "Əriştə";
+"type.cuisine.noodle" = "Əriştə";
 "type.cuisine.oriental" = "Uzaq Şərq mətbəxi";
 "type.cuisine.pancake" = "Müşahidə";
 "type.cuisine.pasta" = "Makaron";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Kolbasa";
 "type.cuisine.savory_pancakes" = "Açılış";
 "type.cuisine.seafood" = "Dəniz məhsulları";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Əriştə";
 "type.cuisine.spanish" = "Ispan mətbəxi";
 "type.cuisine.steak_house" = "Steakhouse";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Çay";
 "type.cuisine.thai" = "Tay mətbəxi";
 "type.cuisine.turkish" = "Türk mətbəxi";
+"type.cuisine.uzbek" = "Özbək";
 "type.cuisine.vegan" = "Vegan mətbəxi";
 "type.cuisine.vegetarian" = "Vegetarian mətbəxi";
 "type.cuisine.vietnamese" = "Vyetnam mətbəxi";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunel";
+"type.highway.platform" = "Platforma";
 "type.highway.primary" = "Əsas yol";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -624,9 +627,9 @@
 "type.historic" = "Tarix";
 "type.historic.aircraft" = "Tarixi Təyyarə";
 "type.historic.anchor" = "Tarixi Çapa";
-"type.historic.archaeological_site" = "Qorunan ərazi";
+"type.historic.archaeological_site" = "Arxeoloji sahə";
 "type.historic.battlefield" = "Döyüş Meydanı";
-"type.historic.boundary_stone" = "Landmark";
+"type.historic.boundary_stone" = "Sərhəd daşı";
 "type.historic.cannon" = "Top";
 "type.historic.castle" = "Möhkəmləndirilmiş qala";
 "type.historic.castle.castrum" = "Kastra";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Bataqlıq";
 "type.noexit" = "Çıxılmaz";
 "type.office" = "Ofis";
+"type.office.architect" = "Memar ofisi";
 "type.office.company" = "Şirkət ofisi";
+"type.office.educational_institution" = "Təhsil müəssisəsi";
 "type.office.estate_agent" = "Əmlak agenti";
 "type.office.government" = "Hökumət Ofisi";
 "type.office.insurance" = "Sığorta Agentliyi";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Dəmiryol kəsişməsi";
 "type.railway.disused" = "Istifadəsiz dəmir yolu";
 "type.railway.disused.bridge" = "İstifadəsiz dəmir yolu körpüsü";
+"type.railway.disused.tunnel" = "İstifadəsiz dəmir yolu tuneli";
 "type.railway.funicular" = "Funikulyor";
 "type.railway.funicular.bridge" = "Funikulyor";
 "type.railway.funicular.tunnel" = "Funikulyor";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Təmizlik məhsulları mağazası";
 "type.shop.chocolate" = "Şokolad Dükanı";
 "type.shop.clothes" = "Geyim mağazası";
+"type.shop.clothes.children" = "Uşaq geyim mağazası";
+"type.shop.clothes.fashion" = "Moda butiki";
+"type.shop.clothes.hats" = "Papaq mağazası";
+"type.shop.clothes.men" = "Kişi geyim mağazası";
+"type.shop.clothes.sports" = "İdman geyim mağazası";
+"type.shop.clothes.suits" = "Kostyum mağazası";
+"type.shop.clothes.underwear" = "Alt paltar mağazası";
+"type.shop.clothes.wedding" = "Toy geyim mağazası";
+"type.shop.clothes.women" = "Qadın geyim mağazası";
 "type.shop.coffee" = "Qəhvə dükanı";
 "type.shop.computer" = "Kompüter Mağazası";
 "type.shop.confectionery" = "Şirniyyatçı";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Zərərçi";
 "type.shop.furniture" = "Mebel Dükanı";
 "type.shop.garden_centre" = "Bağ mağazası";
+"type.shop.games" = "Oyun mağazası";
 "type.shop.gas" = "Qaz doldurma məntəqəsi";
 "type.shop.gift" = "Hədiyyə Dükanı";
 "type.shop.greengrocer" = "Tərəvəzçi";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Bufet";
 "type.shop.kitchen" = "Mətbəx Dükanı";
 "type.shop.laundry" = "Camaşırxana";
+"type.shop.leather" = "Dəri məmulatları mağazası";
 "type.shop.mall" = "Ticarət mərkəzi";
 "type.shop.massage" = "Masaj salonu";
 "type.shop.mobile_phone" = "Mobil Telefon Mağazası";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Heyvan mağazası";
 "type.shop.pet_grooming" = "Heyvan baxıcısı";
 "type.shop.photo" = "Fotoqraf";
+"type.shop.religion" = "Dini Əşyalar Mağazası";
 "type.shop.rental" = "Mağaza İcarəyə verilir";
 "type.shop.rental.bicycle" = "Velosiped İcarəsi Dükanı";
 "type.amenity.bicycle_rental.shop" = "Velosiped İcarəsi Dükanı";

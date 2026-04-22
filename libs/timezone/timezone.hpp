@@ -22,8 +22,8 @@ struct Transition
   static constexpr size_t kTotalSizeInBits = kDayDeltaBitSize + kMinuteOfDayBitSize;
   static constexpr size_t kTotalSizeInBytes = (kTotalSizeInBits + CHAR_BIT - 1) / CHAR_BIT;
 
-  uint16_t day_delta;
-  uint16_t minute_of_day;
+  uint16_t day_delta{};
+  uint16_t minute_of_day{};
 
   constexpr auto operator<=>(Transition const & rhs) const = default;
 };
@@ -42,22 +42,38 @@ struct TimeZone
   static constexpr size_t kTotalSizeInBytes = (kTotalSizeInBits + CHAR_BIT - 1) / CHAR_BIT;
 
   TimeZoneFormatVersion format_version = TimeZoneFormatVersion::V1;
-  uint16_t generation_year_offset;
-  uint8_t base_offset;
-  uint8_t dst_delta;
-  std::vector<Transition> transitions;
+  uint16_t generation_year_offset{};
+  uint8_t base_offset{};
+  uint8_t dst_delta{};
+  std::vector<Transition> transitions{};
 
   int32_t GetBaseOffset() const { return (static_cast<int32_t>(base_offset) - 64) * 15; }
 
   constexpr auto operator<=>(TimeZone const & rhs) const = default;
 };
 
-struct TimeZoneDb
+/// @warning Only for generator and testing.
+class TimeZoneDb
 {
-  std::string tzdb_version;
-  uint8_t tzdb_format_version;
-  std::uint16_t tzdb_generation_year_offset;
-  std::unordered_map<std::string, TimeZone> timezones;
+public:
+  static TimeZoneDb const & Instance();
+
+  TimeZone const & GetTZ(std::string const & tzName) const;
+  bool IsEmpty() const { return m_impl.timezones.empty(); }
+
+  std::unordered_map<std::string, TimeZone> const & GetTimeZones() const { return m_impl.timezones; }
+
+private:
+  TimeZoneDb();
+
+private:
+  struct Impl
+  {
+    std::string tzdb_version;
+    uint8_t tzdb_format_version;
+    uint16_t tzdb_generation_year_offset;
+    std::unordered_map<std::string, TimeZone> timezones;
+  } m_impl;
 };
 
 /**
@@ -98,7 +114,4 @@ ZonedTime Convert(ZonedTime time, TimeZone const & srcTimeZone, TimeZone const &
  * @return Time in the ZonedTime format for the specified time zone.
  */
 ZonedTime Convert(time_t time, TimeZone const & timeZone);
-
-/// @warning Do not call in runtime. Only for generator and testing.
-TimeZoneDb const & GetTimeZoneDb();
 }  // namespace om::tz

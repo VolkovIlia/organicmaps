@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Sredozemska";
 "type.cuisine.mexican" = "Mehiška";
 "type.cuisine.moroccan" = "Maroška";
-"type.cuisine.noodles" = "Rezanci";
+"type.cuisine.noodle" = "Rezanci";
 "type.cuisine.oriental" = "Vzhodnoazijska";
 "type.cuisine.pancake" = "Palačinka";
 "type.cuisine.pasta" = "Testenine";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Klobasa";
 "type.cuisine.savory_pancakes" = "Slane palačinke";
 "type.cuisine.seafood" = "Morska hrana";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Španska";
 "type.cuisine.steak_house" = "Zrezkarna";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Čaj";
 "type.cuisine.thai" = "Tajska";
 "type.cuisine.turkish" = "Turška";
+"type.cuisine.uzbek" = "Uzbeška";
 "type.cuisine.vegan" = "Veganska";
 "type.cuisine.vegetarian" = "Vegetarijanska";
 "type.cuisine.vietnamese" = "Vietnamska";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Predor za pešce";
+"type.highway.platform" = "Peron";
 "type.highway.primary" = "Glavna cesta";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Močvirje";
 "type.noexit" = "Slepa ulica";
 "type.office" = "Pisarna";
+"type.office.architect" = "Arhitekturni biro";
 "type.office.company" = "Pisarna podjetja";
+"type.office.educational_institution" = "Izobraževalna ustanova";
 "type.office.estate_agent" = "Nepremičninska agencija";
 "type.office.government" = "Vladna pisarna";
 "type.office.insurance" = "Zavarovalniška pisarna";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Železniški prehod";
 "type.railway.disused" = "Neuporabljena železnica";
 "type.railway.disused.bridge" = "Neuporabljen železniški most";
+"type.railway.disused.tunnel" = "Neuporabljen železniški predor";
 "type.railway.funicular" = "Vzpenjača";
 "type.railway.funicular.bridge" = "Most vzpenjače";
 "type.railway.funicular.tunnel" = "Predor vzpenjače";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Drogerija";
 "type.shop.chocolate" = "Čokoladnica";
 "type.shop.clothes" = "Trgovina z oblačili";
+"type.shop.clothes.children" = "Otroška oblačila";
+"type.shop.clothes.fashion" = "Modni butik";
+"type.shop.clothes.hats" = "Klobučarstvo";
+"type.shop.clothes.men" = "Moška oblačila";
+"type.shop.clothes.sports" = "Sportna oblačila";
+"type.shop.clothes.suits" = "Obleke";
+"type.shop.clothes.underwear" = "Spodnje perilo";
+"type.shop.clothes.wedding" = "Poročna oblačila";
+"type.shop.clothes.women" = "Ženska oblačila";
 "type.shop.coffee" = "Kavarna";
 "type.shop.computer" = "Računalniška trgovina";
 "type.shop.confectionery" = "Slaščičarna";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Pogrebno podjetje";
 "type.shop.furniture" = "Pohištvena trgovina";
 "type.shop.garden_centre" = "Vrtni center";
+"type.shop.games" = "Trgovina z igrami";
 "type.shop.gas" = "Trgovina s plinom";
 "type.shop.gift" = "Trgovina z darili";
 "type.shop.greengrocer" = "Zelenjavar";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kiosk";
 "type.shop.kitchen" = "Kuhinjska trgovina";
 "type.shop.laundry" = "Pralnica";
+"type.shop.leather" = "Trgovina z usnjenimi izdelki";
 "type.shop.mall" = "Nakupovalni center";
 "type.shop.massage" = "Masažni salon";
 "type.shop.mobile_phone" = "Trgovina z mobilnimi telefoni";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Trgovina za male živali";
 "type.shop.pet_grooming" = "Nega malih živali";
 "type.shop.photo" = "Foto studio";
+"type.shop.religion" = "Trgovina z verskimi predmeti";
 "type.shop.rental" = "Izposojevalnica";
 "type.shop.rental.bicycle" = "Bicycle Rental Shop";
 "type.amenity.bicycle_rental.shop" = "Izposojevalnica koles";

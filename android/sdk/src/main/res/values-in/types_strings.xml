@@ -9,13 +9,13 @@
     <string name="type.aeroway.aerodrome">Bandar udara</string>
     <string name="type.aeroway.aerodrome.international">Bandar udara</string>
     <string name="type.aeroway.helipad">Landasan helikopter</string>
-    <string name="type.amenity">Ruang berfasilitas</string>
+    <string name="type.amenity">Fasilitas</string>
     <string name="type.amenity.arts_centre">Pusat kesenian</string>
     <string name="type.amenity.bbq">Panggangan barbekyu</string>
     <string name="type.amenity.bench">Bangku panjang</string>
     <string name="type.amenity.bicycle_parking">Parkir Sepeda</string>
     <string name="type.amenity.bicycle_rental">Penyewaan Sepeda</string>
-    <string name="type.amenity.brothel">Hiburan</string>
+    <string name="type.amenity.brothel">Bordil</string>
     <string name="type.amenity.bureau_de_change">Pertukaran valuta</string>
     <string name="type.amenity.bus_station">Stasiun bus</string>
     <string name="type.amenity.cafe">Kafe</string>
@@ -23,7 +23,7 @@
     <string name="type.amenity.motorcycle_rental">Penyewaan Sepeda Motor</string>
     <string name="type.amenity.car_sharing">Berbagi mobil</string>
     <string name="type.amenity.car_wash">Cuci Mobil</string>
-    <string name="type.amenity.casino">Hiburan</string>
+    <string name="type.amenity.casino">Kasino</string>
     <string name="type.amenity.gambling">Berjudi</string>
     <string name="type.leisure.adult_gaming_centre">Pusat Permainan Dewasa</string>
     <string name="type.leisure.amusement_arcade">Arkade</string>
@@ -34,7 +34,7 @@
     <string name="type.amenity.cinema">Bioskop</string>
     <string name="type.leisure.bowling_alley">Arena Bowling</string>
     <string name="type.amenity.clinic">Klinik</string>
-    <string name="type.amenity.college">Kampus</string>
+    <string name="type.amenity.college">Perguruan tinggi</string>
     <string name="type.amenity.community_centre">Pusat komunitas</string>
     <string name="type.amenity.compressed_air">Udara terkompresi</string>
     <string name="type.amenity.conference_centre">Pusat konferensi</string>
@@ -59,7 +59,7 @@
     <!-- In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. -->
     <string name="type.amenity.grave_yard.christian">Pemakaman</string>
     <string name="type.amenity.hospital">Rumahsakit</string>
-    <string name="type.amenity.hunting_stand">Lokasi berburu</string>
+    <string name="type.amenity.hunting_stand">Pos berburu</string>
     <string name="type.amenity.ice_cream">Kios Es Krim</string>
     <string name="type.amenity.internet_cafe">Kafe Internet</string>
     <string name="type.amenity.kindergarten">Taman kanak-kanak</string>
@@ -266,7 +266,7 @@
     <string name="type.cuisine.mediterranean">Masakan mediterania</string>
     <string name="type.cuisine.mexican">Masakan meksiko</string>
     <string name="type.cuisine.moroccan">Masakan maroko</string>
-    <string name="type.cuisine.noodles">Bakmi</string>
+    <string name="type.cuisine.noodle">Bakmi</string>
     <string name="type.cuisine.oriental">Masakan oriental</string>
     <string name="type.cuisine.pancake">Panekuk</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -282,6 +282,7 @@
     <string name="type.cuisine.sausage">Sosis</string>
     <string name="type.cuisine.savory_pancakes">Panekuk gurih</string>
     <string name="type.cuisine.seafood">Hidangan laut</string>
+    <string name="type.cuisine.shawarma">Syawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Masakan spanyol</string>
     <string name="type.cuisine.steak_house">Restoran_steik</string>
@@ -290,6 +291,7 @@
     <string name="type.cuisine.tea">Teh</string>
     <string name="type.cuisine.thai">Masakan thailand</string>
     <string name="type.cuisine.turkish">Masakan turki</string>
+    <string name="type.cuisine.uzbek">Uzbek</string>
     <string name="type.cuisine.vegan">Masakan vegan</string>
     <string name="type.cuisine.vegetarian">Masakan vegetarian</string>
     <string name="type.cuisine.vietnamese">Masakan vietnam</string>
@@ -627,7 +629,9 @@
     <string name="type.natural.wetland.bog">Rawa gambut</string>
     <string name="type.natural.wetland.marsh">Paya</string>
     <string name="type.office">Kantor</string>
+    <string name="type.office.architect">Kantor arsitek</string>
     <string name="type.office.company">Kantor perusahaan</string>
+    <string name="type.office.educational_institution">Lembaga pendidikan</string>
     <string name="type.office.estate_agent">Agen ril estat</string>
     <string name="type.office.government">Kantor pemerintah</string>
     <string name="type.office.insurance">Kantor Asuransi</string>
@@ -682,6 +686,7 @@
     <string name="type.power.substation">Stasiun bawah tanah</string>
     <!-- A tower or pylon carrying high voltage electricity cables. -->
     <string name="type.power.tower">Menara listrik</string>
+    <string name="type.railway.disused.tunnel">Terowongan kereta api nonaktif</string>
     <string name="type.railway.funicular">Kereta gantung</string>
     <string name="type.railway.halt">Rel kereta api</string>
     <string name="type.railway.level_crossing">Perlintasan Kereta Api</string>
@@ -968,6 +973,15 @@
     <string name="type.shop.chemist">Toko Bahan Kimia</string>
     <string name="type.shop.chocolate">Toko Cokelat</string>
     <string name="type.shop.clothes">Toko baju</string>
+    <string name="type.shop.clothes.children">Toko pakaian anak</string>
+    <string name="type.shop.clothes.fashion">Butik mode</string>
+    <string name="type.shop.clothes.hats">Toko topi</string>
+    <string name="type.shop.clothes.men">Toko pakaian pria</string>
+    <string name="type.shop.clothes.sports">Toko pakaian olahraga</string>
+    <string name="type.shop.clothes.suits">Toko jas</string>
+    <string name="type.shop.clothes.underwear">Toko pakaian dalam</string>
+    <string name="type.shop.clothes.wedding">Toko baju pengantin</string>
+    <string name="type.shop.clothes.women">Toko pakaian wanita</string>
     <string name="type.shop.coffee">Toko kopi</string>
     <string name="type.shop.computer">Toko komputer</string>
     <string name="type.shop.confectionery">Penganan</string>
@@ -988,6 +1002,7 @@
     <string name="type.shop.funeral_directors">Direktur Pemakaman</string>
     <string name="type.shop.furniture">Toko mebel</string>
     <string name="type.shop.garden_centre">Penitipan anak</string>
+    <string name="type.shop.games">Toko permainan</string>
     <string name="type.shop.gas">Toko gas</string>
     <string name="type.shop.gift">Toko hadiah</string>
     <string name="type.shop.greengrocer">Penjual sayuran</string>
@@ -1002,6 +1017,7 @@
     <string name="type.shop.kiosk">Kios</string>
     <string name="type.shop.kitchen">Toko Dapur</string>
     <string name="type.shop.laundry">Londri</string>
+    <string name="type.shop.leather">Toko Produk Kulit</string>
     <string name="type.shop.massage">Tempat Pijat</string>
     <string name="type.shop.mobile_phone">Toko telepon</string>
     <string name="type.shop.money_lender">Pemberi Pinjaman Uang</string>
@@ -1019,6 +1035,7 @@
     <string name="type.shop.pet">Toko hewan</string>
     <string name="type.shop.pet_grooming">Perawatan Hewan Peliharaan</string>
     <string name="type.shop.photo">Studio Foto</string>
+    <string name="type.shop.religion">Toko Perlengkapan Agama</string>
     <string name="type.shop.rental">Toko Sewa</string>
     <string name="type.shop.rental.bicycle">Toko Penyewaan Sepeda</string>
     <string name="type.amenity.bicycle_rental.shop">Toko Penyewaan Sepeda</string>

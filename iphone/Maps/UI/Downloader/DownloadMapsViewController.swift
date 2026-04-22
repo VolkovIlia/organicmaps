@@ -80,12 +80,7 @@ class DownloadMapsViewController: MWMViewController {
     tableView.registerNib(cell: MWMMapDownloaderButtonTableViewCell.self)
     title = dataSource.title
     if mode == .downloaded {
-      let image: UIImage
-      if #available(iOS 13.0, *) {
-        image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .medium))!
-      } else {
-        image = UIImage(resource: .icNavBarAdd)
-      }
+      let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .medium))!
       let addMapsButton = UIBarButtonItem(image: image,
                                           style: .plain,
                                           target: self,
@@ -106,10 +101,9 @@ class DownloadMapsViewController: MWMViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    dataSource.reload {
-      reloadData()
-      noMapsContainer.isHidden = !dataSource.isEmpty || Storage.shared().downloadInProgress()
-    }
+    dataSource.reload()
+    reloadTableView()
+    updateNoMapsVisibility()
     Storage.shared().add(self)
   }
 
@@ -197,9 +191,13 @@ class DownloadMapsViewController: MWMViewController {
     }
   }
 
-  fileprivate func reloadData() {
+  fileprivate func reloadTableView() {
     tableView.reloadData()
     configButtons()
+  }
+
+  private func updateNoMapsVisibility() {
+    noMapsContainer.isHidden = !dataSource.isEmpty || Storage.shared().downloadInProgress()
   }
 
   fileprivate func configButtons() {
@@ -271,8 +269,7 @@ extension DownloadMapsViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if hasAddMapSection, indexPath.section == dataSource.numberOfSections() {
       let cellType = MWMMapDownloaderButtonTableViewCell.self
-      let buttonCell = tableView.dequeueReusableCell(cell: cellType, indexPath: indexPath)
-      return buttonCell
+      return tableView.dequeueReusableCell(cell: cellType, indexPath: indexPath)
     }
 
     let nodeAttrs = dataSource.item(at: indexPath)
@@ -417,19 +414,18 @@ extension DownloadMapsViewController: StorageObserver {
     if skipCountryEvent, countryId == dataSource.getParentCountryId() {
       return
     }
-    dataSource.reload {
-      reloadData()
-      noMapsContainer.isHidden = !dataSource.isEmpty || Storage.shared().downloadInProgress()
-    }
-    if countryId == dataSource.getParentCountryId() {
+    let dataStructureChanged = dataSource.reload()
+    updateNoMapsVisibility()
+    if dataStructureChanged {
+      reloadTableView()
+    } else {
+      for cell in tableView.visibleCells {
+        guard let downloaderCell = cell as? MWMMapDownloaderTableViewCell else { continue }
+        if downloaderCell.nodeAttrs.countryId != countryId { continue }
+        guard let indexPath = tableView.indexPath(for: downloaderCell) else { continue }
+        downloaderCell.config(dataSource.item(at: indexPath), searchQuery: searchController.searchBar.text)
+      }
       configButtons()
-    }
-
-    for cell in tableView.visibleCells {
-      guard let downloaderCell = cell as? MWMMapDownloaderTableViewCell else { continue }
-      if downloaderCell.nodeAttrs.countryId != countryId { continue }
-      guard let indexPath = tableView.indexPath(for: downloaderCell) else { return }
-      downloaderCell.config(dataSource.item(at: indexPath), searchQuery: searchController.searchBar.text)
     }
   }
 
@@ -457,7 +453,7 @@ extension DownloadMapsViewController: UISearchBarDelegate {
     searchBar.text = nil
     searchBar.resignFirstResponder()
     dataSource.cancelSearch()
-    reloadData()
+    reloadTableView()
     noSerchResultViewController.view.isHidden = true
   }
 
@@ -465,7 +461,7 @@ extension DownloadMapsViewController: UISearchBarDelegate {
     let locale = searchBar.textInputMode?.primaryLanguage
     dataSource.search(searchText, locale: locale ?? "") { [weak self] _ in
       guard let self = self else { return }
-      self.reloadData()
+      self.reloadTableView()
       self.noSerchResultViewController.view.isHidden = !self.dataSource.isEmpty
     }
   }
@@ -510,6 +506,6 @@ extension DownloadMapsViewController: DownloadAllViewDelegate {
     Storage.shared().cancelDownloadNode(id)
     skipCountryEvent = false
     processCountryEvent(id)
-    reloadData()
+    reloadTableView()
   }
 }

@@ -1,16 +1,23 @@
-• NOU: Culori cu contrast mai mare pentru tema întunecată
-• Date OpenStreetMap actualizate (11 ianuarie)
-• Cazinouri excluse din categoria „Divertisment”
-• S-a redus grosimea liniilor de metrou
-• S-au adăugat informații despre capacitate în rezultatele căutării pentru parcări motociclete, închirieri biciclete, încărcare biciclete și încărcare mașini
-• Afișare etaj în rezultatele căutării
-• Butoane de planificare a rutei mai largi
+• Date cartografice OSM la data de 10 martie
+• Date Wikipedia la data de 1 martie
+• S-a adăugat suport pentru limite de viteză condiționate
+• Izolinii de altitudine mai detaliate pentru provinciile chineze
+• S-au adăugat magazine de pielărie și magazine care vând articole religioase
+• S-au adăugat rânduri de copaci
+• S-au adăugat platforme de transport public fără stații de autobuz în apropiere
+• S-a remediat calculul progresului descărcării țării
+• S-a împărțit Tanzania în regiuni mai mici
+• S-a adăugat istoricul categoriilor utilizate recent în Editor
+• Îmbunătățit glisarea în sus pe ecranul de planificare a traseului
+• Remediat poziția riglei pentru CarPlay
+• Remediate mai multe blocări, îmbunătățită stabilitatea și performanța
 
 ### Traduceri
 
-• S-au adăugat traduceri ale aplicației și ghidare vocală în albaneză
-• S-au actualizat întrebările frecvente și s-au adăugat traduceri pentru arabă, cehă, olandeză, farsi, greacă, ebraică, hindi, maghiară, indoneziană, italiană, lituaniană, marathi, suedeză, telugu
-• S-au îmbunătățit traducerile aplicației și ale întrebărilor frecvente în germană
-• S-au adăugat sinonime de căutare în bulgară
-• S-a redenumit setarea „Butoane zoom” pentru claritate
-• Corecții de traducere de la contribuitorii Weblate pentru diverse limbi
+• Îmbunătățite descrierile țărilor
+• Aplicate remedieri în limba română de la Eugen Dedu
+• Actualizate numele țărilor
+• Actualizate traducerile de la colaboratorii Weblate
+• Remediată traducerea în limba ucraineană
+
+Mulțumim tuturor celor care contribuie, donează și susțin Organic Maps! Haideți să construim împreună cele mai bune hărți!

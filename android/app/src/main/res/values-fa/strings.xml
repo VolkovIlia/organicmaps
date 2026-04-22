@@ -282,8 +282,6 @@
     <string name="downloader_downloading">درحال دانلود:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">برای حذف نقشه، لطفا مسیریابی را متوقف کنید.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">تنها مسیر‌هایی می توانند ایجاد شوند که به طور کامل در یک نقشه از یک منطقه واحد قرار داشته باشند.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">دانلود نقشه</string>
     <!-- Item status in downloader. -->
@@ -296,10 +294,6 @@
     <string name="google_play_services">خدمات مکان Google Play</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">به سرعت مکان تقریبی خود را با استفاده از بلوتوث، WiFi یا شبکه تلفن همراه تعیین کنید</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">دانلود تمامی نقشه‌ها در طول مسیر‌تان</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">به منظور ایجاد مسیر ما نیاز داریم تا تمامی نقشه‌های شما از مبدا تا مقصد را به‌روزرسانی کنیم.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">فضای کافی موجود نیست</string>
     <!-- location service disabled -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">روشن</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">تیره</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">روشن از سپیده‌دم تا غروب</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">نقشه‌های رایگان و بدون تبلیغات را به میلیون‌ها کاربر هدیه دهید!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— مسیرهای پیشنهادی تنها به عنوان توصیه در نظر گرفته شوند؛</string>
     <string name="dialog_routing_disclaimer_borders">—در مسیرهایی که از مناطق مرزی میگذرد احتیاط کنید:مسیر‌هایی که بوسیله اپلیکیشن ما ایجاد می شود گاهی اوقات ممکن است مرز‌های کشور‌ها را رد کند که این در بعضی مناطق غیر مجاز است.</string>
     <string name="dialog_routing_disclaimer_beware">لطفا هوشیار و ایمن در جاده بمانید!</string>
-    <string name="dialog_routing_check_gps">سیگنال GPS را چک کنید</string>
-    <string name="dialog_routing_error_location_not_found">امکان ایجاد مسیر وجود ندارد. مختصات GPS فعلی قابل شناسایی نیست.</string>
     <string name="dialog_routing_location_turn_wifi">لطفا سیگنال GPS موبایتان راچک کنید.و WiFi موبایلتان را جهت دقت بیشتر در موقعیت‌یابی فعال کنید.</string>
-    <string name="dialog_routing_location_turn_on">فعال کردن سرویس موقعیت مکانی (GPS)</string>
-    <string name="dialog_routing_location_unknown_turn_on">ناتوان از مشخص کردن موقعیت مکانی شما.لطفا سرویس موقعیت مکانی خود را فعال کنید.</string>
-    <string name="dialog_routing_unable_locate_route">ناتوان در تعیین مسیر</string>
-    <string name="dialog_routing_cant_build_route">امکان ایجاد مسیر وجود ندارد.</string>
-    <string name="dialog_routing_change_start_or_end">لطفا مبدا یا مقصد خود را تنظیم کنید.</string>
-    <string name="dialog_routing_change_start">مبدا خود را تنظیم کنید</string>
-    <string name="dialog_routing_start_not_determined">مسیر ایجاد نشد. امکان پیدا کردن مبدا برای شروع وجود ندارد.</string>
-    <string name="dialog_routing_select_closer_start">لطفا نقطه شروع را نزدیک‌تر به جاده انتخاب کنید.</string>
-    <string name="dialog_routing_change_end">تنظیم مقصد</string>
-    <string name="dialog_routing_end_not_determined">مسیر ایجاد نشد.ناتوان در تعیین مقصد.</string>
-    <string name="dialog_routing_select_closer_end">لطفا مقصد تعیین شده را نزدیک‌تر به جاده انتخاب نمایید.</string>
-    <string name="dialog_routing_change_intermediate">ناتوان در تعیین نقطه میانی.</string>
-    <string name="dialog_routing_intermediate_not_determined">لطفا نقطه میانی را تنظیم کنید.</string>
     <string name="dialog_routing_system_error">خطای سیستم</string>
-    <string name="dialog_routing_application_error">ناتوان در ایجاد مسیر به علت خطای برنامه.</string>
-    <string name="dialog_routing_try_again">لطفا دوباره تلاش کنید</string>
     <string name="not_now">اکنون خیر</string>
-    <string name="dialog_routing_download_and_build_cross_route">ایا مایل به دانلود نقشه و ایجاد مسیر‌های بهینه بیشتری که نقشه‌های بیشتری را پوشش میدهد هستید؟</string>
-    <string name="dialog_routing_download_cross_route">دانلود نقشه‌های اضافی برای ایجاد مسیری بهتر که حاشیه‌های این نقشه را رد می کند.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">برای شروع جستجو و مسیر‌یابی لطفا نقشه رادانلود کنید بعد از آن دیگر نیازی به اتصال به اینترنت ندارید و برنامه کاملا آفلاین اجرا می شود.</string>
@@ -469,9 +446,10 @@
     <string name="email_or_username">ایمیل یا نام کاربری</string>
     <string name="editor_add_phone">افزودن تلفن</string>
     <string name="level">طبقه</string>
+    <!-- Building level -->
+    <string name="level_value_generic">سطح: %s</string>
     <string name="downloader_delete_map_dialog">تمام ویرایش‌های که بر روی نقشه انجام داده اید به همراه نقشه حذف شد.</string>
     <string name="downloader_update_maps">به‌روزرسانی نقشه‌ها</string>
-    <string name="downloader_mwm_migration_dialog">برای ایجاد مسیر، باید تمام نقشه‌ها را به‌روزرسانی کنید و سپس دوباره مسیر را برنامه‌ریزی کنید.</string>
     <string name="downloader_search_field_hint">یافتن نقشه</string>
     <string name="common_check_internet_connection_dialog">لطفا تنظیمات خود را بازبینی کنید و مطمئن شوید که ابزار شما به اینترنت متصل است.</string>
     <string name="downloader_no_space_title">فظای کافی موجود نیست</string>
@@ -493,7 +471,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">داده های OpenStreetMap ایجاد شده توسط انجمن از %s. درباره نحوه ویرایش و به روز رسانی نقشه در OpenStreetMap.org بیشتر بیاموزید</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) یک پروژه اجتماعی برای ساخت یک نقشه رایگان و باز است. این منبع اصلی داده های نقشه در نقشه های ارگانیک است و مشابه ویکی پدیا کار می کند. میu200cتوانید مکانu200cها را اضافه یا ویرایش کنید تا در دسترس میلیونu200cها کاربر در سراسر جهان قرار گیرند.\nبه انجمن بپیوندید و به ایجاد نقشه بهتر برای همه کمک کنید!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) یک پروژهٔ اجتماعی برای ساختن نقشه‌ای آزاد و باز است. این منبع اصلی داده‌های نقشه در Organic Maps است و به‌طور مشابهی با ویکی‌پدیا کار می‌کند. شما می‌توانید مکان‌ها را اضافه یا ویرایش کنید و آن‌ها در اختیار میلیون‌ها کاربر در سراسر جهان قرار می‌گیرند. به جامعه بپیوندید و به ساختن نقشه‌ای بهتر برای همه کمک کنید!</string>
     <string name="login_to_make_edits_visible">یک حساب OpenStreetMap ایجاد کنید یا وارد شوید تا ویرایش های نقشه خود را در جهان منتشر کنید.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d از %2$d</string>
@@ -508,7 +486,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">توجه به داوطلبان OpenStreetMap (اختیاری)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">خطاهای موجود در نقشه یا مواردی که با استفاده از نقشه های ارگانیک قابل ویرایش نیستند را شرح دهید</string>
+    <string name="editor_note_hint">خطاهای روی نقشه یا مواردی را که قابل ویرایش نیستند با Organic Maps توصیف کنید</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">ویرایش های شما در پایگاه داده عمومی <a href="https://wiki.openstreetmap.org/wiki/Fa:About_OpenStreetMap">OpenStreetMap</a> آپلود می شود. لطفا اطلاعات شخصی یا دارای حق چاپ را اضافه نکنید.</string>
     <string name="editor_more_about_osm">در مورد OpenStreetMap بیشتر بدانید</string>
@@ -646,6 +624,10 @@
     <string name="layers_title">سبک ها و لایه های نقشه</string>
     <string name="bookmarks_empty_list_title">این فهرست خالی است</string>
     <string name="bookmarks_empty_list_message">برای افزودن یک نشانک، روی یک مکان روی نقشه ضربه بزنید و سپس روی نماد ستاره ضربه بزنید</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">تغییر رنگ همه نشانک‌ها</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">تغییر رنگ همه مسیرها</string>
     <string name="category_desc_more">…بیشتر</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">صادرات KMZ</string>
@@ -671,6 +653,9 @@
     <string name="power_managment_setting_manual_max">حداکثر ذخیره انرژی</string>
     <!-- Settings/Bookmark Text Placement -->
     <string name="bookmarks_text_placement_title">نام‌ها را روی نقشه نشانه‌گذاری کنید</string>
+    <string name="bookmarks_text_placement_description">اگر نشانک‌ها زیاد باشند، نمایش نام آن‌ها روی نقشه ممکن است باعث کند شدن برنامه شود.</string>
+    <string name="show_to_the_right">نمایش به سمت راست</string>
+    <string name="show_at_the_bottom">در پایین نمایش دهید</string>
     <string name="enable_logging_warning_message">این گزینه ثبت گزارش را برای اهداف تشخیصی فعال می‌کند. برای کارکنان بخش پشتیبانی که مشکلات برنامه را عیب یابی می‌کنند، مفید باشد. این گزینه را تنها در صورت درخواست پشتیبانی Organic Maps فعال کنید.</string>
     <string name="driving_options_title">گزینه‌های رانندگی</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
@@ -721,6 +706,7 @@
     <string name="moreyear_ago_sorttype">بیش از یک سال قبل</string>
     <string name="near_me_sorttype">نزدیک من</string>
     <string name="others_sorttype">دیگران</string>
+    <string name="editor_add_select_category_all_subtitle">همه دسته‌بندی‌ها</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">غذا</string>
@@ -740,9 +726,6 @@
     <string name="search_in_the_list">جستجو در فهرست</string>
     <string name="religious_places">اماکن مقدس</string>
     <string name="select_list">انتخاب فهرست</string>
-    <string name="transit_not_found">راهنمای مترو در این منطقه هنوز دردسترس نیست</string>
-    <string name="dialog_pedestrian_route_is_long_header">مسیر مترو یافت نشد</string>
-    <string name="dialog_pedestrian_route_is_long_message">لطفا نقطه آغاز و پایان نزدیک تری به ایستگاه مترو انتخاب کنید</string>
     <string name="button_layer_isolines">خط تراز</string>
     <string name="isolines_activation_error_dialog">برای فعال سازی و استفاده از لایه توپوگرافی نقشه منطقه را به روزرسانی یا دانلود کنید</string>
     <string name="isolines_location_error_dialog">لایه توپوگرافی هنوز برای این منطقه در دسترس نیست</string>
@@ -808,9 +791,9 @@
     <!-- App tip #09 -->
     <string name="app_tip_09">هدف اصلی ما ساختن نقشه هایی سریع، متمرکز بر حریم خصوصی و با کاربری آسان است که شما عاشق آن خواهید شد.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
-    <string name="car_used_on_the_phone_screen">اکنون در حال استفاده از نقشه های ارگانیک در صفحه گوشی هستید</string>
+    <string name="car_used_on_the_phone_screen">شما اکنون در حال استفاده از Organic Maps بر روی صفحهٔ تلفن همراه هستید</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
-    <string name="car_used_on_the_car_screen">اکنون از نقشه های ارگانیک در صفحه ماشین استفاده می کنید</string>
+    <string name="car_used_on_the_car_screen">شما اکنون در حال استفاده از Organic Maps بر روی صفحهٔ خودرو هستید</string>
     <!-- Displayed on the phone screen. Android Auto connected -->
     <string name="aa_connected_title">شما به Android Auto متصل هستید</string>
     <!-- Displayed on the phone screen. Button to display maps on the phone screen instead of a car -->
@@ -821,8 +804,6 @@
     <string name="aa_location_permissions_request">Organic Maps به دسترسی به مکان نیاز دارد. وقتی ایمن است، اعلان گوشی خود را بررسی کنید.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">این برنامه به اجازه شما نیاز دارد</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">Organic Maps در Android Auto برای عملکرد بهتر به مجوزهای مکان نیاز دارد</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">اعطای مجوزها</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
@@ -877,4 +858,20 @@
     <string name="nav_auto">مسیریابی خودکار</string>
     <!-- Setting option to sync the app's theme with the operating system's dark/light mode -->
     <string name="follow_system">تابع سیستم</string>
+    <!-- Title of the bottom sheet when sharing the track -->
+    <string name="share_track">اشتراک‌گذاری مسیر</string>
+    <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
+    <string name="delete_track_dialog_title">حذف %s؟</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">ورود با رمز عبور</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">ورود با استفاده از مرورگر</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">به‌تازگی استفاده شده</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">رنگ نشانک‌ها تغییر کرد</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">رنگ مسیرها تغییر کرد</string>
 </resources>

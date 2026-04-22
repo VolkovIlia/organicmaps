@@ -165,7 +165,7 @@
     <string name="type.amenity.public_bath">Bany públic</string>
     <string name="type.amenity.shower">Dutxa</string>
     <string name="type.amenity.stripclub">Club de striptease</string>
-    <string name="type.amenity.taxi">Desocupada de taxis</string>
+    <string name="type.amenity.taxi">Parada de taxis</string>
     <string name="type.amenity.telephone">Telèfon</string>
     <string name="type.amenity.theatre">Teatre</string>
     <string name="type.amenity.toilets">Vàter</string>
@@ -325,7 +325,7 @@
     <string name="type.cuisine.mediterranean">Mediterrània</string>
     <string name="type.cuisine.mexican">Mexicana</string>
     <string name="type.cuisine.moroccan">Marroquina</string>
-    <string name="type.cuisine.noodles">Fideus xinesos</string>
+    <string name="type.cuisine.noodle">Fideus xinesos</string>
     <string name="type.cuisine.oriental">Cuina de l’Àsia oriental</string>
     <string name="type.cuisine.pancake">Pancake</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -341,6 +341,7 @@
     <string name="type.cuisine.sausage">Salsitxa</string>
     <string name="type.cuisine.savory_pancakes">Creps salades</string>
     <string name="type.cuisine.seafood">Marisc</string>
+    <string name="type.cuisine.shawarma">Xauarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Espanyola</string>
     <string name="type.cuisine.steak_house">Restaurant de carn</string>
@@ -349,6 +350,7 @@
     <string name="type.cuisine.tea">Te</string>
     <string name="type.cuisine.thai">Tailandès</string>
     <string name="type.cuisine.turkish">Turca</string>
+    <string name="type.cuisine.uzbek">Uzbeka</string>
     <string name="type.cuisine.vegan">Vegà</string>
     <string name="type.cuisine.vegetarian">Vegetarià</string>
     <string name="type.cuisine.vietnamese">Vietnamita</string>
@@ -444,6 +446,7 @@
     <string name="type.highway.pedestrian.bridge">Pont de vianants</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Túnel de vianants</string>
+    <string name="type.highway.platform">Andana</string>
     <string name="type.highway.primary">Carretera primària</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Pont</string>
@@ -525,7 +528,7 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.trunk_link.tunnel">Túnel</string>
     <string name="type.highway.unclassified">Carretera sense classificar</string>
-    <string name="type.highway.unclassified.area">Àrea sense classificar</string>
+    <string name="type.highway.unclassified.area">Carretera sense classificar</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.unclassified.bridge">Pont</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
@@ -534,19 +537,17 @@
     <string name="type.area_highway.footway">Camí per a vianants</string>
     <string name="type.area_highway.living_street">Carrer residencial</string>
     <string name="type.area_highway.motorway">Autopista</string>
-    <string name="type.area_highway.path">Camí</string>
+    <string name="type.area_highway.path">Corriol</string>
     <string name="type.area_highway.pedestrian">Carrer de vianants</string>
     <string name="type.area_highway.primary">Carretera primària</string>
     <string name="type.area_highway.residential">Carrer urbà</string>
     <string name="type.area_highway.secondary">Carretera secundària</string>
-    <string name="type.area_highway.service">Carretera de servei</string>
+    <string name="type.area_highway.service">Via de servei</string>
     <string name="type.area_highway.tertiary">Carretera terciària</string>
     <string name="type.area_highway.steps">Escales</string>
-    <string name="type.area_highway.track">Via</string>
+    <string name="type.area_highway.track">Sender</string>
     <string name="type.area_highway.trunk">Carretera nacional</string>
-    <string name="type.area_highway.unclassified">Àrea de carretera sense classificar</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
+    <string name="type.area_highway.unclassified">Carretera sense classificar</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Objecte històric</string>
@@ -757,7 +758,9 @@
     <string name="type.natural.wetland.marsh">Aiguamoll</string>
     <string name="type.noexit">Atzucac</string>
     <string name="type.office">Oficina</string>
+    <string name="type.office.architect">Estudi d\'arquitectura</string>
     <string name="type.office.company">Oficina d’empresa</string>
+    <string name="type.office.educational_institution">Institució educativa</string>
     <string name="type.office.estate_agent">Agent immobiliari</string>
     <string name="type.office.government">Oficina governamental</string>
     <string name="type.office.insurance">Oficina d’assegurances</string>
@@ -839,6 +842,7 @@
     <string name="type.railway.crossing">Passatge a nivell</string>
     <string name="type.railway.disused">Ferrocarril en desús</string>
     <string name="type.railway.disused.bridge">Pont ferroviari en desús</string>
+    <string name="type.railway.disused.tunnel">Túnel ferroviari en desús</string>
     <string name="type.railway.funicular">Funicular</string>
     <string name="type.railway.funicular.bridge">Pont funicular</string>
     <string name="type.railway.funicular.tunnel">Túnel funicular</string>
@@ -1151,6 +1155,15 @@
     <string name="type.shop.chemist">Farmacia</string>
     <string name="type.shop.chocolate">Xocolateria</string>
     <string name="type.shop.clothes">Botiga de roba</string>
+    <string name="type.shop.clothes.children">Botiga de roba infantil</string>
+    <string name="type.shop.clothes.fashion">Boutique de moda</string>
+    <string name="type.shop.clothes.hats">Botiga de barrets</string>
+    <string name="type.shop.clothes.men">Botiga de roba per a homes</string>
+    <string name="type.shop.clothes.sports">Botiga de roba esportiva</string>
+    <string name="type.shop.clothes.suits">Sastreria</string>
+    <string name="type.shop.clothes.underwear">Botiga de roba interior</string>
+    <string name="type.shop.clothes.wedding">Botiga de vestits de casament</string>
+    <string name="type.shop.clothes.women">Botiga de roba de dona</string>
     <string name="type.shop.coffee">Cafeteria</string>
     <string name="type.shop.computer">Botiga d’informàtica</string>
     <string name="type.shop.confectionery">Botiga de llaminadures</string>
@@ -1171,6 +1184,7 @@
     <string name="type.shop.funeral_directors">Funeraris</string>
     <string name="type.shop.furniture">Botiga de mobles</string>
     <string name="type.shop.garden_centre">Centre de jardineria</string>
+    <string name="type.shop.games">Botiga de jocs</string>
     <string name="type.shop.gas">Botiga de gas</string>
     <string name="type.shop.gift">Botiga de regals</string>
     <string name="type.shop.greengrocer">Fruiteria</string>
@@ -1186,6 +1200,7 @@
     <string name="type.shop.kiosk">Quiosc</string>
     <string name="type.shop.kitchen">Botiga de cuina</string>
     <string name="type.shop.laundry">Bugaderia</string>
+    <string name="type.shop.leather">Botiga d\'articles de pell</string>
     <string name="type.shop.mall">Centre comercial</string>
     <string name="type.shop.massage">Saló de massatges</string>
     <string name="type.shop.mobile_phone">Botiga de telèfons mòbils</string>
@@ -1204,6 +1219,7 @@
     <string name="type.shop.pet">Botiga d’animals</string>
     <string name="type.shop.pet_grooming">Peluca de mascotes</string>
     <string name="type.shop.photo">Botiga de fotografia</string>
+    <string name="type.shop.religion">Botiga d\'articles religiosos</string>
     <string name="type.shop.rental">Botiga de lloguer</string>
     <string name="type.shop.rental.bicycle">Botiga de lloguer de bicicletes</string>
     <string name="type.amenity.bicycle_rental.shop">Botiga de lloguer de bicicletes</string>

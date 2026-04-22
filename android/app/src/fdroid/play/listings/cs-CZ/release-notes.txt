@@ -1,10 +1,10 @@
-• NOVÉ: Kontrastnější barvy tmavého motivu
-• NOVÉ: Google Assistant pro navigaci a vyhledávání
-• Mapová data OSM k 11. lednu
-• Nastavení motivu navigace „Auto“ sleduje systémový tmavý/světlý režim
-• Tenčí linky metra
-• Výsledky vyhledávání zobrazují kapacitu pro parkování motocyklů, půjčovny kol, nabíjení kol a nabíjení aut
-• Zobrazit úroveň podlaží ve výsledcích vyhledávání
-• Albánské překlady a hlasové navádění TTS
-• Aktualizované FAQ a překlady aplikací
-…více na omaps.org/cs/news
+• Mapová data OSM k 10. březnu, Wikipedie k 1. březnu
+• Podrobnější výškové izočáry pro čínské provincie
+• Přidány řady stromů, kožené obchody a obchody prodávající náboženské zboží
+• Přidána podpora pro podmíněné omezení rychlosti
+• Tanzánie rozdělena na menší regiony
+• Vylepšené zobrazení otevírací doby podniků
+• Opraveno několik pádů
+• Vylepšené překlady názvů aplikací a zemí
+• Přidána nástupiště MHD bez blízkých autobusových zastávek
+omaps.org/cs/news

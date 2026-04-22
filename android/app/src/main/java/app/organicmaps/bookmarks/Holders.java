@@ -21,15 +21,16 @@ import app.organicmaps.sdk.bookmarks.data.BookmarkInfo;
 import app.organicmaps.sdk.bookmarks.data.BookmarkManager;
 import app.organicmaps.sdk.bookmarks.data.IconClickListener;
 import app.organicmaps.sdk.bookmarks.data.Track;
-import app.organicmaps.util.Graphics;
 import app.organicmaps.util.UiUtils;
 import app.organicmaps.util.Utils;
+import app.organicmaps.utils.Graphics;
+import app.organicmaps.widget.recycler.DividerBehavior;
 import app.organicmaps.widget.recycler.RecyclerClickListener;
 import app.organicmaps.widget.recycler.RecyclerLongClickListener;
 
 public class Holders
 {
-  public static class GeneralViewHolder extends RecyclerView.ViewHolder
+  public static class GeneralViewHolder extends RecyclerView.ViewHolder implements DividerBehavior
   {
     @NonNull
     private final TextView mText;
@@ -54,9 +55,15 @@ public class Holders
     {
       return mImage;
     }
+
+    @Override
+    public boolean useFullWidthDivider()
+    {
+      return true;
+    }
   }
 
-  public static class HeaderViewHolder extends RecyclerView.ViewHolder
+  public static class HeaderViewHolder extends RecyclerView.ViewHolder implements DividerBehavior
   {
     @NonNull
     private final TextView mButton;
@@ -92,6 +99,12 @@ public class Holders
     {
       mButton.setText(showAll ? R.string.bookmark_lists_show_all : R.string.bookmark_lists_hide_all);
       mButton.setOnClickListener(new ToggleShowAllChildCategoryClickListener(action, showAll));
+    }
+
+    @Override
+    public boolean useFullWidthDivider()
+    {
+      return true;
     }
 
     public interface HeaderAction
@@ -151,7 +164,7 @@ public class Holders
     }
   }
 
-  static class CategoryViewHolderBase extends RecyclerView.ViewHolder
+  static class CategoryViewHolderBase extends RecyclerView.ViewHolder implements DividerBehavior
   {
     @Nullable
     protected BookmarkCategory mEntity;
@@ -163,6 +176,12 @@ public class Holders
     {
       super(root);
       mSize = root.findViewById(R.id.size);
+    }
+
+    @Override
+    public boolean useFullWidthDivider()
+    {
+      return false;
     }
 
     protected void setSize()
@@ -258,7 +277,7 @@ public class Holders
     @NonNull
     private final TextView mName;
     @NonNull
-    ImageView mVisibilityMarker;
+    CheckBox mVisibilityMarker;
     @NonNull
     ImageView mMoreButton;
 
@@ -272,10 +291,7 @@ public class Holders
 
     void setVisibilityState(boolean visible)
     {
-      if (visible)
-        mVisibilityMarker.setImageResource(R.drawable.ic_show);
-      else
-        mVisibilityMarker.setImageResource(R.drawable.ic_hide);
+      mVisibilityMarker.setChecked(visible);
     }
 
     void setVisibilityListener(@Nullable View.OnClickListener listener)
@@ -294,7 +310,7 @@ public class Holders
     }
   }
 
-  static abstract class BaseBookmarkHolder extends RecyclerView.ViewHolder
+  static abstract class BaseBookmarkHolder extends RecyclerView.ViewHolder implements DividerBehavior
   {
     @NonNull
     private final View mView;
@@ -324,6 +340,12 @@ public class Holders
         return true;
       });
     }
+
+    @Override
+    public boolean useFullWidthDivider()
+    {
+      return false;
+    }
   }
 
   static class BookmarkViewHolder extends BaseBookmarkHolder
@@ -347,7 +369,7 @@ public class Holders
     void bind(@NonNull SectionPosition position, @NonNull BookmarkListAdapter.SectionsDataSource sectionsDataSource)
     {
       final long bookmarkId = sectionsDataSource.getBookmarkId(position);
-      BookmarkInfo bookmark = new BookmarkInfo(sectionsDataSource.getCategory().getId(), bookmarkId);
+      BookmarkInfo bookmark = BookmarkManager.INSTANCE.getBookmarkInfo(bookmarkId);
       mName.setText(bookmark.getName());
       final Location loc = MwmApplication.from(mIcon.getContext()).getLocationHelper().getSavedLocation();
 
@@ -371,7 +393,7 @@ public class Holders
 
     public void setBookmarkIconClickListener(IconClickListener listener)
     {
-      mIcon.setOnClickListener(v -> listener.onItemClick((ImageView) v, getBindingAdapterPosition()));
+      mIcon.setOnClickListener(v -> listener.onItemClick(getBindingAdapterPosition()));
     }
   }
 
@@ -417,7 +439,7 @@ public class Holders
 
     public void setTrackIconClickListener(IconClickListener listener)
     {
-      mIcon.setOnClickListener(v -> listener.onItemClick((ImageView) v, getBindingAdapterPosition()));
+      mIcon.setOnClickListener(v -> listener.onItemClick(getBindingAdapterPosition()));
     }
   }
 
@@ -436,6 +458,12 @@ public class Holders
     void bind(@NonNull SectionPosition position, @NonNull BookmarkListAdapter.SectionsDataSource sectionsDataSource)
     {
       mView.setText(sectionsDataSource.getTitle(position.getSectionIndex(), mView.getResources()));
+    }
+
+    @Override
+    public boolean useFullWidthDivider()
+    {
+      return true;
     }
   }
 

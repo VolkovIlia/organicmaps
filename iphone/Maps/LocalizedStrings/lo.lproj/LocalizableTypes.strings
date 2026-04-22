@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "ເມດິເຕີເຣນຽນ";
 "type.cuisine.mexican" = "ເມັກຊິໂກ";
 "type.cuisine.moroccan" = "ໂມຣັອກໂກ";
-"type.cuisine.noodles" = "ເຝີ/ໝີ່";
+"type.cuisine.noodle" = "ເຝີ/ໝີ່";
 "type.cuisine.oriental" = "ອາຊີຕາເວັນອອກ";
 "type.cuisine.pancake" = "ແພນເຄັກ";
 "type.cuisine.pasta" = "ພັດສະຕ້າ";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "ໄສ້ກອກ";
 "type.cuisine.savory_pancakes" = "ແພນເຄັກຄາວ";
 "type.cuisine.seafood" = "ອາຫານທະເລ";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "ໂຊບະ";
 "type.cuisine.spanish" = "ສະເປນ";
 "type.cuisine.steak_house" = "ຮ້ານສະເຕັກ";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "ຊາ";
 "type.cuisine.thai" = "ໄທ";
 "type.cuisine.turkish" = "ຕວກກີ";
+"type.cuisine.uzbek" = "Uzbek";
 "type.cuisine.vegan" = "ວີແກນ";
 "type.cuisine.vegetarian" = "ອາຫານມັງສະວິລັດ";
 "type.cuisine.vietnamese" = "ຫວຽດນາມ";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "ອຸມົງຄົນຍ່າງ";
+"type.highway.platform" = "ຊານຊາລາ";
 "type.highway.primary" = "ທາງຫຼັກ";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -604,7 +607,7 @@
 "type.area_highway.footway" = "ທາງຍ່າງ";
 "type.area_highway.living_street" = "ຖະໜົນຊຸມຊົນ";
 "type.area_highway.motorway" = "ທາງດ່ວນ";
-"type.area_highway.path" = "ທາງຍ່າງ";
+"type.area_highway.path" = "ທາງຍ່າງຂະໜາດນ້ອຍ";
 "type.area_highway.pedestrian" = "ຖະໜົນຄົນຍ່າງ";
 "type.area_highway.primary" = "ທາງຫຼັກ";
 "type.area_highway.residential" = "ຖະໜົນໃນເຂດທີ່ພັກອາໄສ";
@@ -612,11 +615,11 @@
 "type.area_highway.service" = "ທາງບໍລິການ";
 "type.area_highway.tertiary" = "ທາງຍ່ອຍ";
 "type.area_highway.steps" = "ຂັ້ນໄດ";
-"type.area_highway.track" = "ທາງຊອຍ";
+"type.area_highway.track" = "ທາງຊອຍ/ທາງດິນ";
 "type.area_highway.trunk" = "ທາງຫຼວງສາຍຫຼັກ";
 "type.area_highway.unclassified" = "ທາງທົ່ວໄປ";
-"type.highway.world_level" = "ທາງລະດັບໂລກ";
-"type.highway.world_towns_level" = "ທາງລະດັບເມືອງ";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "ບຶງ";
 "type.noexit" = "ທາງຕັນ";
 "type.office" = "ຫ້ອງການ";
+"type.office.architect" = "Architect Office";
 "type.office.company" = "ຫ້ອງການບໍລິສັດ";
+"type.office.educational_institution" = "Educational Institution";
 "type.office.estate_agent" = "ນາຍໜ້າອະສັງຫາລິມະຊັບ";
 "type.office.government" = "ຫ້ອງການລັດ";
 "type.office.insurance" = "ຫ້ອງການປະກັນໄພ";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "ທາງຜ່ານລົດໄຟ";
 "type.railway.disused" = "ທາງລົດໄຟທີ່ເລີກໃຊ້ແລ້ວ";
 "type.railway.disused.bridge" = "ຂົວທາງລົດໄຟທີ່ເລີກໃຊ້ແລ້ວ";
+"type.railway.disused.tunnel" = "Disused Railway Tunnel";
 "type.railway.funicular" = "ລົດໄຟໄຕ່ເຂົາ";
 "type.railway.funicular.bridge" = "ຂົວລົດໄຟໄຕ່ເຂົາ";
 "type.railway.funicular.tunnel" = "ອຸມົງລົດໄຟໄຕ່ເຂົາ";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "ຮ້ານຂາຍຢາ";
 "type.shop.chocolate" = "ຮ້ານຂາຍຊັອກໂກແລັດ";
 "type.shop.clothes" = "ຮ້ານຂາຍເສື້ອຜ້າ";
+"type.shop.clothes.children" = "Children's Clothes Shop";
+"type.shop.clothes.fashion" = "Fashion Boutique";
+"type.shop.clothes.hats" = "Hat Shop";
+"type.shop.clothes.men" = "Men's Clothes Shop";
+"type.shop.clothes.sports" = "Sports Clothes Shop";
+"type.shop.clothes.suits" = "Suits Shop";
+"type.shop.clothes.underwear" = "Underwear Shop";
+"type.shop.clothes.wedding" = "Wedding Clothes Shop";
+"type.shop.clothes.women" = "Women's Clothes Shop";
 "type.shop.coffee" = "ຮ້ານກາເຟ";
 "type.shop.computer" = "ຮ້ານຂາຍຄອມພິວເຕີ";
 "type.shop.confectionery" = "ຮ້ານຂາຍເຂົ້າໜົມ";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "ຮ້ານບໍລິການງານສົບ";
 "type.shop.furniture" = "ຮ້ານຂາຍເຟີນີເຈີ";
 "type.shop.garden_centre" = "ຮ້ານຂາຍອຸປະກອນເຮັດສວນ";
+"type.shop.games" = "Games Shop";
 "type.shop.gas" = "ຮ້ານຂາຍກາສ";
 "type.shop.gift" = "ຮ້ານຂາຍຂອງຂວັນ";
 "type.shop.greengrocer" = "ຮ້ານຂາຍຜັກແລະໝາກໄມ້";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "ຮ້ານຂາຍເຄື່ອງນ້ອຍ";
 "type.shop.kitchen" = "ຮ້ານຂາຍອຸປະກອນເຮືອນຄົວ";
 "type.shop.laundry" = "ຮ້ານຊັກລີດ";
+"type.shop.leather" = "ຮ້ານຂາຍເຄື່ອງໜັງ";
 "type.shop.mall" = "ສູນການຄ້າ";
 "type.shop.massage" = "ຮ້ານນວດ";
 "type.shop.mobile_phone" = "ຮ້ານຂາຍໂທລະສັບ";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "ຮ້ານຂາຍສັດລ້ຽງ";
 "type.shop.pet_grooming" = "ຮ້ານຕັດແຕ່ງຂົນສັດລ້ຽງ";
 "type.shop.photo" = "ຮ້ານຖ່າຍຮູບ";
+"type.shop.religion" = "ຮ້ານຂາຍເຄື່ອງສາດສະໜາ";
 "type.shop.rental" = "ຮ້ານໃຫ້ເຊົ່າ";
 "type.shop.rental.bicycle" = "ຮ້ານໃຫ້ເຊົ່າລົດຖີບ";
 "type.amenity.bicycle_rental.shop" = "ຮ້ານໃຫ້ເຊົ່າລົດຖີບ";

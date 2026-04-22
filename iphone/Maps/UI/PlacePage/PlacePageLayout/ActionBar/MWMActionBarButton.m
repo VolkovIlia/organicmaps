@@ -102,7 +102,9 @@ NSString * titleForButton(MWMActionBarButtonType type, BOOL isSelected)
     break;
   case MWMActionBarButtonTypeBookmark:
     BOOL hasRecentlyDeletedBookmark = [MWMBookmarksManager.sharedManager hasRecentlyDeletedBookmark];
-    MWMBookmarksButtonState state = isSelected ? MWMBookmarksButtonStateDelete : (hasRecentlyDeletedBookmark ? MWMBookmarksButtonStateRecover : MWMBookmarksButtonStateSave);
+    MWMBookmarksButtonState state =
+        isSelected ? MWMBookmarksButtonStateDelete
+                   : (hasRecentlyDeletedBookmark ? MWMBookmarksButtonStateRecover : MWMBookmarksButtonStateSave);
     [self setBookmarkButtonState:state];
     break;
   case MWMActionBarButtonTypeTrack:
@@ -117,7 +119,7 @@ NSString * titleForButton(MWMActionBarButtonType type, BOOL isSelected)
   case MWMActionBarButtonTypeDeleteTrackRecording:
     [self.button setImage:[[UIImage imageNamed:@"ic_route_manager_trash"]
                               imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                  forState:UIControlStateNormal];
+                 forState:UIControlStateNormal];
     self.button.coloring = MWMButtonColoringRed;
     break;
   case MWMActionBarButtonTypeRouteFrom:
@@ -208,17 +210,6 @@ NSString * titleForButton(MWMActionBarButtonType type, BOOL isSelected)
 - (void)disableRouteToButtonHighlight
 {
   [NSUserDefaults.standardUserDefaults setBool:true forKey:kUDDidHighlightRouteToButton];
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-  [super traitCollectionDidChange:previousTraitCollection];
-  if (@available(iOS 13.0, *))
-  {
-    if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection])
-      // Update button for the current selection state.
-      [self.button setSelected:self.button.isSelected];
-  }
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event

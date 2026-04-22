@@ -7,10 +7,10 @@
     <string name="type.addr_interpolation.odd">Διεύθυνση/Τετράγωνο</string>
     <string name="type.aerialway">Τελεφερίκ</string>
     <string name="type.aerialway.cable_car">Τελεφερίκ</string>
-    <string name="type.aerialway.chair_lift">Τελεφερίκ</string>
-    <string name="type.aerialway.drag_lift">Τελεφερίκ</string>
-    <string name="type.aerialway.gondola">Τελεφερίκ</string>
-    <string name="type.aerialway.mixed_lift">Τελεφερίκ</string>
+    <string name="type.aerialway.chair_lift">Αναβατήρας καρεκλών</string>
+    <string name="type.aerialway.drag_lift">Συρόμενος αναβατήρας</string>
+    <string name="type.aerialway.gondola">Γόνδολα</string>
+    <string name="type.aerialway.mixed_lift">Συνδυασμένος αναβατήρας</string>
     <string name="type.aerialway.station">Σταθμός τελεφερίκ</string>
     <string name="type.aeroway">Υποδομή εναέριου χώρου</string>
     <string name="type.aeroway.aerodrome">Αεροδρόμιο</string>
@@ -174,7 +174,7 @@
     <string name="type.toilets.yes">Τουαλέτα</string>
     <string name="type.amenity.townhall">Δημαρχείο</string>
     <string name="type.amenity.university">Πανεπιστήμιο</string>
-    <string name="type.amenity.vending_machine">Μηχανή αυτόματου πωλητή</string>
+    <string name="type.amenity.vending_machine">Αυτόματος πωλητής</string>
     <string name="type.amenity.vending_machine.cigarettes">Αυτόματος πωλητής τσιγάρων</string>
     <string name="type.amenity.vending_machine.coffee">Διανεμητής καφέ</string>
     <string name="type.amenity.vending_machine.condoms">Διανεμητής προφυλακτικών</string>
@@ -182,7 +182,7 @@
     <string name="type.amenity.vending_machine.food">Διανεμητής τροφίμων</string>
     <string name="type.amenity.vending_machine.newspapers">Διανεμητής εφημερίδων</string>
     <string name="type.amenity.vending_machine.parking_tickets">Παρκόμετρο</string>
-    <string name="type.amenity.vending_machine.public_transport_tickets">Μηχάνημα αυτόματης πώλησης εισιτηρίων για ΜΜΕ</string>
+    <string name="type.amenity.vending_machine.public_transport_tickets">Αυτόματος πωλητής εισιτηρίων</string>
     <string name="type.amenity.vending_machine.sweets">Διανεμητής γλυκών</string>
     <string name="type.amenity.vending_machine.excrement_bags">Διανεμητής σακουλών περιττωμάτων</string>
     <string name="type.amenity.parcel_locker">Θυρίδα δεμάτων</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Μεσογειακή</string>
     <string name="type.cuisine.mexican">Μεξικάνικη</string>
     <string name="type.cuisine.moroccan">Μαροκινή</string>
-    <string name="type.cuisine.noodles">Χυλοπίτες</string>
+    <string name="type.cuisine.noodle">Χυλοπίτες</string>
     <string name="type.cuisine.oriental">Άπω Ανατολής</string>
     <string name="type.cuisine.pancake">Τηγανίτα</string>
     <string name="type.cuisine.pasta">Ζυμαρικά</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Λουκάνικο</string>
     <string name="type.cuisine.savory_pancakes">Αλμυρές τηγανίτες</string>
     <string name="type.cuisine.seafood">Θαλασσινά</string>
+    <string name="type.cuisine.shawarma">Σαουαρμά</string>
     <string name="type.cuisine.soba">Σόμπα (λεπτά μακαρόνια)</string>
     <string name="type.cuisine.spanish">Ισπανική</string>
     <string name="type.cuisine.steak_house">Μπριζολάδικο</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Τσάι</string>
     <string name="type.cuisine.thai">Ταϊλανδική</string>
     <string name="type.cuisine.turkish">Τουρκική</string>
+    <string name="type.cuisine.uzbek">Ουζμπεκική</string>
     <string name="type.cuisine.vegan">Για χορτοφάγους</string>
     <string name="type.cuisine.vegetarian">Χορτοφαγική</string>
     <string name="type.cuisine.vietnamese">Βιετναμέζικη</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Πεζογέφυρα</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Σήραγγα πεζών</string>
+    <string name="type.highway.platform">Πλατφόρμα</string>
     <string name="type.highway.primary">Πρωτεύων δρόμος</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Γέφυρα</string>
@@ -533,7 +536,7 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Σήραγγα</string>
     <string name="type.area_highway.cycleway">Ποδηλατόδρομος</string>
-    <string name="type.area_highway.footway">Μονοπάτι πεζοπορίας</string>
+    <string name="type.area_highway.footway">Μονοπάτι πεζών</string>
     <string name="type.area_highway.living_street">Οδός ήπιας κυκλοφορίας</string>
     <string name="type.area_highway.motorway">Αυτοκινητόδρομος</string>
     <string name="type.area_highway.path">Μονοπάτι</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Αγροτικός δρόμος</string>
     <string name="type.area_highway.trunk">Κύρια οδική αρτηρία</string>
     <string name="type.area_highway.unclassified">Τοπικός δρόμος</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Ιστορικό αντικείμενο</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Έλος</string>
     <string name="type.noexit">Αδιέξοδο</string>
     <string name="type.office">Γραφείο</string>
+    <string name="type.office.architect">Αρχιτεκτονικό γραφείο</string>
     <string name="type.office.company">Γραφείο επιχείρησης</string>
+    <string name="type.office.educational_institution">Εκπαιδευτικό ίδρυμα</string>
     <string name="type.office.estate_agent">Κτηματομεσίτης</string>
     <string name="type.office.government">Κυβερνητικό γραφείο</string>
     <string name="type.office.insurance">Ασφαλιστικό γραφείο</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Σιδηροδρομική διάβαση</string>
     <string name="type.railway.disused">Αχρησιμοποίητος σιδηρόδρομος</string>
     <string name="type.railway.disused.bridge">Αχρησιμοποίητη σιδηροδρομική γέφυρα</string>
+    <string name="type.railway.disused.tunnel">Αχρησιμοποίητη σιδηροδρομική σήραγγα</string>
     <string name="type.railway.funicular">Τελεφερίκ</string>
     <string name="type.railway.funicular.bridge">Γέφυρα τελεφερίκ</string>
     <string name="type.railway.funicular.tunnel">Σήραγγα τελεφερίκ</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Χημικά προϊόντα</string>
     <string name="type.shop.chocolate">Σοκολατοποιία</string>
     <string name="type.shop.clothes">Κατάστημα ρούχων</string>
+    <string name="type.shop.clothes.children">Κατάστημα παιδικών ρούχων</string>
+    <string name="type.shop.clothes.fashion">Μπουτίκ μόδας</string>
+    <string name="type.shop.clothes.hats">Κατάστημα καπέλων</string>
+    <string name="type.shop.clothes.men">Κατάστημα ανδρικών ρούχων</string>
+    <string name="type.shop.clothes.sports">Κατάστημα αθλητικών ρούχων</string>
+    <string name="type.shop.clothes.suits">Κατάστημα κοστουμιών</string>
+    <string name="type.shop.clothes.underwear">Κατάστημα εσωρούχων</string>
+    <string name="type.shop.clothes.wedding">Κατάστημα νυφικών</string>
+    <string name="type.shop.clothes.women">Κατάστημα γυναικείων ρούχων</string>
     <string name="type.shop.coffee">Καφεκοπτείο</string>
     <string name="type.shop.computer">Κατάστημα υπολογιστών</string>
     <string name="type.shop.confectionery">Γλυκά</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Γραφεία τελετών</string>
     <string name="type.shop.furniture">Κατάστημα επίπλων</string>
     <string name="type.shop.garden_centre">Κατάστημα ειδών κήπου</string>
+    <string name="type.shop.games">Κατάστημα παιχνιδιών</string>
     <string name="type.shop.gas">Κατάστημα υγραερίου</string>
     <string name="type.shop.gift">Είδη δώρου</string>
     <string name="type.shop.greengrocer">Μανάβικο</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Περίπτερο</string>
     <string name="type.shop.kitchen">Κατάστημα κουζίνας</string>
     <string name="type.shop.laundry">Άπλυτα</string>
+    <string name="type.shop.leather">Κατάστημα δερμάτινων ειδών</string>
     <string name="type.shop.mall">Εμπορικό κέντρο</string>
     <string name="type.shop.massage">Αίθουσα μασάζ</string>
     <string name="type.shop.mobile_phone">Κινητή Τηλεφωνία</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Κατάστημα για κατοικίδια</string>
     <string name="type.shop.pet_grooming">Περιποίηση κατοικίδιων ζώων</string>
     <string name="type.shop.photo">Φωτογραφείο</string>
+    <string name="type.shop.religion">Κατάστημα θρησκευτικών ειδών</string>
     <string name="type.shop.rental">Κατάστημα ενοικίασης</string>
     <string name="type.shop.rental.bicycle">Κατάστημα ενοικίασης ποδηλάτων</string>
     <string name="type.amenity.bicycle_rental.shop">Κατάστημα ενοικίασης ποδηλάτων</string>

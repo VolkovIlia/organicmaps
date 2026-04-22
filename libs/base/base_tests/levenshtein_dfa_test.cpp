@@ -1,7 +1,10 @@
+#include "base/string_utils.hpp"
 #include "testing/testing.hpp"
 
 #include "base/dfa_helpers.hpp"
 #include "base/levenshtein_dfa.hpp"
+#include "base/logging.hpp"
+#include "base/timer.hpp"
 
 #include <sstream>
 #include <string>
@@ -9,8 +12,8 @@
 
 namespace levenshtein_dfa_test
 {
-using namespace std;
-using namespace strings;
+using strings::LevenshteinDFA, strings::PrefixDFAModifier;
+using strings::MakeUniString, strings::UniString;
 
 enum class Status
 {
@@ -39,7 +42,7 @@ struct Result
   size_t m_prefixErrorsMade = 0;
 };
 
-string DebugPrint(Status status)
+std::string DebugPrint(Status status)
 {
   switch (status)
   {
@@ -50,9 +53,9 @@ string DebugPrint(Status status)
   UNREACHABLE();
 }
 
-string DebugPrint(Result const & result)
+std::string DebugPrint(Result const & result)
 {
-  ostringstream os;
+  std::ostringstream os;
   os << "Result [ ";
   os << "status: " << DebugPrint(result.m_status) << ", ";
   os << "errorsMade: " << result.m_errorsMade << ", ";
@@ -60,7 +63,7 @@ string DebugPrint(Result const & result)
   return os.str();
 }
 
-Result GetResult(LevenshteinDFA const & dfa, std::string const & s)
+Result GetResult(strings::LevenshteinDFA const & dfa, std::string const & s)
 {
   auto it = dfa.Begin();
   DFAMove(it, s);
@@ -190,11 +193,11 @@ UNIT_TEST(LevenshteinDFA_ErrorsMade)
   }
 
   {
-    vector<UniString> const allowedMisprints = {MakeUniString("yj")};
-    size_t const prefixSize = 1;
-    size_t const maxErrors = 1;
-    string const str = "yekaterinburg";
-    vector<pair<string, Result>> const queries = {
+    std::vector<UniString> const allowedMisprints = {MakeUniString("yj")};
+    size_t constexpr prefixSize = 1;
+    uint8_t constexpr maxErrors = 1;
+    std::string const str = "yekaterinburg";
+    std::vector<std::pair<std::string_view, Result>> const queries = {
         {"yekaterinburg", Result(Status::Accepts, 0 /* errorsMade */, 0 /* prefixErrorsMade */)},
         {"ekaterinburg", Result(Status::Accepts, 1 /* errorsMade */, 1 /* prefixErrorsMade */)},
         {"jekaterinburg", Result(Status::Accepts, 1 /* errorsMade */, 1 /* prefixErrorsMade */)},
@@ -256,10 +259,10 @@ UNIT_TEST(LevenshteinDFA_PrefixDFAModifier)
 
 UNIT_TEST(LevenshteinDFA_PrefixDFASmoke)
 {
-  vector<char> const kAlphabet = {'a', 'b', 'c'};
-  vector<string> sources;
-  vector<string> queries;
-  auto generate = [](vector<char> const & alphabet, size_t size, vector<string> & result)
+  std::vector<char> const kAlphabet = {'a', 'b', 'c'};
+  std::vector<std::string> sources;
+  std::vector<std::string> queries;
+  auto generate = [](std::vector<char> const & alphabet, size_t size, std::vector<std::string> & result)
   {
     result.clear();
     result.resize(math::PowUint(alphabet.size(), size));
@@ -290,4 +293,71 @@ UNIT_TEST(LevenshteinDFA_PrefixDFASmoke)
     }
   }
 }
+
+// Replicates the BuildLevenshteinDFA logic from indexer/search_string_utils without pulling
+// in the indexer dependency.
+namespace
+{
+// Mirrors search::kAllowedMisprints.
+std::vector<UniString> const kBenchMisprints = {
+    MakeUniString("ckq"), MakeUniString("eyjiu"), MakeUniString("gh"), MakeUniString("pf"), MakeUniString("vw"),
+    MakeUniString("ао"),  MakeUniString("еиэ"),   MakeUniString("шщ"), MakeUniString("jh"), MakeUniString("fh"),
+};
+
+// Mirrors search::GetMaxErrorsForTokenLength.
+uint8_t MaxErrorsForLength(size_t len)
+{
+  if (len < 4)
+    return 0;
+  if (len < 8)
+    return 1;
+  return 2;
+}
+
+LevenshteinDFA BuildDFA(UniString const & token)
+{
+  return LevenshteinDFA(token, 1 /* prefixSize */, kBenchMisprints, MaxErrorsForLength(token.size()));
+}
+}  // namespace
+
+UNIT_TEST(LevenshteinDFA_BuildBenchmark)
+{
+  // Fixed token set representative of real geocoding input: addresses (EN/RU),
+  // street types, city names, and short tokens (numbers, abbreviations).
+  // clang-format off
+  std::string_view const kTokens[] = {
+      // English address tokens
+      "gulf", "highway", "webster", "main", "street", "avenue", "boulevard",
+      "broadway", "springfield", "washington", "houston", "chicago",
+      // Russian address tokens
+      "минск", "комсомольская", "ленинградский", "проспект",
+      "улица", "москва", "санкт", "петербург", "тверская", "арбат",
+      // Short / digit-only tokens (maxErrors=0 case)
+      "15", "77598", "21401", "tx", "st", "fwy",
+      // Longer tokens stressing the maxErrors=2 path
+      "yekaterinburg", "novosibirsk", "vladivostok",
+  };
+  // clang-format on
+
+  std::vector<UniString> uniTokens;
+  uniTokens.reserve(std::size(kTokens));
+  for (auto const & t : kTokens)
+    uniTokens.push_back(MakeUniString(t));
+
+  /// @DebugNote Set to 2000 for benchmarking before-after.
+  size_t constexpr kIter = 10;
+  base::HighResTimer timer;
+
+  for (size_t iter = 0; iter < kIter; ++iter)
+    for (auto const & t : uniTokens)
+      (void)BuildDFA(t);
+
+  uint64_t const totalNs = timer.ElapsedNanoseconds();
+  size_t const totalBuilds = kIter * uniTokens.size();
+  uint64_t const perBuildNs = totalNs / totalBuilds;
+
+  LOG(LINFO, ("LevenshteinDFA build benchmark:", totalBuilds, "DFAs built in", totalNs / 1'000'000, "ms,", perBuildNs,
+              "ns/DFA"));
+}
+
 }  // namespace levenshtein_dfa_test

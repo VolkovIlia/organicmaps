@@ -1,9 +1,10 @@
-• NOVO: Boje tamne teme s većim kontrastom
-• NOVO: Google Assistant za navigaciju i pretraživanje
-• OSM podaci karte od 11. siječnja
-• Postavka teme navigacije "Automatski" prati tamni/svijetli način rada sustava
-• Tanije linije podzemne željeznice
-• Rezultati pretraživanja prikazuju kapacitet za parkiranje motocikala, najam bicikala, punjenje bicikala i punjenje automobila
-• Prikaži razinu kata u rezultatima pretraživanja
-• Albanski prijevodi i TTS glasovno navođenje
-…više na omaps.org/news
+• OSM kartografski podaci od 10. ožujka, Wikipedia od 1. ožujka
+• Detaljnije visinske izolinije za kineske pokrajine
+• Dodani su drvoredi, trgovine s kožom i trgovine s vjerskom robom
+• Dodana podrška za uvjetna ograničenja brzine
+• Tanzanija podijeljena na manje regije
+• Poboljšan prikaz radnog vremena poduzeća
+• Popravljeno je nekoliko padova
+• Poboljšani prijevodi naziva aplikacija i zemalja
+• Dodani peroni javnog prijevoza bez obližnjih autobusnih stanica
+omaps.org/news

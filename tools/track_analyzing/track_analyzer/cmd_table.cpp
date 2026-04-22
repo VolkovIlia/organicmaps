@@ -33,7 +33,6 @@
 #include "base/stl_helpers.hpp"
 #include "base/sunrise_sunset.hpp"
 
-#include <algorithm>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -332,13 +331,18 @@ private:
     CHECK(feature, ());
 
     auto const maxspeed = m_maxspeeds.GetMaxspeed(featureId);
-    auto const maxspeedValueKMpH =
-        maxspeed.IsValid() ? min(maxspeed.GetSpeedKmPH(segment.IsForward()), kMaxspeedTopBound) : kInvalidSpeed;
+    auto speedKMpH = kInvalidSpeed;
+    if (!segment.IsForward())
+      speedKMpH = maxspeed.GetBackwardKmPH();
+    if (speedKMpH == kInvalidSpeed)
+      speedKMpH = maxspeed.GetForwardKmPH();
+    if (speedKMpH != kInvalidSpeed && speedKMpH > kMaxspeedTopBound)
+      speedKMpH = kMaxspeedTopBound;
 
     m_prevFeatureId = featureId;
 
     feature::TypesHolder const types(*feature);
-    m_prevRoadInfo = {m_carModelTypes.GetType(types), maxspeedValueKMpH, m_cityRoads.IsCityRoad(featureId),
+    m_prevRoadInfo = {m_carModelTypes.GetType(types), speedKMpH, m_cityRoads.IsCityRoad(featureId),
                       m_vehicleModel.IsOneWay(types)};
     return m_prevRoadInfo;
   }
@@ -383,13 +387,14 @@ void CmdTagsTable(string const & filepath, string const & trackExtension, String
     auto indexGraphLoader =
         IndexGraphLoader::Create(vehicleType, false /* loadAltitudes */, carModelFactory, edgeEstimator, routingSource);
 
+    auto localCountryFile = storage.GetLatestLocalFile(mwmName);
+    CHECK(localCountryFile, ("Can't find latest country file for", mwmName));
+
     platform::CountryFile const countryFile(mwmName);
-    auto localCountryFile = storage.GetLatestLocalFile(countryFile);
-    CHECK(localCountryFile, ("Can't find latest country file for", countryFile.GetName()));
     if (!dataSource.IsLoaded(countryFile))
     {
       auto registerResult = dataSource.Register(*localCountryFile);
-      CHECK_EQUAL(registerResult.second, MwmSet::RegResult::Success, ("Can't register mwm", countryFile.GetName()));
+      CHECK_EQUAL(registerResult.second, MwmSet::RegResult::Success, ("Can't register mwm", mwmName));
     }
 
     auto const mwmId = numMwmIds->GetId(countryFile);

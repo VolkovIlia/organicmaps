@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Středomořská kuchyně";
 "type.cuisine.mexican" = "Mexická kuchyně";
 "type.cuisine.moroccan" = "Marocká kuchyně";
-"type.cuisine.noodles" = "Nudle";
+"type.cuisine.noodle" = "Nudle";
 "type.cuisine.oriental" = "Orientální kuchyně";
 "type.cuisine.pancake" = "Palačinka";
 "type.cuisine.pasta" = "Těstoviny";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Klobása";
 "type.cuisine.savory_pancakes" = "Pikantní palačinky";
 "type.cuisine.seafood" = "Mořské plody";
+"type.cuisine.shawarma" = "Šavarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Španělská kuchyně";
 "type.cuisine.steak_house" = "Steaková restaurace";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Čaj";
 "type.cuisine.thai" = "Thajská kuchyně";
 "type.cuisine.turkish" = "Turecká kuchyně";
+"type.cuisine.uzbek" = "Uzbecká";
 "type.cuisine.vegan" = "Veganská kuchyně";
 "type.cuisine.vegetarian" = "Vegetariánská kuchyně";
 "type.cuisine.vietnamese" = "Vietnamská kuchyně";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunel pro pěší";
+"type.highway.platform" = "Nástupiště";
 "type.highway.primary" = "Ulice";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Bažina";
 "type.noexit" = "Slepý konec";
 "type.office" = "Kancelář";
+"type.office.architect" = "Architektonická kancelář";
 "type.office.company" = "Kancelář společnosti";
+"type.office.educational_institution" = "Vzdělávací instituce";
 "type.office.estate_agent" = "Realitní makléř";
 "type.office.government" = "Úřad vlády";
 "type.office.insurance" = "Pojišťovací kancelář";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Železniční přejezd";
 "type.railway.disused" = "Nepoužívaná železnice";
 "type.railway.disused.bridge" = "Most nepoužívané železnice";
+"type.railway.disused.tunnel" = "Tunel nepoužívané železnice";
 "type.railway.funicular" = "Pozemní lanová dráha";
 "type.railway.funicular.bridge" = "Most pozemní lanové dráhy";
 "type.railway.funicular.tunnel" = "Tunel pozemní lanové dráhy";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Drogerie";
 "type.shop.chocolate" = "Obchod s čokoládou";
 "type.shop.clothes" = "Oblečení";
+"type.shop.clothes.children" = "Dětský obchod s oblečením";
+"type.shop.clothes.fashion" = "Módní butik";
+"type.shop.clothes.hats" = "Obchod s klobouky";
+"type.shop.clothes.men" = "Pánský obchod s oblečením";
+"type.shop.clothes.sports" = "Obchod se sportovním oblečením";
+"type.shop.clothes.suits" = "Obchod s obleky";
+"type.shop.clothes.underwear" = "Obchod s prádlem";
+"type.shop.clothes.wedding" = "Obchod se svatebními šaty";
+"type.shop.clothes.women" = "Dámský obchod s oblečením";
 "type.shop.coffee" = "Obchod s kávou";
 "type.shop.computer" = "Obchod s počítači";
 "type.shop.confectionery" = "Cukrárna";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Pohřební služba";
 "type.shop.furniture" = "Nábytek";
 "type.shop.garden_centre" = "Školka";
+"type.shop.games" = "Obchod s hrami";
 "type.shop.gas" = "Obchod s plynem";
 "type.shop.gift" = "Obchod s dárkovým zbožím";
 "type.shop.greengrocer" = "Ovoce a zelenina";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kiosek";
 "type.shop.kitchen" = "Prodejna kuchyní";
 "type.shop.laundry" = "Prádelna";
+"type.shop.leather" = "Obchod s koženým zbožím";
 "type.shop.mall" = "Obchoďák";
 "type.shop.massage" = "Masážní salon";
 "type.shop.mobile_phone" = "Mobily";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Zverimex";
 "type.shop.pet_grooming" = "Péče o domácí mazlíčky";
 "type.shop.photo" = "Fotografický obchod";
+"type.shop.religion" = "Obchod s náboženskými předměty";
 "type.shop.rental" = "Půjčovna";
 "type.shop.rental.bicycle" = "Půjčovna kol";
 "type.amenity.bicycle_rental.shop" = "Půjčovna kol";
@@ -1499,7 +1517,7 @@
 "type.waterway.stream.tunnel" = "Řeka";
 "type.waterway.waterfall" = "Vodopád";
 "type.waterway.weir" = "Jez";
-"type.wheelchair" = "Vozíčkář";
+"type.wheelchair" = "Invalidní vozík";
 "type.wheelchair.limited" = "Omezený bezbariérový přístup";
 "type.wheelchair.no" = "Žádný bezbariérový přístup";
 "type.wheelchair.yes" = "Plně bezbariérový přístup";
@@ -1549,9 +1567,9 @@
 "type.leisure.sports_hall" = "Sportovní hala";
 "type.sport.diving" = "Potápění";
 "type.man_made.crane" = "Jeřáb";
-"type.barrier.wicket_gate" = "Vjezdová brána";
+"type.barrier.wicket_gate" = "Branka";
 "type.barrier.yes" = "Bariéra";
-"type.building.guardhouse" = "Strážce";
+"type.building.guardhouse" = "Strážnice";
 "type.office.security" = "Bezpečnostní agentura";
 "type.power.portal" = "Energetická věž (portál)";
 "type.shop.lighting" = "Obchod s osvětlením";

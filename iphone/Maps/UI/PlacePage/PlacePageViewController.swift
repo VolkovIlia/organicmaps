@@ -63,13 +63,7 @@ final class PlacePageScrollView: UIScrollView {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     guard !layout.headerViewController.isEditingTitle else { return }
-    if #available(iOS 13.0, *) {
-      // See https://github.com/organicmaps/organicmaps/issues/6917 for the details.
-    } else if previousTraitCollection == nil {
-      scrollView.contentInset = alternativeSizeClass(iPhone: UIEdgeInsets(top: scrollView.height, left: 0, bottom: 0, right: 0),
-                                                     iPad: UIEdgeInsets.zero)
-      updateSteps()
-    }
+    // See https://github.com/organicmaps/organicmaps/issues/6917 for the details.
     panGesture.isEnabled = alternativeSizeClass(iPhone: false, iPad: true)
     previousTraitCollection = traitCollection
     updateBackgroundViewFrame()
@@ -183,7 +177,7 @@ final class PlacePageScrollView: UIScrollView {
     }
 
     // See https://github.com/organicmaps/organicmaps/issues/6917 for the details.
-    if #available(iOS 13.0, *), previousTraitCollection == nil {
+    if previousTraitCollection == nil {
       scrollView.contentInset = alternativeSizeClass(iPhone: UIEdgeInsets(top: view.height, left: 0, bottom: 0, right: 0),
                                                      iPad: UIEdgeInsets.zero)
       scrollView.layoutIfNeeded()
@@ -438,13 +432,16 @@ extension PlacePageViewController: UIScrollViewDelegate {
       interactor?.close()
       return
     }
-    if velocity.y > Constants.fastSwipeUpVelocity {
+
+    guard let lastStop = scrollSteps.last else { return }
+    let isFullyExpanded = isNavigationBarVisible || scrollView.contentOffset.y >= lastStop.offset
+
+    if velocity.y > Constants.fastSwipeUpVelocity, !isFullyExpanded {
       showLastStop()
       return
     }
 
-    let maxOffset = scrollSteps.last?.offset ?? 0
-    if targetContentOffset.pointee.y > maxOffset {
+    if targetContentOffset.pointee.y > lastStop.offset {
       return
     }
 
@@ -487,8 +484,18 @@ extension PlacePageViewController: UIScrollViewDelegate {
       yOffset = previousScrollContentOffset.y
       self.previousScrollContentOffset = nil
     }
+
     guard let yOffset else { return }
-    scrollTo(CGPoint(x: 0, y: yOffset), forced: true)
+
+    let bottomInset = max(0, keyboardHeight - actionBarContainerView.frame.height)
+    scrollView.contentInset.bottom = bottomInset
+
+    let minOffset = -scrollView.adjustedContentInset.top
+    let maxOffset = max(minOffset, scrollView.contentSize.height + scrollView.adjustedContentInset.bottom - scrollView.height)
+    let contentOffset = CGPoint(x: 0, y: min(maxOffset, max(minOffset, yOffset)))
+    scrollView.contentOffset = contentOffset
+    currentScrollContentOffset = contentOffset
+    updateBackgroundViewFrame()
   }
 }
 

@@ -4,7 +4,7 @@
 
 namespace df
 {
-std::string DebugPrint(Message::Type msgType)
+std::string_view DebugPrint(Message::Type msgType)
 {
   switch (msgType)
   {
@@ -108,7 +108,6 @@ std::string DebugPrint(Message::Type msgType)
   case Message::Type::SetTileBackgroundMode: return "SetTileBackgroundMode";
   case Message::Type::AssignTileBackgroundTexture: return "AssignTileBackgroundTexture";
   }
-  ASSERT(false, ("Unknown message type."));
-  return "Unknown type";
+  UNREACHABLE();
 }
 }  // namespace df

@@ -7,14 +7,14 @@ jobs:
     name: iOS Release
     runs-on: macos-26
     env:
-      DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
       LANG: en_US.UTF-8  # Fastlane complains that the terminal is using ASCII.
       LANGUAGE: en_US.UTF-8
       LC_ALL: en_US.UTF-8
     environment: production
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore release keys
         shell: bash
@@ -25,7 +25,7 @@ jobs:
           APPSTORE_JSON: ${{ secrets.APPSTORE_JSON }}
 
       - name: Checkout screenshots
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ secrets.SCREENSHOTS_REPO }}
           ssh-key: ${{ secrets.SCREENSHOTS_SSH_KEY }}
@@ -33,7 +33,7 @@ jobs:
           path: screenshots
 
       - name: Checkout keywords
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ secrets.KEYWORDS_REPO }}
           ssh-key: ${{ secrets.KEYWORDS_SSH_KEY }}

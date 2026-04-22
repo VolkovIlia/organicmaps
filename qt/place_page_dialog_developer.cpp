@@ -56,6 +56,11 @@ PlacePageDialogDeveloper::PlacePageDialogDeveloper(QWidget * parent, place_page:
     grid->addWidget(new QLabel("Bookmark"), row, 0);
     grid->addWidget(new QLabel("Yes"), row++, 1);
   }
+  else if (info.IsTrack() && info.GetTrackId() == kml::kTempRelationTrackId)
+  {
+    grid->addWidget(new QLabel("Track from Relation"), row, 0);
+    grid->addWidget(new QLabel("Yes"), row++, 1);
+  }
 
   if (info.IsMyPosition())
   {
@@ -85,10 +90,6 @@ PlacePageDialogDeveloper::PlacePageDialogDeveloper(QWidget * parent, place_page:
   if (auto routes = info.FormatRouteRefs(); !routes.empty())
     addEntry("Routes", routes);
 
-  // Opening hours fragment
-  if (auto openingHours = info.GetOpeningHours(); !openingHours.empty())
-    addEntry(DebugPrint(PropID::FMD_OPEN_HOURS), std::string(openingHours));
-
   // Cuisine fragment
   if (auto cuisines = info.FormatCuisines(); !cuisines.empty())
     addEntry(DebugPrint(PropID::FMD_CUISINE), cuisines);
@@ -107,6 +108,14 @@ PlacePageDialogDeveloper::PlacePageDialogDeveloper(QWidget * parent, place_page:
       textDialog.exec();
     });
     dbb->addButton(wikiButton, QDialogButtonBox::ActionRole);
+  }
+
+  if (info.IsTrack())
+  {
+    QPushButton * fromButton = new QPushButton("Route Along Track");
+    fromButton->setAutoDefault(false);
+    connect(fromButton, &QAbstractButton::clicked, this, [this] { done(place_page_dialog::RouteAlong); });
+    dbb->addButton(fromButton, QDialogButtonBox::ActionRole);
   }
 
   info.ForEachMetadataReadable([&addEntry](PropID id, std::string const & value)
@@ -132,6 +141,10 @@ PlacePageDialogDeveloper::PlacePageDialogDeveloper(QWidget * parent, place_page:
   layout->addWidget(dbb);
   setLayout(layout);
 
-  auto const ppTitle = std::string("Place Page") + (info.IsBookmark() ? " (bookmarked)" : "");
-  setWindowTitle(ppTitle.c_str());
+  std::string ppTitle("Place Page");
+  if (info.IsBookmark())
+    ppTitle.append(" (Bookmark)");
+  else if (info.IsTrack())
+    ppTitle.append(" (Track)");
+  setWindowTitle(QString::fromStdString(ppTitle));
 }

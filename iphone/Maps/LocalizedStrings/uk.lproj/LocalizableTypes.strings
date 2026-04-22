@@ -19,7 +19,7 @@
 "type.aeroway.gate" = "Вихід на посадку";
 "type.aeroway.helipad" = "Майданчик для гелікоптерів";
 "type.aeroway.runway" = "Злітно-посадкова смуга";
-"type.aeroway.taxiway" = "Рульова дорiжка";
+"type.aeroway.taxiway" = "Рульова доріжка";
 "type.aeroway.terminal" = "Термінал";
 "type.amenity" = "Об’єкти інфраструктури";
 "type.amenity.arts_centre" = "Центр мистецтв";
@@ -66,7 +66,7 @@
 "type.amenity.driving_school" = "Автошкола";
 "type.amenity.exhibition_centre" = "Виставковий центр";
 "type.amenity.money_transfer" = "Грошовий переказ";
-"type.amenity.music_school" = "Музична школа ім";
+"type.amenity.music_school" = "Музична школа";
 "type.amenity.language_school" = "Мовна школа";
 "type.office.diplomatic" = "Посольство";
 "type.amenity.fast_food" = "Фастфуд";
@@ -82,7 +82,7 @@
 /* In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. */
 "type.amenity.grave_yard.christian" = "Християнський цвинтар";
 "type.amenity.hospital" = "Лікарня";
-"type.amenity.hunting_stand" = "Мисливська башта";
+"type.amenity.hunting_stand" = "Мисливська вежа";
 "type.amenity.ice_cream" = "Морозиво";
 "type.amenity.internet_cafe" = "Інтернет-кафе";
 "type.amenity.kindergarten" = "Дитячий садок";
@@ -149,7 +149,7 @@
 "type.recycling.glass_bottles" = "Склотара";
 "type.recycling.paper" = "Папір";
 "type.recycling.plastic" = "Пластик";
-"type.recycling.plastic_bottles" = "Пластикові бутилки";
+"type.recycling.plastic_bottles" = "Пластикові пляшки";
 "type.recycling.scrap_metal" = "Металобрухт";
 "type.recycling.small_appliances" = "Електровідходи";
 "type.recycling.cardboard" = "Картон";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Середземноморська кухня";
 "type.cuisine.mexican" = "Мексиканська кухня";
 "type.cuisine.moroccan" = "Марокканська кухня";
-"type.cuisine.noodles" = "Вермішель";
+"type.cuisine.noodle" = "Вермішель";
 "type.cuisine.oriental" = "Східна кухня";
 "type.cuisine.pancake" = "Млинцева";
 "type.cuisine.pasta" = "Паста";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Сосисочна";
 "type.cuisine.savory_pancakes" = "Пікантні оладки";
 "type.cuisine.seafood" = "Морська їжа";
+"type.cuisine.shawarma" = "Шаурма";
 "type.cuisine.soba" = "Соба";
 "type.cuisine.spanish" = "Іспанська кухня";
 "type.cuisine.steak_house" = "Стейк-хаус";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Чайна";
 "type.cuisine.thai" = "Тайська кухня";
 "type.cuisine.turkish" = "Турецька кухня";
+"type.cuisine.uzbek" = "Узбецька";
 "type.cuisine.vegan" = "Веганська кухня";
 "type.cuisine.vegetarian" = "Вегетаріанська кухня";
 "type.cuisine.vietnamese" = "В'єтнамська кухня";
@@ -384,7 +386,7 @@
 
 /* This is for main/primary entrances, for secondary entrances see type.entrance */
 "type.entrance.main" = "Головний вхід";
-"type.entrance.exit" = "Виходьте.";
+"type.entrance.exit" = "Вихід";
 "type.fee.yes" = "$";
 "type.fee.no" = "Безкоштовно";
 "type.healthcare.laboratory" = "Медична лабораторія";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Тунель";
+"type.highway.platform" = "Платформа";
 "type.highway.primary" = "Шосе";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -714,7 +717,7 @@
 "type.landuse" = "Землевикористання";
 "type.landuse.allotments" = "Земельні ділянки";
 "type.landuse.basin" = "Резервуар";
-"type.landuse.brownfield" = "Земля для будiвництва";
+"type.landuse.brownfield" = "Земля для будівництва";
 
 /* In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. */
 "type.landuse.cemetery" = "Цвинтар";
@@ -736,7 +739,7 @@
 "type.landuse.forest.mixed" = "Змішаний ліс";
 "type.landuse.garages" = "Гаражі";
 "type.landuse.grass" = "Газон";
-"type.landuse.greenfield" = "Земля для будiвництва";
+"type.landuse.greenfield" = "Земля для будівництва";
 "type.landuse.greenhouse_horticulture" = "Теплиці";
 "type.landuse.industrial" = "Промзона";
 "type.landuse.landfill" = "Звалище";
@@ -745,7 +748,7 @@
 "type.landuse.orchard" = "Сад";
 "type.landuse.quarry" = "Кар'єр";
 "type.landuse.railway" = "Залізничні споруди";
-"type.landuse.recreation_ground" = "База вiдпочинку";
+"type.landuse.recreation_ground" = "База відпочинку";
 "type.landuse.reservoir" = "Водоймище";
 "type.landuse.residential" = "Житлова зона";
 "type.landuse.retail" = "Зона торгівлі";
@@ -854,7 +857,7 @@
 "type.natural.cliff" = "Урвище";
 "type.natural.earth_bank" = "Обрив";
 "type.man_made.embankment" = "Насип";
-"type.natural.coastline" = "Берегова лiнiя";
+"type.natural.coastline" = "Берегова лінія";
 "type.natural.desert" = "Пустиня";
 "type.natural.geyser" = "Гейзер";
 "type.natural.glacier" = "Льодовик";
@@ -872,7 +875,7 @@
 "type.natural.orchard" = "Сад";
 "type.natural.peak" = "Гора";
 "type.natural.saddle" = "Сідловина";
-"type.natural.rock" = "Камiнь";
+"type.natural.rock" = "Камінь";
 "type.natural.scrub" = "Зарості";
 "type.natural.spring" = "Джерело";
 "type.natural.spring.drinking_water_no" = "Джерело";
@@ -883,10 +886,12 @@
 "type.natural.water" = "Водоймище";
 "type.natural.wetland" = "Болотиста місцевість";
 "type.natural.wetland.bog" = "Торф'яне болото";
-"type.natural.wetland.marsh" = "Болотиста мiсцевiсть";
+"type.natural.wetland.marsh" = "Болотиста місцевість";
 "type.noexit" = "Тупик";
 "type.office" = "Офіс";
+"type.office.architect" = "Архітектурне бюро";
 "type.office.company" = "Організація";
+"type.office.educational_institution" = "Навчальний заклад";
 "type.office.estate_agent" = "Агенція нерухомості";
 "type.office.government" = "Держустанова";
 "type.office.insurance" = "Страхова компанія";
@@ -918,7 +923,7 @@
 "type.place.locality" = "Місце";
 
 /* Named part of a city or town, bigger than place=neighbourhood and smaller than place=suburb (Wiki: https://wiki.openstreetmap.org/wiki/Tag:place%3Dquarter) */
-"type.place.quarter" = "Мiкрорайон";
+"type.place.quarter" = "Мікрорайон";
 
 /* Named part of a city, town or suburb, smaller than place=quarter (Wiki: https://wiki.openstreetmap.org/wiki/Neighbourhood) */
 "type.place.neighbourhood" = "Сусідство";
@@ -959,7 +964,7 @@
 
 /* A single pole supporting various public utilities, such as lighting or telephony. */
 "type.man_made.utility_pole" = "Стовп передачі";
-"type.psurface" = "psurface";
+"type.psurface" = "поверхня";
 "type.psurface.paved_bad" = "psurface-paved_bad";
 "type.psurface.paved_good" = "psurface-paved_good";
 "type.psurface.unpaved_bad" = "psurface-unpaved_bad";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Пішохідний перехід";
 "type.railway.disused" = "Недійсна залізниця";
 "type.railway.disused.bridge" = "Недіючий залізничний міст";
+"type.railway.disused.tunnel" = "Недіючий залізничний тунель";
 "type.railway.funicular" = "Фунікулер";
 "type.railway.funicular.bridge" = "Фунікулер";
 "type.railway.funicular.tunnel" = "Фунікулер";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Магазин побутової хімії";
 "type.shop.chocolate" = "Шоколадна крамниця";
 "type.shop.clothes" = "Магазин одягу";
+"type.shop.clothes.children" = "Дитячий одяг";
+"type.shop.clothes.fashion" = "Модний бутик";
+"type.shop.clothes.hats" = "Магазин головних уборів";
+"type.shop.clothes.men" = "Чоловічий одяг";
+"type.shop.clothes.sports" = "Спортивний одяг";
+"type.shop.clothes.suits" = "Магазин костюмів";
+"type.shop.clothes.underwear" = "Магазин нижньої білизни";
+"type.shop.clothes.wedding" = "Весільний салон";
+"type.shop.clothes.women" = "Жіночий одяг";
 "type.shop.coffee" = "Кавова крамниця";
 "type.shop.computer" = "Комп'ютерний магазин";
 "type.shop.confectionery" = "Кондитерська";
@@ -1301,7 +1316,7 @@
 "type.shop.department_store" = "Універмаг";
 "type.shop.doityourself" = "Будівельний магазин";
 "type.shop.dry_cleaning" = "Хімчистка";
-"type.shop.electronics" = "Електротехнiка";
+"type.shop.electronics" = "Електротехніка";
 "type.shop.erotic" = "Секс-шоп";
 "type.shop.fabric" = "Магазин тканин";
 "type.shop.farm" = "Магазин фермерських продуктів";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Ритуальні послуги";
 "type.shop.furniture" = "Магазин меблів";
 "type.shop.garden_centre" = "Товари для саду";
+"type.shop.games" = "Магазин ігор";
 "type.shop.gas" = "Газовий магазин";
 "type.shop.gift" = "Магазин сувенірів";
 "type.shop.greengrocer" = "Овочі та фрукти";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Кіоск";
 "type.shop.kitchen" = "Магазин кухні";
 "type.shop.laundry" = "Пральня";
+"type.shop.leather" = "Магазин шкіряних виробів";
 "type.shop.mall" = "Торговий центр";
 "type.shop.massage" = "Масажний кабінет";
 "type.shop.mobile_phone" = "Мобільні телефони";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Зоотовари";
 "type.shop.pet_grooming" = "Грумінг";
 "type.shop.photo" = "Фототовари";
+"type.shop.religion" = "Крамниця релігійних товарів";
 "type.shop.rental" = "Прокат";
 "type.shop.rental.bicycle" = "Прокат велосипедів";
 "type.amenity.bicycle_rental.shop" = "Прокат велосипедів";
@@ -1350,11 +1368,11 @@
 "type.shop.second_hand" = "Магазин секонд-хенду";
 "type.shop.shoes" = "Магазин взуття";
 "type.shop.sports" = "Спортивні товари";
-"type.shop.stationery" = "Канцелярськi товари";
+"type.shop.stationery" = "Канцелярські товари";
 "type.shop.supermarket" = "Супермаркет";
 "type.shop.tattoo" = "Тату-салон";
 "type.shop.tea" = "Чайна крамниця";
-"type.shop.ticket" = "Квитковий кiоск";
+"type.shop.ticket" = "Квитковий кіоск";
 "type.shop.toys" = "Магазин іграшок";
 "type.shop.travel_agency" = "Турагентство";
 "type.shop.tyres" = "Магазин шин";
@@ -1406,13 +1424,13 @@
 "type.sport.golf" = "Гольф";
 "type.sport.gymnastics" = "Гімнастика";
 "type.sport.handball" = "Гандбол";
-"type.sport.multi" = "Рiзноманiтнi типи спорту";
+"type.sport.multi" = "Різноманітні типи спорту";
 
 /* Used to tag a scuba diving site. */
 "type.sport.scuba_diving" = "Місце для дайвінгу";
 "type.sport.shooting" = "Стрільба";
 "type.sport.skateboard" = "Скейтбординг";
-"type.sport.skiing" = "Лижi";
+"type.sport.skiing" = "Лижі";
 "type.sport.soccer" = "Футбол";
 "type.sport.swimming" = "Плавання";
 "type.sport.table_tennis" = "Настільний теніс";
@@ -1475,9 +1493,9 @@
 "type.tourism.wilderness_hut" = "Хатка для туристів";
 "type.tourism.zoo" = "Зоопарк";
 "type.tourism.zoo.petting" = "Контактний зоопарк";
-"type.traffic_calming" = "Лежачий полiцейський";
-"type.traffic_calming.bump" = "Лежачий полiцейський";
-"type.traffic_calming.hump" = "Лежачий полiцейський";
+"type.traffic_calming" = "Лежачий поліцейський";
+"type.traffic_calming.bump" = "Лежачий поліцейський";
+"type.traffic_calming.hump" = "Лежачий поліцейський";
 "type.waterway" = "Водяний шлях";
 "type.waterway.canal" = "Канал";
 "type.waterway.canal.tunnel" = "Канал";
@@ -1487,8 +1505,8 @@
 "type.natural.water.ditch" = "Дренажна канава";
 "type.waterway.ditch.tunnel" = "Водопропускна труба";
 "type.waterway.dock" = "Причал";
-"type.waterway.drain" = "Водовiдвiд";
-"type.natural.water.drain" = "Водовiдвiд";
+"type.waterway.drain" = "Водовідвід";
+"type.natural.water.drain" = "Водовідвід";
 "type.waterway.drain.tunnel" = "Водопропускна труба";
 "type.waterway.lock_gate" = "Шлюз";
 "type.waterway.river" = "Річка";
@@ -1499,12 +1517,12 @@
 "type.waterway.stream.tunnel" = "Струмок";
 "type.waterway.waterfall" = "Водоспад";
 "type.waterway.weir" = "Гребля";
-"type.wheelchair" = "Iнвалiдний вiзок";
+"type.wheelchair" = "Інвалідний візок";
 "type.wheelchair.limited" = "Частково обладнано для інвалідів";
 "type.wheelchair.no" = "Не обладнано для інвалідів";
 "type.wheelchair.yes" = "Обладнано для інвалідів";
 "type.aerialway.j.bar" = "Бугельний витяг";
-"type.aerialway.magic_carpet" = "Стрiчковий конвеєр";
+"type.aerialway.magic_carpet" = "Стрічковий конвеєр";
 "type.aerialway.platter" = "Бугельний витяг";
 "type.aerialway.rope_tow" = "Бугельний витяг";
 "type.aerialway.t.bar" = "Бугельний витяг";

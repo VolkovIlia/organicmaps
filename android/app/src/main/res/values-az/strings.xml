@@ -236,6 +236,8 @@
     <string name="pref_map_auto_zoom">Avtomatik böyütmə</string>
     <string name="placepage_distance">Məsafə</string>
     <string name="search_show_on_map">Xəritədə baxın</string>
+    <!-- Menu button -->
+    <string name="menu">Menyu</string>
     <!-- Text in menu -->
     <string name="website">Veb sayt</string>
     <!-- Text in About menu, opens Organic Maps news website -->
@@ -280,8 +282,6 @@
     <string name="downloader_downloading">Endirilir:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">Xəritəni təmizləmək üçün naviqasiyanı dayandırın.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">Marşrutlar yalnız bir bölgənin xəritəsində tamamilə yaradıla bilər.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">Xəritəni yükləyin</string>
     <!-- Item status in downloader. -->
@@ -294,10 +294,6 @@
     <string name="google_play_services">Google Play Məkan Xidmətləri</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">Bluetooth, WiFi və ya mobil şəbəkə vasitəsilə təxmini yerinizi tez müəyyənləşdirin</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">Marşrut boyunca bütün xəritələri endirin</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">Marşrut yaratmaq üçün yerinizdən təyinat yerinə qədər bütün xəritələri endirməli və güncəlləşdirməliyik.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">Kifayət qədər yer yoxdur</string>
     <!-- location service disabled -->
@@ -342,6 +338,8 @@
     <string name="pref_appearance_light">Parlaq</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">Tünd</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">Şəfəqdən gün batana qədər açıq</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">Milyonlarla istifadəçiyə reklamsız, pulsuz xəritələr hədiyyə edin!</string>
 
@@ -352,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— Təklif olunan marşrutlar yalnız tövsiyə kimi hesab edilməlidir;</string>
     <string name="dialog_routing_disclaimer_borders">— Sərhəd bölgələrində marşrutlarla diqqətli olun: tətbiqimiz yaradılan marşrutlar bəzən icazə verilməyən yerlərdə ölkə sərhədlərini keçə bilər.</string>
     <string name="dialog_routing_disclaimer_beware">Xahiş edirəm, yolda diqqətli və təhlükəsiz olun!</string>
-    <string name="dialog_routing_check_gps">GPS siqnalını yoxlayın</string>
-    <string name="dialog_routing_error_location_not_found">Marşrut yaratmaq mümkün deyil. Cari GPS koordinatlarını müəyyən etmək mümkün olmadı.</string>
     <string name="dialog_routing_location_turn_wifi">Zəhmət olmasa GPS siqnalınızı yoxlayın. Wi-Fi-ı aktivləşdirmək məkan dəqiqliyini artırır.</string>
-    <string name="dialog_routing_location_turn_on">Məkan xidmətlərini aktivləşdirin</string>
-    <string name="dialog_routing_location_unknown_turn_on">Cari GPS koordinatlarını müəyyən etmək mümkün deyil. Marşrutları hesablamaq üçün məkan xidmətlərini aktivləşdirin.</string>
-    <string name="dialog_routing_unable_locate_route">Marşrut müəyyənləşdirmək mümkün deyil</string>
-    <string name="dialog_routing_cant_build_route">Marşrut yaratmaq mümkün deyil.</string>
-    <string name="dialog_routing_change_start_or_end">Zəhmət olmasa başlanğıc nöqtənizi və ya təyinat yerinizi müəyyənləşdirin.</string>
-    <string name="dialog_routing_change_start">Başlanğıc nöqtəsini təyin edin</string>
-    <string name="dialog_routing_start_not_determined">Marşrut yaratmaq mümkün olmadı. Başlanğıc nöqtəsini təyin etmək mümkün deyil.</string>
-    <string name="dialog_routing_select_closer_start">Zəhmət olmasa yola daha yaxın bir başlanğıc nöqtəsi seçin.</string>
-    <string name="dialog_routing_change_end">Hədəfinizi təyin edin</string>
-    <string name="dialog_routing_end_not_determined">Marşrut yaradılmadı. Təyinatı tapmaq mümkün deyil.</string>
-    <string name="dialog_routing_select_closer_end">Zəhmət olmasa yola yaxın bir təyinat yeri seçin.</string>
-    <string name="dialog_routing_change_intermediate">Aralıq nöqtəni tapmaq mümkün deyil.</string>
-    <string name="dialog_routing_intermediate_not_determined">Zəhmət olmasa aralıq nöqtənizi təyin edin.</string>
     <string name="dialog_routing_system_error">Sistem xətası</string>
-    <string name="dialog_routing_application_error">Tətbiq xətası səbəbindən marşrut yaratmaq mümkün olmadı.</string>
-    <string name="dialog_routing_try_again">Zəhmət olmasa bir daha cəhd edin</string>
     <string name="not_now">İndi yox</string>
-    <string name="dialog_routing_download_and_build_cross_route">Xəritəni endirmək və çoxsaylı xəritələr arasında daha rahat marşrut yaratmaq istərdinizmi?</string>
-    <string name="dialog_routing_download_cross_route">Bu xəritənin sərhədlərini keçən daha rahat marşrut yaratmaq üçün xəritəni endirin.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">Axtarmaq və marşrut yaratmağa başlamaq üçün xəritəni endirin. Yüklədikdən sonra artıq internet bağlantısına ehtiyacınız olmayacaq.</string>
@@ -392,6 +371,8 @@
     <string name="clear_search">Axtarış Tarixçəsini silin</string>
     <!-- Place Page link to Wikipedia article (if map object has it). -->
     <string name="read_in_wikipedia">Vikipediya</string>
+    <!-- Place Page link to Wikimedia Commons. -->
+    <string name="wikimedia_commons">Wikimedia Commons</string>
     <string name="p2p_your_location">Məkanınız</string>
     <string name="p2p_start">Başla</string>
     <string name="p2p_from_here">Başlanğıc</string>
@@ -465,9 +446,10 @@
     <string name="email_or_username">E-poçt və ya istifadəçi adı</string>
     <string name="editor_add_phone">Telefon əlavə edin</string>
     <string name="level">Mərtəbə</string>
+    <!-- Building level -->
+    <string name="level_value_generic">Səviyyə: %s</string>
     <string name="downloader_delete_map_dialog">Bütün xəritə dəyişiklikləri xəritə ilə birlikdə silinəcək.</string>
     <string name="downloader_update_maps">Xəritələri yeniləyin</string>
-    <string name="downloader_mwm_migration_dialog">Marşrut yaratmaq üçün bütün xəritələri yeniləməli və sonra marşrutu yenidən planlaşdırmalısınız.</string>
     <string name="downloader_search_field_hint">Xəritəni tapın</string>
     <string name="common_check_internet_connection_dialog">Zəhmət olmasa cihazınızın internetə qoşulduğundan əmin olun.</string>
     <string name="downloader_no_space_title">Kifayət qədər yer yoxdur</string>
@@ -489,7 +471,7 @@
     <!-- Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. -->
     <string name="osm_presentation">%s tarixinə icma tərəfindən yaradılmış OpenStreetMap datası. OpenStreetMap.org saytında xəritəni necə redaktə etmək və yeniləmək haqqında ətraflı məlumat əldə edin</string>
     <!-- OSM explanation on Android login screen -->
-    <string name="login_osm_presentation">OpenStreetMap.org (OSM) pulsuz və açıq xəritə yaratmaq üçün icma layihəsidir. O, Üzvi Xəritələrdə xəritə məlumatlarının əsas mənbəyidir və Vikipediyaya oxşar işləyir. Siz yerlər əlavə edə və ya redaktə edə bilərsiniz və onlar bütün dünyada milyonlarla istifadəçi üçün əlçatan olur.\nİcmaya qoşulun və hər kəs üçün daha yaxşı xəritə yaratmağa kömək edin!</string>
+    <string name="login_osm_presentation">OpenStreetMap.org (OSM) pulsuz və açıq xəritə yaratmaq üçün icma layihəsidir. Bu, Organic Maps xəritə məlumatlarının əsas mənbəyidir və Vikipediya kimi fəaliyyət göstərir. Siz yerlər əlavə edib və ya redaktə edə bilərsiniz və onlar bütün dünyada milyonlarla istifadəçi üçün əlçatan olur. İcmaya qoşulun və hər kəs üçün daha yaxşı xəritə yaratmağa kömək edin!</string>
     <string name="login_to_make_edits_visible">OpenStreetMap hesabı yaradın və ya xəritə redaktələrinizi dünyada dərc etmək üçün daxil olun.</string>
     <!-- Downloaded 10 **of** 20 <- it is that "of" -->
     <string name="downloader_of">%1$d/%2$d</string>
@@ -504,7 +486,7 @@
     <!-- Title for OSM note section in the editor -->
     <string name="editor_other_info">OpenStreetMap könüllüləri üçün qeyd (isteğe bağlı)</string>
     <!-- Hint of the input field in the OSM note section of the editor -->
-    <string name="editor_note_hint">Xəritədəki səhvləri və ya Üzvi Xəritələrdən istifadə edərək redaktə edilə bilməyənləri təsvir edin</string>
+    <string name="editor_note_hint">Xəritədəki səhvləri və ya redaktə edilə bilməyən elementləri təsvir edinOrganic Maps</string>
     <!-- Information about OSM at the top of the editing page -->
     <string name="editor_about_osm">Redaktələriniz ictimai <a href="https://wiki.openstreetmap.org/wiki/Tr:About">OpenStreetMap</a> verilənlər bazasına yüklənir. Zəhmət olmasa şəxsi və ya müəllif hüquqları ilə qorunan məlumatları əlavə etməyin.</string>
     <string name="editor_more_about_osm">OpenStreetMap haqqında əlavə məlumat</string>
@@ -514,7 +496,7 @@
     <!-- To indicate the operator of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="operator">Operator: %s</string>
     <string name="editor_category_unsuitable_title">Uyğun kateqoriya tapa bilmirsiniz?</string>
-    <string name="editor_category_unsuitable_text">Üzvi Xəritələr yalnız sadə nöqtə kateqoriyaları əlavə etməyə imkan verir, bu o deməkdir ki, şəhərlər, yollar, göllər, bina konturları və s. yoxdur. Lütfən, belə kateqoriyaları birbaşa <a href="https://www.openstreetmap.org">OpenStreetMap.org</a> saytına əlavə edin. Ətraflı addım-addım təlimatlar üçün <a href="https://organicmaps.app/faq/editing/advanced-map-editing">bələdçimizi</a> yoxlayın.</string>
+    <string name="editor_category_unsuitable_text">Organic Maps yalnız sadə nöqtə kateqoriyaları əlavə etməyə imkan verir, yəni şəhərlər, yollar, göllər, binaların konturları və s. daxil deyil. Zəhmət olmasa belə kateqoriyaları birbaşa <a href="https://www.openstreetmap.org">OpenStreetMap.org</a> saytına əlavə edin. Ətraflı addım-addım təlimat üçün <a href="https://organicmaps.app/faq/editing/advanced-map-editing">bələdç</a>imizə baxın.</string>
     <string name="downloader_no_downloaded_maps_title">Siz heç bir xəritə endirməmisiniz</string>
     <string name="downloader_no_downloaded_maps_message">Ünvanları tapmaq və oflayn naviqasiya etmək üçün xəritələri endirin.</string>
     <string name="current_location_unknown_error_title">Cari yer məlum deyil.</string>
@@ -547,6 +529,8 @@
     <string name="error_enter_correct_vk_page">Etibarlı VK veb-ünvanı və ya hesab adını daxil edin</string>
     <string name="error_enter_correct_line_page">Etibarlı LINE veb-ünvanı və ya LINE ID daxil edin</string>
     <string name="placepage_add_place_button">OpenStreetMap-a Yer əlavə edin</string>
+    <string name="osm_note_hint">Yoxsa alternativ olaraq, OpenStreetMap icmasına bir qeyd buraxın ki, başqa biri burada bir yeri əlavə etsin və ya düzəldsin.</string>
+    <string name="osm_note_toast">Qeyd OpenStreetMap-ə göndəriləcək</string>
     <!-- Displayed when saving some edits to the map to warn against publishing personal data -->
     <string name="editor_share_to_all_dialog_title">Bunu bütün istifadəçilərə göndərmək istəyirsiniz?</string>
     <!-- Dialog before publishing the modifications to the public map. -->
@@ -589,6 +573,7 @@
     <string name="button_plan">Plan</string>
     <string name="placepage_remove_stop">Kəsmə nöqtəsini silin</string>
     <string name="placepage_add_stop">Dayanacaq nöqtəsini əlavə edin</string>
+    <string name="saved">Yadda saxlanıldı</string>
     <!-- Alert to ask user relogin to OpenStreetMap with OAuth2 flow after OAuth1 authentication is deprecated. -->
     <string name="alert_reauth_message">Bütün xəritə redaktələrinizi avtomatik yükləmək üçün OpenStreetMap-a daxil olun. <a href="https://github.com/organicmaps/organicmaps/issues/6144">burada</a> ətraflı məlumat əldə edin.</string>
     <string name="dialog_error_storage_title">Yaddaş giriş problemi</string>
@@ -639,6 +624,10 @@
     <string name="layers_title">Xəritə Üslubları və Qatları</string>
     <string name="bookmarks_empty_list_title">Bu siyahı boşdur</string>
     <string name="bookmarks_empty_list_message">Əlfəcin əlavə etmək üçün xəritədə yerə və sonra ulduz işarəsinə toxunun</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">Bütün əlfəcinlərin rəngini dəyişdir</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">Bütün treklərin rəngini dəyişdir</string>
     <string name="category_desc_more">…daha çox</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">KMZ ixrac edin</string>
@@ -662,6 +651,11 @@
     <string name="power_managment_setting_never">Heç vaxt</string>
     <string name="power_managment_setting_auto">Avtomatik</string>
     <string name="power_managment_setting_manual_max">Maksimum enerji qənaəti</string>
+    <!-- Settings/Bookmark Text Placement -->
+    <string name="bookmarks_text_placement_title">Xəritədə nişan adları</string>
+    <string name="bookmarks_text_placement_description">Əgər çoxlu nişanlar varsa, onların adlarını xəritədə göstərmək tətbiqin işini ləngidə bilər.</string>
+    <string name="show_to_the_right">Sağa göstər</string>
+    <string name="show_at_the_bottom">Aşağıda göstər</string>
     <string name="enable_logging_warning_message">Yardım dialoq qutusunda “Problemi bildir” istifadə etməklə probleminizlə bağlı ətraflı diaqnostik jurnalları qeyd etmək və bizə göndərmək üçün bu seçimi müvəqqəti aktivləşdirin. Qeydlərə məkan məlumatı daxil ola bilər</string>
     <string name="driving_options_title">Marşrutlaşdırma seçimləri</string>
     <!-- Recommended length for CarPlay and Android Auto is around 25-27 characters -->
@@ -686,6 +680,8 @@
     <string name="yes_available">Var</string>
     <!-- E.g. "WiFi:No" -->
     <string name="no_available">Yox</string>
+    <!-- To indicate the capacity of car parkings, bicycle parkings, electric vehicle charging stations… -->
+    <string name="capacity">Sıxlıq: %s</string>
     <!-- To indicate the network of ATMs, bicycle rentals, electric vehicle charging stations… -->
     <string name="network">Şəbəkə: %s</string>
     <string name="trip_finished">Sən gəldin!</string>
@@ -710,6 +706,7 @@
     <string name="moreyear_ago_sorttype">Bir ildən çox əvvəl</string>
     <string name="near_me_sorttype">Mənə yaxın</string>
     <string name="others_sorttype">Digərləri</string>
+    <string name="editor_add_select_category_all_subtitle">Bütün kateqoriyalar</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">Qida</string>
@@ -729,9 +726,6 @@
     <string name="search_in_the_list">Siyahıda axtarın</string>
     <string name="religious_places">Dini yerlər</string>
     <string name="select_list">Siyahı seçin</string>
-    <string name="transit_not_found">Metro naviqasiyası bu ərazidə hələ mövcud deyil</string>
-    <string name="dialog_pedestrian_route_is_long_header">Metro marşrutu tapılmadı</string>
-    <string name="dialog_pedestrian_route_is_long_message">Metro stansiyasına ən yaxın marşrutun başlanğıc və ya bitmə nöqtəsini seçin</string>
     <string name="button_layer_isolines">Ərazi</string>
     <string name="isolines_activation_error_dialog">Ərazi qatını aktivləşdirmək və istifadə etmək üçün xəritəni yeniləyin və ya endirin</string>
     <string name="isolines_location_error_dialog">Bu bölgədə relyef təbəqəsi hələ mövcud deyil</string>
@@ -765,13 +759,31 @@
     <!-- OpenStreetMap text on splash screen -->
     <string name="splash_subtitle">OpenStreetMap-dan xəritə məlumatları</string>
     <!-- Telegram group url for the "?" About page -->
-    <string name="telegram_url">https://t.me/OrganicMapsTR # Probably better than Ru</string>
+    <string name="telegram_url">https://t.me/OrganicMapsTR</string>
     <!-- Link to OSM wiki for Editor, Profile and About pages -->
     <string name="osm_wiki_about_url">https://wiki.openstreetmap.org/wiki/Tr:About</string>
+    <!-- A number of bookmarks and a number of tracks, separated by comma, like: 1 bookmark, 5 tracks -->
+    <string name="comma_separated_pair">%1$s, %2$s</string>
     <!-- App Tip #00 -->
     <string name="app_tip_00">İcma tərəfindən yaradılmış xəritələrimizdən istifadə etdiyiniz üçün təşəkkür edirik!</string>
+    <!-- App tip #01 -->
+    <string name="app_tip_01">Sizin ianələriniz və dəstəyinizlə biz dünyanın ən yaxşı xəritələrini yarada bilərik!</string>
+    <!-- App tip #02 -->
+    <string name="app_tip_02">Tətbiqimizi bəyənirsiniz? İnkişafı dəstəkləmək üçün ianə edin! Hələ bəyənmirsiniz? Niyə belə olduğunu bizə bildirin, biz də düzəldək!</string>
+    <!-- App tip #03 -->
+    <string name="app_tip_03">Əgər proqram tərtibatçısını tanıyırsınızsa, ona ehtiyac duyduğunuz funksiyanı əlavə etməsini xahiş edə bilərsiniz.</string>
     <!-- App tip #04 -->
     <string name="app_tip_04">Nəyisə seçmək üçün xəritədə istənilən yerə toxunun. Gizlətmək və interfeysi geri göstərmək üçün uzun müddət toxunun.</string>
+    <!-- App tip #05 -->
+    <string name="app_tip_05">Xəritədə cari yerinizi seçə biləcəyinizi bilirdinizmi?</string>
+    <!-- App tip #06 -->
+    <string name="app_tip_06">Tətbiqimizi dilinizə tərcümə etməyə kömək edə bilərsiniz.</string>
+    <!-- App tip #07 -->
+    <string name="app_tip_07">Tətbiqimiz bir neçə həvəskar və icma tərəfindən hazırlanıb.</string>
+    <!-- App tip #08 -->
+    <string name="app_tip_08">Xəritə məlumatlarını asanlıqla düzəldə və təkmilləşdirə bilərsiniz.</string>
+    <!-- App tip #09 -->
+    <string name="app_tip_09">Əsas məqsədimiz sizin sevəcəyiniz sürətli, məxfiliyə yönəlmiş, istifadəsi asan xəritələr yaratmaqdır.</string>
     <!-- Text on the Android Auto or CarPlay placeholder screen that maps are displayed on the phone screen -->
     <string name="car_used_on_the_phone_screen">İndi telefon ekranında Organic Maps istifadə edirsiniz</string>
     <!-- Text on the phone placeholder screen that maps are displayed on the car screen -->
@@ -782,10 +794,16 @@
     <string name="car_continue_on_the_phone">Telefonda davam edin</string>
     <!-- Displayed on the Android Auto or CarPlay screen. Button to display maps on the car screen instead of a phone. Must be no more than 18 symbols! -->
     <string name="car_continue_in_the_car">Avtomobil ekranına</string>
+    <!-- Ask user to grant location permissions -->
+    <string name="aa_location_permissions_request">Organic Maps Məkan məlumatlarına giriş tələb olunur. Təhlükəsiz olduqda telefonunuzdakı bildirişi yoxlayın.</string>
+    <!-- Notification title for permission request from AA. -->
+    <string name="aa_request_permission_notification">Bu tətbiq sizin icazənizə ehtiyac duyur</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">İcazələr verin</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
     <string name="button_layer_outdoor">Yürüyüş</string>
+    <!-- Text displayed when a webview or a browser are disabled, and external links can't be opened. -->
+    <string name="browser_not_available">Veb brauzer mövcud deyil</string>
     <string name="volume">Həcm</string>
     <!-- Bookmark categories screen, button that opens share dialog to export all bookmarks and tracks -->
     <string name="bookmarks_export">Bütün Əlfəcinləri və Parçaları ixrac edin</string>
@@ -816,6 +834,8 @@
     <!-- Prompt for stopping a track recording. -->
     <string name="stop_track_recording">Marşrut qeydini dayandır</string>
     <!-- Title for the "Stop Without Saving" action for the alert when saving a track recording. -->
+    <string name="track_recording_title">Marşrut yazısı</string>
+    <!-- Title for the "Stop Without Saving" action for the alert when saving a track recording. -->
     <string name="stop_without_saving">Saxlamadan dayandırın</string>
     <!-- Title for the "Stop Without Saving" action for the alert when saving a track recording. -->
     <string name="continue_recording">Qeyd etməyə davam et</string>
@@ -832,4 +852,20 @@
     <string name="nav_auto">Naviqasiyada avtomatik</string>
     <!-- Setting option to sync the app's theme with the operating system's dark/light mode -->
     <string name="follow_system">Sistemə uyğun</string>
+    <!-- Title of the bottom sheet when sharing the track -->
+    <string name="share_track">Yolunu paylaş</string>
+    <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
+    <string name="delete_track_dialog_title">%s silmək?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">Şifrə ilə giriş</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">Brauzerdən istifadə edərək giriş</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">Son istifadə olunan</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">Əlfəcinlərin rəngi dəyişdirildi</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">Treklərin rəngi dəyişdirildi</string>
 </resources>

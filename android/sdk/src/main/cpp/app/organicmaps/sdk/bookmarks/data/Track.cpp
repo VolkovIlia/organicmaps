@@ -68,9 +68,9 @@ JNIEXPORT jstring Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetDescrip
 
 JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetElevationInfo(JNIEnv * env, jclass, jlong id)
 {
-  auto const & track = frm()->GetBookmarkManager().GetTrack(id);
-  auto const & elevationInfo = track->GetElevationInfo();
-  return track->GetElevationInfo().has_value() ? ToJavaElevationInfo(env, elevationInfo.value()) : nullptr;
+  auto const * track = frm()->GetBookmarkManager().GetTrack(id);
+  auto const * info = track->GetElevationInfo();
+  return (info ? ToJavaElevationInfo(env, *info) : nullptr);
 }
 
 JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetStatistics(JNIEnv * env, jclass, jlong id)
@@ -78,13 +78,15 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetStatist
   return ToJavaTrackStatistics(env, frm()->GetBookmarkManager().GetTrack(id)->GetStatistics());
 }
 
-JNIEXPORT jobject Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetElevationActivePointCoordinates(JNIEnv * env,
-                                                                                                         jclass,
-                                                                                                         jlong trackId)
+JNIEXPORT jdoubleArray Java_app_organicmaps_sdk_bookmarks_data_Track_nativeGetElevationActivePointCoordinates(
+    JNIEnv * env, jclass, jlong trackId)
 {
   auto const & trackInfo = frm()->GetBookmarkManager().GetTrackSelectionInfo(trackId);
   auto const latlon = mercator::ToLatLon(trackInfo.m_trackPoint);
-  return ToJavaElevationInfoPoint(env, latlon);
+  jdoubleArray result = env->NewDoubleArray(2);
+  jdouble coords[] = {latlon.m_lat, latlon.m_lon};
+  env->SetDoubleArrayRegion(result, 0, 2, coords);
+  return result;
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_bookmarks_data_Track_nativeSetParams(JNIEnv * env, jclass, jlong id,

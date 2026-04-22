@@ -92,11 +92,17 @@ void NoUTurnRestrictionTest::TestRouteGeom(Segment const & start, Segment const 
 }
 
 // ZeroGeometryLoader ------------------------------------------------------------------------------
-void ZeroGeometryLoader::Load(uint32_t /* featureId */, routing::RoadGeometry & road)
+void ZeroGeometryLoader::Load(uint32_t featureId, routing::RoadGeometry & road)
 {
   // Any valid road will do.
   auto const points = routing::RoadGeometry::Points({{0.0, 0.0}, {0.0, 1.0}});
-  road = RoadGeometry(true /* oneWay */, 1.0 /* weightSpeedKMpH */, 1.0 /* etaSpeedKMpH */, points);
+
+  Maxspeed maxspeed(measurement_utils::Units::Metric, 1, kInvalidSpeed);
+  auto const it = m_featureIdToMaxspeed.find(featureId);
+  if (it != m_featureIdToMaxspeed.end())
+    maxspeed = it->second;
+
+  road = RoadGeometry(true /* oneWay */, maxspeed, points);
 }
 
 // TestIndexGraphLoader ----------------------------------------------------------------------------
@@ -137,12 +143,16 @@ void TestTransitGraphLoader::AddGraph(NumMwmId mwmId, unique_ptr<TransitGraph> g
 }
 
 // WeightedEdgeEstimator --------------------------------------------------------------
-double WeightedEdgeEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & /* road */,
-                                                EdgeEstimator::Purpose /* purpose */) const
+double WeightedEdgeEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & road,
+                                                EdgeEstimator::Purpose /* purpose */, time_t arrivalTime) const
 {
   auto const it = m_segmentWeights.find(segment);
   CHECK(it != m_segmentWeights.cend(), ());
-  return it->second;
+  double const weight = it->second;
+  double const speed = road.GetSpeed(segment.IsForward(), arrivalTime).m_weight;
+  if (speed > 1.0)
+    return weight / measurement_utils::KmphToMps(speed);
+  return weight;
 }
 
 double WeightedEdgeEstimator::GetUTurnPenalty(Purpose purpose) const
@@ -189,6 +199,20 @@ void TestIndexGraphTopology::SetEdgeAccessConditional(Vertex from, Vertex to, Ro
     }
   }
   CHECK(false, ("Cannot set access for edge that is not in the graph", from, to));
+}
+
+void TestIndexGraphTopology::SetEdgeMaxspeed(Vertex from, Vertex to, Maxspeed const & maxspeed)
+{
+  for (auto & r : m_edgeRequests)
+  {
+    if (r.m_from == from && r.m_to == to)
+    {
+      r.m_maxspeed = maxspeed;
+      r.m_hasMaxspeed = true;
+      return;
+    }
+  }
+  CHECK(false, ("Cannot set maxspeed for edge that is not in the graph", from, to));
 }
 
 void TestIndexGraphTopology::SetVertexAccess(Vertex v, RoadAccess::Type type)
@@ -297,14 +321,13 @@ bool TestIndexGraphTopology::FindPath(Vertex start, Vertex finish, double & path
   CHECK_EQUAL(routingResult.m_path.back(), finishSegment, ());
 
   pathEdges.reserve(routingResult.m_path.size());
-  pathWeight = 0.0;
+  pathWeight = routingResult.m_distance.GetWeight();
   for (auto const & s : routingResult.m_path)
   {
     auto const it = builder.m_segmentToEdge.find(s);
     CHECK(it != builder.m_segmentToEdge.cend(), ());
     auto const & edge = it->second;
     pathEdges.push_back(edge);
-    pathWeight += builder.m_segmentWeights[s];
   }
 
   // The loops from start to start and from finish to finish.
@@ -328,6 +351,9 @@ void TestIndexGraphTopology::AddDirectedEdge(vector<EdgeRequest> & edgeRequests,
 unique_ptr<SingleVehicleWorldGraph> TestIndexGraphTopology::Builder::PrepareIndexGraph()
 {
   auto loader = make_unique<ZeroGeometryLoader>();
+  for (auto const & [fid, maxspeed] : m_featureMaxspeeds)
+    loader->SetMaxspeed(fid, maxspeed);
+
   auto estimator = make_shared<WeightedEdgeEstimator>(m_segmentWeights);
 
   BuildJoints();
@@ -382,6 +408,9 @@ void TestIndexGraphTopology::Builder::BuildGraphFromRequests(vector<EdgeRequest>
 
     if (!request.m_toAccessConditionalType.IsEmpty())
       pointToAccessConditional[RoadPoint(request.m_id, 1 /* pointId */)] = request.m_toAccessConditionalType;
+
+    if (request.m_hasMaxspeed)
+      m_featureMaxspeeds[request.m_id] = request.m_maxspeed;
   }
 
   m_roadAccess.SetAccess(std::move(wayToAccess), std::move(pointToAccess));

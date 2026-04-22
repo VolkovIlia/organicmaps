@@ -1,8 +1,9 @@
-• NAUJIENA: Didesnio kontrasto tamsios temos spalvos
-• NAUJIENA: „Google Assistant“ navigacijai ir paieškai
-• OSM žemėlapio duomenys nuo sausio 11 d.
-• „Auto“ navigacijos temos nustatymas vadovaujasi sistemos tamsiu / šviesiu režimu
-• Plonesnės metro linijos
-• Paieškos rezultatuose rodoma motociklų stovėjimo, dviračių nuomos, dviračių įkrovimo ir automobilių įkrovimo vietų talpa
-• Rodyti aukšto lygį paieškos rezultatuose
-…daugiau adresu omaps.org/lt/news
+• OSM žemėlapio duomenys kovo 10 d., Vikipedija – kovo 1 d.
+• Detalesnės Kinijos provincijų aukščio izoliacijos
+• Pridėtos medžių eilės, odos parduotuvės ir parduotuvės, prekiaujančios religinėmis prekėmis
+• Pridėtas sąlyginių greičio apribojimų palaikymas
+• Tanzanija padalinta į mažesnius regionus
+• Patobulintas įmonės darbo valandų rodymas
+• Ištaisyta keletas gedimų
+• Patobulinti programų ir šalių pavadinimų vertimai
+omaps.org/lt/news

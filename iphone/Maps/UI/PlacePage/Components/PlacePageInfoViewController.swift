@@ -99,7 +99,7 @@ class PlacePageInfoViewController: UIViewController {
       routeRefsView = createInfoItem(routeRefs, icon: UIImage(resource: .icPlacepageBus))
     }
 
-    /// @todo Entrance is missing compared with Android. It's shown in title, but anyway ..
+    // @todo Entrance is missing compared with Android. It's shown in title, but anyway ..
 
     phoneViews = placePageInfoData.phones.map { phone in
       var cellStyle: Style = .regular
@@ -308,15 +308,13 @@ class PlacePageInfoViewController: UIViewController {
                                      longPressHandler: { [weak self] in
                                        self?.copyCoordinatesToPasteboard()
                                      })
-    if #available(iOS 14.0, *) {
-      let menu = UIMenu(children: coordFormats.enumerated().map { index, format in
-        UIAction(title: format, handler: { [weak self] _ in
-          self?.setCoordinatesSelected(formatId: index)
-          self?.copyCoordinatesToPasteboard()
-        })
+    let menu = UIMenu(children: coordFormats.enumerated().map { index, format in
+      UIAction(title: format, handler: { [weak self] _ in
+        self?.setCoordinatesSelected(formatId: index)
+        self?.copyCoordinatesToPasteboard()
       })
-      coordinatesView?.setAccessoryMenu(menu)
-    }
+    })
+    coordinatesView?.setAccessoryMenu(menu)
   }
 
   private func setCoordinatesSelected(formatId: Int) {

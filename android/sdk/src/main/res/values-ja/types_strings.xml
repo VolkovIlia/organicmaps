@@ -12,7 +12,7 @@
     <string name="type.aerialway.gondola">ゴンドラ</string>
     <string name="type.aerialway.mixed_lift">混合リフト</string>
     <string name="type.aerialway.station">ケーブルカー駅</string>
-    <string name="type.aeroway">空路</string>
+    <string name="type.aeroway">航空インフラ</string>
     <string name="type.aeroway.aerodrome">空港</string>
     <string name="type.aeroway.aerodrome.international">空港</string>
     <string name="type.aeroway.apron">エプロン</string>
@@ -21,7 +21,7 @@
     <string name="type.aeroway.runway">滑走路</string>
     <string name="type.aeroway.taxiway">誘導路</string>
     <string name="type.aeroway.terminal">空港ターミナルビル</string>
-    <string name="type.amenity">アメニティー</string>
+    <string name="type.amenity">設備</string>
     <string name="type.amenity.arts_centre">芸術センター</string>
     <string name="type.amenity.bank">銀行</string>
     <string name="type.amenity.bar">居酒屋</string>
@@ -33,7 +33,7 @@
     <string name="type.amenity.biergarten">ビアガーデン</string>
     <string name="type.amenity.brothel">売春宿</string>
     <string name="type.amenity.bureau_de_change">外貨両替所</string>
-    <string name="type.amenity.bus_station">バスステーション</string>
+    <string name="type.amenity.bus_station">バスターミナル</string>
     <string name="type.amenity.cafe">カフェ</string>
     <string name="type.amenity.car_rental">レンタカー</string>
     <string name="type.amenity.motorcycle_rental">レンタルバイク</string>
@@ -294,7 +294,7 @@
     <string name="type.cuisine.mediterranean">地中海料理</string>
     <string name="type.cuisine.mexican">メキシコ料理</string>
     <string name="type.cuisine.moroccan">モロッコ料理</string>
-    <string name="type.cuisine.noodles">麺類</string>
+    <string name="type.cuisine.noodle">麺類</string>
     <string name="type.cuisine.oriental">東洋料理</string>
     <string name="type.cuisine.pancake">ホットケーキ</string>
     <string name="type.cuisine.pasta">パスタ</string>
@@ -310,6 +310,7 @@
     <string name="type.cuisine.sausage">ソーセージ</string>
     <string name="type.cuisine.savory_pancakes">おいしいホットケーキ</string>
     <string name="type.cuisine.seafood">シーフード</string>
+    <string name="type.cuisine.shawarma">シャワルマ</string>
     <string name="type.cuisine.soba">そば</string>
     <string name="type.cuisine.spanish">スペイン料理</string>
     <string name="type.cuisine.steak_house">ステーキハウス</string>
@@ -318,6 +319,7 @@
     <string name="type.cuisine.tea">紅茶</string>
     <string name="type.cuisine.thai">タイ料理</string>
     <string name="type.cuisine.turkish">トルコ料理</string>
+    <string name="type.cuisine.uzbek">ウズベク</string>
     <string name="type.cuisine.vegan">ビーガン料理</string>
     <string name="type.cuisine.vegetarian">ベジタリアン料理</string>
     <string name="type.cuisine.vietnamese">ベトナム料理</string>
@@ -410,6 +412,7 @@
     <string name="type.highway.pedestrian.bridge">橋</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">トンネル</string>
+    <string name="type.highway.platform">公共交通機関のプラットホーム</string>
     <string name="type.highway.primary">ストリート</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">橋</string>
@@ -709,7 +712,9 @@
     <string name="type.natural.wetland.marsh">沼地</string>
     <string name="type.noexit">行き止まり</string>
     <string name="type.office">オフィス</string>
+    <string name="type.office.architect">建築設計事務所</string>
     <string name="type.office.company">会社事務所</string>
+    <string name="type.office.educational_institution">教育機関</string>
     <string name="type.office.estate_agent">不動産業者</string>
     <string name="type.office.government">官庁</string>
     <string name="type.office.insurance">保険会社</string>
@@ -780,6 +785,7 @@
     <string name="type.railway.crossing">歩行者用踏切</string>
     <string name="type.railway.disused">休止線</string>
     <string name="type.railway.disused.bridge">休止線(橋)</string>
+    <string name="type.railway.disused.tunnel">休止線(トンネル)</string>
     <string name="type.railway.funicular">フニクラ</string>
     <string name="type.railway.funicular.bridge">ケーブルカー(橋)</string>
     <string name="type.railway.funicular.tunnel">ケーブルカー(トンネル)</string>
@@ -1085,6 +1091,15 @@
     <string name="type.shop.chemist">化学薬品店</string>
     <string name="type.shop.chocolate">チョコレート屋</string>
     <string name="type.shop.clothes">洋服</string>
+    <string name="type.shop.clothes.children">子ども服</string>
+    <string name="type.shop.clothes.fashion">ファッションブティック</string>
+    <string name="type.shop.clothes.hats">帽子屋</string>
+    <string name="type.shop.clothes.men">メンズ服</string>
+    <string name="type.shop.clothes.sports">スポーツウェア</string>
+    <string name="type.shop.clothes.suits">スーツショップ</string>
+    <string name="type.shop.clothes.underwear">下着・インナー</string>
+    <string name="type.shop.clothes.wedding">ウェディングドレスショップ</string>
+    <string name="type.shop.clothes.women">レディースファッション</string>
     <string name="type.shop.coffee">コーヒー屋</string>
     <string name="type.shop.computer">コンピュータショップ</string>
     <string name="type.shop.confectionery">菓子類</string>
@@ -1105,6 +1120,7 @@
     <string name="type.shop.funeral_directors">葬儀屋</string>
     <string name="type.shop.furniture">家具店</string>
     <string name="type.shop.garden_centre">ガーデンセンター</string>
+    <string name="type.shop.games">ゲームショップ</string>
     <string name="type.shop.gas">ガス屋</string>
     <string name="type.shop.gift">ギフトショップ</string>
     <string name="type.shop.greengrocer">八百屋</string>
@@ -1120,6 +1136,7 @@
     <string name="type.shop.kiosk">キオスク</string>
     <string name="type.shop.kitchen">キッチンストア</string>
     <string name="type.shop.laundry">ランドリー</string>
+    <string name="type.shop.leather">レザーショップ</string>
     <string name="type.shop.mall">モール</string>
     <string name="type.shop.massage">マッサージ店</string>
     <string name="type.shop.mobile_phone">携帯ショップ</string>
@@ -1138,6 +1155,7 @@
     <string name="type.shop.pet">ペットショップ</string>
     <string name="type.shop.pet_grooming">ペットグルーミング</string>
     <string name="type.shop.photo">写真屋</string>
+    <string name="type.shop.religion">宗教用品店</string>
     <string name="type.shop.rental">レンタルショップ</string>
     <string name="type.shop.rental.bicycle">レンタサイクルショップ</string>
     <string name="type.amenity.bicycle_rental.shop">レンタサイクルショップ</string>

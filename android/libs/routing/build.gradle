@@ -1,0 +1,19 @@
+plugins {
+  id 'com.android.library'
+}
+
+apply from: "${rootProject.rootDir}/groovy/common-config.gradle"
+
+android {
+  namespace 'app.organicmaps.routing'
+}
+
+dependencies {
+  implementation project(':sdk')
+  implementation project(':libs:branding')
+
+  implementation libs.androidx.annotation
+  implementation libs.androidx.appcompat.resources
+  implementation libs.androidx.core
+  implementation libs.androidx.lifecycle
+}

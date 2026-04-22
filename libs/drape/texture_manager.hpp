@@ -1,8 +1,10 @@
 #pragma once
 
 #include "drape/color.hpp"
+#include "drape/glsl_types.hpp"
 #include "drape/glyph_manager.hpp"
 #include "drape/pointers.hpp"
+#include "drape/rainbow_colors.hpp"
 #include "drape/stipple_pen_resource.hpp"  // for PenPatternT
 #include "drape/texture.hpp"
 
@@ -13,6 +15,7 @@
 #include <atomic>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -94,6 +97,14 @@ public:
 
   using ColorRegion = BaseRegion;
 
+  /// A strip of N adjacent colors in the color atlas, with UVs spanning the full strip edge-to-edge.
+  struct RainbowRegion
+  {
+    ref_ptr<Texture> m_texture;
+    glsl::vec2 m_uvLeft;   ///< UV for the left edge of the strip (first color).
+    glsl::vec2 m_uvRight;  ///< UV for the right edge of the strip (last color).
+  };
+
   struct Params
   {
     std::string m_resPostfix;
@@ -119,6 +130,8 @@ public:
 
   void GetStippleRegion(PenPatternT const & pen, StippleRegion & region);
   void GetColorRegion(Color const & color, ColorRegion & region);
+  /// @return nullopt if the color atlas is full (caller should fall back to a single color).
+  std::optional<RainbowRegion> GetRainbowRegion(RainbowColors const & colors);
 
   using TMultilineText = buffer_vector<strings::UniString, 4>;
   using TGlyphsBuffer = buffer_vector<GlyphRegion, 128>;
@@ -176,43 +189,6 @@ private:
   size_t FindHybridGlyphsGroup(std::vector<text::GlyphMetrics> const & glyphs);
 
   static uint32_t GetNumberOfGlyphsNotInGroup(std::vector<text::GlyphMetrics> const & glyphs, GlyphGroup const & group);
-
-  template <typename TGlyphGroup>
-  void FillResultBuffer(strings::UniString const & text, TGlyphGroup & group, TGlyphsBuffer & regions)
-  {
-    if (group.m_texture == nullptr)
-      group.m_texture = AllocateGlyphTexture();
-
-    GetGlyphsRegions(group.m_texture, text, regions);
-  }
-
-  template <typename TGlyphGroup>
-  void FillResults(strings::UniString const & text, TGlyphsBuffer & buffers, TGlyphGroup & group)
-  {
-    FillResultBuffer<TGlyphGroup>(text, group, buffers);
-  }
-
-  template <typename TGlyphGroup>
-  void FillResults(TMultilineText const & text, TMultilineGlyphsBuffer & buffers, TGlyphGroup & group)
-  {
-    buffers.resize(text.size());
-    for (size_t i = 0; i < text.size(); ++i)
-    {
-      strings::UniString const & str = text[i];
-      TGlyphsBuffer & buffer = buffers[i];
-      FillResults<TGlyphGroup>(str, buffer, group);
-    }
-  }
-
-  template <typename TText, typename TBuffer>
-  void CalcGlyphRegions(TText const & text, TBuffer & buffers)
-  {
-    CHECK(m_isInitialized, ());
-    size_t const hybridGroupIndex = FindHybridGlyphsGroup(text);
-    ASSERT(hybridGroupIndex != GetInvalidGlyphGroup(), ());
-    GlyphGroup & group = m_glyphGroups[hybridGroupIndex];
-    FillResults<GlyphGroup>(text, buffers, group);
-  }
 
   void UpdateGlyphTextures(ref_ptr<dp::GraphicsContext> context);
 

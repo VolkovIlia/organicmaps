@@ -7,7 +7,7 @@
 "search" = "Пошук";
 
 /* "Bookmarks and Tracks" dialog title. Also used in iPhone home screen quick actions. */
-"bookmarks_and_tracks" = "Закладкі і маршруты";
+"bookmarks_and_tracks" = "Закладкі і трэкі";
 
 
 /********** Other translations **********/
@@ -32,3 +32,9 @@
 
 /* Needed to explain why we require access to GPS coordinates when the app is active. */
 "NSLocationWhenInUseUsageDescription" = "Вызначэнне вашага месцазнаходжання неабходна для навігацыі і для захавання вашага нядаўна пройдзенага шляху.";
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Увайсці з паролем";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Уваход праз браўзер";

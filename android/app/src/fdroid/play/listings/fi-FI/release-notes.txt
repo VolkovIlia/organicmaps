@@ -1,9 +1,10 @@
-• UUTTA: Korkeamman kontrastin tumman teeman värit
-• UUTTA: Google Assistant navigointiin ja hakuun
-• OSM-karttatiedot 11. tammikuuta
-• "Auto"-navigointiteeman asetus noudattaa järjestelmän tummaa/vaaleaa tilaa
-• Ohuemmat metrolinjat
-• Hakutulokset näyttävät moottoripyöräpysäköinnin, polkupyörävuokrauksen, polkupyörien latauksen ja autojen latauksen kapasiteetin
-• Näytä kerrostaso hakutuloksissa
-• Albanialaiset käännökset ja TTS-ääniopastus
-…lisää osoitteessa omaps.org/news
+• OSM-karttatiedot 10. maaliskuuta, Wikipedia 1. maaliskuuta
+• Tarkemmat korkeuskäyrät Kiinan provinsseille
+• Lisätty rivejä puita, nahkakauppoja ja uskonnollisia tavaroita myyviä liikkeitä
+• Lisätty tuki ehdollisille nopeusrajoituksille
+• Tansania jaettu pienempiin alueisiin
+• Parannettu aukioloaikojen näyttö
+• Korjattu useita kaatumisia
+• Parannetut sovellusten ja maiden nimien käännökset
+• Lisätty joukkoliikenteen pysäkkitasoja ilman lähellä olevia bussipysäkkejä
+omaps.org/news

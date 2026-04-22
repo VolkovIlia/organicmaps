@@ -157,7 +157,7 @@
 "type.recycling.shoes" = "Skoene";
 "type.recycling.green_waste" = "Groen-/organiese afval";
 "type.recycling.cartons" = "Drankverpakking";
-"type.amenity.restaurant" = "Restourant";
+"type.amenity.restaurant" = "Restaurant";
 "type.amenity.sanitary_dump_station" = "Opgaartenkstortstasie";
 "type.amenity.school" = "Skool";
 
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterreens";
 "type.cuisine.mexican" = "Meksikaans";
 "type.cuisine.moroccan" = "Marokkaans";
-"type.cuisine.noodles" = "Noedels";
+"type.cuisine.noodle" = "Noedels";
 "type.cuisine.oriental" = "Oosters";
 "type.cuisine.pancake" = "Pannekoek";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Wors";
 "type.cuisine.savory_pancakes" = "Pikante pannekoeke";
 "type.cuisine.seafood" = "Seekos";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Spaans";
 "type.cuisine.steak_house" = "Braairestourant";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Tee";
 "type.cuisine.thai" = "Thai";
 "type.cuisine.turkish" = "Turks";
+"type.cuisine.uzbek" = "Oesbekies";
 "type.cuisine.vegan" = "Veganisties";
 "type.cuisine.vegetarian" = "Vegetaries";
 "type.cuisine.vietnamese" = "Viëtnamees";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Voetgangertonnel";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Primêre pad";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Moeras";
 "type.noexit" = "Doodloop";
 "type.office" = "Kantoor";
+"type.office.architect" = "Argitekskantoor";
 "type.office.company" = "Maatskappykantoor";
+"type.office.educational_institution" = "Opvoedkundige instelling";
 "type.office.estate_agent" = "Eiendomsagent";
 "type.office.government" = "Regeringskantoor";
 "type.office.insurance" = "Versekeringskantoor";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Spoorwegoorgang";
 "type.railway.disused" = "Ongebruikte spoor";
 "type.railway.disused.bridge" = "Ongebruikte spoorbrug";
+"type.railway.disused.tunnel" = "Ongebruikte treintonnel";
 "type.railway.funicular" = "Kabelspoor";
 "type.railway.funicular.bridge" = "Kabelspoorbrug";
 "type.railway.funicular.tunnel" = "Kabelspoortonnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Drogistery";
 "type.shop.chocolate" = "Sjokoladewinkel";
 "type.shop.clothes" = "Kledingwinkel";
+"type.shop.clothes.children" = "Kinderkledingwinkel";
+"type.shop.clothes.fashion" = "Modeboetiek";
+"type.shop.clothes.hats" = "Hoedewinkel";
+"type.shop.clothes.men" = "Hereklerewinkel";
+"type.shop.clothes.sports" = "Sportklerewinkel";
+"type.shop.clothes.suits" = "Pakwinkel";
+"type.shop.clothes.underwear" = "Onderklerewinkel";
+"type.shop.clothes.wedding" = "Trouklerewinkel";
+"type.shop.clothes.women" = "Damesklerewinkel";
 "type.shop.coffee" = "Koffiewinkel";
 "type.shop.computer" = "Rekenaarwinkel";
 "type.shop.confectionery" = "Lekkergoedwinkel";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Begrafnisondernemer";
 "type.shop.furniture" = "Meubelwinkel";
 "type.shop.garden_centre" = "Tuinsentrum";
+"type.shop.games" = "Speletjieswinkel";
 "type.shop.gas" = "Gaswinkel";
 "type.shop.gift" = "Geskenkwinkel";
 "type.shop.greengrocer" = "Groentewinkel";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kiosk";
 "type.shop.kitchen" = "Kombuiswinkel";
 "type.shop.laundry" = "Kitswassery";
+"type.shop.leather" = "Leerwinkel";
 "type.shop.mall" = "Winkelsentrum";
 "type.shop.massage" = "Masseersalon";
 "type.shop.mobile_phone" = "Selfoonwinkel";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Troeteldierwinkel";
 "type.shop.pet_grooming" = "Troeteldierversorging";
 "type.shop.photo" = "Fotowinkel";
+"type.shop.religion" = "Godsdienswinkel";
 "type.shop.rental" = "Rental Shop";
 "type.shop.rental.bicycle" = "Bicycle Rental Shop";
 "type.amenity.bicycle_rental.shop" = "Bicycle Rental Shop";

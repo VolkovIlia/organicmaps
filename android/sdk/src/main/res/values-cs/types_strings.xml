@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Středomořská kuchyně</string>
     <string name="type.cuisine.mexican">Mexická kuchyně</string>
     <string name="type.cuisine.moroccan">Marocká kuchyně</string>
-    <string name="type.cuisine.noodles">Nudle</string>
+    <string name="type.cuisine.noodle">Nudle</string>
     <string name="type.cuisine.oriental">Orientální kuchyně</string>
     <string name="type.cuisine.pancake">Palačinka</string>
     <string name="type.cuisine.pasta">Těstoviny</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Klobása</string>
     <string name="type.cuisine.savory_pancakes">Pikantní palačinky</string>
     <string name="type.cuisine.seafood">Mořské plody</string>
+    <string name="type.cuisine.shawarma">Šavarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Španělská kuchyně</string>
     <string name="type.cuisine.steak_house">Steaková restaurace</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Čaj</string>
     <string name="type.cuisine.thai">Thajská kuchyně</string>
     <string name="type.cuisine.turkish">Turecká kuchyně</string>
+    <string name="type.cuisine.uzbek">Uzbecká</string>
     <string name="type.cuisine.vegan">Veganská kuchyně</string>
     <string name="type.cuisine.vegetarian">Vegetariánská kuchyně</string>
     <string name="type.cuisine.vietnamese">Vietnamská kuchyně</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Most</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Tunel pro pěší</string>
+    <string name="type.highway.platform">Nástupiště</string>
     <string name="type.highway.primary">Ulice</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Most</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Ulice</string>
     <string name="type.area_highway.trunk">Ulice</string>
     <string name="type.area_highway.unclassified">Ulice</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Historický objekt</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Bažina</string>
     <string name="type.noexit">Slepý konec</string>
     <string name="type.office">Kancelář</string>
+    <string name="type.office.architect">Architektonická kancelář</string>
     <string name="type.office.company">Kancelář společnosti</string>
+    <string name="type.office.educational_institution">Vzdělávací instituce</string>
     <string name="type.office.estate_agent">Realitní makléř</string>
     <string name="type.office.government">Úřad vlády</string>
     <string name="type.office.insurance">Pojišťovací kancelář</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Železniční přejezd</string>
     <string name="type.railway.disused">Nepoužívaná železnice</string>
     <string name="type.railway.disused.bridge">Most nepoužívané železnice</string>
+    <string name="type.railway.disused.tunnel">Tunel nepoužívané železnice</string>
     <string name="type.railway.funicular">Pozemní lanová dráha</string>
     <string name="type.railway.funicular.bridge">Most pozemní lanové dráhy</string>
     <string name="type.railway.funicular.tunnel">Tunel pozemní lanové dráhy</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Drogerie</string>
     <string name="type.shop.chocolate">Obchod s čokoládou</string>
     <string name="type.shop.clothes">Oblečení</string>
+    <string name="type.shop.clothes.children">Dětský obchod s oblečením</string>
+    <string name="type.shop.clothes.fashion">Módní butik</string>
+    <string name="type.shop.clothes.hats">Obchod s klobouky</string>
+    <string name="type.shop.clothes.men">Pánský obchod s oblečením</string>
+    <string name="type.shop.clothes.sports">Obchod se sportovním oblečením</string>
+    <string name="type.shop.clothes.suits">Obchod s obleky</string>
+    <string name="type.shop.clothes.underwear">Obchod s prádlem</string>
+    <string name="type.shop.clothes.wedding">Obchod se svatebními šaty</string>
+    <string name="type.shop.clothes.women">Dámský obchod s oblečením</string>
     <string name="type.shop.coffee">Obchod s kávou</string>
     <string name="type.shop.computer">Obchod s počítači</string>
     <string name="type.shop.confectionery">Cukrárna</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Pohřební služba</string>
     <string name="type.shop.furniture">Nábytek</string>
     <string name="type.shop.garden_centre">Školka</string>
+    <string name="type.shop.games">Obchod s hrami</string>
     <string name="type.shop.gas">Obchod s plynem</string>
     <string name="type.shop.gift">Obchod s dárkovým zbožím</string>
     <string name="type.shop.greengrocer">Ovoce a zelenina</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Kiosek</string>
     <string name="type.shop.kitchen">Prodejna kuchyní</string>
     <string name="type.shop.laundry">Prádelna</string>
+    <string name="type.shop.leather">Obchod s koženým zbožím</string>
     <string name="type.shop.mall">Obchoďák</string>
     <string name="type.shop.massage">Masážní salon</string>
     <string name="type.shop.mobile_phone">Mobily</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Zverimex</string>
     <string name="type.shop.pet_grooming">Péče o domácí mazlíčky</string>
     <string name="type.shop.photo">Fotografický obchod</string>
+    <string name="type.shop.religion">Obchod s náboženskými předměty</string>
     <string name="type.shop.rental">Půjčovna</string>
     <string name="type.shop.rental.bicycle">Půjčovna kol</string>
     <string name="type.amenity.bicycle_rental.shop">Půjčovna kol</string>
@@ -1358,7 +1374,7 @@
     <string name="type.waterway.stream.tunnel">Řeka</string>
     <string name="type.waterway.waterfall">Vodopád</string>
     <string name="type.waterway.weir">Jez</string>
-    <string name="type.wheelchair">Vozíčkář</string>
+    <string name="type.wheelchair">Invalidní vozík</string>
     <string name="type.wheelchair.limited">Omezený bezbariérový přístup</string>
     <string name="type.wheelchair.no">Žádný bezbariérový přístup</string>
     <string name="type.wheelchair.yes">Plně bezbariérový přístup</string>
@@ -1404,9 +1420,9 @@
     <string name="type.leisure.sports_hall">Sportovní hala</string>
     <string name="type.sport.diving">Potápění</string>
     <string name="type.man_made.crane">Jeřáb</string>
-    <string name="type.barrier.wicket_gate">Vjezdová brána</string>
+    <string name="type.barrier.wicket_gate">Branka</string>
     <string name="type.barrier.yes">Bariéra</string>
-    <string name="type.building.guardhouse">Strážce</string>
+    <string name="type.building.guardhouse">Strážnice</string>
     <string name="type.office.security">Bezpečnostní agentura</string>
     <string name="type.power.portal">Energetická věž (portál)</string>
     <string name="type.shop.lighting">Obchod s osvětlením</string>

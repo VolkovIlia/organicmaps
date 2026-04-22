@@ -164,7 +164,8 @@ class DownloaderAdapter extends RecyclerView.Adapter<DownloaderAdapter.ViewHolde
     refreshData();
   }
 
-  private record PathEntry(CountryItem item, boolean myMapsMode, int topPosition, int topOffset) {
+  private record PathEntry(CountryItem item, boolean myMapsMode, int topPosition, int topOffset)
+  {
     @Override
     public String toString()
     {
@@ -681,7 +682,10 @@ class DownloaderAdapter extends RecyclerView.Adapter<DownloaderAdapter.ViewHolde
     int offset;
 
     if (position > -1)
-      offset = lm.findViewByPosition(position).getTop();
+    {
+      final View v = lm.findViewByPosition(position);
+      offset = v != null ? v.getTop() : 0;
+    }
     else
     {
       position = 0;

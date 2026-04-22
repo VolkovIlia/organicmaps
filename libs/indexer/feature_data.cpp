@@ -21,13 +21,11 @@ using namespace feature;
 
 namespace feature
 {
-using namespace std;
-
 template <class ContT>
-string TypesToString(ContT const & holder)
+std::string TypesToString(ContT const & holder)
 {
   Classificator const & c = classif();
-  string s;
+  std::string s;
   for (uint32_t const type : holder)
     s += c.GetReadableObjectName(type) + " ";
   if (!s.empty())
@@ -112,6 +110,12 @@ public:
     std::stable_sort(cont.begin(), cont.end(), [this](uint32_t t1, uint32_t t2) { return Score(t1) < Score(t2); });
   }
 
+  bool IsUseful(uint32_t t) const
+  {
+    // "building" is ok
+    return Score(t) < 2;
+  }
+
 private:
   UselessTypesChecker()
   {
@@ -141,7 +145,7 @@ private:
 
   bool IsIn(uint8_t idx, uint32_t t) const { return std::binary_search(m_types[idx].begin(), m_types[idx].end(), t); }
 
-  vector<uint32_t> m_types[3];
+  std::vector<uint32_t> m_types[3];
 };
 }  // namespace
 
@@ -204,10 +208,51 @@ void TypesHolder::SortBySpec()
   });
 }
 
-vector<string> TypesHolder::ToObjectNames() const
+void TypesHolder::SortToCompare()
+{
+  auto const & checker = UselessTypesChecker::Instance();
+  std::sort(begin(), end(), [&checker](uint32_t t1, uint32_t t2)
+  {
+    auto const s1 = checker.Score(t1);
+    auto const s2 = checker.Score(t2);
+    if (s1 != s2)
+      return s1 < s2;
+    return t1 < t2;
+  });
+}
+
+bool TypesHolder::EqualUsefulSorted(TypesHolder const & other) const
+{
+  auto const & checker = UselessTypesChecker::Instance();
+  size_t i = 0;
+  for (; i < Size() && i < other.Size(); ++i)
+  {
+    bool const ul = checker.IsUseful(m_types[i]);
+    if (ul != checker.IsUseful(other.m_types[i]))
+      return false;
+
+    if (!ul)
+    {
+      ASSERT(i > 0, ("Show VNG this case!", *this, other));
+      return i > 0;
+    }
+
+    if (m_types[i] != other.m_types[i])
+      return false;
+  }
+
+  if (i < Size() && checker.IsUseful(m_types[i]))
+    return false;
+  if (i < other.Size() && checker.IsUseful(other.m_types[i]))
+    return false;
+
+  return i > 0;
+}
+
+std::vector<std::string> TypesHolder::ToObjectNames() const
 {
   Classificator const & c = classif();
-  vector<string> result;
+  std::vector<std::string> result;
   for (uint32_t const type : *this)
     result.push_back(c.GetReadableObjectName(type));
   return result;
@@ -246,9 +291,9 @@ bool FeatureParamsBase::IsValid() const
   return layer >= LAYER_LOW && layer <= LAYER_HIGH;
 }
 
-string FeatureParamsBase::DebugString() const
+std::string FeatureParamsBase::DebugString() const
 {
-  string const utf8name = DebugPrint(name);
+  std::string const utf8name = DebugPrint(name);
   return ((!utf8name.empty() ? "Name:" + utf8name : "") +
           (layer != LAYER_EMPTY ? " Layer:" + DebugPrint((int)layer) : "") +
           (rank != 0 ? " Rank:" + DebugPrint((int)rank) : "") + (!house.IsEmpty() ? " House:" + house.Get() : "") +
@@ -263,7 +308,7 @@ bool FeatureParamsBase::IsEmptyNames() const
 namespace
 {
 
-bool IsDummyName(string_view s)
+bool IsDummyName(std::string_view s)
 {
   return s.empty();
 }
@@ -279,7 +324,7 @@ void FeatureParams::ClearName()
   name.Clear();
 }
 
-bool FeatureParams::AddName(string_view lang, string_view s)
+bool FeatureParams::AddName(std::string_view lang, std::string_view s)
 {
   if (IsDummyName(s))
     return false;
@@ -327,7 +372,7 @@ void FeatureParams::SetHouseNumberAndHouseName(std::string houseNumber, std::str
   }
 }
 
-bool FeatureParams::AddHouseNumber(string houseNumber)
+bool FeatureParams::AddHouseNumber(std::string houseNumber)
 {
   ASSERT(!houseNumber.empty(), ());
 
@@ -411,7 +456,7 @@ FeatureParams::TypesResult FeatureParams::FinishAddingTypesEx()
     UselessTypesChecker::Instance().SortUselessToEnd(m_types);
 
     m_types.resize(kMaxTypesCount);
-    sort(m_types.begin(), m_types.end());
+    std::sort(m_types.begin(), m_types.end());
 
     res = TYPES_EXCEED_MAX;
   }
@@ -447,7 +492,7 @@ bool FeatureParams::PopAnyType(uint32_t & t)
 
 bool FeatureParams::PopExactType(uint32_t t)
 {
-  m_types.erase(remove(m_types.begin(), m_types.end(), t), m_types.end());
+  m_types.erase(std::remove(m_types.begin(), m_types.end(), t), m_types.end());
   return m_types.empty();
 }
 
@@ -492,7 +537,7 @@ uint32_t FeatureParams::GetTypeForIndex(uint32_t i)
   return classif().GetTypeForIndex(i);
 }
 
-void FeatureBuilderParams::SetStreet(string s)
+void FeatureBuilderParams::SetStreet(std::string s)
 {
   m_addrTags.Set(AddressData::Type::Street, std::move(s));
 }
@@ -502,7 +547,7 @@ std::string_view FeatureBuilderParams::GetStreet() const
   return m_addrTags.Get(AddressData::Type::Street);
 }
 
-void FeatureBuilderParams::SetPostcode(string s)
+void FeatureBuilderParams::SetPostcode(std::string s)
 {
   if (!s.empty())
     m_metadata.Set(Metadata::FMD_POSTCODE, std::move(s));
@@ -580,15 +625,15 @@ void FeatureBuilderParams::ClearPOIAttribs()
   m_metadata.ClearPOIAttribs();
 }
 
-string DebugPrint(FeatureParams const & p)
+std::string DebugPrint(FeatureParams const & p)
 {
-  string res = "Types: " + TypesToString(p.m_types) + "; ";
+  std::string res = "Types: " + TypesToString(p.m_types) + "; ";
   return (res + p.DebugString());
 }
 
-string DebugPrint(FeatureBuilderParams const & p)
+std::string DebugPrint(FeatureBuilderParams const & p)
 {
-  ostringstream oss;
+  std::ostringstream oss;
   oss << "ReversedGeometry: " << (p.GetReversedGeometry() ? "true" : "false") << "; ";
   oss << DebugPrint(p.m_metadata) << "; ";
   oss << DebugPrint(p.m_addrTags) << "; ";

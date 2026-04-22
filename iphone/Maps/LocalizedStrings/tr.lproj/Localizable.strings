@@ -157,7 +157,7 @@
 
 /********** Other translations **********/
 
-"share_bookmarks_email_body" = "Merhaba! \n \nEktekiler yer imlerim, lütfen bunları Organic Maps'te açın. Eğer uygulama kurulu değilse, şu bağlantıyla iOS ve Android aygıtınıza kurabilirsiniz: https://omaps.app/get?kmz \n \nOrganic Maps ile gezmenin tadını çıkarın!";
+"share_bookmarks_email_body" = "Merhaba! \n \nEktekiler yer imlerim, lütfen bunları Organic Maps'te açın. Eğer uygulama kurulmamışsa, şu bağlantıyla iOS ve Android aygıtınıza kurabilirsiniz: https://omaps.app/get?kmz\n \nOrganic Maps ile gezintinin tadını çıkarın!";
 
 /* message title of loading file */
 "load_kmz_title" = "Yer İmleri Yükleniyor";
@@ -651,6 +651,12 @@
 "button_layer_subway" = "Metro";
 "layers_title" = "Harita Stilleri ve Katmanlar";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Tüm yer imlerinin rengini değiştir";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Tüm izlerin rengini değiştir";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "KMZ Olarak Dışa Aktar";
 
@@ -882,9 +888,9 @@
 "transit_not_found" = "Metro navigasyonu henüz bu bölgede kullanılamaz";
 "dialog_pedestrian_route_is_long_header" = "Metro rotası bulunamadı";
 "dialog_pedestrian_route_is_long_message" = "Metro istasyonuna en yakın rotanın başlangıç veya bitiş noktasını seçin";
-"button_layer_isolines" = "Arazi";
+"button_layer_isolines" = "İzohipsler";
 "isolines_activation_error_dialog" = "Arazi katmanını etkinleştirmek ve kullanmak için lütfen haritayı güncelleyin veya indirin";
-"isolines_location_error_dialog" = "Arazi katmanı henüz bu bölgede kullanılamaz";
+"isolines_location_error_dialog" = "İzohipsler henüz bu bölgede kullanılamaz";
 "elevation_profile_ascent" = "Tırmanış";
 "elevation_profile_descent" = "İniş";
 "elevation_profile_min_elevation" = "Min. yükselti";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Mor indirilen bölgeler";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Şifre ile giriş yapın";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Tarayıcı kullanarak giriş yapın";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Son Kullanılanlar";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Yer imi rengi değiştirildi";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "İz rengi değiştirildi";

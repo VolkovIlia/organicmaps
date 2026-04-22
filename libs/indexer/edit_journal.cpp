@@ -1,10 +1,12 @@
 #include "indexer/edit_journal.hpp"
+#include "base/assert.hpp"
+#include "indexer/classificator.hpp"
 
 #include <algorithm>
 
 namespace osm
 {
-std::list<JournalEntry> const & EditJournal::GetJournal() const
+std::vector<JournalEntry> const & EditJournal::GetJournal() const
 {
   return m_journal;
 }
@@ -43,10 +45,10 @@ void EditJournal::Clear()
   for (JournalEntry & entry : m_journal)
     m_journalHistory.push_back(std::move(entry));
 
-  m_journal = {};
+  m_journal.clear();
 }
 
-std::list<JournalEntry> const & EditJournal::GetJournalHistory() const
+std::vector<JournalEntry> const & EditJournal::GetJournalHistory() const
 {
   return m_journalHistory;
 }
@@ -96,6 +98,7 @@ std::string EditJournal::ToString(osm::JournalEntry const & journalEntry)
     return ToString(journalEntry.journalEntryType).append(": version=\"").append(legacyObjData.version).append("\"");
   }
   }
+  UNREACHABLE();
 }
 
 std::string EditJournal::ToString(osm::JournalEntryType journalEntryType)
@@ -106,6 +109,7 @@ std::string EditJournal::ToString(osm::JournalEntryType journalEntryType)
   case osm::JournalEntryType::ObjectCreated: return "ObjectCreated";
   case osm::JournalEntryType::LegacyObject: return "LegacyObject";
   }
+  UNREACHABLE();
 }
 
 std::optional<JournalEntryType> EditJournal::TypeFromString(std::string const & entryType)
@@ -116,7 +120,7 @@ std::optional<JournalEntryType> EditJournal::TypeFromString(std::string const & 
     return JournalEntryType::ObjectCreated;
   else if (entryType == "LegacyObject")
     return JournalEntryType::LegacyObject;
-  else
-    return {};
+
+  return {};
 }
 }  // namespace osm

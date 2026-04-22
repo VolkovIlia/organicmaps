@@ -15,6 +15,7 @@ import app.organicmaps.sdk.util.concurrency.UiThread;
 import app.organicmaps.sdk.util.log.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -291,7 +292,7 @@ public enum BookmarkManager {
   {
     String filename = null;
     final String scheme = uri.getScheme();
-    if (scheme.equals("content"))
+    if ("content".equals(scheme))
     {
       try (Cursor cursor = resolver.query(uri, null, null, null, null))
       {
@@ -348,11 +349,66 @@ public enum BookmarkManager {
         return filename + ".gpx";
     }
 
-    // WhatsApp doesn't provide correct mime type and extension for GPX files.
-    if (uri.getHost().contains("com.whatsapp.provider.media"))
+    // Need to read file content and guess from its signature.
+    final String extension = guessExtensionByContent(resolver, uri);
+    if (extension != null)
+      return filename + extension;
+
+    // WhatsApp doesn't provide correct mime type and extension for GPX and GeoJson files.
+    final String authority = uri.getAuthority();
+    if (authority != null && authority.contains("com.whatsapp.provider.media"))
       return filename + ".gpx";
 
     return null;
+  }
+
+  private static String guessExtensionByContent(@NonNull ContentResolver resolver, @NonNull Uri uri)
+  {
+    // If first symbol is '{' -> GeoJson
+    // If first symbols 'PK' -> Zip archive, probably KMZ
+    // If first symbol is '<' and contains '<kml'  -> KML
+    // If first symbol is '<' and contains '<gpx'  -> GPX
+
+    try (InputStream is = resolver.openInputStream(uri))
+    {
+      byte[] buf = new byte[512];
+      int len = is.read(buf);
+      if (len < 2)
+        return null;
+
+      // ZIP (first two bytes are 'PK')
+      if (buf[0] == 0x50 && buf[1] == 0x4B)
+        return ".kmz";
+
+      // Skip UTF-8 BOM
+      int i = (len >= 3 && buf[0] == (byte) 0xEF && buf[1] == (byte) 0xBB && buf[2] == (byte) 0xBF) ? 3 : 0;
+
+      // Skip whitespace
+      while (i < len && (buf[i] == ' ' || buf[i] == '\t' || buf[i] == '\n' || buf[i] == '\r'))
+        i++;
+      if (i >= len)
+        return null;
+
+      // JSON
+      if (buf[i] == '{' || buf[i] == '[')
+        return ".geojson";
+
+      // XML-based (KML, GPX)
+      if (buf[i] == '<')
+      {
+        String s = new String(buf, i, len - i).toLowerCase();
+        if (s.contains("<kml"))
+          return ".kml";
+        if (s.contains("<gpx"))
+          return ".gpx";
+      }
+
+      return null;
+    }
+    catch (IOException e)
+    {
+      return null;
+    }
   }
 
   @WorkerThread
@@ -493,15 +549,18 @@ public enum BookmarkManager {
 
   @NonNull
   native BookmarkCategory nativeGetBookmarkCategory(long catId);
+
   @NonNull
   native BookmarkCategory[] nativeGetBookmarkCategories();
+
   native int nativeGetBookmarkCategoriesCount();
+
   @NonNull
   native BookmarkCategory[] nativeGetChildrenCategories(long catId);
 
-  public void setElevationActivePoint(long trackId, double distance, @NonNull ElevationInfo.Point point)
+  public void setElevationActivePoint(long trackId, double distance)
   {
-    nativeSetElevationActivePoint(trackId, distance, point.getLatitude(), point.getLongitude());
+    nativeSetElevationActivePoint(trackId, distance);
   }
 
   @Nullable
@@ -565,8 +624,7 @@ public enum BookmarkManager {
 
   public static native void nativeRemoveElevationCurrentPositionChangedListener();
 
-  private static native void nativeSetElevationActivePoint(long trackId, double distanceInMeters, double latitude,
-                                                           double longitude);
+  private static native void nativeSetElevationActivePoint(long trackId, double distanceInMeters);
 
   private static native void nativeSetElevationActiveChangedListener();
 

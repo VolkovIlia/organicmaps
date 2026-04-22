@@ -85,7 +85,7 @@
     <string name="type.amenity.internet_cafe">Internetikohvik</string>
     <string name="type.amenity.kindergarten">Lasteaed</string>
     <string name="type.amenity.library">Raamatukogu</string>
-    <string name="type.amenity.loading_dock">Laoestakaad</string>
+    <string name="type.amenity.loading_dock">Laadimisdokk</string>
     <string name="type.amenity.luggage_locker">Pagasihoid</string>
     <string name="type.amenity.marketplace">Turg</string>
     <string name="type.amenity.motorcycle_parking">Mootorrataste parkla</string>
@@ -243,7 +243,7 @@
     <string name="type.building.train_station">Jaamahoone</string>
     <string name="type.building.warehouse">Ladu</string>
     <string name="type.cemetery.grave">Haud</string>
-    <string name="type.craft">Käsitöömeister</string>
+    <string name="type.craft">Käsitöö</string>
     <string name="type.craft.beekeeper">Mesinik</string>
     <string name="type.craft.blacksmith">Sepp</string>
     <string name="type.craft.brewery">Väikepruulikoda</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Vahemere</string>
     <string name="type.cuisine.mexican">Mehhiko</string>
     <string name="type.cuisine.moroccan">Maroko</string>
-    <string name="type.cuisine.noodles">Nuudliroad</string>
+    <string name="type.cuisine.noodle">Nuudliroad</string>
     <string name="type.cuisine.oriental">Kaug-Ida</string>
     <string name="type.cuisine.pancake">Pannkoogid</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Vorstid</string>
     <string name="type.cuisine.savory_pancakes">Soolased pannkoogid</string>
     <string name="type.cuisine.seafood">Mereannid</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Jaapani soba-nuudlid</string>
     <string name="type.cuisine.spanish">Hispaania</string>
     <string name="type.cuisine.steak_house">Liharestoran</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Tee</string>
     <string name="type.cuisine.thai">Tai</string>
     <string name="type.cuisine.turkish">Türgi</string>
+    <string name="type.cuisine.uzbek">Usbeki</string>
     <string name="type.cuisine.vegan">Täistaimetoidukoht</string>
     <string name="type.cuisine.vegetarian">Taimetoit</string>
     <string name="type.cuisine.vietnamese">Vietnami</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Jalakäijate sild</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Jalakäijate tunnel</string>
+    <string name="type.highway.platform">Ooteplatvorm</string>
     <string name="type.highway.primary">Põhimaantee</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Põhimaantee sild</string>
@@ -533,13 +536,13 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Tunnel</string>
     <string name="type.area_highway.cycleway">Jalgrattatee</string>
-    <string name="type.area_highway.footway">Jalgtee</string>
+    <string name="type.area_highway.footway">Jalgrada</string>
     <string name="type.area_highway.living_street">Õueala tee</string>
     <string name="type.area_highway.motorway">Kiirtee</string>
     <string name="type.area_highway.path">Rada</string>
-    <string name="type.area_highway.pedestrian">Jalakäigutee</string>
+    <string name="type.area_highway.pedestrian">Jalakäijate tänav</string>
     <string name="type.area_highway.primary">Põhimaantee</string>
-    <string name="type.area_highway.residential">Elamupiikonna tänav</string>
+    <string name="type.area_highway.residential">Elamupiirkonna tänav</string>
     <string name="type.area_highway.secondary">Tugimaantee</string>
     <string name="type.area_highway.service">Juurdepääsutee</string>
     <string name="type.area_highway.tertiary">Kohalik maantee</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Rada</string>
     <string name="type.area_highway.trunk">E-tähistusega põhimaantee</string>
     <string name="type.area_highway.unclassified">Vähetähtis tee</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Ajalooline objekt</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Soo</string>
     <string name="type.noexit">Tupiktee</string>
     <string name="type.office">Kontor</string>
+    <string name="type.office.architect">Arhitektibüroo</string>
     <string name="type.office.company">Ettevõtte kontor</string>
+    <string name="type.office.educational_institution">Haridusasutus</string>
     <string name="type.office.estate_agent">Kinnisvarabüroo</string>
     <string name="type.office.government">Valitsusasutus</string>
     <string name="type.office.insurance">Kindlustusbüroo</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Raudtee ülesõit</string>
     <string name="type.railway.disused">Kasutamata raudtee</string>
     <string name="type.railway.disused.bridge">Kasutamata raudteesild</string>
+    <string name="type.railway.disused.tunnel">Kasutamata raudteetunnel</string>
     <string name="type.railway.funicular">Köisraudtee</string>
     <string name="type.railway.funicular.bridge">Köisraudtee sild</string>
     <string name="type.railway.funicular.tunnel">Köisraudtee tunnel</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Apteek ja ilupood</string>
     <string name="type.shop.chocolate">Šokolaadipood</string>
     <string name="type.shop.clothes">Rõivapood</string>
+    <string name="type.shop.clothes.children">Lasteriidepood</string>
+    <string name="type.shop.clothes.fashion">Moebutiik</string>
+    <string name="type.shop.clothes.hats">Mütsipood</string>
+    <string name="type.shop.clothes.men">Meesterõivaste pood</string>
+    <string name="type.shop.clothes.sports">Spordirõivaste pood</string>
+    <string name="type.shop.clothes.suits">Ülikondade pood</string>
+    <string name="type.shop.clothes.underwear">Aluspesu pood</string>
+    <string name="type.shop.clothes.wedding">Pulmariidepood</string>
+    <string name="type.shop.clothes.women">Naisterõivaste pood</string>
     <string name="type.shop.coffee">Kohvipood</string>
     <string name="type.shop.computer">Arvutipood</string>
     <string name="type.shop.confectionery">Kommipood</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Matusekorraldaja</string>
     <string name="type.shop.furniture">Mööblipood</string>
     <string name="type.shop.garden_centre">Aianduskeskus</string>
+    <string name="type.shop.games">Mängupood</string>
     <string name="type.shop.gas">Balloongaasi kauplus</string>
     <string name="type.shop.gift">Kingipood</string>
     <string name="type.shop.greengrocer">Puu- ja köögiviljapood</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Köögimööblikauplus</string>
     <string name="type.shop.laundry">Pesumaja</string>
+    <string name="type.shop.leather">Nahktoodete pood</string>
     <string name="type.shop.mall">Kaubanduskeskus</string>
     <string name="type.shop.massage">Massaažisalong</string>
     <string name="type.shop.mobile_phone">Mobiiltelefonipood</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Lemmikloomapood</string>
     <string name="type.shop.pet_grooming">Ilusalong lemmikloomadele</string>
     <string name="type.shop.photo">Fotopood</string>
+    <string name="type.shop.religion">Religioossete tarvete pood</string>
     <string name="type.shop.rental">Renditeenuse büroo</string>
     <string name="type.shop.rental.bicycle">Jalgrattalaenutus</string>
     <string name="type.amenity.bicycle_rental.shop">Jalgrattalaenutus</string>

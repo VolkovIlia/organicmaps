@@ -59,6 +59,7 @@ HighwayBasedSpeeds const kDefaultSpeeds = {
     // Steps have obvious inconvenience of a bike in hands.
     {HighwayType::HighwaySteps, InOutCitySpeedKMpH(SpeedKMpH(1.0, 1.0))},
     {HighwayType::HighwayPedestrian, InOutCitySpeedKMpH(kSpeedDismountKMpH)},
+    {HighwayType::HighwayPlatform, InOutCitySpeedKMpH(kSpeedDismountKMpH)},
     {HighwayType::HighwayFootway, InOutCitySpeedKMpH(kSpeedDismountKMpH)},
     {HighwayType::ManMadePier, InOutCitySpeedKMpH(kSpeedOnFootwayKMpH)},
     /// @todo A car ferry has {10, 10}. Weight = 9 is 60% from reasonable 15 average speed.
@@ -88,6 +89,7 @@ VehicleModel::LimitsInitList const kDefaultOptions = {
     // HighwayLadder is missing
     {HighwayType::HighwaySteps, true},
     {HighwayType::HighwayPedestrian, true},
+    {HighwayType::HighwayPlatform, true},
     {HighwayType::HighwayFootway, true},
     {HighwayType::ManMadePier, true},
     {HighwayType::RouteFerry, true}};
@@ -196,7 +198,7 @@ BicycleModel::BicycleModel(VehicleModel::LimitsInitList const & limits, HighwayB
   // No bridleway in default.
   ASSERT_EQUAL(kDefaultOptions.size(), kDefaultSpeeds.size() - 1, ());
 
-  std::vector<std::string> hwtagYesBicycle = {"hwtag", "yesbicycle"};
+  base::StringIL hwtagYesBicycle = {"hwtag", "yesbicycle"};
 
   auto const & cl = classif();
   m_noType = cl.GetTypeByPath({"hwtag", "nobicycle"});
@@ -206,7 +208,7 @@ BicycleModel::BicycleModel(VehicleModel::LimitsInitList const & limits, HighwayB
 
   // Assign 90% of max cycleway speed for bicycle=yes to keep choosing most preferred cycleway.
   auto const yesSpeed = kDefaultSpeeds.Get(HighwayType::HighwayCycleway).m_inCity * 0.9;
-  AddAdditionalRoadTypes(cl, {{std::move(hwtagYesBicycle), InOutCitySpeedKMpH(yesSpeed)}});
+  AddAdditionalRoadTypes(cl, {{hwtagYesBicycle, InOutCitySpeedKMpH(yesSpeed)}});
 
   // Update max speed with possible ferry transfer and bicycle speed downhill.
   // See EdgeEstimator::CalcHeuristic, GetBicycleClimbPenalty.

@@ -47,7 +47,7 @@
     <string name="type.leisure.adult_gaming_centre">Gaming-Zentrum für Erwachsene</string>
     <string name="type.leisure.amusement_arcade">Arkade</string>
     <string name="type.amenity.charging_station">Ladestation</string>
-    <string name="type.amenity.charging_station.bicycle">Fahrrad Ladestation</string>
+    <string name="type.amenity.charging_station.bicycle">Fahrrad-Ladestation</string>
     <string name="type.amenity.charging_station.motorcar">Kfz-Ladestation</string>
     <string name="type.amenity.childcare">Kindertagesstätte</string>
     <string name="type.amenity.cinema">Kino</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Mediterran</string>
     <string name="type.cuisine.mexican">Mexikanisch</string>
     <string name="type.cuisine.moroccan">Marokkanisch</string>
-    <string name="type.cuisine.noodles">Nudeln</string>
+    <string name="type.cuisine.noodle">Nudeln</string>
     <string name="type.cuisine.oriental">Orientalisch</string>
     <string name="type.cuisine.pancake">Pfannkuchen</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Wurst</string>
     <string name="type.cuisine.savory_pancakes">Herzhafte Pfannkuchen</string>
     <string name="type.cuisine.seafood">Meeresfrüchte</string>
+    <string name="type.cuisine.shawarma">Schawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Spanisch</string>
     <string name="type.cuisine.steak_house">Steakhaus</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Tee</string>
     <string name="type.cuisine.thai">Thailändisch</string>
     <string name="type.cuisine.turkish">Türkisch</string>
+    <string name="type.cuisine.uzbek">Usbekisch</string>
     <string name="type.cuisine.vegan">Vegan</string>
     <string name="type.cuisine.vegetarian">Vegetarisch</string>
     <string name="type.cuisine.vietnamese">Vietnamesisch</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Brücke</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Fußgängertunnel</string>
+    <string name="type.highway.platform">Plattform</string>
     <string name="type.highway.primary">Hauptstraße</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Brücke</string>
@@ -531,12 +534,12 @@
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.unclassified.bridge">Brücke</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.unclassified.tunnel">Straßentunnel</string>
+    <string name="type.highway.unclassified.tunnel">Tunnel</string>
     <string name="type.area_highway.cycleway">Radweg</string>
-    <string name="type.area_highway.footway">Weg</string>
-    <string name="type.area_highway.living_street">Wohnstraße</string>
+    <string name="type.area_highway.footway">Fußweg</string>
+    <string name="type.area_highway.living_street">Spielstraße</string>
     <string name="type.area_highway.motorway">Autobahn</string>
-    <string name="type.area_highway.path">Weg</string>
+    <string name="type.area_highway.path">Pfad</string>
     <string name="type.area_highway.pedestrian">Fußgängerzone</string>
     <string name="type.area_highway.primary">Hauptstraße</string>
     <string name="type.area_highway.residential">Wohnstraße</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Forst-/Feldweg</string>
     <string name="type.area_highway.trunk">Schnellstraße</string>
     <string name="type.area_highway.unclassified">Nebenstraße</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Historisches Objekt</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Sumpf</string>
     <string name="type.noexit">Sackgasse</string>
     <string name="type.office">Büro</string>
+    <string name="type.office.architect">Architekturbüro</string>
     <string name="type.office.company">Firmenbüro</string>
+    <string name="type.office.educational_institution">Bildungseinrichtung</string>
     <string name="type.office.estate_agent">Immobilienmakler</string>
     <string name="type.office.government">Behörde</string>
     <string name="type.office.insurance">Versicherungsbüro</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Bahnübergang</string>
     <string name="type.railway.disused">Stillgelegte Bahnstrecke</string>
     <string name="type.railway.disused.bridge">Stillgelegte Eisenbahnbrücke</string>
+    <string name="type.railway.disused.tunnel">Stillgelegter Eisenbahntunnel</string>
     <string name="type.railway.funicular">Standseilbahn</string>
     <string name="type.railway.funicular.bridge">Standseilbahnbrücke</string>
     <string name="type.railway.funicular.tunnel">Standseilbahntunnel</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Drogerie</string>
     <string name="type.shop.chocolate">Schokoladengeschäft</string>
     <string name="type.shop.clothes">Bekleidungsgeschäft</string>
+    <string name="type.shop.clothes.children">Kinderbekleidungsgeschäft</string>
+    <string name="type.shop.clothes.fashion">Modeboutique</string>
+    <string name="type.shop.clothes.hats">Hutgeschäft</string>
+    <string name="type.shop.clothes.men">Herrenbekleidungsgeschäft</string>
+    <string name="type.shop.clothes.sports">Sportbekleidungsgeschäft</string>
+    <string name="type.shop.clothes.suits">Anzuggeschäft</string>
+    <string name="type.shop.clothes.underwear">Dessousgeschäft</string>
+    <string name="type.shop.clothes.wedding">Brautmodengeschäft</string>
+    <string name="type.shop.clothes.women">Damenbekleidungsgeschäft</string>
     <string name="type.shop.coffee">Kaffeegeschäft</string>
     <string name="type.shop.computer">Computerfachgeschäft</string>
     <string name="type.shop.confectionery">Süßwarengeschäft</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Bestattungsinstitut</string>
     <string name="type.shop.furniture">Möbelhaus</string>
     <string name="type.shop.garden_centre">Gartencenter</string>
+    <string name="type.shop.games">Spielegeschäft</string>
     <string name="type.shop.gas">Gas-Geschäft</string>
     <string name="type.shop.gift">Geschenkeladen</string>
     <string name="type.shop.greengrocer">Gemüseladen</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Küchengeschäft</string>
     <string name="type.shop.laundry">Wäscherei</string>
+    <string name="type.shop.leather">Lederwarengeschäft</string>
     <string name="type.shop.mall">Einkaufszentrum</string>
     <string name="type.shop.massage">Massagesalon</string>
     <string name="type.shop.mobile_phone">Handyladen</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Tierhandlung</string>
     <string name="type.shop.pet_grooming">Tiersalon</string>
     <string name="type.shop.photo">Fotofachgeschäft</string>
+    <string name="type.shop.religion">Geschäft für religiöse Artikel</string>
     <string name="type.shop.rental">Verleih</string>
     <string name="type.shop.rental.bicycle">Fahrradverleih</string>
     <string name="type.amenity.bicycle_rental.shop">Fahrradverleih</string>

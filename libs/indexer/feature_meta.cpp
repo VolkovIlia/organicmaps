@@ -5,8 +5,6 @@
 
 namespace feature
 {
-using namespace std;
-
 namespace
 {
 char constexpr const * kBaseWikiUrl =
@@ -52,10 +50,10 @@ std::string_view MetadataBase::Set(uint8_t type, std::string value)
   return sv;
 }
 
-string Metadata::ToWikiURL(std::string v)
+std::string Metadata::ToWikiURL(std::string v)
 {
-  auto const colon = v.find(':');
-  if (colon == string::npos)
+  size_t const colon = v.find(':');
+  if (colon == std::string::npos)
     return v;
 
   EncodeWikiURL(colon, v);
@@ -68,7 +66,7 @@ string Metadata::ToWikiURL(std::string v)
 
 std::string Metadata::GetWikiURL() const
 {
-  return ToWikiURL(string(Get(FMD_WIKIPEDIA)));
+  return ToWikiURL(std::string(Get(FMD_WIKIPEDIA)));
 }
 
 std::string Metadata::ToWikimediaCommonsURL(std::string v)
@@ -86,11 +84,11 @@ std::string Metadata::ToWikimediaCommonsURL(std::string v)
   return kBaseCommonsUrl + v;
 }
 
-void Metadata::EncodeWikiURL(int startIndex, std::string & url)
+void Metadata::EncodeWikiURL(size_t startIndex, std::string & url)
 {
   // Spaces and ? characters should be corrected to form a valid URL's path.
   // Standard percent encoding also encodes other characters like (), which lead to an unnecessary HTTP redirection.
-  for (auto i = startIndex; i < url.size(); ++i)
+  for (size_t i = startIndex; i < url.size(); ++i)
   {
     auto & c = url[i];
     if (c == ' ')
@@ -101,13 +99,13 @@ void Metadata::EncodeWikiURL(int startIndex, std::string & url)
     {
       c = '%';
       url.insert(++i, "3F");  // ? => %3F
-      i += 1;
+      ++i;
     }
   }
 }
 
 // static
-bool Metadata::TypeFromString(string_view k, Metadata::EType & outType)
+bool Metadata::TypeFromString(std::string_view k, Metadata::EType & outType)
 {
   if (k == "opening_hours")
     outType = Metadata::FMD_OPEN_HOURS;
@@ -210,13 +208,13 @@ void Metadata::ClearPOIAttribs()
       ++i;
 }
 
-void RegionData::SetLanguages(vector<string> const & codes)
+void RegionData::SetLanguages(std::vector<std::string> const & codes)
 {
   if (!MetadataBase::Get(RegionData::Type::RD_LANGUAGES).empty())
     return;
 
-  string value;
-  for (string const & code : codes)
+  std::string value;
+  for (std::string const & code : codes)
   {
     int8_t const lang = StringUtf8Multilang::GetLangIndex(code);
     if (lang != StringUtf8Multilang::kUnsupportedLanguageCode)
@@ -226,7 +224,7 @@ void RegionData::SetLanguages(vector<string> const & codes)
   MetadataBase::Set(RegionData::Type::RD_LANGUAGES, value);
 }
 
-void RegionData::GetLanguages(vector<int8_t> & langs) const
+void RegionData::GetLanguages(LangsBufferT & langs) const
 {
   for (auto const lang : Get(RegionData::Type::RD_LANGUAGES))
     langs.push_back(lang);
@@ -250,7 +248,7 @@ bool RegionData::IsSingleLanguage(int8_t const lang) const
 
 void RegionData::AddPublicHoliday(int8_t month, int8_t offset)
 {
-  string value(Get(RegionData::Type::RD_PUBLIC_HOLIDAYS));
+  std::string value(Get(RegionData::Type::RD_PUBLIC_HOLIDAYS));
   value.push_back(month);
   value.push_back(offset);
   Set(RegionData::Type::RD_PUBLIC_HOLIDAYS, std::move(value));
@@ -276,7 +274,7 @@ void RegionData::MergeFrom(RegionData const & rhs)
 }
 
 // Warning: exact osm tag keys should be returned for valid enum values.
-string ToString(Metadata::EType type)
+std::string ToString(Metadata::EType type)
 {
   switch (type)
   {
@@ -335,7 +333,7 @@ string ToString(Metadata::EType type)
   return {};
 }
 
-string DebugPrint(Metadata const & metadata)
+std::string DebugPrint(Metadata const & metadata)
 {
   bool first = true;
   std::string res = "Metadata [";
@@ -365,8 +363,8 @@ string DebugPrint(Metadata const & metadata)
   return res;
 }
 
-string DebugPrint(AddressData const & addressData)
+std::string DebugPrint(AddressData const & addressData)
 {
-  return string("AddressData { Street = \"").append(addressData.Get(AddressData::Type::Street)) + "\" }";
+  return std::string("AddressData { Street = \"").append(addressData.Get(AddressData::Type::Street)) + "\" }";
 }
 }  // namespace feature

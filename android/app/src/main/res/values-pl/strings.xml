@@ -282,8 +282,6 @@
     <string name="downloader_downloading">Pobieranie:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">Aby usunąć mapę, zatrzymaj nawigację.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">Trasy można tworzyć tylko pod warunkiem, że zawarte będą w ramach pojedynczej mapy.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">Pobierz mapę</string>
     <!-- Item status in downloader. -->
@@ -296,10 +294,6 @@
     <string name="google_play_services">Usługi lokalizacyjne Google Play</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">Szybko określ swoją przybliżoną lokalizację przez Bluetooth, WiFi lub sieć komórkową</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">Pobierz mapy wzdłuż trasy</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">Tworzenie tras wymaga pobrania i zaktualizowania wszystkich map od Twojej lokalizacji do celu podróży.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">Brak wolnego miejsca</string>
     <!-- location service disabled -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">Jasny</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">Ciemny</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">Jasny od świtu do zmierzchu</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">Podaruj darmowe mapy bez reklam milionom użytkowników!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">— Sugerowane trasy należy traktować jedynie jako rekomendacje;</string>
     <string name="dialog_routing_disclaimer_borders">— Prosimy zachować ostrożność na trasach w strefie nadgranicznej: wyznaczone przez naszą aplikację trasy mogą przecinać granice państw w niedozwolonych do przekroczenia miejscach;</string>
     <string name="dialog_routing_disclaimer_beware">Podczas podróży zachowaj czujność i prowadź ostrożnie!</string>
-    <string name="dialog_routing_check_gps">Sprawdź sygnał GPS</string>
-    <string name="dialog_routing_error_location_not_found">Nie można wyznaczyć trasy. Nie można ustalić współrzędnych GPS.</string>
     <string name="dialog_routing_location_turn_wifi">Sprawdź sygnał GPS. Aktywacja Wi-Fi pomoże w precyzyjnym określeniu położenia.</string>
-    <string name="dialog_routing_location_turn_on">Włącz usługi określania lokalizacji</string>
-    <string name="dialog_routing_location_unknown_turn_on">Nie można ustalić współrzędnych GPS. Włącz usługi określania lokalizacji, aby wyznaczyć trasę.</string>
-    <string name="dialog_routing_unable_locate_route">Nie można zlokalizować trasy</string>
-    <string name="dialog_routing_cant_build_route">Nie można wyznaczyć trasy.</string>
-    <string name="dialog_routing_change_start_or_end">Zmień punkt początkowy lub docelowy.</string>
-    <string name="dialog_routing_change_start">Zmień punkt początkowy</string>
-    <string name="dialog_routing_start_not_determined">Nie wyznaczono trasy. Nie można zlokalizować punktu początkowego.</string>
-    <string name="dialog_routing_select_closer_start">Wybierz punkt początkowy położony bliżej drogi.</string>
-    <string name="dialog_routing_change_end">Zmień punkt docelowy</string>
-    <string name="dialog_routing_end_not_determined">Nie wyznaczono trasy. Nie można zlokalizować punktu docelowego.</string>
-    <string name="dialog_routing_select_closer_end">Wybierz punkt docelowy położony bliżej drogi.</string>
-    <string name="dialog_routing_change_intermediate">Nie można zlokalizować punktu postoju.</string>
-    <string name="dialog_routing_intermediate_not_determined">Dokonaj korekty punktu postoju.</string>
     <string name="dialog_routing_system_error">Błąd systemowy</string>
-    <string name="dialog_routing_application_error">Nie można wyznaczyć trasy z powodu błędu aplikacji.</string>
-    <string name="dialog_routing_try_again">Spróbuj ponownie</string>
     <string name="not_now">Nie teraz</string>
-    <string name="dialog_routing_download_and_build_cross_route">Chcesz pobrać mapę i wyznaczyć lepszą trasę, obejmującą więcej map?</string>
-    <string name="dialog_routing_download_cross_route">Pobierz mapę i wyznacz lepszą trasę, wykraczającą poza granice bieżącej mapy.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">Aby rozpocząć wyszukiwanie i tworzenie tras, pobierz mapę, a nie będzie ci już potrzebne połączenie z Internetem.</string>
@@ -473,7 +450,6 @@
     <string name="level_value_generic">Piętro: %s</string>
     <string name="downloader_delete_map_dialog">Wszystkie zmiany dotyczące mapy zostaną usunięte wraz z nią.</string>
     <string name="downloader_update_maps">Aktualizuj mapy</string>
-    <string name="downloader_mwm_migration_dialog">Aby utworzyć trasę, należy zaktualizować wszystkie mapy, a następnie ponownie zaplanować trasę.</string>
     <string name="downloader_search_field_hint">Znajdź mapę</string>
     <string name="common_check_internet_connection_dialog">Sprawdź swoje ustawienia i upewnij się, że urządzenie ma połączenie z Internetem.</string>
     <string name="downloader_no_space_title">Brak wolnego miejsca</string>
@@ -590,9 +566,9 @@
     <string name="transliteration_title">Transkrypcja na alfabet łaciński</string>
     <string name="learn_more">Dowiedz się więcej</string>
     <!-- User selected the destination by pressing Route To, but the current position is unknown. User needs to select a starting point of a route using search or by tapping on the map and then pressing "Route From". -->
-    <string name="routing_add_start_point">Użyj funkcji wyszukiwania lub dotknij mapy, aby dodać punkt początkowy trasy</string>
+    <string name="routing_add_start_point">Użyj wyszukiwarki, wybierz zakładkę lub dotknij mapy, aby dodać punkt początkowy trasy</string>
     <!-- User selected the start of a route by pressing Route From. Now the destination of a route should be selected using search or by tapping on the map and then pressing "Route To". -->
-    <string name="routing_add_finish_point">Użyj funkcji wyszukiwania lub dotknij mapy, aby dodać punkt docelowy</string>
+    <string name="routing_add_finish_point">Użyj wyszukiwarki, wybierz zakładkę lub dotknij mapy, aby dodać punkt docelowy</string>
     <string name="planning_route_manage_route">Zarządzaj trasą</string>
     <string name="button_plan">Zaplanuj</string>
     <string name="placepage_remove_stop">Usuń postój</string>
@@ -654,6 +630,10 @@
     <string name="layers_title">Style i warstwy mapy</string>
     <string name="bookmarks_empty_list_title">Lista jest pusta</string>
     <string name="bookmarks_empty_list_message">Aby dodać zakładkę, dotknij miejsca na mapie, a następnie dotknij ikony gwiazdy.</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">Zmień kolor wszystkich zakładek</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">Zmień kolor wszystkich tras</string>
     <string name="category_desc_more">…więcej</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">Eksportuj KMZ</string>
@@ -732,6 +712,7 @@
     <string name="moreyear_ago_sorttype">Ponad rok temu</string>
     <string name="near_me_sorttype">W pobliżu</string>
     <string name="others_sorttype">Inne</string>
+    <string name="editor_add_select_category_all_subtitle">Wszystkie kategorie</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">Jedzenie</string>
@@ -751,9 +732,6 @@
     <string name="search_in_the_list">Wyszukaj na liście</string>
     <string name="religious_places">Święte miejsca</string>
     <string name="select_list">Wybierz listę</string>
-    <string name="transit_not_found">Nawigacja metrem nie jest jeszcze tutaj dostępna</string>
-    <string name="dialog_pedestrian_route_is_long_header">Nie znaleziono trasy metra</string>
-    <string name="dialog_pedestrian_route_is_long_message">Wybierz punkt początkowy lub końcowy trasy najbliżej do stacji metra</string>
     <string name="button_layer_isolines">Poziomice</string>
     <string name="isolines_activation_error_dialog">Do skorzystania z poziomic, pobierz mapę tego obszaru.</string>
     <string name="isolines_location_error_dialog">Poziomice nie są jeszcze dostępne w tym regionie</string>
@@ -832,12 +810,10 @@
     <string name="aa_location_permissions_request">Aplikacja Organic Maps wymaga dostępu do lokalizacji. Gdy będzie to bezpieczne, sprawdź powiadomienie w telefonie.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Ta aplikacja wymaga Twojej zgody</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">Organic Maps w Android Auto wymagają uprawnień do lokalizacji, aby działać efektywnie</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">Przyznaj uprawnienia</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
-    <string name="button_layer_outdoor">Turystyka piesza</string>
+    <string name="button_layer_outdoor">Aktywność outdoorowa</string>
     <!-- Text displayed when a webview or a browser are disabled, and external links can't be opened. -->
     <string name="browser_not_available">Przeglądarka internetowa jest niedostępna</string>
     <string name="volume">Głośność</string>
@@ -885,11 +861,23 @@
     <string name="edit_track">Edytuj trasę</string>
     <string name="uri_open_location_failed">Brak zainstalowanej aplikacji, która może otworzyć lokalizację</string>
     <!-- preference string for using auto theme only in navigation mode -->
-    <string name="nav_auto">Automatyczna nawigacja</string>
+    <string name="nav_auto">Auto w nawigacji</string>
     <!-- Setting option to sync the app's theme with the operating system's dark/light mode -->
     <string name="follow_system">Zgodnie z systemem</string>
     <!-- Title of the bottom sheet when sharing the track -->
     <string name="share_track">Udostępnij trasę</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">Usunąć %s?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">Proszę zalogować się przy użyciu hasła</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">Logowanie za pomocą przeglądarki</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">Ostatnio używane</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">Kolor zakładek zmieniony</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">Kolor tras zmieniony</string>
 </resources>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "routing/maxspeeds.hpp"
+#include "routing/opening_hours_serdes.hpp"
 
 #include "routing_common/vehicle_model.hpp"
 
@@ -14,8 +15,6 @@
 #include "base/logging.hpp"
 #include "base/stl_helpers.hpp"
 
-#include <algorithm>
-#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -30,8 +29,8 @@ namespace routing
 /// * Forward speeds:
 ///   elias_fano with feature ids which have maxspeed tag in forward direction only
 ///   SimpleDenseCoding with speed macros
-/// * Bidirectional speeds in raw table:
-///   <varint(delta(Feature id))><Forward speed macro><Backward speed macro>
+/// * Bidirectional and Conditional speeds in raw table:
+///   <varint(delta(Feature id))><Forward speed macro><Backward speed macro><Conditional speed macro><OpeningHours>
 ///
 /// \note elias_fano is better than raw table in case of high density of entries, so we assume that
 ///  Bidirectional speeds count *is much less than* Forward speeds count.
@@ -40,35 +39,35 @@ class MaxspeedsSerializer
   // 0 - start version
   // 1 - added HighwayType -> SpeedMacro
   // 2 - HighwayType -> SpeedMacro for inside/outside a city
+  // 3 - Maxspeed conditional
   using VersionT = uint16_t;
-  static VersionT constexpr kVersion = 2;
+  static VersionT constexpr kVersion = 3;
 
 public:
   MaxspeedsSerializer() = delete;
 
   struct FeatureSpeedMacro
   {
-    FeatureSpeedMacro(uint32_t featureID, SpeedMacro forward, SpeedMacro backward = SpeedMacro::Undefined)
-      : m_featureID(featureID)
-      , m_forward(forward)
-      , m_backward(backward)
-    {
-      // We store bidirectional speeds only if they are not equal,
-      // see Maxspeed::IsBidirectional() comments.
-      if (m_forward == m_backward)
-        m_backward = SpeedMacro::Undefined;
-    }
+    FeatureSpeedMacro(uint32_t featureID, Maxspeed const & speed, MaxspeedConverter const & converter);
 
-    bool IsBidirectional() const { return m_backward != SpeedMacro::Undefined; }
+    bool IsValid() const { return m_forward != SpeedMacro::Undefined || IsComplex(); }
+
+    // A feature is Complex if it has Backward OR Conditional data.
+    bool IsComplex() const { return m_backward != SpeedMacro::Undefined || m_conditional != SpeedMacro::Undefined; }
 
     uint32_t m_featureID;
     SpeedMacro m_forward;
     SpeedMacro m_backward;
+
+    SpeedMacro m_conditional = SpeedMacro::Undefined;
+    osmoh::OpeningHours m_conditionalTime;
   };
 
   using HW2SpeedMap = std::map<HighwayType, SpeedMacro>;
 
   static int constexpr DEFAULT_SPEEDS_COUNT = Maxspeeds::DEFAULT_SPEEDS_COUNT;
+
+  static OpeningHoursSerDes GetSerDes() { return OpeningHoursSerDes::ForRouting(); }
 
   template <class Sink>
   static void Serialize(std::vector<FeatureSpeedMacro> const & featureSpeeds, HW2SpeedMap typeSpeeds[], Sink & sink)
@@ -98,7 +97,7 @@ public:
     {
       succinct::elias_fano::elias_fano_builder builder(maxFeatureID + 1, forwardCount);
       for (auto const & e : featureSpeeds)
-        if (!e.IsBidirectional())
+        if (!e.IsComplex())
           builder.push_back(e.m_featureID);
 
       coding::FreezeVisitor<Writer> visitor(sink);
@@ -115,11 +114,12 @@ public:
     }
     header.m_bidirectionalMaxspeedOffset = static_cast<uint32_t>(sink.Pos() - forwardMaxspeedTableOffset);
 
-    // Saving bidirectional maxspeeds.
+    // Saving complex maxspeeds.
     uint32_t prevFeatureId = 0;
+    auto serDes = GetSerDes();
     for (auto const & s : featureSpeeds)
     {
-      if (!s.IsBidirectional())
+      if (!s.IsComplex())
         continue;
 
       ++header.m_bidirectionalMaxspeedNumber;
@@ -130,6 +130,13 @@ public:
 
       WriteToSink(sink, static_cast<uint8_t>(s.m_forward));
       WriteToSink(sink, static_cast<uint8_t>(s.m_backward));
+
+      WriteToSink(sink, static_cast<uint8_t>(s.m_conditional));
+      if (s.m_conditional != SpeedMacro::Undefined)
+      {
+        BitWriter<Sink> bitWriter(sink);
+        serDes.Serialize(bitWriter, s.m_conditionalTime);
+      }
     }
 
     // Save HighwayType speeds, sorted by type.
@@ -151,7 +158,7 @@ public:
 
     // Print statistics.
     LOG(LINFO, ("Serialized", forwardCount, "forward maxspeeds and", header.m_bidirectionalMaxspeedNumber,
-                "bidirectional maxspeeds. Section size:", endOffset - startOffset, "bytes."));
+                "complex maxspeeds. Section size:", endOffset - startOffset, "bytes."));
     LOG(LINFO,
         ("Succinct EF compression ratio:", forwardCount * (4 + 1) / double(header.m_bidirectionalMaxspeedOffset)));
   }
@@ -186,14 +193,20 @@ public:
       Map(maxspeeds.m_forwardMaxspeeds, maxspeeds.m_forwardMaxspeedRegion->ImmutableData(), "ForwardMaxspeeds");
     }
 
-    // Loading bidirectional speeds.
+    // Loading complex speeds.
     auto const & converter = GetMaxspeedConverter();
-    auto ReadSpeed = [&](size_t i)
+    auto serDes = GetSerDes();
+
+    auto ReadSpeed = [&](size_t i) -> SpeedInUnits
     {
-      uint8_t const idx = ReadPrimitiveFromSource<uint8_t>(src);
-      auto const speed = converter.MacroToSpeed(static_cast<SpeedMacro>(idx));
-      CHECK(speed.IsValid(), (i));
-      return speed;
+      auto const macro = static_cast<SpeedMacro>(ReadPrimitiveFromSource<uint8_t>(src));
+      if (macro != SpeedMacro::Undefined)
+      {
+        auto speed = converter.MacroToSpeed(macro);
+        CHECK(speed.IsValid(), (i));
+        return speed;
+      }
+      return {};
     };
 
     maxspeeds.m_bidirectionalMaxspeeds.reserve(header.m_bidirectionalMaxspeedNumber);
@@ -204,7 +217,21 @@ public:
       auto const forwardSpeed = ReadSpeed(i);
       auto const backwardSpeed = ReadSpeed(i);
 
+      SpeedInUnits conditionalSpeed;
+      osmoh::OpeningHours conditionalTime;
+
+      if (version >= 3)
+      {
+        conditionalSpeed = ReadSpeed(i);
+        if (conditionalSpeed.IsValid())
+        {
+          BitReader<Source> bitReader(src);
+          conditionalTime = serDes.Deserialize(bitReader);
+        }
+      }
+
       CHECK(HaveSameUnits(forwardSpeed, backwardSpeed), (i));
+      CHECK(HaveSameUnits(forwardSpeed, conditionalSpeed), (i));
 
       // Note. If neither |forwardSpeed| nor |backwardSpeed| are numeric, it means
       // both of them have value "walk" or "none". So the units are not relevant for this case.
@@ -217,6 +244,13 @@ public:
       featureId += delta;
       maxspeeds.m_bidirectionalMaxspeeds.emplace_back(featureId, units, forwardSpeed.GetSpeed(),
                                                       backwardSpeed.GetSpeed());
+
+      // Add conditional data to the object.
+      if (conditionalTime.IsValid())
+      {
+        auto & lastFeature = maxspeeds.m_bidirectionalMaxspeeds.back();
+        lastFeature.SetConditional(conditionalSpeed.GetSpeed(), std::move(conditionalTime));
+      }
     }
 
     // Load HighwayType speeds.

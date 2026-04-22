@@ -11,7 +11,7 @@
 "type.aerialway.drag_lift" = "Kayak Teleferiği";
 "type.aerialway.gondola" = "Telekabin";
 "type.aerialway.mixed_lift" = "Karışık Teleferik";
-"type.aerialway.station" = "Havayolu İstasyonu";
+"type.aerialway.station" = "Teleferik İstasyonu";
 "type.aeroway" = "Hava Sahası Alt Yapısı";
 "type.aeroway.aerodrome" = "Havaalanı";
 "type.aeroway.aerodrome.international" = "Uluslararası Havalimanı";
@@ -82,7 +82,7 @@
 /* In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. */
 "type.amenity.grave_yard.christian" = "Hristiyan Mezarlığı";
 "type.amenity.hospital" = "Hastane";
-"type.amenity.hunting_stand" = "Avlanma Alanı";
+"type.amenity.hunting_stand" = "Avlanma Kulübesi";
 "type.amenity.ice_cream" = "Dondurma";
 "type.amenity.internet_cafe" = "İnternet Kafe";
 "type.amenity.kindergarten" = "Anaokulu";
@@ -189,7 +189,7 @@
 "type.amenity.vending_machine.drinks" = "İçecek Dağıtıcı";
 "type.amenity.vending_machine.food" = "Yiyecek Dağıtıcı";
 "type.amenity.vending_machine.newspapers" = "Gazete Dağıtıcı";
-"type.amenity.vending_machine.parking_tickets" = "Otopark Fişi";
+"type.amenity.vending_machine.parking_tickets" = "Parkmetre";
 "type.amenity.vending_machine.public_transport_tickets" = "Bilet Dağıtıcı";
 "type.amenity.vending_machine.sweets" = "Şekerleme Dağıtıcı";
 "type.amenity.vending_machine.excrement_bags" = "Dışkı Torbası Dağıtıcı";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Akdeniz Mutfağı";
 "type.cuisine.mexican" = "Meksika Mutfağı";
 "type.cuisine.moroccan" = "Fas Mutfağı";
-"type.cuisine.noodles" = "Erişte";
+"type.cuisine.noodle" = "Erişte";
 "type.cuisine.oriental" = "Uzak Doğu Mutfağı";
 "type.cuisine.pancake" = "Gözleme";
 "type.cuisine.pasta" = "Makarna";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Sucuk";
 "type.cuisine.savory_pancakes" = "Açma";
 "type.cuisine.seafood" = "Deniz Ürünleri";
+"type.cuisine.shawarma" = "Şavurma";
 "type.cuisine.soba" = "Erişte";
 "type.cuisine.spanish" = "İspanyol Mutfağı";
 "type.cuisine.steak_house" = "Biftekçi";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Çay";
 "type.cuisine.thai" = "Tay Mutfağı";
 "type.cuisine.turkish" = "Türk Mutfağı";
+"type.cuisine.uzbek" = "Özbek";
 "type.cuisine.vegan" = "Vegan Mutfağı";
 "type.cuisine.vegetarian" = "Vejetaryen Mutfağı";
 "type.cuisine.vietnamese" = "Vietnam Mutfağı";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Yaya Tüneli";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Ana Yol";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -605,7 +608,7 @@
 "type.area_highway.living_street" = "Cadde";
 "type.area_highway.motorway" = "Otoyol";
 "type.area_highway.path" = "Yol";
-"type.area_highway.pedestrian" = "Yayalar için Cadde";
+"type.area_highway.pedestrian" = "Yaya Caddesi";
 "type.area_highway.primary" = "Ana Yol";
 "type.area_highway.residential" = "Sokak";
 "type.area_highway.secondary" = "Tali Yol";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Sazlık";
 "type.noexit" = "Çıkmaz";
 "type.office" = "Ofis";
+"type.office.architect" = "Mimarlık bürosu";
 "type.office.company" = "Şirket Bürosu";
+"type.office.educational_institution" = "Eğitim kurumu";
 "type.office.estate_agent" = "Emlakçı";
 "type.office.government" = "Devlet Dairesi";
 "type.office.insurance" = "Sigorta Acentesi";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Demir Yolu Geçişi";
 "type.railway.disused" = "Kullanılmayan Demir Yolu";
 "type.railway.disused.bridge" = "Kullanılmayan Demir Yolu Köprüsü";
+"type.railway.disused.tunnel" = "Kullanılmayan Demir Yolu Tüneli";
 "type.railway.funicular" = "Füniküler";
 "type.railway.funicular.bridge" = "Füniküler Köprüsü";
 "type.railway.funicular.tunnel" = "Füniküler Tüneli";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Temizlik Ürünleri Mağazası";
 "type.shop.chocolate" = "Çikolata Dükkanı";
 "type.shop.clothes" = "Giyim Mağazası";
+"type.shop.clothes.children" = "Çocuk giyim mağazası";
+"type.shop.clothes.fashion" = "Moda butik";
+"type.shop.clothes.hats" = "Şapka mağazası";
+"type.shop.clothes.men" = "Erkek giyim mağazası";
+"type.shop.clothes.sports" = "Spor giyim mağazası";
+"type.shop.clothes.suits" = "Takım elbise mağazası";
+"type.shop.clothes.underwear" = "İç çamaşırı mağazası";
+"type.shop.clothes.wedding" = "Gelinlik mağazası";
+"type.shop.clothes.women" = "Kadın giyim mağazası";
 "type.shop.coffee" = "Kahve Dükkanı";
 "type.shop.computer" = "Bilgisayar Mağazası";
 "type.shop.confectionery" = "Şekerci";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Cenaze Levazımcısı";
 "type.shop.furniture" = "Mobilya Mağazası";
 "type.shop.garden_centre" = "Bahçe Mağazası";
+"type.shop.games" = "Oyun mağazası";
 "type.shop.gas" = "Gaz İstasyonu";
 "type.shop.gift" = "Hediyelik Eşya Mağazası";
 "type.shop.greengrocer" = "Manav";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Büfe";
 "type.shop.kitchen" = "Mutfak Mağazası";
 "type.shop.laundry" = "Çamaşırhane";
+"type.shop.leather" = "Deri ürünleri mağazası";
 "type.shop.mall" = "Alışveriş Merkezi";
 "type.shop.massage" = "Masaj Salonu";
 "type.shop.mobile_phone" = "Cep Telefonu Mağazası";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Evcil Hayvan Mağazası";
 "type.shop.pet_grooming" = "Evcil Hayvan Bakıcısı";
 "type.shop.photo" = "Fotoğrafçı";
+"type.shop.religion" = "Dini Eşya Mağazası";
 "type.shop.rental" = "Kiralık Mağaza";
 "type.shop.rental.bicycle" = "Bisiklet Kiralama Mağazası";
 "type.amenity.bicycle_rental.shop" = "Bisiklet Kiralama Mağazası";

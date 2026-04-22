@@ -11,7 +11,6 @@ import app.organicmaps.sdk.bookmarks.data.Icon;
 import app.organicmaps.sdk.downloader.Android7RootCertificateWorkaround;
 import app.organicmaps.sdk.editor.OsmOAuth;
 import app.organicmaps.sdk.location.LocationHelper;
-import app.organicmaps.sdk.location.LocationProviderFactory;
 import app.organicmaps.sdk.location.SensorHelper;
 import app.organicmaps.sdk.maplayer.isolines.IsolinesManager;
 import app.organicmaps.sdk.maplayer.subway.SubwayManager;
@@ -21,6 +20,7 @@ import app.organicmaps.sdk.search.SearchEngine;
 import app.organicmaps.sdk.settings.StoragePathManager;
 import app.organicmaps.sdk.sound.TtsPlayer;
 import app.organicmaps.sdk.util.Config;
+import app.organicmaps.sdk.util.ConnectionState;
 import app.organicmaps.sdk.util.SharedPropertiesUtils;
 import app.organicmaps.sdk.util.StorageUtils;
 import app.organicmaps.sdk.util.log.Logger;
@@ -33,6 +33,8 @@ public final class OrganicMaps implements DefaultLifecycleObserver
 
   @NonNull
   private final String mFlavor;
+  @NonNull
+  private final String mVersionName;
 
   @NonNull
   private final Context mContext;
@@ -77,11 +79,23 @@ public final class OrganicMaps implements DefaultLifecycleObserver
     return mIsolinesManager;
   }
 
+  @NonNull
+  public String getFlavor()
+  {
+    return mFlavor;
+  }
+
+  @NonNull
+  public String getVersionName()
+  {
+    return mVersionName;
+  }
+
   public OrganicMaps(@NonNull Context context, @NonNull String flavor, @NonNull String applicationId, int versionCode,
-                     @NonNull String versionName, @NonNull String fileProviderAuthority,
-                     @NonNull LocationProviderFactory locationProviderFactory)
+                     @NonNull String versionName)
   {
     mFlavor = flavor;
+    mVersionName = versionName;
     mContext = context.getApplicationContext();
     mPreferences = mContext.getSharedPreferences(context.getString(R.string.pref_file_name), Context.MODE_PRIVATE);
 
@@ -93,7 +107,7 @@ public final class OrganicMaps implements DefaultLifecycleObserver
     Logger.d(TAG, "Settings path = " + settingsPath);
     nativeSetSettingsDir(settingsPath);
 
-    Config.init(mContext, mPreferences, flavor, applicationId, versionCode, versionName, fileProviderAuthority);
+    Config.init(mPreferences, mFlavor, applicationId, versionCode, mVersionName);
     OsmOAuth.init(mPreferences);
     SharedPropertiesUtils.init(mPreferences);
     LogsManager.INSTANCE.initFileLogging(mContext, mPreferences);
@@ -103,9 +117,11 @@ public final class OrganicMaps implements DefaultLifecycleObserver
     Icon.loadDefaultIcons(mContext.getResources(), mContext.getPackageName());
 
     mSensorHelper = new SensorHelper(mContext);
-    mLocationHelper = new LocationHelper(mContext, mSensorHelper, locationProviderFactory);
+    mLocationHelper = new LocationHelper(mContext, mSensorHelper);
     mIsolinesManager = new IsolinesManager();
     mSubwayManager = new SubwayManager(mContext);
+
+    ConnectionState.INSTANCE.initialize(mContext);
   }
 
   /**

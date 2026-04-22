@@ -73,7 +73,7 @@
 "cancel_download" = "Annuler le téléchargement";
 
 /* Leave Review dialog - Review button */
-"leave_a_review" = "Laisser un commentaire";
+"leave_a_review" = "Laisser un avis";
 
 /* Settings/Downloader - 3G download warning dialog confirm button */
 "use_cellular_data" = "Oui";
@@ -651,6 +651,12 @@
 "button_layer_subway" = "Métro";
 "layers_title" = "Styles et couches de cartes";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Changer la couleur de tous les signets";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Changer la couleur de tous les tracés";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Exporter KMZ";
 
@@ -902,7 +908,7 @@
 "translated_om_site_url" = "https://organicmaps.app/fr/";
 
 /* Link to OSM wiki for Editor, Profile and About pages */
-"osm_wiki_about_url" = "https://wiki.openstreetmap.org/wiki/FR:À_propos_d’OpenStreetMap";
+"osm_wiki_about_url" = "https://wiki.openstreetmap.org/wiki/FR:About_OpenStreetMap";
 
 /* App Tip #00 */
 "app_tip_00" = "Merci d'utiliser nos cartes créées par la communauté !";
@@ -978,7 +984,7 @@
 "elevation_profile_diff_level_easy" = "Facile";
 "elevation_profile_diff_level_moderate" = "Moyen";
 "elevation_profile_diff_level_hard" = "Difficile";
-"downloader_updating_ios" = "Misе à jour";
+"downloader_updating_ios" = "Mise à jour";
 
 /* Autoupdate dialog on start */
 "whats_new_auto_update_title" = "Mettez à jour vos cartes téléchargées";
@@ -996,10 +1002,10 @@
 "placepage_delete_track_button" = "Supprimer la route";
 
 /* The track deletion confirmaion alert message. */
-"placepage_delete_track_confirmation_alert_message" = "Êtes-vous sûr de vouloir supprimer ce track ?";
+"placepage_delete_track_confirmation_alert_message" = "Êtes-vous sûr de vouloir supprimer ce tracé ?";
 
 /* Placeholder for track name input on track edit screen */
-"placepage_track_name_hint" = "Nom de la route";
+"placepage_track_name_hint" = "Nom du tracé";
 
 /* move track or bookmark from the list button text */
 "move" = "Déplacer";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Régions téléchargées en violet";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Connexion avec mot de passe";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Se connecter à l'aide d'un navigateur";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Récemment utilisées";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Couleur des signets modifiée";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "Couleur des tracés modifiée";

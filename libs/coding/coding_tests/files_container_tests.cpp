@@ -7,8 +7,6 @@
 #include "base/scope_guard.hpp"
 #include "base/string_utils.hpp"
 
-#include "std/target_os.hpp"
-
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -16,6 +14,9 @@
 #ifndef OMIM_OS_WINDOWS
 #include <unistd.h>  // _SC_PAGESIZE
 #endif
+
+namespace files_container_tests
+{
 
 using namespace std;
 
@@ -215,15 +216,13 @@ UNIT_TEST(FilesContainer_RewriteExisting)
   FileWriter::DeleteFileX(fName);
 }
 
-/// @todo To make this test work, need to review FilesContainerW::GetWriter logic.
-/*
 UNIT_TEST(FilesContainer_ConsecutiveRewriteExisting)
 {
   string const fName = "files_container.tmp";
   FileWriter::DeleteFileX(fName);
 
-  char const * key[] = { "3", "2", "1" };
-  char const * value[] = { "prolog", "data", "epilog" };
+  char const * key[] = {"3", "2", "1"};
+  char const * value[] = {"prolog", "data", "epilog"};
 
   // fill container
   {
@@ -252,10 +251,11 @@ UNIT_TEST(FilesContainer_ConsecutiveRewriteExisting)
     }
   }
 
-  char const * values[] = { buf0, buf1, value[2] };
+  char const * values[] = {buf0, buf1, value[2]};
   CheckContainer(fName, key, values, 3);
+
+  FileWriter::DeleteFileX(fName);
 }
-*/
 
 UNIT_TEST(FilesMappingContainer_Handle)
 {
@@ -419,3 +419,4 @@ UNIT_TEST(FilesMappingContainer_PageSize)
 
   FileWriter::DeleteFileX(fName);
 }
+}  // namespace files_container_tests

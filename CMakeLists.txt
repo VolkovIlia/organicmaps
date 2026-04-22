@@ -12,6 +12,8 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Fixes warning ld: warning: ignoring duplicate libraries on Mac and Windows.
 if (POLICY CMP0156)
   cmake_policy(SET CMP0156 NEW)
@@ -143,7 +145,7 @@ find_package(Threads REQUIRED)
 
 if (NOT PLATFORM_IPHONE AND NOT PLATFORM_ANDROID)
   list(APPEND qt_components Core Network)
-  if (NOT SKIP_QT_GUI OR NOT SKIP_TESTS OR PYBINDINGS)
+  if (NOT SKIP_QT_GUI OR NOT SKIP_TESTS)
     list(APPEND qt_components Widgets)
   endif()
   if (NOT SKIP_QT_GUI)
@@ -157,6 +159,22 @@ if (NOT PLATFORM_IPHONE AND NOT PLATFORM_ANDROID)
     message(FATAL_ERROR "Unsupported Qt version: ${Qt6Widgets_VERSION}, the minimum required is ${MINIMUM_REQUIRED_QT_VERSION}")
   else()
     message(STATUS "Found Qt version: ${Qt6Widgets_VERSION}")
+  endif()
+
+  if (PLATFORM_LINUX AND Qt6_DIR MATCHES "/\\.?linuxbrew/")
+    message(WARNING
+      "Qt6 was found under Homebrew (Linuxbrew) at ${Qt6_DIR}.\n"
+      "Linuxbrew's Qt6 libraries embed a DT_RPATH that forces Linuxbrew's bundled "
+      "Mesa libGL.so.1 to be loaded at runtime, bypassing the system libglvnd dispatcher. "
+      "On systems with the NVIDIA proprietary driver this silently falls back to software "
+      "rendering (llvmpipe) and then crashes in qtoglcontextfactory.cpp when creating "
+      "an offscreen GL surface.\n"
+      "Recommended: install Qt6 from your distribution "
+      "(e.g. 'apt install qt6-base-dev qt6-positioning-dev', "
+      "'dnf install qt6-qtbase-devel qt6-qtpositioning-devel') and reconfigure.\n"
+      "Workaround: run the binary with LD_PRELOAD pointing at the system libGL, e.g. "
+      "LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libGL.so.1 (Debian/Ubuntu) or "
+      "LD_PRELOAD=/usr/lib64/libGL.so.1 (Fedora/RHEL).")
   endif()
 endif()
 
@@ -172,14 +190,12 @@ if (USE_PCH)
   )
 endif()
 
-# Should be on the root level, not in 3party, so tests can get these dependencies.
-if (PLATFORM_LINUX)
+if (WITH_SYSTEM_PROVIDED_3PARTY)
+  # Should be on the root level, not in 3party, so tests can get these dependencies.
   find_package(ICU COMPONENTS uc i18n data REQUIRED)
   find_package(Freetype REQUIRED)
   find_package(harfbuzz REQUIRED)
-endif()
 
-if (WITH_SYSTEM_PROVIDED_3PARTY)
   set(GFLAGS_USE_TARGET_NAMESPACE ON)
   find_package(gflags REQUIRED)
 

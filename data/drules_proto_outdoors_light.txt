@@ -2120,6 +2120,199 @@ cont {
   }
 }
 cont {
+  name: "aerialway-zip_line"
+  element {
+    scale: 13
+    lines {
+      width: 2.5
+      color: 2151957572
+      dashdot {
+        dd: 1.0
+        dd: 10.0
+      }
+      priority: 380
+      cap: BUTTCAP
+    }
+    lines {
+      width: 0.5
+      color: 1296319556
+      priority: 370
+      cap: BUTTCAP
+    }
+  }
+  element {
+    scale: 14
+    lines {
+      width: 2.5
+      color: 2151957572
+      dashdot {
+        dd: 1.0
+        dd: 10.0
+      }
+      priority: 380
+      cap: BUTTCAP
+    }
+    lines {
+      width: 0.5
+      color: 1296319556
+      priority: 370
+      cap: BUTTCAP
+    }
+  }
+  element {
+    scale: 15
+    lines {
+      width: 3.0
+      color: 1296319556
+      dashdot {
+        dd: 1.0
+        dd: 15.0
+      }
+      priority: 380
+      cap: BUTTCAP
+    }
+    lines {
+      width: 0.5
+      color: 1296319556
+      priority: 370
+      cap: BUTTCAP
+    }
+    path_text {
+      primary {
+        height: 9
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+  element {
+    scale: 16
+    lines {
+      width: 3.0
+      color: 1296319556
+      dashdot {
+        dd: 1.0
+        dd: 15.0
+      }
+      priority: 380
+    }
+    lines {
+      width: 1.0
+      color: 1296319556
+      priority: 370
+    }
+    path_text {
+      primary {
+        height: 10
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+  element {
+    scale: 17
+    lines {
+      width: 4.0
+      color: 4473924
+      dashdot {
+        dd: 1.0
+        dd: 22.0
+      }
+      priority: 380
+    }
+    lines {
+      width: 1.0
+      color: 1296319556
+      priority: 370
+    }
+    path_text {
+      primary {
+        height: 10
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+  element {
+    scale: 18
+    lines {
+      width: 4.0
+      color: 4473924
+      dashdot {
+        dd: 1.0
+        dd: 22.0
+      }
+      priority: 380
+    }
+    lines {
+      width: 1.0
+      color: 1296319556
+      priority: 370
+    }
+    path_text {
+      primary {
+        height: 12
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+  element {
+    scale: 19
+    lines {
+      width: 4.0
+      color: 4473924
+      dashdot {
+        dd: 1.0
+        dd: 22.0
+      }
+      priority: 380
+    }
+    lines {
+      width: 1.0
+      color: 1296319556
+      priority: 370
+    }
+    path_text {
+      primary {
+        height: 12
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+  element {
+    scale: 20
+    lines {
+      width: 4.0
+      color: 4473924
+      dashdot {
+        dd: 1.0
+        dd: 22.0
+      }
+      priority: 380
+    }
+    lines {
+      width: 1.0
+      color: 1296319556
+      priority: 370
+    }
+    path_text {
+      primary {
+        height: 12
+        color: 2236962
+        stroke_color: 1308622847
+      }
+      priority: 3000
+    }
+  }
+}
+cont {
   name: "aeroway-aerodrome"
   element {
     scale: 10
@@ -6440,7 +6633,7 @@ cont {
   element {
     scale: 15
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 28
     }
@@ -6457,7 +6650,7 @@ cont {
   element {
     scale: 16
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 12
     }
@@ -6474,7 +6667,7 @@ cont {
   element {
     scale: 17
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 12
     }
@@ -6491,7 +6684,7 @@ cont {
   element {
     scale: 18
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 12
     }
@@ -6508,7 +6701,7 @@ cont {
   element {
     scale: 19
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 12
     }
@@ -6525,7 +6718,7 @@ cont {
   element {
     scale: 20
     symbol {
-      name: "restaurant-m"
+      name: "food-m"
       priority: 4050
       min_distance: 12
     }
@@ -7862,7 +8055,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -7883,7 +8076,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -7904,7 +8097,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -7925,7 +8118,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -7946,7 +8139,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -10196,7 +10389,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10217,7 +10410,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10238,7 +10431,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10259,7 +10452,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10280,7 +10473,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10301,7 +10494,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10322,7 +10515,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10346,7 +10539,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10367,7 +10560,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10388,7 +10581,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10409,7 +10602,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10430,7 +10623,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10451,7 +10644,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10472,7 +10665,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10496,7 +10689,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10517,7 +10710,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10538,7 +10731,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10559,7 +10752,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10580,7 +10773,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10601,7 +10794,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10622,7 +10815,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10646,7 +10839,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10667,7 +10860,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10688,7 +10881,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10709,7 +10902,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10730,7 +10923,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10751,7 +10944,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10772,7 +10965,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10796,7 +10989,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10817,7 +11010,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10838,7 +11031,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10859,7 +11052,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10880,7 +11073,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10901,7 +11094,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10922,7 +11115,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10946,7 +11139,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10967,7 +11160,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -10988,7 +11181,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11009,7 +11202,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11030,7 +11223,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11051,7 +11244,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11072,7 +11265,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11096,7 +11289,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11117,7 +11310,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11138,7 +11331,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11159,7 +11352,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11180,7 +11373,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11201,7 +11394,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11222,7 +11415,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11246,7 +11439,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11267,7 +11460,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11288,7 +11481,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11309,7 +11502,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11330,7 +11523,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11351,7 +11544,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11372,7 +11565,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11396,7 +11589,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11417,7 +11610,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11438,7 +11631,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11459,7 +11652,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11480,7 +11673,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11501,7 +11694,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11522,7 +11715,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11546,7 +11739,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11567,7 +11760,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11588,7 +11781,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11609,7 +11802,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11630,7 +11823,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11651,7 +11844,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -11672,7 +11865,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1760
     }
     symbol {
@@ -15496,14 +15689,14 @@ cont {
   element {
     scale: 14
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
   }
   element {
     scale: 15
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
     caption {
@@ -15517,7 +15710,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15531,7 +15724,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15545,7 +15738,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15559,7 +15752,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15573,7 +15766,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15590,49 +15783,49 @@ cont {
   element {
     scale: 14
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
   }
   element {
     scale: 15
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
   }
   element {
     scale: 16
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
   }
   element {
     scale: 17
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
   }
   element {
     scale: 18
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
   }
   element {
     scale: 19
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
   }
   element {
     scale: 20
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
   }
@@ -15642,14 +15835,14 @@ cont {
   element {
     scale: 14
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
   }
   element {
     scale: 15
     area {
-      color: 15591638
+      color: 14735550
       priority: -1890
     }
     caption {
@@ -15663,7 +15856,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15677,7 +15870,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15691,7 +15884,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15705,7 +15898,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15719,7 +15912,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 15920858
+      color: 15261896
       priority: -1890
     }
     caption {
@@ -15736,35 +15929,35 @@ cont {
   element {
     scale: 16
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
   element {
     scale: 17
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
   element {
     scale: 18
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
   element {
     scale: 19
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
   element {
     scale: 20
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
@@ -26084,49 +26277,49 @@ cont {
   element {
     scale: 14
     area {
-      color: 15591638
+      color: 14735550
       priority: -1840
     }
   }
   element {
     scale: 15
     area {
-      color: 15591638
+      color: 14735550
       priority: -1840
     }
   }
   element {
     scale: 16
     area {
-      color: 15920858
+      color: 15261896
       priority: -1840
     }
   }
   element {
     scale: 17
     area {
-      color: 15920858
+      color: 15261896
       priority: -1840
     }
   }
   element {
     scale: 18
     area {
-      color: 15920858
+      color: 15261896
       priority: -1840
     }
   }
   element {
     scale: 19
     area {
-      color: 15920858
+      color: 15261896
       priority: -1840
     }
   }
   element {
     scale: 20
     area {
-      color: 15920858
+      color: 15261896
       priority: -1840
     }
   }
@@ -31574,49 +31767,49 @@ cont {
   element {
     scale: 14
     area {
-      color: 15591638
+      color: 14735550
       priority: -1830
     }
   }
   element {
     scale: 15
     area {
-      color: 15591638
+      color: 14735550
       priority: -1830
     }
   }
   element {
     scale: 16
     area {
-      color: 15920858
+      color: 15261896
       priority: -1830
     }
   }
   element {
     scale: 17
     area {
-      color: 15920858
+      color: 15261896
       priority: -1830
     }
   }
   element {
     scale: 18
     area {
-      color: 15920858
+      color: 15261896
       priority: -1830
     }
   }
   element {
     scale: 19
     area {
-      color: 15920858
+      color: 15261896
       priority: -1830
     }
   }
   element {
     scale: 20
     area {
-      color: 15920858
+      color: 15261896
       priority: -1830
     }
   }
@@ -32074,6 +32267,69 @@ cont {
         stroke_color: 16777215
       }
       priority: 3150
+    }
+  }
+}
+cont {
+  name: "highway-platform"
+  element {
+    scale: 16
+    lines {
+      width: 2.4
+      color: 15921906
+      dashdot {
+        dd: 5.4
+        dd: 2.7
+      }
+      priority: 200
+    }
+  }
+  element {
+    scale: 17
+    lines {
+      width: 3.0
+      color: 15921906
+      dashdot {
+        dd: 5.0
+        dd: 2.0
+      }
+      priority: 200
+    }
+  }
+  element {
+    scale: 18
+    lines {
+      width: 4.0
+      color: 15921906
+      dashdot {
+        dd: 7.0
+        dd: 3.0
+      }
+      priority: 200
+    }
+  }
+  element {
+    scale: 19
+    lines {
+      width: 5.0
+      color: 15921906
+      dashdot {
+        dd: 16.2
+        dd: 8.1
+      }
+      priority: 200
+    }
+  }
+  element {
+    scale: 20
+    lines {
+      width: 5.0
+      color: 15921906
+      dashdot {
+        dd: 16.2
+        dd: 8.1
+      }
+      priority: 200
     }
   }
 }
@@ -34864,7 +35120,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -34885,7 +35141,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -34905,7 +35161,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -34925,7 +35181,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -34945,7 +35201,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -34965,7 +35221,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37455,7 +37711,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37476,7 +37732,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37497,7 +37753,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37517,7 +37773,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37537,7 +37793,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37557,7 +37813,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -37577,7 +37833,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -45683,7 +45939,7 @@ cont {
   element {
     scale: 13
     symbol {
-      name: "remains-s"
+      name: "city_gate-s"
       priority: 5200
       min_distance: 12
     }
@@ -45700,7 +45956,7 @@ cont {
   element {
     scale: 14
     symbol {
-      name: "remains-s"
+      name: "city_gate-s"
       priority: 5200
       min_distance: 12
     }
@@ -45717,7 +45973,7 @@ cont {
   element {
     scale: 15
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 24
     }
@@ -45734,7 +45990,7 @@ cont {
   element {
     scale: 16
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 12
     }
@@ -45751,7 +46007,7 @@ cont {
   element {
     scale: 17
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 12
     }
@@ -45768,7 +46024,7 @@ cont {
   element {
     scale: 18
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 12
     }
@@ -45785,7 +46041,7 @@ cont {
   element {
     scale: 19
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 12
     }
@@ -45802,7 +46058,7 @@ cont {
   element {
     scale: 20
     symbol {
-      name: "remains-m"
+      name: "city_gate-m"
       priority: 5200
       min_distance: 12
     }
@@ -53044,42 +53300,42 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
@@ -56819,14 +57075,14 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
   }
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -56847,7 +57103,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -56868,7 +57124,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -56889,7 +57145,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -56910,7 +57166,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -57829,7 +58085,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -57850,7 +58106,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -57871,7 +58127,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -57892,7 +58148,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -57913,7 +58169,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -64568,6 +64824,41 @@ cont {
   }
 }
 cont {
+  name: "natural-tree_row"
+  element {
+    scale: 17
+    lines {
+      width: 6.0
+      color: 11190117
+      priority: -995
+    }
+  }
+  element {
+    scale: 18
+    lines {
+      width: 8.0
+      color: 11190117
+      priority: -995
+    }
+  }
+  element {
+    scale: 19
+    lines {
+      width: 10.0
+      color: 11190117
+      priority: -995
+    }
+  }
+  element {
+    scale: 20
+    lines {
+      width: 10.0
+      color: 11190117
+      priority: -995
+    }
+  }
+}
+cont {
   name: "natural-volcano"
   element {
     scale: 10
@@ -67457,6 +67748,57 @@ cont {
   }
 }
 cont {
+  name: "office-architect"
+  element {
+    scale: 18
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+}
+cont {
   name: "office-company"
   element {
     scale: 18
@@ -67571,6 +67913,57 @@ cont {
         is_optional: true
       }
       priority: -7550
+    }
+  }
+}
+cont {
+  name: "office-educational_institution"
+  element {
+    scale: 18
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "office-m"
+      priority: 500
+    }
+    caption {
+      primary {
+        height: 11
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
     }
   }
 }
@@ -77674,15 +78067,25 @@ cont {
   name: "public_transport-platform"
   element {
     scale: 16
+    lines {
+      width: 2.0
+      color: 3105945
+      priority: 201
+    }
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
   }
   element {
     scale: 17
+    lines {
+      width: 2.4
+      color: 3105945
+      priority: 201
+    }
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -77695,8 +78098,13 @@ cont {
   }
   element {
     scale: 18
+    lines {
+      width: 3.2
+      color: 3105945
+      priority: 201
+    }
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -77709,8 +78117,13 @@ cont {
   }
   element {
     scale: 19
+    lines {
+      width: 4.2
+      color: 3105945
+      priority: 201
+    }
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -77723,8 +78136,13 @@ cont {
   }
   element {
     scale: 20
+    lines {
+      width: 4.2
+      color: 3105945
+      priority: 201
+    }
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -79796,7 +80214,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -79810,7 +80228,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -79824,7 +80242,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -79838,7 +80256,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -79852,7 +80270,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 15524822
+      color: 14734784
       priority: -1890
     }
     caption {
@@ -122319,6 +122737,798 @@ cont {
   }
 }
 cont {
+  name: "shop-clothes-children"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-fashion"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-hats"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-men"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-sports"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-suits"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-underwear"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-wedding"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-clothes-women"
+  element {
+    scale: 16
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "clothes-m"
+      priority: 2400
+      min_distance: 24
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -7600
+    }
+  }
+}
+cont {
   name: "shop-coffee"
   element {
     scale: 18
@@ -124125,6 +125335,60 @@ cont {
   }
 }
 cont {
+  name: "shop-games"
+  element {
+    scale: 18
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+}
+cont {
   name: "shop-garden_centre"
   element {
     scale: 16
@@ -125481,6 +126745,60 @@ cont {
         is_optional: true
       }
       priority: -7600
+    }
+  }
+}
+cont {
+  name: "shop-leather"
+  element {
+    scale: 18
+    symbol {
+      name: "shop-m"
+      priority: 1600
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -8400
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "shop-m"
+      priority: 1600
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -8400
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "shop-m"
+      priority: 1600
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -8400
     }
   }
 }
@@ -127285,6 +128603,60 @@ cont {
         is_optional: true
       }
       priority: -8400
+    }
+  }
+}
+cont {
+  name: "shop-religion"
+  element {
+    scale: 18
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
+    }
+  }
+  element {
+    scale: 20
+    symbol {
+      name: "shop-m"
+      priority: 500
+      min_distance: 10
+    }
+    caption {
+      primary {
+        height: 10
+        color: 4473924
+        offset_y: 1
+        is_optional: true
+      }
+      priority: -9500
     }
   }
 }
@@ -132763,7 +134135,7 @@ cont {
   element {
     scale: 13
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132784,7 +134156,7 @@ cont {
   element {
     scale: 14
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132805,7 +134177,7 @@ cont {
   element {
     scale: 15
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132826,7 +134198,7 @@ cont {
   element {
     scale: 16
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132846,7 +134218,7 @@ cont {
   element {
     scale: 17
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132866,7 +134238,7 @@ cont {
   element {
     scale: 18
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132886,7 +134258,7 @@ cont {
   element {
     scale: 19
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -132906,7 +134278,7 @@ cont {
   element {
     scale: 20
     area {
-      color: 16445409
+      color: 15786702
       priority: -1830
     }
     symbol {
@@ -137347,6 +138719,18 @@ colors {
   value {
     name: "RouteFirstSegmentArrowsMaskCar"
     color: 4278401920
+  }
+  value {
+    name: "RouteMarkInterBg"
+    color: 27701
+  }
+  value {
+    name: "RouteMarkInterOutline"
+    color: 16777215
+  }
+  value {
+    name: "RouteMarkInterText"
+    color: 16777215
   }
   value {
     name: "RouteMarkPrimaryText"

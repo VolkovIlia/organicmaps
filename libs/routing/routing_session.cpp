@@ -8,10 +8,6 @@
 #include "geometry/angles.hpp"
 #include "geometry/mercator.hpp"
 
-#include "indexer/road_shields_parser.hpp"
-
-#include <utility>
-
 namespace
 {
 int constexpr kOnRouteMissedCount = 10;
@@ -475,8 +471,7 @@ void RoutingSession::GetRouteFollowingInfo(FollowingInfo & info) const
   info.m_distToTurn = platform::Distance::CreateFormatted(distanceToTurnMeters);
   info.m_turn = turn.m_turn;
 
-  SpeedInUnits speedLimit;
-  m_route->GetCurrentSpeedLimit(speedLimit);
+  SpeedInUnits const speedLimit = m_route->GetCurrentSpeedLimit();
   if (speedLimit.IsNumeric())
     info.m_speedLimitMps = measurement_utils::KmphToMps(speedLimit.GetSpeedKmPH());
   else if (speedLimit.GetSpeed() == kNoneMaxSpeed)
@@ -842,6 +837,12 @@ void RoutingSession::EmitCloseRoutingEvent() const
   }
 }
 
+Route const * RoutingSession::GetRoute() const
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  return m_route.get();
+}
+
 bool RoutingSession::HasRouteAltitude() const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
@@ -861,7 +862,7 @@ bool RoutingSession::IsRouteValid() const
   return m_route && m_route->IsValid();
 }
 
-bool RoutingSession::GetRouteJunctionPoints(std::vector<geometry::PointWithAltitude> & routeJunctionPoints) const
+bool RoutingSession::GetRouteJunctionPoints(RouteJunctions & routeJunctionPoints) const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   ASSERT(m_route, ());
@@ -876,26 +877,6 @@ bool RoutingSession::GetRouteJunctionPoints(std::vector<geometry::PointWithAltit
   for (auto const & s : segments)
     routeJunctionPoints.push_back(s.GetJunction());
 
-  return true;
-}
-
-bool RoutingSession::GetRouteAltitudesAndDistancesM(std::vector<double> & routeSegDistanceM,
-                                                    geometry::Altitudes & routeAltitudesM) const
-{
-  CHECK_THREAD_CHECKER(m_threadChecker, ());
-  ASSERT(m_route, ());
-
-  if (!m_route->IsValid() || !m_route->HaveAltitudes())
-    return false;
-
-  auto const & distances = m_route->GetSegDistanceMeters();
-  routeSegDistanceM.reserve(distances.size() + 1);
-  routeSegDistanceM.push_back(0);
-  routeSegDistanceM.insert(routeSegDistanceM.end(), distances.begin(), distances.end());
-
-  m_route->GetAltitudes(routeAltitudesM);
-
-  ASSERT_EQUAL(routeSegDistanceM.size(), routeAltitudesM.size(), ());
   return true;
 }
 

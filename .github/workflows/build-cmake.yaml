@@ -17,10 +17,11 @@ on:
       - android/**
       - iphone/**
       - data/countries-strings/**
+      - data/organic_maps_emoji/**
       - data/sound-strings/**
+      - data/strings/**
       - docs/**
       - packaging/**
-      - pyhelpers/**
       - tools/**
       - '!tools/python/test_server/**'
       - xcode/**
@@ -77,10 +78,10 @@ jobs:
         run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
 
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Restore Boost submodule from cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             3party/boost
@@ -111,11 +112,10 @@ jobs:
       - name: Install build tools and dependencies (macOS)
         if: ${{ runner.os == 'macOS' }}
         env:
-          HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
           HOMEBREW_NO_ANALYTICS: 1
           HOMEBREW_NO_INSTALL_CLEANUP: 1
         run: |
-          brew install ninja qt@6
+          brew install qt@6
           pip3 install tornado --break-system-packages
 
       - name: Configure repository
@@ -161,15 +161,14 @@ jobs:
         if: ${{ matrix.environment.run-tests != 'OFF' }}
         working-directory: ${{ env.BUILD_DIR }}
         env:
-          # drape_tests - see next step
+          # drape_tests, drape_frontend_tests, shaders_tests - see next step
           # generator_integration_tests - https://github.com/organicmaps/organicmaps/issues/225
           # opening_hours_integration_tests - https://github.com/organicmaps/organicmaps/issues/219
           # opening_hours_supported_features_tests - https://github.com/organicmaps/organicmaps/issues/219
           # routing_integration_tests - https://github.com/organicmaps/organicmaps/issues/221
-          # shaders_tests - https://github.com/organicmaps/organicmaps/issues/223
           # world_feed_integration_tests - https://github.com/organicmaps/organicmaps/issues/215
-          CTEST_EXCLUDE_REGEX: "drape_tests|generator_integration_tests|opening_hours_integration_tests|opening_hours_supported_features_tests|routing_benchmarks|routing_integration_tests|routing_quality_tests|search_quality_tests|storage_integration_tests|shaders_tests|world_feed_integration_tests"
-        run: ctest -L "omim-test" -E "$CTEST_EXCLUDE_REGEX" --output-on-failure
+          CTEST_EXCLUDE_REGEX: "drape_tests|drape_frontend_tests|generator_integration_tests|opening_hours_integration_tests|opening_hours_supported_features_tests|routing_benchmarks|routing_integration_tests|routing_quality_tests|search_quality_tests|storage_integration_tests|shaders_tests|world_feed_integration_tests"
+        run: ctest -j$(nproc --all) -L "omim-test" -E "$CTEST_EXCLUDE_REGEX" --output-on-failure
 
       # Run drape tests separately. They require offscreen rendering support.
       # Setting QT_QPA_PLATFORM to "offscreen" breaks network tests on macOS.
@@ -178,4 +177,4 @@ jobs:
         working-directory: ${{ env.BUILD_DIR }}
         env:
           QT_QPA_PLATFORM: "offscreen"
-        run: ctest -R drape_tests --output-on-failure
+        run: ctest -R "drape_tests|drape_frontend_tests|shaders_tests" --verbose

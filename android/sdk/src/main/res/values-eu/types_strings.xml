@@ -321,7 +321,7 @@
     <string name="type.cuisine.mediterranean">Sukaldaritza mediterraneoa</string>
     <string name="type.cuisine.mexican">Mexikoko sukaldea</string>
     <string name="type.cuisine.moroccan">Marokoko sukaldaritza</string>
-    <string name="type.cuisine.noodles">Fideoak</string>
+    <string name="type.cuisine.noodle">Fideoak</string>
     <string name="type.cuisine.oriental">Ekialdeko sukaldaritza</string>
     <string name="type.cuisine.pancake">Krepeak</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -337,6 +337,7 @@
     <string name="type.cuisine.sausage">Saltxitxak</string>
     <string name="type.cuisine.savory_pancakes">Krepe gaziak</string>
     <string name="type.cuisine.seafood">Itsaskiak</string>
+    <string name="type.cuisine.shawarma">Xawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Espainiar sukaldaritza</string>
     <string name="type.cuisine.steak_house">Txu</string>
@@ -345,6 +346,7 @@
     <string name="type.cuisine.tea">Tea</string>
     <string name="type.cuisine.thai">Thai sukaldaritza</string>
     <string name="type.cuisine.turkish">Turkiar sukaldaritza</string>
+    <string name="type.cuisine.uzbek">Uzbekiarra</string>
     <string name="type.cuisine.vegan">Sukaldaritza beganoa</string>
     <string name="type.cuisine.vegetarian">Sukaldaritza begetarianoa</string>
     <string name="type.cuisine.vietnamese">Vietnamgo sukaldaritza</string>
@@ -525,13 +527,13 @@
     <string name="type.highway.unclassified.bridge">Zubia</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Tunel</string>
-    <string name="type.area_highway.cycleway">Bizikletabidea</string>
+    <string name="type.area_highway.cycleway">Bidegorri edo bizikleta-bidea</string>
     <string name="type.area_highway.footway">Bidea</string>
     <string name="type.area_highway.living_street">Kalea</string>
-    <string name="type.area_highway.motorway">Kalea</string>
+    <string name="type.area_highway.motorway">Autobidea</string>
     <string name="type.area_highway.path">Bidea</string>
-    <string name="type.area_highway.pedestrian">Kalea</string>
-    <string name="type.area_highway.primary">Kalea</string>
+    <string name="type.area_highway.pedestrian">Oinezkoen kalea</string>
+    <string name="type.area_highway.primary">Errepide nagusia</string>
     <string name="type.area_highway.residential">Kalea</string>
     <string name="type.area_highway.secondary">Kalea</string>
     <string name="type.area_highway.service">Kalea</string>
@@ -540,8 +542,6 @@
     <string name="type.area_highway.track">Kalea</string>
     <string name="type.area_highway.trunk">Kalea</string>
     <string name="type.area_highway.unclassified">Kalea</string>
-    <string name="type.highway.world_level">Mundu mailako errepidea</string>
-    <string name="type.highway.world_towns_level">Herri mailako errepidea</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Objektu historikoa</string>
@@ -678,7 +678,7 @@
     <!-- A deep hole drilled into the earth to extract oil or gas. -->
     <string name="type.man_made.petroleum_well">Petrolio edo gas putzua</string>
     <!-- A tower/mast constructed to burn off excess gas. -->
-    <string name="type.man_made.flare">Gas zuzia|Gas sugarra</string>
+    <string name="type.man_made.flare">Gas zuzia</string>
     <string name="type.man_made.water_tap">Ura hartzea</string>
     <string name="type.man_made.water_tap.drinking_water_no">Ura hartzea</string>
     <string name="type.man_made.water_tower">Ur depositua</string>
@@ -733,7 +733,9 @@
     <string name="type.natural.wetland.bog">Zohikaztegi</string>
     <string name="type.natural.wetland.marsh">Padura</string>
     <string name="type.office">Bulegoa</string>
+    <string name="type.office.architect">Arkitekto bulegoa</string>
     <string name="type.office.company">Bulegoa</string>
+    <string name="type.office.educational_institution">Hezkuntza erakundea</string>
     <string name="type.office.estate_agent">Higiezinen agentea</string>
     <string name="type.office.government">Gobernu bulegoa</string>
     <string name="type.office.insurance">Aseguru-bulegoa</string>
@@ -791,6 +793,7 @@
     <!-- A tower or pylon carrying high voltage electricity cables. -->
     <string name="type.power.tower">Zutabe elektrikoa</string>
     <string name="type.public_transport">Garraio publikoa</string>
+    <string name="type.railway.disused.tunnel">Erabilerarik gabeko trenbide-tunela</string>
     <string name="type.railway.funicular">Funikularra</string>
     <string name="type.railway.halt">Tren geltokian</string>
     <string name="type.railway.level_crossing">Trenbide-pasagunea</string>
@@ -1078,6 +1081,15 @@
     <string name="type.shop.chemist">Parafarmazia</string>
     <string name="type.shop.chocolate">Txokolate Denda</string>
     <string name="type.shop.clothes">Arropa denda</string>
+    <string name="type.shop.clothes.children">Haurrentzako arropa denda</string>
+    <string name="type.shop.clothes.fashion">Moda boutique</string>
+    <string name="type.shop.clothes.hats">Kapelu denda</string>
+    <string name="type.shop.clothes.men">Gizonezkoen arropa denda</string>
+    <string name="type.shop.clothes.sports">Kirol arropa denda</string>
+    <string name="type.shop.clothes.suits">Traje denda</string>
+    <string name="type.shop.clothes.underwear">Barneko arropa denda</string>
+    <string name="type.shop.clothes.wedding">Ezkontza arroparen denda</string>
+    <string name="type.shop.clothes.women">Emakumezkoen arropa denda</string>
     <string name="type.shop.coffee">Kafe Denda</string>
     <string name="type.shop.computer">Informatika-denda</string>
     <string name="type.shop.confectionery">Gozokiak</string>
@@ -1098,6 +1110,7 @@
     <string name="type.shop.funeral_directors">Ehorztetxea</string>
     <string name="type.shop.furniture">Altzari denda</string>
     <string name="type.shop.garden_centre">Haurtzaindegia</string>
+    <string name="type.shop.games">Jolastokia denda</string>
     <string name="type.shop.gas">Gas biltegia</string>
     <string name="type.shop.gift">Opari denda</string>
     <string name="type.shop.greengrocer">Barazki eta fruta-denda</string>
@@ -1113,6 +1126,7 @@
     <string name="type.shop.kiosk">Kioskoa</string>
     <string name="type.shop.kitchen">Sukalde-denda</string>
     <string name="type.shop.laundry">Garbitegia</string>
+    <string name="type.shop.leather">Larruzko produktuen denda</string>
     <string name="type.shop.mall">Merkataritza-gune</string>
     <string name="type.shop.massage">Masaje gela</string>
     <string name="type.shop.mobile_phone">Mugikorra</string>
@@ -1131,6 +1145,7 @@
     <string name="type.shop.pet">Animali denda</string>
     <string name="type.shop.pet_grooming">Animalien apainketa</string>
     <string name="type.shop.photo">Argazkilaritza artikuluak</string>
+    <string name="type.shop.religion">Erlijio-artikuluen denda</string>
     <string name="type.shop.rental">Alokairu-denda</string>
     <string name="type.shop.rental.bicycle">Bizikletak alokatzeko denda</string>
     <string name="type.amenity.bicycle_rental.shop">Bizikletak alokatzeko denda</string>
@@ -1292,7 +1307,7 @@
     <string name="type.barrier.log">Enbor hesia</string>
     <string name="type.amenity.boat_rental">Itsasontz</string>
     <string name="type.shop.telecommunication">Telekomunikazioen denda</string>
-    <string name="type.leisure.indoor_play">Play Center</string>
+    <string name="type.leisure.indoor_play">Jolasgunea</string>
     <string name="type.tourism.camp_pitch">Kanpin-lekua</string>
     <string name="type.railway.miniature">Miniaturazko trenbidea</string>
     <string name="type.amenity.kneipp_water_cure">Kneipp Ur Sendapena</string>

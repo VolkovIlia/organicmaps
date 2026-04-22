@@ -41,6 +41,7 @@ public:
   void SetScale(double scale);
 
   double GetAngle() const { return m_Angle.val(); }
+  ang::AngleD GetAngleD() const { return m_Angle; }
   void SetAngle(double angle);
 
   m2::PointD const & GetOrg() const { return m_Org; }
@@ -52,29 +53,13 @@ public:
 
   m2::PointD PtoG(m2::PointD const & pt) const { return pt * m_PtoG; }
 
-  void GtoP(double & x, double & y) const
-  {
-    double tempX = x;
-    x = tempX * m_GtoP(0, 0) + y * m_GtoP(1, 0) + m_GtoP(2, 0);
-    y = tempX * m_GtoP(1, 0) + y * m_GtoP(1, 1) + m_GtoP(2, 1);
-  }
-
-  void PtoG(double & x, double & y) const
-  {
-    double const tempX = x;
-    x = tempX * m_PtoG(0, 0) + y * m_PtoG(1, 0) + m_PtoG(2, 0);
-    y = tempX * m_PtoG(0, 1) + y * m_PtoG(1, 1) + m_PtoG(2, 1);
-  }
-
   void GtoP(m2::RectD const & gr, m2::RectD & sr) const;
   void PtoG(m2::RectD const & pr, m2::RectD & gr) const;
 
   void MatchGandP(m2::PointD const & g, m2::PointD const & p);
   void MatchGandP3d(m2::PointD const & g, m2::PointD const & p3d);
 
-  void GetTouchRect(m2::PointD const & pixPoint, double pixRadius, m2::AnyRectD & glbRect) const;
-  void GetTouchRect(m2::PointD const & pixPoint, double const pxWidth, double const pxHeight,
-                    m2::AnyRectD & glbRect) const;
+  m2::AnyRectD GetTouchRect(m2::PointD const & pixPoint, double const pxWidth, double const pxHeight) const;
 
   MatrixT const & GtoPMatrix() const { return m_GtoP; }
   MatrixT const & PtoGMatrix() const { return m_PtoG; }

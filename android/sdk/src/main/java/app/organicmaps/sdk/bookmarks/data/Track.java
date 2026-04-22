@@ -51,9 +51,17 @@ public final class Track extends MapObject
     mLength = length;
   }
 
+  /// Temp relation track ID matches kml::kTempRelationTrackId (kInvalidTrackId - 1).
+  private static final long TEMP_RELATION_TRACK_ID = -2L;
+
   public long getTrackId()
   {
     return mId;
+  }
+
+  public boolean isTempRelationTrack()
+  {
+    return mId == TEMP_RELATION_TRACK_ID;
   }
 
   public void setCategoryId(long categoryId)
@@ -117,7 +125,7 @@ public final class Track extends MapObject
   }
 
   @NonNull
-  public ElevationInfo.Point getElevationActivePointCoordinates()
+  public double[] getElevationActivePointCoordinates()
   {
     return nativeGetElevationActivePointCoordinates(mId);
   }
@@ -147,7 +155,7 @@ public final class Track extends MapObject
   @NonNull
   public static native TrackStatistics nativeGetStatistics(long id);
   @NonNull
-  private static native ElevationInfo.Point nativeGetElevationActivePointCoordinates(long trackId);
+  private static native double[] nativeGetElevationActivePointCoordinates(long trackId);
 
   private static native void nativeSetParams(long id, @NonNull String name, @ColorInt int color, @NonNull String descr);
   private static native void nativeChangeColor(long id, @ColorInt int color);

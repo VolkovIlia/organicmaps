@@ -9,10 +9,7 @@
 #include "routing/route.hpp"
 #include "routing/router.hpp"
 #include "routing/routing_callbacks.hpp"
-#include "routing/routing_exceptions.hpp"
-#include "routing/speed_camera.hpp"
 #include "routing/speed_camera_manager.hpp"
-#include "routing/turns.hpp"
 #include "routing/turns_notification_manager.hpp"
 
 #include "traffic/speed_groups.hpp"
@@ -24,14 +21,9 @@
 
 #include "geometry/point2d.hpp"
 #include "geometry/point_with_altitude.hpp"
-#include "geometry/polyline2d.hpp"
 
 #include "base/thread_checker.hpp"
 
-#include <cstdint>
-#include <functional>
-#include <limits>
-#include <map>
 #include <memory>
 #include <optional>
 #include <queue>
@@ -88,23 +80,19 @@ public:
 
   void SetState(SessionState state);
 
-  /// \returns true if altitude information along |m_route| is available and
-  /// false otherwise.
+  /// \returns true if altitude information along |m_route| is available and false otherwise.
   bool HasRouteAltitude() const;
   bool IsRouteId(uint64_t routeId) const;
   bool IsRouteValid() const;
 
-  /// \brief copies distance from route beginning to ends of route segments in meters and
-  /// route altitude information to |routeSegDistanceM| and |routeAltitudes|.
-  /// \returns true if there is valid route information. If the route is not valid returns false.
-  bool GetRouteAltitudesAndDistancesM(std::vector<double> & routeSegDistanceM,
-                                      geometry::Altitudes & routeAltitudesM) const;
+  Route const * GetRoute() const;
 
   /// \brief returns points of route junctions.
   /// \returns true if there is valid route information. If the route is not valid returns false.
-  bool GetRouteJunctionPoints(std::vector<geometry::PointWithAltitude> & routeJunctionPoints) const;
+  bool GetRouteJunctionPoints(RouteJunctions & routeJunctionPoints) const;
 
   SessionState OnLocationPositionChanged(location::GpsInfo const & info);
+  /// @pre Function is called exactly while moving the route. Depends on current time, no pre-caching.
   void GetRouteFollowingInfo(FollowingInfo & info) const;
 
   bool MatchLocationToRoute(location::GpsInfo & location, location::RouteMatchingInfo & routeMatchingInfo);

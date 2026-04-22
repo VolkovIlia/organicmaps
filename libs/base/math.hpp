@@ -129,7 +129,7 @@ T PowUint(T x, uint64_t n)
 }
 
 template <typename T>
-T Pow2(T x)
+T constexpr Pow2(T x)
 {
   return x * x;
 }
@@ -146,18 +146,6 @@ T PrevModN(T x, T n)
 {
   ASSERT_GREATER(n, 0, ());
   return x == 0 ? n - 1 : x - 1;
-}
-
-inline uint32_t NextPowOf2(uint32_t v)
-{
-  v = v - 1;
-  v |= (v >> 1);
-  v |= (v >> 2);
-  v |= (v >> 4);
-  v |= (v >> 8);
-  v |= (v >> 16);
-
-  return v + 1;
 }
 
 // Greatest Common Divisor.

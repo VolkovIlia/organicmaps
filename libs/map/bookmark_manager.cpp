@@ -1,4 +1,5 @@
 #include "map/bookmark_manager.hpp"
+#include "base/assert.hpp"
 #include "map/bookmark_helpers.hpp"
 #include "map/gps_tracker.hpp"
 #include "map/search_api.hpp"
@@ -245,7 +246,11 @@ bool GetSortingType(std::string const & typeStr, BookmarkManager::SortingType & 
 
 kml::Timestamp FileModificationTimestamp(std::string const & fullFilePath)
 {
-  return kml::TimestampClock::from_time_t(Platform::GetFileModificationTime(fullFilePath));
+  auto const t = Platform::GetFileModificationTime(fullFilePath);
+  if (t > 0)
+    return kml::TimestampClock::from_time_t(t);
+  LOG(LWARNING, ("GetFileModificationTime failed for", fullFilePath, "- using current time"));
+  return kml::TimestampClock::now();
 }
 }  // namespace
 
@@ -306,6 +311,7 @@ void BookmarkManager::DeleteUserMark(kml::MarkId markId)
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   ASSERT(!IsBookmark(markId), ());
   auto it = m_userMarks.find(markId);
+  CHECK(it != m_userMarks.end(), ());
   auto const groupId = it->second->GetGroupId();
   GetGroup(groupId)->DetachUserMark(markId);
   m_changesTracker.OnDeleteMark(markId);
@@ -488,6 +494,8 @@ Track * BookmarkManager::CreateTrack(kml::TrackData && trackData)
 Track const * BookmarkManager::GetTrack(kml::TrackId trackId) const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
+  if (m_tempRelationTrack && m_tempRelationTrack->GetId() == trackId)
+    return m_tempRelationTrack.get();
   auto it = m_tracks.find(trackId);
   return (it != m_tracks.end()) ? it->second.get() : nullptr;
 }
@@ -519,6 +527,7 @@ void BookmarkManager::AttachTrack(kml::TrackId trackId, kml::MarkGroupId groupId
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   auto it = m_tracks.find(trackId);
+  CHECK(it != m_tracks.end(), ());
   it->second->Attach(groupId);
   GetBmCategory(groupId)->AttachTrack(trackId);
 }
@@ -536,6 +545,7 @@ void BookmarkManager::DeleteTrack(kml::TrackId trackId)
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   DeleteTrackSelectionMark(trackId);
   auto it = m_tracks.find(trackId);
+  CHECK(it != m_tracks.end(), ());
   auto const groupId = it->second->GetGroupId();
   if (groupId != kml::kInvalidMarkGroupId)
     GetBmCategory(groupId)->DetachTrack(trackId);
@@ -709,7 +719,7 @@ std::vector<BookmarkManager::SortingType> BookmarkManager::GetAvailableSortingTy
 
     if (!byTypeChecked && !bookmarkData.m_featureTypes.empty())
     {
-      auto const type = GetBookmarkBaseType(bookmarkData.m_featureTypes);
+      auto const type = GetBookmarkMatchInfo(bookmarkData.m_featureTypes).m_type;
       if (type == BookmarkBaseType::Hotel)
       {
         byTypeChecked = true;
@@ -879,12 +889,14 @@ void BookmarkManager::SetElevationMyPositionChangedCallback(ElevationMyPositionC
   m_elevationMyPositionChanged = cb;
 }
 
-void BookmarkManager::SetElevationActivePoint(kml::TrackId const & trackId, m2::PointD pt, double targetDistance)
+void BookmarkManager::SetElevationActivePoint(kml::TrackId const & trackId, double targetDistance)
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
 
   auto const track = GetTrack(trackId);
   CHECK(track != nullptr, ());
+
+  auto const pt = track->GetPoint(targetDistance);
 
   SetTrackSelectionInfo({trackId, pt, targetDistance}, true /* notifyListeners */);
 
@@ -916,6 +928,8 @@ Track::TrackSelectionInfo BookmarkManager::FindNearestTrack(m2::RectD const & to
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   Track::TrackSelectionInfo selectionInfo;
+  auto const tapPoint = touchRect.Center();
+  selectionInfo.SetDistanceFilter(touchRect);
 
   for (auto const & pair : m_categories)
   {
@@ -929,7 +943,7 @@ Track::TrackSelectionInfo BookmarkManager::FindNearestTrack(m2::RectD const & to
       if (tracksFilter && !tracksFilter(track))
         continue;
 
-      track->UpdateSelectionInfo(touchRect, selectionInfo);
+      track->UpdateSelectionInfo(tapPoint, selectionInfo);
     }
   }
 
@@ -1131,6 +1145,7 @@ kml::TrackId BookmarkManager::SaveTrackRecording(std::string trackName)
 
   tracker.ForEachTrackPoint([&line, &timestamps](location::GpsInfo const & pt, size_t id)
   {
+    /// @todo pt.HasAltitude() ?
     line.emplace_back(mercator::FromLatLon(pt.m_latitude, pt.m_longitude), pt.m_altitude);
     timestamps.emplace_back(pt.m_timestamp);
     return true;
@@ -1184,8 +1199,7 @@ std::string BookmarkManager::GenerateSavedRouteName(std::string const & from, st
   return GenerateTrackRecordingName();
 }
 
-kml::TrackId BookmarkManager::SaveRoute(std::vector<geometry::PointWithAltitude> points, std::string const & from,
-                                        std::string const & to)
+kml::TrackId BookmarkManager::SaveRoute(kml::TrackGeometry points, std::string const & from, std::string const & to)
 {
   CHECK(!points.empty(), ("Route points should not be empty"));
 
@@ -1212,6 +1226,32 @@ kml::TrackId BookmarkManager::SaveRoute(std::vector<geometry::PointWithAltitude>
   auto const trackId = track->GetId();
   AttachTrack(trackId, groupId);
   return trackId;
+}
+
+kml::TrackId BookmarkManager::SetTempRelationTrack(kml::TrackData && trackData)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+
+  ClearTempRelationTrack();
+
+  trackData.m_id = kml::kTempRelationTrackId;
+  m_tempRelationTrack = std::make_unique<Track>(std::move(trackData));
+  m_changesTracker.OnAddLine(kml::kTempRelationTrackId);
+  return kml::kTempRelationTrackId;
+}
+
+void BookmarkManager::ClearTempRelationTrack()
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+
+  if (!m_tempRelationTrack)
+    return;
+
+  DeleteTrackSelectionMark(kml::kTempRelationTrackId);
+  m_changesTracker.OnDeleteLine(kml::kTempRelationTrackId);
+  m_tempRelationTrack.reset();
+
+  NotifyChanges(false /* saveChangesOnDisk */);
 }
 
 void BookmarkManager::PrepareBookmarksAddresses(std::vector<SortBookmarkData> & bookmarksForSort,
@@ -1666,6 +1706,14 @@ void BookmarkManager::SetCategoryCustomProperty(kml::MarkGroupId categoryId, std
   GetBmCategory(categoryId)->SetCustomProperty(key, value);
 }
 
+std::string BookmarkManager::GetCategoryCustomProperty(kml::MarkGroupId categoryId, std::string const & key) const
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  auto const & properties = GetCategoryData(categoryId).m_properties;
+  auto const it = properties.find(key);
+  return (it != properties.end()) ? it->second : std::string();
+}
+
 std::string BookmarkManager::GetCategoryFileName(kml::MarkGroupId categoryId) const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
@@ -1769,6 +1817,9 @@ void BookmarkManager::SetIsVisible(kml::MarkGroupId groupId, bool visible)
 bool BookmarkManager::IsVisible(kml::MarkGroupId groupId) const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
+
+  if (groupId == kml::kInvalidMarkGroupId)
+    return true;
   return GetGroup(groupId)->IsVisible();
 }
 
@@ -1836,9 +1887,13 @@ void BookmarkManager::SetDrapeEngine(ref_ptr<df::DrapeEngine> engine)
   m_drapeEngine.Set(engine);
   m_firstDrapeNotification = true;
 
-  auto es = GetEditSession();
-  UpdateTrackMarksMinZoom();
-  RequestSymbolSizes();
+  if (engine)
+  {
+    /// @todo Why drape engine invokes "editing"?
+    auto es = GetEditSession();
+    UpdateTrackMarksMinZoom();
+    RequestSymbolSizes();
+  }
 }
 
 void BookmarkManager::InitRegionAddressGetter(DataSource const & dataSource,
@@ -2284,7 +2339,7 @@ void BookmarkManager::UpdateTrack(kml::TrackId trackId, kml::TrackData const & t
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   auto * track = GetTrackForEdit(trackId);
-  track->setData(trackData);
+  track->SetData(trackData);
 }
 
 kml::MarkGroupId BookmarkManager::LastEditedBMCategory()
@@ -2440,7 +2495,7 @@ bool BookmarkManager::HasBookmark(kml::MarkId markId) const
 bool BookmarkManager::HasTrack(kml::TrackId trackId) const
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
-  ASSERT(IsBookmark(trackId), ());
+  ASSERT_NOT_EQUAL(trackId, kml::kInvalidTrackId, ());
   return (GetTrack(trackId) != nullptr);
 }
 
@@ -2510,7 +2565,7 @@ kml::MarkGroupId BookmarkManager::CreateBookmarkCategory(std::string const & nam
   return groupId;
 }
 
-void BookmarkManager::UpdateBookmarkCategory(kml::MarkGroupId & groupId, kml::CategoryData && data,
+void BookmarkManager::UpdateBookmarkCategory(kml::MarkGroupId groupId, kml::CategoryData && data,
                                              bool autoSave /* = true */)
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
@@ -2623,12 +2678,6 @@ private:
   BookmarkManager const * m_manager;
 };
 }  // namespace
-
-UserMark const * BookmarkManager::FindNearestUserMark(m2::AnyRectD const & rect) const
-{
-  CHECK_THREAD_CHECKER(m_threadChecker, ());
-  return FindNearestUserMark([&rect](UserMark::Type) { return rect; }, [](UserMark::Type) { return false; });
-}
 
 UserMark const * BookmarkManager::FindNearestUserMark(TTouchRectHolder const & holder,
                                                       TFindOnlyVisibleChecker const & findOnlyVisible) const
@@ -2903,13 +2952,11 @@ BookmarkManager::KMLDataCollectionPtr BookmarkManager::PrepareToSaveBookmarksFor
   CHECK_THREAD_CHECKER(m_threadChecker, ());
   auto collection = std::make_shared<KMLDataCollection>();
   auto const & track = GetTrack(trackId);
-  auto const & categoryData = new kml::CategoryData();
   auto name = kml::LocalizableString();
   kml::SetDefaultStr(name, track->GetName());
-  categoryData->m_name = name;
   auto const & trackData = track->GetData();
   auto const & fileData = new kml::FileData();
-  fileData->m_categoryData = *categoryData;
+  fileData->m_categoryData = kml::CategoryData{.m_name = name};
   fileData->m_tracksData.push_back(trackData);
   collection->emplace_back("", fileData);
   return collection;
@@ -3640,6 +3687,23 @@ void BookmarkManager::EditSession::SetCategoryCustomProperty(kml::MarkGroupId ca
                                                              std::string const & value)
 {
   m_bmManager.SetCategoryCustomProperty(categoryId, key, value);
+}
+
+void BookmarkManager::EditSession::SetCategoryBookmarksColor(kml::MarkGroupId groupId, kml::PredefinedColor color)
+{
+  auto const & markIds = m_bmManager.GetUserMarkIds(groupId);
+  for (auto const markId : markIds)
+    if (auto * bm = m_bmManager.GetBookmarkForEdit(markId))
+      bm->SetColor(color);
+  m_bmManager.SetLastEditedBmColor(color);
+}
+
+void BookmarkManager::EditSession::SetCategoryTracksColor(kml::MarkGroupId groupId, kml::PredefinedColor color)
+{
+  auto const dpColor = ColorFromPredefinedColor(color);
+  auto const & trackIds = m_bmManager.GetTrackIds(groupId);
+  for (auto const trackId : trackIds)
+    EditSession::ChangeTrackColor(trackId, dpColor);
 }
 
 bool BookmarkManager::EditSession::DeleteBmCategory(kml::MarkGroupId groupId, bool permanently)

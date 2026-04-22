@@ -1,16 +1,23 @@
-• NOWOŚĆ: Kolory ciemnego motywu o wyższym kontraście
-• Zaktualizowane dane OpenStreetMap (11 stycznia)
-• Wyłączono kasyna z kategorii „Rozrywka”
-• Zmniejszono grubość linii metra
-• Dodano informacje o pojemności do wyników wyszukiwania parkingów motocyklowych, wypożyczalni rowerów, ładowania rowerów i ładowania samochodów
-• Pokazywanie piętra w wynikach wyszukiwania
-• Szersze przyciski planowania trasy
+• Dane map OSM na dzień 10 marca
+• Dane Wikipedii na dzień 1 marca
+• Dodano obsługę warunkowych ograniczeń prędkości
+• Bardziej szczegółowe izolinie wysokościowe dla chińskich prowincji
+• Dodano sklepy z wyrobami skórzanymi i sklepami sprzedającymi artykuły religijne
+• Dodano rzędy drzew
+• Dodano platformy przystanków transportu publicznego bez pobliskich przystanków autobusowych
+• Poprawiono obliczanie postępu pobierania danych krajowych
+• Podzielono Tanzanię na mniejsze regiony
+• Dodano historię ostatnio używanych kategorii w edytorze
+• Ulepszono przesuwanie palcem w górę na ekranie planowania trasy
+• Poprawiono położenie linijki dla CarPlay
+• Naprawiono kilka awarii, poprawiono stabilność i wydajność
 
 ### Tłumaczenia
 
-• Dodano albańskie tłumaczenia aplikacji i wskazówki głosowe
-• Zaktualizowano FAQ i dodano tłumaczenia FAQ na arabski, czeski, holenderski, perski, grecki, hebrajski, hindi, węgierski, indonezyjski, włoski, litewski, marathi, szwedzki, telugu
-• Ulepszono niemieckie tłumaczenia aplikacji i FAQ
-• Dodano bułgarskie synonimy wyszukiwania
-• Zmieniono nazwę ustawienia „Przyciski powiększania” dla jasności
-• Poprawki tłumaczeń od współtwórców Weblate dla różnych języków
+• Ulepszono opisy krajów
+• Zastosowano poprawki rumuńskie od Eugena Dedu
+• Zaktualizowano nazwy krajów
+• Zaktualizowano tłumaczenia od współpracowników Weblate
+• Poprawiono tłumaczenie ukraińskie
+
+Dziękujemy wszystkim, którzy współpracują, przekazują darowizny i wspierają Organic Maps! Stwórzmy razem najlepsze mapy!

@@ -22,11 +22,8 @@
 #include "base/logging.hpp"
 #include "base/string_utils.hpp"
 
-#include <algorithm>
 #include <cmath>
 #include <fstream>
-#include <sstream>
-#include <utility>
 
 #include "defines.hpp"
 
@@ -37,22 +34,15 @@ using namespace generator;
 using namespace routing;
 using std::string;
 
-char constexpr kDelim[] = ", \t\r\n";
-
 template <class TokenizerT>
 bool ParseOneSpeedValue(TokenizerT & iter, MaxspeedType & value)
 {
-  if (!iter)
+  if (!++iter)
     return false;
 
-  uint64_t parsedSpeed = 0;
-  if (!strings::to_uint(*iter, parsedSpeed))
-    return false;
-  if (parsedSpeed > routing::kInvalidSpeed)
-    return false;
-  value = static_cast<MaxspeedType>(parsedSpeed);
-  ++iter;
-  return true;
+  auto const & s = *iter;
+  value = routing::kInvalidSpeed;
+  return s.empty() || strings::to_uint(s, value);
 }
 
 /// \brief Collects all maxspeed tag values of specified mwm based on maxspeeds.csv file.
@@ -266,22 +256,18 @@ public:
   {
     // Add converted macro speed.
     SpeedInUnits const forward(speed.GetForward(), speed.GetUnits());
-    CHECK(forward.IsValid(), ());
     SpeedInUnits const backward(speed.GetBackward(), speed.GetUnits());
 
-    /// @todo Should we find closest macro speed here when Undefined? OSM has bad data sometimes.
-    SpeedMacro const backwardMacro = m_converter.SpeedToMacro(backward);
-    MaxspeedsSerializer::FeatureSpeedMacro ftSpeed{featureID, m_converter.SpeedToMacro(forward), backwardMacro};
-
-    if (ftSpeed.m_forward == SpeedMacro::Undefined)
     {
-      LOG(LWARNING, ("Undefined forward speed macro", forward, "for way", osmID));
-      return;
-    }
-    if (backward.IsValid() && backwardMacro == SpeedMacro::Undefined)
-      LOG(LWARNING, ("Undefined backward speed macro", backward, "for way", osmID));
+      MaxspeedsSerializer::FeatureSpeedMacro ftMacro(featureID, speed, m_converter);
+      if (!ftMacro.IsValid())
+      {
+        LOG(LWARNING, ("Invalid speed:", forward, backward, "for way:", osmID));
+        return;
+      }
 
-    m_maxspeeds.push_back(ftSpeed);
+      m_maxspeeds.emplace_back(std::move(ftMacro));
+    }
 
     // Possible in unit tests.
     if (m_graph == nullptr)
@@ -352,49 +338,57 @@ bool ParseMaxspeeds(string const & filePath, OsmIdToMaxspeed & osmIdToMaxspeed)
   if (!stream)
     return false;
 
-  string line;
+  string buffer;
   while (stream.good())
   {
-    getline(stream, line);
-    strings::SimpleTokenizer iter(line, kDelim);
-
-    if (!iter)  // empty line
+    getline(stream, buffer);
+    std::string_view line(buffer);
+    strings::Trim(line);  // with new "conditional" we accept only comma-separator
+    if (line.empty())
       continue;
 
+    using namespace strings;
+    TokenizeIterator<SimpleDelimiter, std::string_view::const_iterator, true /* KeepEmptyTokens */> iter(
+        line.begin(), line.end(), ",");
+
     uint64_t osmId = 0;
-    if (!strings::to_uint(*iter, osmId))
+    if (!to_uint(*iter, osmId))
       return false;
-    ++iter;
 
-    if (!iter)
+    if (!++iter)
       return false;
-    Maxspeed speed;
-    speed.SetUnits(StringToUnits(*iter));
-    ++iter;
+    auto const units = StringToUnits(*iter);
 
-    MaxspeedType forward = 0;
+    MaxspeedType forward, backward, conditional;
     if (!ParseOneSpeedValue(iter, forward))
       return false;
 
-    speed.SetForward(forward);
+    if (!ParseOneSpeedValue(iter, backward))
+      return false;
 
-    if (iter)
+    if (!ParseOneSpeedValue(iter, conditional))
+      return false;
+
+    Maxspeed speed(units, forward, backward);
+    if (++iter && conditional != kInvalidSpeed)
     {
-      // There's backward maxspeed limit.
-      MaxspeedType backward = 0;
-      if (!ParseOneSpeedValue(iter, backward))
-        return false;
+      std::string conditionalStr(*iter);
+      while (++iter)
+        conditionalStr.append(",").append(*iter);
 
-      speed.SetBackward(backward);
-
-      if (iter)
-        return false;
+      osmoh::OpeningHours oh(conditionalStr);
+      if (oh.IsValid())
+        speed.SetConditional(conditional, std::move(oh));
     }
 
-    auto const res = osmIdToMaxspeed.emplace(base::MakeOsmWay(osmId), speed);
-    if (!res.second)
+    // When OH parsing has failed.
+    if (!speed.IsValid())
+      continue;
+
+    if (!osmIdToMaxspeed.emplace(base::MakeOsmWay(osmId), std::move(speed)).second)
       return false;
   }
+
   return true;
 }
 

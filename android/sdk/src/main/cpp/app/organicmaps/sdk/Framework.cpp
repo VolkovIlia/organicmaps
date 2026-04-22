@@ -72,7 +72,6 @@
 
 #include <android/api-level.h>
 
-using namespace std;
 using namespace std::placeholders;
 
 CheckedPtr<android::Framework> g_framework;
@@ -122,9 +121,9 @@ Framework::Framework(std::function<void()> && afterMapsLoaded) : m_work({} /* pa
 {
   m_work.LoadMapsAsync(std::move(afterMapsLoaded));
 
-  m_work.GetTrafficManager().SetStateListener(bind(&Framework::TrafficStateChanged, this, _1));
-  m_work.GetTransitManager().SetStateListener(bind(&Framework::TransitSchemeStateChanged, this, _1));
-  m_work.GetIsolinesManager().SetStateListener(bind(&Framework::IsolinesSchemeStateChanged, this, _1));
+  m_work.GetTrafficManager().SetStateListener(std::bind(&Framework::TrafficStateChanged, this, _1));
+  m_work.GetTransitManager().SetStateListener(std::bind(&Framework::TransitSchemeStateChanged, this, _1));
+  m_work.GetIsolinesManager().SetStateListener(std::bind(&Framework::IsolinesSchemeStateChanged, this, _1));
   m_work.GetPowerManager().Subscribe(this);
 }
 
@@ -247,7 +246,7 @@ bool Framework::CreateDrapeEngine(JNIEnv * env, jobject jSurface, int densityDpi
   ASSERT(!m_guiPositions.empty(), ("GUI elements must be set-up before engine is created"));
   p.m_widgetsInitInfo = m_guiPositions;
 
-  m_work.SetMyPositionModeListener(bind(&Framework::MyPositionModeChanged, this, _1, _2));
+  m_work.SetMyPositionModeListener(std::bind(&Framework::MyPositionModeChanged, this, _1, _2));
 
   if (m_vulkanContextFactory)
     m_work.CreateDrapeEngine(make_ref(m_vulkanContextFactory), std::move(p));
@@ -536,7 +535,7 @@ m2::PointD Framework::GetViewportCenter() const
   return m_work.GetViewportCenter();
 }
 
-void Framework::AddString(string const & name, string const & value)
+void Framework::AddString(std::string const & name, std::string const & value)
 {
   m_work.AddString(name, value);
 }
@@ -777,7 +776,7 @@ void Framework::OnPowerSchemeChanged(power_management::Scheme const actualScheme
 
 extern "C"
 {
-void CallRoutingListener(shared_ptr<jobject> listener, int errorCode, storage::CountriesSet const & absentMaps)
+void CallRoutingListener(std::shared_ptr<jobject> listener, int errorCode, storage::CountriesSet const & absentMaps)
 {
   JNIEnv * env = jni::GetEnv();
   jmethodID const method = jni::GetMethodID(env, *listener, "onRoutingEvent", "(I[Ljava/lang/String;)V");
@@ -787,14 +786,14 @@ void CallRoutingListener(shared_ptr<jobject> listener, int errorCode, storage::C
                       jni::TScopedLocalObjectArrayRef(env, jni::ToJavaStringArray(env, absentMaps)).get());
 }
 
-void CallRouteProgressListener(shared_ptr<jobject> listener, float progress)
+void CallRouteProgressListener(std::shared_ptr<jobject> listener, float progress)
 {
   JNIEnv * env = jni::GetEnv();
   jmethodID const methodId = jni::GetMethodID(env, *listener, "onRouteBuildingProgress", "(F)V");
   env->CallVoidMethod(*listener, methodId, progress);
 }
 
-void CallRouteRecommendationListener(shared_ptr<jobject> listener, RoutingManager::Recommendation recommendation)
+void CallRouteRecommendationListener(std::shared_ptr<jobject> listener, RoutingManager::Recommendation recommendation)
 {
   JNIEnv * env = jni::GetEnv();
   jmethodID const methodId =
@@ -802,7 +801,7 @@ void CallRouteRecommendationListener(shared_ptr<jobject> listener, RoutingManage
   env->CallVoidMethod(*listener, methodId, GetRouteRecommendationType(env, recommendation));
 }
 
-void CallSetRoutingLoadPointsListener(shared_ptr<jobject> listener, bool success)
+void CallSetRoutingLoadPointsListener(std::shared_ptr<jobject> listener, bool success)
 {
   JNIEnv * env = jni::GetEnv();
   jmethodID const methodId = jni::GetMethodID(env, *listener, "onRoutePointsLoaded", "(Z)V");
@@ -951,7 +950,7 @@ JNIEXPORT jstring Java_app_organicmaps_sdk_Framework_nativeGetGe0Url(JNIEnv * en
 {
   ::Framework * fr = frm();
   double const scale = (zoomLevel > 0 ? zoomLevel : fr->GetDrawScale());
-  string const url = fr->CodeGe0url(lat, lon, scale, jni::ToNativeString(env, name));
+  std::string const url = fr->CodeGe0url(lat, lon, scale, jni::ToNativeString(env, name));
   return jni::ToJavaString(env, url);
 }
 
@@ -960,7 +959,7 @@ JNIEXPORT jstring Java_app_organicmaps_sdk_Framework_nativeGetGeoUri(JNIEnv * en
 {
   ::Framework * fr = frm();
   double const scale = (zoomLevel > 0 ? zoomLevel : fr->GetDrawScale());
-  string const url = ge0::GenerateGeoUri(lat, lon, scale, jni::ToNativeString(env, name));
+  std::string const url = ge0::GenerateGeoUri(lat, lon, scale, jni::ToNativeString(env, name));
   return jni::ToJavaString(env, url);
 }
 
@@ -1005,7 +1004,7 @@ JNIEXPORT jstring Java_app_organicmaps_sdk_Framework_nativeFormatLatLon(JNIEnv *
     return jni::ToJavaString(env, measurement_utils::FormatOsmLink(lat, lon, 14));
   case android::CoordinatesFormat::UTM:  // Universal Transverse Mercator
   {
-    string utmFormat = utm_mgrs_utils::FormatUTM(lat, lon);
+    std::string utmFormat = utm_mgrs_utils::FormatUTM(lat, lon);
     if (!utmFormat.empty())
       return jni::ToJavaString(env, utmFormat);
     else
@@ -1013,7 +1012,7 @@ JNIEXPORT jstring Java_app_organicmaps_sdk_Framework_nativeFormatLatLon(JNIEnv *
   }
   case android::CoordinatesFormat::MGRS:  // Military Grid Reference System
   {
-    string mgrsFormat = utm_mgrs_utils::FormatMGRS(lat, lon, 5);
+    std::string mgrsFormat = utm_mgrs_utils::FormatMGRS(lat, lon, 5);
     if (!mgrsFormat.empty())
       return jni::ToJavaString(env, mgrsFormat);
     else
@@ -1152,7 +1151,7 @@ JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetBookmarksFile
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeChangeWritableDir(JNIEnv * env, jclass, jstring jNewPath)
 {
-  string newPath = jni::ToNativeString(env, jNewPath);
+  std::string newPath = jni::ToNativeString(env, jNewPath);
   g_framework->RemoveLocalMaps();
   android::Platform::Instance().SetWritableDir(newPath);
   g_framework->AddLocalMaps();
@@ -1205,7 +1204,7 @@ JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGenerateNotifica
   if (!fr->GetRoutingManager().IsRoutingActive())
     return nullptr;
 
-  vector<string> notifications;
+  std::vector<std::string> notifications;
   fr->GetRoutingManager().GenerateNotifications(notifications, announceStreets);
   if (notifications.empty())
     return nullptr;
@@ -1240,14 +1239,14 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_Framework_nativeGetRouteFollowingInfo
 JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetRouteJunctionPoints(JNIEnv * env, jclass,
                                                                                        jdouble maxDistM)
 {
-  vector<geometry::PointWithAltitude> points;
+  std::vector<geometry::PointWithAltitude> points;
   if (!frm()->GetRoutingManager().RoutingSession().GetRouteJunctionPoints(points))
   {
     LOG(LWARNING, ("Can't get the route junction points"));
     return nullptr;
   }
 
-  vector<geometry::PointWithAltitude> result;
+  std::vector<geometry::PointWithAltitude> result;
   result.reserve(points.size());
   result.push_back(points[0]);
   for (size_t i = 1; i < points.size(); ++i)
@@ -1265,99 +1264,60 @@ JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetRouteJunction
   return CreateJunctionInfoArray(env, result);
 }
 
-JNIEXPORT jintArray Java_app_organicmaps_sdk_Framework_nativeGenerateRouteAltitudeChartBits(JNIEnv * env, jclass,
-                                                                                            jint width, jint height,
-                                                                                            jobject routeAltitudeLimits)
+JNIEXPORT jobject Java_app_organicmaps_sdk_Framework_nativeGetRouteAltitudeData(JNIEnv * env, jclass)
 {
-  RoutingManager::DistanceAltitude altitudes;
-  if (!frm()->GetRoutingManager().GetRouteAltitudesAndDistancesM(altitudes))
+  ElevationInfo ei;
+  if (!frm()->GetRoutingManager().GetRouteElevationInfo(ei))
   {
     LOG(LWARNING, ("Can't get distance to route points and altitude."));
     return nullptr;
   }
 
-  altitudes.Simplify();
+  auto const altInfo = ei.CalculateAltitudesInfo(ElevationInfo::kDefThresholdMWM);
 
-  vector<uint8_t> imageRGBAData;
-  if (!altitudes.GenerateRouteAltitudeChart(width, height, imageRGBAData))
+  static jclass const dataClass = jni::GetGlobalClassRef(env, "app/organicmaps/sdk/routing/RouteAltitudeData");
+  static jmethodID const constructor = jni::GetConstructorID(env, dataClass, "([D[IIIII)V");
+
+  jsize const size = static_cast<jsize>(ei.GetSize());
+
+  jdoubleArray jDistances = env->NewDoubleArray(size);
+  CHECK(jDistances, ());
+  jintArray jElevs = env->NewIntArray(size);
+  CHECK(jElevs, ());
+
+  jdouble * distances = env->GetDoubleArrayElements(jDistances, nullptr);
+  jint * elevations = env->GetIntArrayElements(jElevs, nullptr);
+
+  size_t i = 0;
+  ei.ForEachPoint([&](double dist, geometry::Altitude alt)
   {
-    LOG(LWARNING, ("Can't generate route altitude image."));
-    return nullptr;
-  }
+    distances[i] = dist;
+    elevations[i] = static_cast<jint>(alt);
+    ++i;
+  });
 
-  uint32_t totalAscent, totalDescent;
-  altitudes.CalculateAscentDescent(totalAscent, totalDescent);
+  env->ReleaseDoubleArrayElements(jDistances, distances, 0);
+  env->ReleaseIntArrayElements(jElevs, elevations, 0);
 
-  // Android platform code has specific result string formatting, so make conversion here.
-  using namespace measurement_utils;
-  auto units = Units::Metric;
-  if (settings::Get(settings::kMeasurementUnits, units) && units == Units::Imperial)
-  {
-    totalAscent = measurement_utils::MetersToFeet(totalAscent);
-    totalDescent = measurement_utils::MetersToFeet(totalDescent);
-  }
+  return env->NewObject(dataClass, constructor, jDistances, jElevs, static_cast<jint>(altInfo.GetTotalAscent()),
+                        static_cast<jint>(altInfo.GetTotalDescent()), static_cast<jint>(altInfo.m_minAltitude),
+                        static_cast<jint>(altInfo.m_maxAltitude));
+}
 
-  jni::TScopedLocalRef const totalAscentString(env, jni::ToJavaString(env, ToStringPrecision(totalAscent, 0)));
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeRouteSetElevationActivePoint(JNIEnv * env, jclass,
+                                                                                     jdouble distanceMeters)
+{
+  if (frm()->GetDrapeEngine() == nullptr)
+    return;
+  if (auto const pt = frm()->GetRoutingManager().GetRoutePointAtDistance(distanceMeters))
+    frm()->GetDrapeEngine()->SelectObject(df::SelectionShape::ESelectedObject::OBJECT_TRACK, *pt, FeatureID(), false,
+                                          false, true);
+}
 
-  jni::TScopedLocalRef const totalDescentString(env, jni::ToJavaString(env, ToStringPrecision(totalDescent, 0)));
-
-  // Passing route limits.
-  // Do not use jni::GetGlobalClassRef, because this class is used only to init static fieldId vars.
-  static jclass const routeAltitudeLimitsClass = env->GetObjectClass(routeAltitudeLimits);
-  ASSERT(routeAltitudeLimitsClass, ());
-
-  static jfieldID const totalAscentField = env->GetFieldID(routeAltitudeLimitsClass, "totalAscent", "I");
-  ASSERT(totalAscentField, ());
-  env->SetIntField(routeAltitudeLimits, totalAscentField, static_cast<jint>(totalAscent));
-
-  static jfieldID const totalDescentField = env->GetFieldID(routeAltitudeLimitsClass, "totalDescent", "I");
-  ASSERT(totalDescentField, ());
-  env->SetIntField(routeAltitudeLimits, totalDescentField, static_cast<jint>(totalDescent));
-
-  static jfieldID const totalAscentStringField =
-      env->GetFieldID(routeAltitudeLimitsClass, "totalAscentString", "Ljava/lang/String;");
-  ASSERT(totalAscentStringField, ());
-  env->SetObjectField(routeAltitudeLimits, totalAscentStringField, totalAscentString.get());
-
-  static jfieldID const totalDescentStringField =
-      env->GetFieldID(routeAltitudeLimitsClass, "totalDescentString", "Ljava/lang/String;");
-  ASSERT(totalDescentStringField, ());
-  env->SetObjectField(routeAltitudeLimits, totalDescentStringField, totalDescentString.get());
-
-  static jfieldID const isMetricUnitsField = env->GetFieldID(routeAltitudeLimitsClass, "isMetricUnits", "Z");
-  ASSERT(isMetricUnitsField, ());
-  env->SetBooleanField(routeAltitudeLimits, isMetricUnitsField, units == Units::Metric);
-
-  size_t const imageRGBADataSize = imageRGBAData.size();
-  ASSERT_NOT_EQUAL(imageRGBADataSize, 0,
-                   ("GenerateRouteAltitudeChart returns true but the vector with altitude image bits is empty."));
-
-  size_t const pxlCount = width * height;
-  if (maps::kAltitudeChartBPP * pxlCount != imageRGBADataSize)
-  {
-    LOG(LWARNING,
-        ("Wrong size of vector with altitude image bits. Expected size:", pxlCount, ". Real size:", imageRGBADataSize));
-    return nullptr;
-  }
-
-  jintArray imageRGBADataArray = env->NewIntArray(static_cast<jsize>(pxlCount));
-  ASSERT(imageRGBADataArray, ());
-  jint * arrayElements = env->GetIntArrayElements(imageRGBADataArray, 0);
-  ASSERT(arrayElements, ());
-
-  for (size_t i = 0; i < pxlCount; ++i)
-  {
-    size_t const shiftInBytes = i * maps::kAltitudeChartBPP;
-    // Type of |imageRGBAData| elements is uint8_t. But uint8_t is promoted to unsinged int in code below before
-    // shifting. So there's no data lost in code below.
-    arrayElements[i] = (imageRGBAData[shiftInBytes + 3] << 24) /* alpha */
-                     | (imageRGBAData[shiftInBytes] << 16)     /* red */
-                     | (imageRGBAData[shiftInBytes + 1] << 8)  /* green */
-                     | (imageRGBAData[shiftInBytes + 2]);      /* blue */
-  }
-  env->ReleaseIntArrayElements(imageRGBADataArray, arrayElements, 0);
-
-  return imageRGBADataArray;
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeRouteRemoveElevationActivePoint(JNIEnv * env, jclass)
+{
+  if (frm()->GetDrapeEngine() != nullptr)
+    frm()->GetDrapeEngine()->DeselectObject(false);
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeShowCountry(JNIEnv * env, jclass, jstring countryId,
@@ -1376,20 +1336,20 @@ JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRoutingListener(JNIEn
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRouteProgressListener(JNIEnv * env, jclass, jobject listener)
 {
   frm()->GetRoutingManager().SetRouteProgressListener(
-      bind(&CallRouteProgressListener, jni::make_global_ref(listener), _1));
+      std::bind(&CallRouteProgressListener, jni::make_global_ref(listener), _1));
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRoutingRecommendationListener(JNIEnv * env, jclass,
                                                                                          jobject listener)
 {
   frm()->GetRoutingManager().SetRouteRecommendationListener(
-      bind(&CallRouteRecommendationListener, jni::make_global_ref(listener), _1));
+      std::bind(&CallRouteRecommendationListener, jni::make_global_ref(listener), _1));
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRoutingLoadPointsListener(JNIEnv *, jclass, jobject listener)
 {
   if (listener != nullptr)
-    g_loadRouteHandler = bind(&CallSetRoutingLoadPointsListener, jni::make_global_ref(listener), _1);
+    g_loadRouteHandler = std::bind(&CallSetRoutingLoadPointsListener, jni::make_global_ref(listener), _1);
   else
     g_loadRouteHandler = nullptr;
 }
@@ -1500,6 +1460,33 @@ JNIEXPORT jboolean Java_app_organicmaps_sdk_Framework_nativeIsDayTime(JNIEnv * e
 {
   DayTimeType const dt = GetDayTime(static_cast<time_t>(utcTimeSeconds), lat, lon);
   return (dt == DayTimeType::Day || dt == DayTimeType::PolarDay);
+}
+
+JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetDayTimeType(JNIEnv * env, jclass, jlong utcTimeSeconds,
+                                                                       jdouble lat, jdouble lon)
+{
+  switch (GetDayTime(static_cast<time_t>(utcTimeSeconds), lat, lon))
+  {
+  case DayTimeType::Day: return 0;
+  case DayTimeType::Night: return 1;
+  case DayTimeType::PolarDay: return 2;
+  case DayTimeType::PolarNight: return 3;
+  }
+
+  ASSERT(false, ());
+  return 1;
+}
+
+JNIEXPORT jlong Java_app_organicmaps_sdk_Framework_nativeGetSunriseTime(JNIEnv * env, jclass, jlong utcTimeSeconds,
+                                                                        jdouble lat, jdouble lon)
+{
+  return static_cast<jlong>(GetSunriseTime(static_cast<time_t>(utcTimeSeconds), lat, lon));
+}
+
+JNIEXPORT jlong Java_app_organicmaps_sdk_Framework_nativeGetSunsetTime(JNIEnv * env, jclass, jlong utcTimeSeconds,
+                                                                       jdouble lat, jdouble lon)
+{
+  return static_cast<jlong>(GetSunsetTime(static_cast<time_t>(utcTimeSeconds), lat, lon));
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSet3dMode(JNIEnv * env, jclass, jboolean allow,
@@ -1629,7 +1616,7 @@ JNIEXPORT jobject Java_app_organicmaps_sdk_Framework_nativeDeleteBookmarkFromMap
 JNIEXPORT jstring Java_app_organicmaps_sdk_Framework_nativeGetPoiContactUrl(JNIEnv * env, jclass, jint id)
 {
   auto const metaID = static_cast<osm::MapObject::MetadataID>(id);
-  string_view const value = g_framework->GetPlacePageInfo().GetMetadata(metaID);
+  std::string_view const value = g_framework->GetPlacePageInfo().GetMetadata(metaID);
   if (osm::isSocialContactTag(metaID))
     return jni::ToJavaString(env, osm::socialContactToURL(metaID, value));
   return jni::ToJavaString(env, value);

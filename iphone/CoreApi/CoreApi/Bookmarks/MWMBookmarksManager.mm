@@ -1,6 +1,7 @@
 #import "MWMBookmarksManager.h"
 
 #import "MWMBookmark+Core.h"
+#import "MWMBookmarkColor+Core.h"
 #import "MWMBookmarkGroup.h"
 #import "MWMBookmarksSection.h"
 #import "MWMCarPlayBookmarkObject.h"
@@ -494,6 +495,10 @@ static FileType convertFileTypeToCore(MWMFileType fileType)
 - (void)deleteTrack:(MWMTrackID)trackId
 {
   self.bm.GetEditSession().DeleteTrack(trackId);
+  [self loopObservers:^(id<MWMBookmarksObserver> observer) {
+    if ([observer respondsToSelector:@selector(onTrackDeleted:)])
+      [observer onTrackDeleted:trackId];
+  }];
 }
 
 - (MWMBookmark *)bookmarkWithId:(MWMMarkID)bookmarkId
@@ -636,11 +641,13 @@ static FileType convertFileTypeToCore(MWMFileType fileType)
   switch (sharingResult.m_code)
   {
   case BookmarkManager::SharingResult::Code::Success:
+  {
     urlToALocalFile = [NSURL fileURLWithPath:@(sharingResult.m_sharingPath.c_str()) isDirectory:NO];
     ASSERT(urlToALocalFile, ("Invalid share category URL"));
     self.shareCategoryURL = urlToALocalFile;
     status = MWMBookmarksShareStatusSuccess;
     break;
+  }
   case BookmarkManager::SharingResult::Code::EmptyCategory: status = MWMBookmarksShareStatusEmptyCategory; break;
   case BookmarkManager::SharingResult::Code::ArchiveError: status = MWMBookmarksShareStatusArchiveError; break;
   case BookmarkManager::SharingResult::Code::FileError: status = MWMBookmarksShareStatusFileError; break;
@@ -728,6 +735,20 @@ static FileType convertFileTypeToCore(MWMFileType fileType)
     self.bm.SetLastEditedBmColor(kmlColor);
 
   bookmark->SetColor(kmlColor);
+}
+
+- (void)setCategory:(MWMMarkGroupID)groupId bookmarksColor:(MWMBookmarkColor)color
+{
+  auto editSession = self.bm.GetEditSession();
+  auto const kmlColor = kmlColorFromBookmarkColor(color);
+  editSession.SetCategoryBookmarksColor(groupId, kmlColor);
+  self.bm.SetLastEditedBmColor(kmlColor);
+}
+
+- (void)setCategory:(MWMMarkGroupID)groupId tracksColor:(MWMBookmarkColor)color
+{
+  auto editSession = self.bm.GetEditSession();
+  editSession.SetCategoryTracksColor(groupId, kmlColorFromBookmarkColor(color));
 }
 
 - (void)moveBookmark:(MWMMarkID)bookmarkId toGroupId:(MWMMarkGroupID)groupId
@@ -853,9 +874,9 @@ static FileType convertFileTypeToCore(MWMFileType fileType)
       block(observer);
 }
 
-- (void)setElevationActivePoint:(CLLocationCoordinate2D)point distance:(double)distance trackId:(uint64_t)trackId
+- (void)setElevationActivePointDistance:(double)distance trackId:(uint64_t)trackId
 {
-  self.bm.SetElevationActivePoint(trackId, mercator::FromLatLon(point.latitude, point.longitude), distance);
+  self.bm.SetElevationActivePoint(trackId, distance);
 }
 
 - (void)setElevationActivePointChanged:(uint64_t)trackId callback:(ElevationPointChangedBlock)callback

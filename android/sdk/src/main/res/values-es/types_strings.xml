@@ -18,7 +18,7 @@
     <string name="type.aeroway.apron">Plataforma de estacionamiento de aviones</string>
     <string name="type.aeroway.gate">Puerta de embarque</string>
     <string name="type.aeroway.helipad">Helipuerto</string>
-    <string name="type.aeroway.runway">Pista de despegue</string>
+    <string name="type.aeroway.runway">Pista</string>
     <string name="type.aeroway.taxiway">Pista de rodaje</string>
     <string name="type.aeroway.terminal">Terminal</string>
     <string name="type.amenity">Infraestructura</string>
@@ -27,7 +27,7 @@
     <string name="type.amenity.bank">Banco</string>
     <string name="type.amenity.bar">Bar</string>
     <string name="type.amenity.bbq">Barbacoa</string>
-    <string name="type.amenity.bench">Asiento</string>
+    <string name="type.amenity.bench">Banco</string>
     <string name="type.amenity.bicycle_parking">Aparcamiento de bicicletas</string>
     <string name="type.amenity.bicycle_parking.covered">Aparcamiento de bicicletas cubierto</string>
     <string name="type.amenity.bicycle_rental">Alquiler de bicicletas</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Mediterránea</string>
     <string name="type.cuisine.mexican">Mexicana</string>
     <string name="type.cuisine.moroccan">Marroquí</string>
-    <string name="type.cuisine.noodles">Fideos</string>
+    <string name="type.cuisine.noodle">Fideos</string>
     <string name="type.cuisine.oriental">Oriental</string>
     <string name="type.cuisine.pancake">Tortitas</string>
     <string name="type.cuisine.pasta">Pastas</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Salchichas</string>
     <string name="type.cuisine.savory_pancakes">Tortitas saladas</string>
     <string name="type.cuisine.seafood">Mariscos</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Soba (fideos japoneses)</string>
     <string name="type.cuisine.spanish">Española</string>
     <string name="type.cuisine.steak_house">Asador</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Té</string>
     <string name="type.cuisine.thai">Tailandesa</string>
     <string name="type.cuisine.turkish">Turca</string>
+    <string name="type.cuisine.uzbek">Uzbeka</string>
     <string name="type.cuisine.vegan">Vegana</string>
     <string name="type.cuisine.vegetarian">Vegetariana</string>
     <string name="type.cuisine.vietnamese">Vietnamita</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Puente peatonal</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Túnel peatonal</string>
+    <string name="type.highway.platform">Plataforma</string>
     <string name="type.highway.primary">Carretera principal</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Puente</string>
@@ -531,7 +534,7 @@
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.unclassified.bridge">Puente</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.unclassified.tunnel">Túnel de carretera sin clasificar</string>
+    <string name="type.highway.unclassified.tunnel">Túnel</string>
     <string name="type.area_highway.cycleway">Ciclovía</string>
     <string name="type.area_highway.footway">Senda</string>
     <string name="type.area_highway.living_street">Calle de prioridad peatonal</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Pista</string>
     <string name="type.area_highway.trunk">Vía troncal</string>
     <string name="type.area_highway.unclassified">Carretera sin clasificar</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Objeto histórico</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Ciénaga</string>
     <string name="type.noexit">Sin salida</string>
     <string name="type.office">Oficina</string>
+    <string name="type.office.architect">Estudio de arquitectura</string>
     <string name="type.office.company">Oficina</string>
+    <string name="type.office.educational_institution">Institución educativa</string>
     <string name="type.office.estate_agent">Agente inmobiliario</string>
     <string name="type.office.government">Oficina gubernamental</string>
     <string name="type.office.insurance">Oficina de seguros</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Paso a nivel</string>
     <string name="type.railway.disused">Vía férrea en desuso</string>
     <string name="type.railway.disused.bridge">Puente ferroviario en desuso</string>
+    <string name="type.railway.disused.tunnel">Túnel ferroviario en desuso</string>
     <string name="type.railway.funicular">Funicular</string>
     <string name="type.railway.funicular.bridge">Puente de funicular</string>
     <string name="type.railway.funicular.tunnel">Túnel de funicular</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Droguería</string>
     <string name="type.shop.chocolate">Chocolatería</string>
     <string name="type.shop.clothes">Tienda de ropa</string>
+    <string name="type.shop.clothes.children">Tienda de ropa infantil</string>
+    <string name="type.shop.clothes.fashion">Boutique de moda</string>
+    <string name="type.shop.clothes.hats">Sombrerería</string>
+    <string name="type.shop.clothes.men">Tienda de ropa para hombre</string>
+    <string name="type.shop.clothes.sports">Tienda de ropa deportiva</string>
+    <string name="type.shop.clothes.suits">Sastrería</string>
+    <string name="type.shop.clothes.underwear">Tienda de ropa interior</string>
+    <string name="type.shop.clothes.wedding">Tienda de vestidos de novia</string>
+    <string name="type.shop.clothes.women">Tienda de ropa para mujer</string>
     <string name="type.shop.coffee">Tienda de café</string>
     <string name="type.shop.computer">Tienda de informática</string>
     <string name="type.shop.confectionery">Confitería</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Funeraria</string>
     <string name="type.shop.furniture">Tienda de muebles</string>
     <string name="type.shop.garden_centre">Centro de jardinería</string>
+    <string name="type.shop.games">Tienda de juegos</string>
     <string name="type.shop.gas">Tienda de gasolina</string>
     <string name="type.shop.gift">Tienda de regalos</string>
     <string name="type.shop.greengrocer">Frutería</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Quiosco</string>
     <string name="type.shop.kitchen">Tienda de cocina</string>
     <string name="type.shop.laundry">Lavandería</string>
+    <string name="type.shop.leather">Tienda de artículos de cuero</string>
     <string name="type.shop.mall">Centro comercial</string>
     <string name="type.shop.massage">Salón de masajes</string>
     <string name="type.shop.mobile_phone">Móviles</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Tienda de mascotas</string>
     <string name="type.shop.pet_grooming">Aseo de mascotas</string>
     <string name="type.shop.photo">Artículos de fotografía</string>
+    <string name="type.shop.religion">Tienda de artículos religiosos</string>
     <string name="type.shop.rental">Tienda de alquiler</string>
     <string name="type.shop.rental.bicycle">Tienda de alquiler de bicicletas</string>
     <string name="type.amenity.bicycle_rental.shop">Tienda de alquiler de bicicletas</string>
@@ -1404,6 +1420,12 @@
     <string name="type.leisure.sports_hall">Pabellón deportivo</string>
     <string name="type.sport.diving">Clavados</string>
     <string name="type.man_made.crane">Grúa</string>
+    <string name="type.barrier.wicket_gate">Puerta peatonal</string>
+    <string name="type.barrier.yes">Barrera</string>
+    <string name="type.building.guardhouse">Garita</string>
+    <string name="type.office.security">Oficina de seguridad</string>
+    <string name="type.power.portal">Torre eléctrica (pórtico)</string>
+    <string name="type.shop.lighting">Tienda de iluminación</string>
     <string name="type.barrier.jersey_barrier">Bloque</string>
     <string name="type.barrier.debris">Escombros</string>
     <string name="type.barrier.log">Barrera de troncos</string>

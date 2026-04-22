@@ -11,9 +11,8 @@
 #include "drape/texture_of_colors.hpp"
 #include "drape/tm_read_resources.hpp"
 
-#include "base/math.hpp"
-
 #include <algorithm>
+#include <bit>
 #include <cstdint>
 #include <limits>
 #include <set>
@@ -34,7 +33,8 @@ size_t constexpr kInvalidGlyphGroup = std::numeric_limits<size_t>::max();
 
 // Reserved for elements like RuleDrawer or other LineShapes.
 uint32_t constexpr kReservedPatterns = 10;
-size_t constexpr kReservedColors = 20;
+// Extra slots for dynamically allocated colors (rainbow strips, etc.).
+size_t constexpr kReservedColors = 1024;
 
 // TODO(AB): Investigate if it can be set to 1.0.
 float constexpr kGlyphAreaMultiplier = 1.2f;
@@ -58,7 +58,7 @@ void ParseColorsList(std::string const & colorsFile, ToDo toDo)
 
 m2::PointU StipplePenTextureSize(size_t patternsCount, uint32_t maxTextureSize)
 {
-  uint32_t const sz = math::NextPowOf2(static_cast<uint32_t>(patternsCount) + kReservedPatterns);
+  uint32_t const sz = std::bit_ceil(static_cast<uint32_t>(patternsCount) + kReservedPatterns);
   // No problem if assert will fire here. Just pen texture will be 2x bigger :)
   // ASSERT_LESS_OR_EQUAL(sz, kMinStippleTextureHeight, (patternsCount));
   uint32_t const stippleTextureHeight = std::min(maxTextureSize, std::max(sz, kMinStippleTextureHeight));
@@ -69,9 +69,7 @@ m2::PointU StipplePenTextureSize(size_t patternsCount, uint32_t maxTextureSize)
 m2::PointU ColorTextureSize(size_t colorsCount, uint32_t maxTextureSize)
 {
   uint32_t const sz = static_cast<uint32_t>(floor(sqrt(colorsCount + kReservedColors)));
-  // No problem if assert will fire here. Just color texture will be 2x bigger :)
-  ASSERT_LESS_OR_EQUAL(sz, kMinColorTextureSize, (colorsCount));
-  uint32_t colorTextureSize = std::max(math::NextPowOf2(sz), kMinColorTextureSize);
+  uint32_t colorTextureSize = std::max(std::bit_ceil(sz), kMinColorTextureSize);
 
   colorTextureSize *= ColorTexture::GetColorSizeInPixels();
   colorTextureSize = std::min(maxTextureSize, colorTextureSize);
@@ -649,11 +647,34 @@ void TextureManager::GetColorRegion(Color const & color, ColorRegion & region)
   GetRegionBase(make_ref(m_colorTexture), region, ColorKey(color));
 }
 
+std::optional<TextureManager::RainbowRegion> TextureManager::GetRainbowRegion(RainbowColors const & colors)
+{
+  CHECK(m_isInitialized, ());
+  ASSERT(!colors.empty(), ());
+
+  // Allocate a contiguous strip of color texels (always fresh, not cached).
+  m2::PointF firstCenter, lastCenter;
+  ref_ptr<ColorTexture> colorTex = make_ref(m_colorTexture);
+  if (!colorTex->ReserveStrip(colors, firstCenter, lastCenter))
+    return std::nullopt;  // Atlas full — caller falls back to single color.
+
+  m_nothingToUpload.clear();
+
+  // For edge-to-edge mapping (equal stripe widths with GL_NEAREST),
+  // offset by half a texel outward from the first/last centers.
+  float const halfTexelU = 0.5f * ColorTexture::GetColorSizeInPixels() / static_cast<float>(m_colorTexture->GetWidth());
+
+  RainbowRegion result;
+  result.m_texture = colorTex;
+  result.m_uvLeft = glsl::vec2(firstCenter.x - halfTexelU, firstCenter.y);
+  result.m_uvRight = glsl::vec2(lastCenter.x + halfTexelU, lastCenter.y);
+  return result;
+}
+
 text::TextMetrics TextureManager::ShapeSingleTextLine(float fontPixelHeight, std::string_view utf8,
                                                       TGlyphsBuffer * glyphRegions)  // TODO(AB): Better name?
 {
   ASSERT(!utf8.empty(), ());
-  std::vector<ref_ptr<Texture::ResourceInfo>> resourcesInfo;
   bool hasNewResources = false;
 
   // TODO(AB): Is this mutex too slow?
@@ -676,28 +697,20 @@ text::TextMetrics TextureManager::ShapeSingleTextLine(float fontPixelHeight, std
     group.m_texture = AllocateGlyphTexture();
 
   if (glyphRegions)
-    resourcesInfo.reserve(glyphs.size());
+    glyphRegions->reserve(glyphs.size());
 
   for (auto const & glyph : glyphs)
   {
     bool newResource = false;
-    auto fontTexture = static_cast<FontTexture *>(group.m_texture.get())->MapResource(glyph.m_key, newResource);
+    auto fontTexture = ref_ptr<FontTexture>(group.m_texture)->MapResource(glyph.m_key, newResource);
     hasNewResources |= newResource;
 
     if (glyphRegions)
-      resourcesInfo.emplace_back(fontTexture);
-  }
-
-  if (glyphRegions)
-  {
-    glyphRegions->reserve(resourcesInfo.size());
-    for (auto const & info : resourcesInfo)
     {
       GlyphRegion reg;
-      reg.SetResourceInfo(info);
+      reg.SetResourceInfo(fontTexture);
       reg.SetTexture(group.m_texture);
       ASSERT(reg.IsValid(), ());
-
       glyphRegions->push_back(std::move(reg));
     }
   }

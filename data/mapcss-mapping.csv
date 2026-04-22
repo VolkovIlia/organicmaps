@@ -735,7 +735,7 @@ piste:type|snow_park;616;
 deprecated|deprecated;617;x
 deprecated|deprecated;618;x
 aerialway|j-bar;619;
-deprecated|deprecated;620;x
+aerialway|zip_line;620;
 deprecated|deprecated;621;x
 deprecated|deprecated;622;x
 deprecated|deprecated;623;x
@@ -816,7 +816,7 @@ deprecated|deprecated;697;x
 deprecated|deprecated;698;x
 deprecated|deprecated;699;x
 deprecated|deprecated;700;x
-deprecated|deprecated;701;x
+highway|platform;701;
 office|diplomatic;702;
 railway|station|subway;[railway=station][transport=subway],[railway=station][station=subway];;name;int_name;703;
 amenity|police;704;
@@ -842,8 +842,8 @@ natural|bay;723;
 natural|spring;724;
 railway|platform;725;
 shop|clothes;[shop=clothes],[shop=fashion];;name;int_name;726;
-shop|car_repair;727;
-shop|car;728;
+shop|car_repair;[shop=car_repair],[service:vehicle:car_repair=yes],[service:vehicle:truck_repair=yes];;name;int_name;727;
+shop|car;[shop=car],[service:vehicle:new_car_sales=yes],[service:vehicle:used_car_sales=yes];;name;int_name;728;
 shop|kiosk;729;
 sport|multi;730;
 sport|golf;[sport=golf],[sport=miniature_golf];;name;int_name;731;
@@ -875,15 +875,15 @@ barrier|jersey_barrier;755;
 # Can be added in replace_tags, but keep different types for the UI strings.
 barrier|log;756;
 barrier|debris;757;
-deprecated|deprecated;758;x
-deprecated|deprecated;759;x
-deprecated|deprecated;760;x
-deprecated|deprecated;761;x
-deprecated|deprecated;762;x
-deprecated|deprecated;763;x
-deprecated|deprecated;764;x
-deprecated|deprecated;765;x
-deprecated|deprecated;766;x
+shop|clothes|women;[shop=clothes][clothes=women];;name;int_name;758;
+shop|clothes|underwear;[shop=clothes][clothes=underwear];;name;int_name;759;
+shop|clothes|men;[shop=clothes][clothes=men];;name;int_name;760;
+shop|clothes|children;[shop=clothes][clothes=children],[shop=clothes][clothes=babies];;name;int_name;761;
+shop|clothes|wedding;[shop=clothes][clothes=wedding];;name;int_name;762;
+shop|clothes|sports;[shop=clothes][clothes=sports];;name;int_name;763;
+shop|clothes|suits;[shop=clothes][clothes=suits];;name;int_name;764;
+shop|clothes|hats;[shop=clothes][clothes=hats];;name;int_name;765;
+shop|clothes|fashion;[shop=clothes][clothes=fashion];;name;int_name;766;
 deprecated|deprecated;767;x
 deprecated|deprecated;768;x
 deprecated|deprecated;769;x
@@ -938,9 +938,9 @@ deprecated|deprecated;817;x
 deprecated|deprecated;818;x
 deprecated|deprecated;819;x
 deprecated|deprecated;820;x
-highway|track|grade3|no-access;[highway=track][tracktype=grade3][access=no];x;name;int_name;821;highway|track
-highway|track|grade4|no-access;[highway=track][tracktype=grade4][access=no];x;name;int_name;822;highway|track
-highway|track|grade5|no-access;[highway=track][tracktype=grade5][access=no];x;name;int_name;823;highway|track
+highway|track|grade3|no-access;[highway=track][tracktype=grade3][access=no];x;name;int_name;821;highway|track|no-access
+highway|track|grade4|no-access;[highway=track][tracktype=grade4][access=no];x;name;int_name;822;highway|track|no-access
+highway|track|grade5|no-access;[highway=track][tracktype=grade5][access=no];x;name;int_name;823;highway|track|no-access
 highway|track|no-access;[highway=track][access=no];;name;int_name;824;
 deprecated|deprecated;825;x
 deprecated|deprecated;826;x
@@ -1019,9 +1019,9 @@ historic|pillory;[historic=pillory];;name;int_name;897;
 amenity|money_transfer;898;
 man_made|crane;899;
 railway|subway|darkgreen;[railway=subway][colour=darkgreen];x;name;int_name;900;railway|subway|tunnel
-deprecated|deprecated;901;x
+office|educational_institution;901;
 railway|subway|gray;[railway=subway][colour=gray];x;name;int_name;902;railway|subway|tunnel
-deprecated|deprecated;903;x
+office|architect;903;
 railway|subway|lightblue;[railway=subway][colour=lightblue];x;name;int_name;904;railway|subway|tunnel
 amenity|motorcycle_rental;[amenity=motorcycle_rental],[shop=motorcycle][motorcycle:rental=yes],[shop=motorcycle][rental=yes],[amenity=scooter_rental];;;;905;
 railway|subway|lightgreen;[railway=subway][colour=lightgreen];x;name;int_name;906;railway|subway|tunnel
@@ -1211,7 +1211,7 @@ man_made|tower;1088;
 man_made|water_well;1089;
 amenity|vending_machine;[amenity=vending_machine];;name;int_name;1090;
 shop|bookmaker;1091;
-shop|car_repair|tyres;[shop=car_repair][service=tyres];;name;int_name;1092;
+shop|car_repair|tyres;[shop=car_repair][service=tyres],[service:vehicle:tyres=yes],[service:vehicle:wheels=yes];;name;int_name;1092;
 shop|cosmetics;1093;
 shop|pet;1094;
 shop|seafood;1095;
@@ -1223,7 +1223,7 @@ tourism|information|map;[tourism=information][information=map];;name;int_name;11
 shop|paint;1101;
 traffic_calming|bump;1102;
 traffic_calming|hump;1103;
-shop|car_parts;1104;
+shop|car_parts;[shop=car_parts],[service:vehicle:car_parts=yes];;name;int_name;1104;
 leisure|sports_centre|climbing;[leisure=sports_centre][sport=climbing];x;name;int_name;1105;leisure|sports_centre
 leisure|sports_centre|shooting;[leisure=sports_centre][sport=shooting];x;name;int_name;1106;leisure|sports_centre
 leisure|sports_centre|swimming;[leisure=sports_centre][sport=swimming];x;name;int_name;1107;leisure|sports_centre
@@ -1385,7 +1385,7 @@ cuisine|steak_house;1262;
 cuisine|spanish;1263;
 cuisine|fish;1264;
 cuisine|vietnamese;1265;
-cuisine|noodles;1266;
+cuisine|noodle;1266;
 cuisine|vegetarian;1267;
 cuisine|korean;1268;
 cuisine|friture;1269;
@@ -1693,7 +1693,7 @@ leisure|adult_gaming_centre;1570;
 leisure|amusement_arcade;1571;
 amenity|place_of_worship|christian|mormon;[amenity=place_of_worship][religion=christian][denomination=mormon];;name;int_name;1572;
 amenity|public_bath;1573;
-amenity|vehicle_inspection;1574;
+amenity|vehicle_inspection;[amenity=vehicle_inspection],[service:vehicle:inspection=yes];;name;int_name;1574;
 historic|cannon;1575;
 historic|anchor;1576;
 historic|stone;1577;
@@ -1762,3 +1762,8 @@ craft|watchmaker;1639;
 organicapp|mwm_border;1640;
 xmas:feature|market;1641;
 xmas:feature|tree;1642;
+cuisine|uzbek;1643;
+shop|leather;1644;
+shop|religion;1645;
+shop|games;1646;
+cuisine|shawarma;1647;

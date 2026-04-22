@@ -1,9 +1,9 @@
-• NIEUW: Donkere themakleuren met hoger contrast
-• NIEUW: Google Assistant voor navigatie en zoeken
-• OSM-kaartgegevens van 11 januari
-• De instelling "Auto" voor het navigatiethema volgt de donkere/lichte modus van het systeem
-• Dunnere metrolijnen
-• Zoekresultaten tonen capaciteit voor motorfietsen parkeren, fietsverhuur, fietsen opladen en auto's opladen
-• Toon vloerniveau in zoekresultaten
-• Albanese vertalingen en TTS-spraakbegeleiding
-…meer op omaps.org/nl/news
+• OSM-kaartgegevens vanaf 10 maart, Wikipedia vanaf 1 maart
+• Meer gedetailleerde hoogte-isolijnen voor Chinese provincies
+• Rijen bomen, leerwinkels en winkels die religieuze goederen verkopen toegevoegd
+• Ondersteuning toegevoegd voor voorwaardelijke snelheidslimieten
+• Tanzania opgesplitst in kleinere regio's
+• Verbeterde weergave van openingstijden van bedrijven
+• Verschillende crashes opgelost
+• Verbeterde vertalingen van app- en landnamen
+omaps.org/nl/news

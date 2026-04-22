@@ -2,17 +2,16 @@
 
 #include "routing/maxspeeds.hpp"
 #include "routing/maxspeeds_serialization.hpp"
+#include "routing/routing_tests/index_graph_tools.hpp"
 
 #include "routing_common/maxspeed_conversion.hpp"
 
 #include "platform/measurement_utils.hpp"
+#include "platform/platform_tests_support/helpers.hpp"
 
 #include "coding/reader.hpp"
 #include "coding/writer.hpp"
 
-#include "base/file_name_utils.hpp"
-
-#include <cstdint>
 #include <limits>
 #include <vector>
 
@@ -20,7 +19,11 @@ namespace maxspeeds_test
 {
 using namespace measurement_utils;
 using namespace routing;
+using namespace routing_test;
+using namespace platform::tests_support;
 using namespace std;
+
+using TestEdge = TestIndexGraphTopology::Edge;
 
 void TestMaxspeedsSerialization(vector<FeatureMaxspeed> const & speeds)
 {
@@ -32,8 +35,8 @@ void TestMaxspeedsSerialization(vector<FeatureMaxspeed> const & speeds)
   MaxspeedConverter const & converter = GetMaxspeedConverter();
   for (auto const & s : speeds)
   {
-    inputSpeeds.push_back({s.GetFeatureId(), converter.SpeedToMacro(s.GetForwardSpeedInUnits()),
-                           converter.SpeedToMacro(s.GetBackwardSpeedInUnits())});
+    inputSpeeds.emplace_back(s.GetFeatureId(), s.GetMaxspeed(), converter);
+    TEST(inputSpeeds.back().IsValid(), (s.GetMaxspeed()));
   }
 
   int constexpr SPEEDS_COUNT = MaxspeedsSerializer::DEFAULT_SPEEDS_COUNT;
@@ -131,36 +134,29 @@ UNIT_TEST(MaxspeedConverter_ClosestValidMacro)
 UNIT_TEST(MaxspeedsSerializer_Smoke)
 {
   TestMaxspeedsSerialization({});
-}
-
-UNIT_TEST(MaxspeedsSerializer_OneForwardMetric)
-{
   TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Metric, 20 /* speed */)});
-}
-
-UNIT_TEST(MaxspeedsSerializer_OneNone)
-{
   TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Metric, kNoneMaxSpeed)});
-}
-
-UNIT_TEST(MaxspeedsSerializer_OneWalk)
-{
   TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Metric, kWalkMaxSpeed)});
-}
-
-UNIT_TEST(MaxspeedsSerializer_OneBidirectionalMetric_1)
-{
   TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Metric, 20 /* speed */, 40 /* speed */)});
-}
-
-UNIT_TEST(MaxspeedsSerializer_OneBidirectionalMetric_2)
-{
   TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Metric, 10 /* speed */, kWalkMaxSpeed)});
+  TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Imperial, 30 /* speed */, 50 /* speed */)});
 }
 
-UNIT_TEST(MaxspeedsSerializer_OneBidirectionalImperial)
+UNIT_TEST(MaxspeedsSerializer_Conditional)
 {
-  TestMaxspeedsSerialization({FeatureMaxspeed(0 /* feature id */, Units::Imperial, 30 /* speed */, 50 /* speed */)});
+  osmoh::OpeningHours oh("nov - mar");
+  TEST(oh.IsValid(), ());
+
+  FeatureMaxspeed forward(0, Units::Metric, 10);
+  forward.SetConditional(20, oh);
+
+  FeatureMaxspeed backward(1, Units::Metric, 30, 40);
+  backward.SetConditional(50, oh);
+
+  FeatureMaxspeed condOnly(2, Units::Metric, kInvalidSpeed, kInvalidSpeed);
+  condOnly.SetConditional(60, oh);
+
+  TestMaxspeedsSerialization({forward, backward, condOnly});
 }
 
 UNIT_TEST(MaxspeedsSerializer_BigMetric)
@@ -202,30 +198,81 @@ UNIT_TEST(Maxspeed_Smoke)
     Maxspeed maxspeed;
     TEST(!maxspeed.IsValid(), ());
     TEST(!maxspeed.IsBidirectional(), ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(true /* forward */), kInvalidSpeed, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(true /* forward */), kInvalidSpeed, ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(false /* forward */), kInvalidSpeed, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(false /* forward */), kInvalidSpeed, ());
+  }
+
+  {
+    Maxspeed maxspeed;
+    maxspeed.SetConditional(20, osmoh::OpeningHours("nov-mar"));
+    TEST(maxspeed.IsValid(), ());
+    TEST(!maxspeed.IsBidirectional(), ());
+
+    TEST_EQUAL(maxspeed.GetForward(), kInvalidSpeed, ());
+    TEST_EQUAL(maxspeed.GetBackward(), kInvalidSpeed, ());
+    TEST_EQUAL(maxspeed.GetConditional(), 20, ());
   }
 
   {
     Maxspeed maxspeed = {Units::Metric, 20 /* forward */, kInvalidSpeed /* backward */};
     TEST(maxspeed.IsValid(), ());
     TEST(!maxspeed.IsBidirectional(), ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(true /* forward */), 20, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(true /* forward */), 20, ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(false /* forward */), 20, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(false /* forward */), 20, ());
+
+    TEST_EQUAL(maxspeed.GetForward(), 20, ());
+    TEST_EQUAL(maxspeed.GetForward(), 20, ());
+    TEST_EQUAL(maxspeed.GetBackward(), kInvalidSpeed, ());
+    TEST_EQUAL(maxspeed.GetBackwardKmPH(), kInvalidSpeed, ());
   }
 
   {
     Maxspeed maxspeed = {Units::Metric, 30 /* forward */, 40 /* backward */};
     TEST(maxspeed.IsValid(), ());
     TEST(maxspeed.IsBidirectional(), ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(true /* forward */), 30, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(true /* forward */), 30, ());
-    TEST_EQUAL(maxspeed.GetSpeedInUnits(false /* forward */), 40, ());
-    TEST_EQUAL(maxspeed.GetSpeedKmPH(false /* forward */), 40, ());
+
+    TEST_EQUAL(maxspeed.GetForward(), 30, ());
+    TEST_EQUAL(maxspeed.GetForward(), 30, ());
+    TEST_EQUAL(maxspeed.GetBackward(), 40, ());
+    TEST_EQUAL(maxspeed.GetBackwardKmPH(), 40, ());
   }
+}
+
+UNIT_TEST(Maxspeeds_Routing_TimeDependent)
+{
+  uint32_t const numVertices = 4;
+  TestIndexGraphTopology graph(numVertices);
+
+  // 0->1 : 30 km at 60 km/h 1800 s.
+  graph.AddDirectedEdge(0, 1, 30000.0);
+  Maxspeed speed60(measurement_utils::Units::Metric, 60, 60);
+  graph.SetEdgeMaxspeed(0, 1, speed60);
+
+  // 1->2 : 10 km segment
+  // Normal: 60 km/h 600 s
+  // at 10:00–12:00: 20 km/h 1800 s
+  graph.AddDirectedEdge(1, 2, 10000.0);
+  Maxspeed conditionalSpeed(measurement_utils::Units::Metric, 60.0, 60.0);
+  conditionalSpeed.SetConditional(20.0, osmoh::OpeningHours("10:00-12:00"));
+  graph.SetEdgeMaxspeed(1, 2, conditionalSpeed);
+
+  // Alternative path 0->3->2 2700 s
+  graph.AddDirectedEdge(0, 3, 22500.0);
+  graph.AddDirectedEdge(3, 2, 22500.0);
+  Maxspeed altSpeed(measurement_utils::Units::Metric, 60.0, 60.0);
+  graph.SetEdgeMaxspeed(0, 3, altSpeed);
+  graph.SetEdgeMaxspeed(3, 2, altSpeed);
+
+  // Start at 08:30 arrive at node 1 at 09:00 condition inactive choose 0->1->2.
+  auto const startAt_8_30 = []() { return GetUnixtimeByWeekday(2026, Month::Apr, Weekday::Monday, 8, 30); };
+
+  graph.SetCurrentTimeGetter(startAt_8_30);
+  double expectedWeight = 2400.0;
+  vector<TestEdge> expectedEdges = {{0, 1}, {1, 2}};
+  TestTopologyGraph(graph, 0, 2, true, expectedWeight, expectedEdges);
+
+  // Start at 9:40 arrive at node 1 at 10:10 condition is active choose alternative path.
+  auto const startAt_9_40 = []() { return GetUnixtimeByWeekday(2026, Month::Apr, Weekday::Monday, 9, 40); };
+
+  graph.SetCurrentTimeGetter(startAt_9_40);
+  expectedWeight = 2700.0;
+  expectedEdges = {{0, 3}, {3, 2}};
+  TestTopologyGraph(graph, 0, 2, true, expectedWeight, expectedEdges);
 }
 }  // namespace maxspeeds_test

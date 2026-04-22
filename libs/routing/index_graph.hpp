@@ -15,7 +15,7 @@
 #include "routing/routing_options.hpp"
 #include "routing/segment.hpp"
 
-#include "geometry/point2d.hpp"
+#include "base/buffer_vector.hpp"
 
 #include <memory>
 #include <optional>
@@ -128,8 +128,7 @@ public:
   /// I suppose :) its time when user will be at the end of |from| (|to| if \a isOutgoing == false) segment.
   /// @return Transition weight + |to| (|from| if \a isOutgoing == false) segment's weight.
   RouteWeight CalculateEdgeWeight(EdgeEstimator::Purpose purpose, bool isOutgoing, Segment const & from,
-                                  Segment const & to,
-                                  std::optional<RouteWeight const> const & prevWeight = std::nullopt) const;
+                                  Segment const & to, std::optional<RouteWeight> const & prevWeight) const;
 
   template <typename T>
   void SetCurrentTimeGetter(T && t)
@@ -231,7 +230,7 @@ bool IndexGraph::IsRestricted(ParentVertex const & parent, uint32_t parentFeatur
   if (it == restrictions.cend())
     return false;
 
-  std::vector<ParentVertex> parentsFromCurrent;
+  buffer_vector<ParentVertex, 4> parentsFromCurrent;
   // Finds the first featureId from parents, that differ from |p.GetFeatureId()|.
   auto const appendNextParent = [&parents](ParentVertex const & p, auto & parentsVector)
   {

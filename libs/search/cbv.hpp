@@ -2,11 +2,7 @@
 
 #include "coding/compressed_bit_vector.hpp"
 
-#include "base/ref_counted.hpp"
-
-#include <cstdint>
 #include <memory>
-#include <utility>
 
 namespace search
 {
@@ -42,7 +38,7 @@ public:
   {
     ASSERT(!m_isFull, ());
     if (!IsEmpty())
-      coding::CompressedBitVectorEnumerator::ForEach(*m_p, std::forward<Fn>(fn));
+      coding::CompressedBitVectorEnumerator::ForEach(*m_p, fn);
   }
 
   CBV Union(CBV const & rhs) const;

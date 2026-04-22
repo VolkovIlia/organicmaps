@@ -157,7 +157,7 @@
 
 /********** Other translations **********/
 
-"share_bookmarks_email_body" = "Hallo!\n\nBijgesloten zijn mijn bladwijzers uit de Organic Maps app. Open ze als je Organic Maps geïnstalleerd hebt. Of, als je dat niet hebt, download de app voor je iOS- of Android-apparaat door deze link te volgen: https://omaps.app/get?kmz\n\nGeniet van het reizen met Organic Maps!";
+"share_bookmarks_email_body" = "Hallo!\n\nBijgesloten zijn mijn bladwijzers uit de Organic Maps app. Open ze als je Organic Maps geïnstalleerd hebt. Of, als je dat niet hebt, download de app hier: https://omaps.app/get?kmz\n\nGeniet van het reizen met Organic Maps!";
 
 /* message title of loading file */
 "load_kmz_title" = "Bladwijzers worden geladen";
@@ -198,7 +198,7 @@
 "prefs_group_route" = "Navigatie";
 
 /* Setting name which enables or disables zoom buttons on the map screen. */
-"pref_zoom_title" = "‘+’ en ‘-’ knoppen op de kaart";
+"pref_zoom_title" = "Zoomknoppen op de kaart";
 
 /* Generic «Off» string */
 "off" = "Uit";
@@ -651,6 +651,12 @@
 "button_layer_subway" = "Metro";
 "layers_title" = "Kaartstijlen en -lagen";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Kleur van alle bladwijzers wijzigen";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Kleur van alle tracks wijzigen";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Exporteer KMZ";
 
@@ -951,7 +957,7 @@
 
 /* Bookmark categories screen, button that opens share dialog to export all bookmarks and tracks */
 "bookmarks_export" = "Exporteer alle bladwijzers en tracks";
-"drive_through" = "Drive-though";
+"drive_through" = "Drive-through";
 
 /* Restaurant or other food place's menu URL field in the Editor */
 "website_menu" = "Menulink";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Paarse gedownloade regio's";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Inloggen met wachtwoord";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Inloggen met browser";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Onlangs gebruikt";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Bladwijzerkleur gewijzigd";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "Trackkleur gewijzigd";

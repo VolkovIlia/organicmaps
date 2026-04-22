@@ -70,15 +70,12 @@ public:
     return RouteWeight(ms::DistanceOnEarth(from, to));
   }
 
-  double CalculateETA(Segment const & from, Segment const & to) override { UNREACHABLE(); }
+  double CalculateETA(Segment const & from, Segment const & to, time_t arrivalTime) override { UNREACHABLE(); }
 
   double CalculateETAWithoutPenalty(Segment const & segment) override { UNREACHABLE(); }
 
   IndexGraph & GetIndexGraph(NumMwmId numMwmId) override { UNREACHABLE(); }
 
-  void GetTwinsInner(Segment const & segment, bool isOutgoing, std::vector<Segment> & twins) override
-  {
-    CHECK(false, ());
-  }
+  void GetTwinsInner(Segment const & segment, bool isOutgoing, TwinSegmentsListT & twins) override { CHECK(false, ()); }
 };
 }  // namespace routing

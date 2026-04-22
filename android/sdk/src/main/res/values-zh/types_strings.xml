@@ -37,8 +37,8 @@
     <string name="type.amenity.love_hotel">情侣酒店</string>
     <string name="type.amenity.bureau_de_change">货币兑换</string>
     <string name="type.amenity.bus_station">公交车站</string>
-    <string name="type.amenity.cafe">咖啡馆่</string>
-    <string name="type.amenity.car_rental">汽车出租์</string>
+    <string name="type.amenity.cafe">咖啡馆</string>
+    <string name="type.amenity.car_rental">汽车出租</string>
     <string name="type.amenity.motorcycle_rental">摩托车租赁</string>
     <string name="type.amenity.car_sharing">拼车点</string>
     <string name="type.amenity.car_wash">洗车</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">地中海菜</string>
     <string name="type.cuisine.mexican">墨西哥菜</string>
     <string name="type.cuisine.moroccan">摩洛哥菜</string>
-    <string name="type.cuisine.noodles">面</string>
+    <string name="type.cuisine.noodle">面</string>
     <string name="type.cuisine.oriental">东方菜</string>
     <string name="type.cuisine.pancake">煎饼</string>
     <string name="type.cuisine.pasta">意大利面</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">火腿</string>
     <string name="type.cuisine.savory_pancakes">咸味煎饼</string>
     <string name="type.cuisine.seafood">海鲜</string>
+    <string name="type.cuisine.shawarma">沙威玛</string>
     <string name="type.cuisine.soba">荞麦面</string>
     <string name="type.cuisine.spanish">西班牙菜</string>
     <string name="type.cuisine.steak_house">牛排馆</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">茶</string>
     <string name="type.cuisine.thai">泰国菜</string>
     <string name="type.cuisine.turkish">土耳其菜</string>
+    <string name="type.cuisine.uzbek">乌兹别克</string>
     <string name="type.cuisine.vegan">全素菜</string>
     <string name="type.cuisine.vegetarian">素菜</string>
     <string name="type.cuisine.vietnamese">越南菜</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">人行天桥</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">人行隧道</string>
+    <string name="type.highway.platform">公共交通站台</string>
     <string name="type.highway.primary">主要道路</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">桥</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">土路</string>
     <string name="type.area_highway.trunk">干线道路</string>
     <string name="type.area_highway.unclassified">道路</string>
-    <string name="type.highway.world_level">高速公路—世界级</string>
-    <string name="type.highway.world_towns_level">高速公路—城镇级</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">历史地点</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">草沼</string>
     <string name="type.noexit">死胡同</string>
     <string name="type.office">办公室</string>
+    <string name="type.office.architect">建筑师事务所</string>
     <string name="type.office.company">企业公司</string>
+    <string name="type.office.educational_institution">教育机构</string>
     <string name="type.office.estate_agent">地产中介</string>
     <string name="type.office.government">政府办公点</string>
     <string name="type.office.insurance">保险公司</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">铁路道口</string>
     <string name="type.railway.disused">废弃铁路</string>
     <string name="type.railway.disused.bridge">废弃铁路桥梁</string>
+    <string name="type.railway.disused.tunnel">废弃铁路隧道</string>
     <string name="type.railway.funicular">缆车</string>
     <string name="type.railway.funicular.bridge">缆车桥</string>
     <string name="type.railway.funicular.tunnel">缆车隧道</string>
@@ -1154,12 +1158,21 @@
     <string name="type.shop.chemist">药妆店</string>
     <string name="type.shop.chocolate">巧克力店</string>
     <string name="type.shop.clothes">服装店</string>
+    <string name="type.shop.clothes.children">童装店</string>
+    <string name="type.shop.clothes.fashion">时装精品店</string>
+    <string name="type.shop.clothes.hats">帽子店</string>
+    <string name="type.shop.clothes.men">男装店</string>
+    <string name="type.shop.clothes.sports">运动服装店</string>
+    <string name="type.shop.clothes.suits">西装店</string>
+    <string name="type.shop.clothes.underwear">内衣店</string>
+    <string name="type.shop.clothes.wedding">婚纱礼服店</string>
+    <string name="type.shop.clothes.women">女装店</string>
     <string name="type.shop.coffee">咖啡店</string>
     <string name="type.shop.computer">电脑店</string>
     <string name="type.shop.confectionery">糖果店</string>
     <string name="type.shop.convenience">便利店</string>
     <string name="type.shop.copyshop">复印店</string>
-    <string name="type.shop.cosmetics">化妝品店</string>
+    <string name="type.shop.cosmetics">化妆品店</string>
     <string name="type.shop.curtain">窗帘</string>
     <string name="type.shop.deli">熟食店</string>
     <string name="type.shop.department_store">百货商场</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">殡仪馆</string>
     <string name="type.shop.furniture">家具店</string>
     <string name="type.shop.garden_centre">幼儿园</string>
+    <string name="type.shop.games">游戏店</string>
     <string name="type.shop.gas">燃气站</string>
     <string name="type.shop.gift">礼品店</string>
     <string name="type.shop.greengrocer">蔬果零售店</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">售货亭</string>
     <string name="type.shop.kitchen">厨房用品店</string>
     <string name="type.shop.laundry">洗衣店</string>
+    <string name="type.shop.leather">皮具店</string>
     <string name="type.shop.mall">商场</string>
     <string name="type.shop.massage">按摩院</string>
     <string name="type.shop.mobile_phone">手机专卖店</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">宠物店</string>
     <string name="type.shop.pet_grooming">宠物美容</string>
     <string name="type.shop.photo">照片店</string>
+    <string name="type.shop.religion">宗教用品店</string>
     <string name="type.shop.rental">租赁店</string>
     <string name="type.shop.rental.bicycle">自行车租赁店</string>
     <string name="type.amenity.bicycle_rental.shop">自行车租赁店</string>

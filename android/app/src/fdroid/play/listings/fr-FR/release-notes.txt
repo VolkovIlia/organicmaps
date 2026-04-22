@@ -1,11 +1,8 @@
-• NOUVEAU : Thème sombre plus contrasté
-• NOUVEAU : Assistant Google pour navigation/recherche
-• Données OSM du 11 janvier
-• Thème navigation « Auto » selon le système
-• Lignes de métro plus fines
-• Capacités stationnement motos, location/recharge vélos, recharge autos affichées
-• Niveau d'étage dans la recherche
-• Traductions albanais et voix TTS
-• FAQ et traductions app mises à jour
-• Plantages corrigés
-…plus sur omaps.org/fr/news
+• Données cartographiques OSM au 10 mars, Wikipédia au 1er mars
+• Des isolignes d'élévation plus détaillées pour les provinces chinoises
+• Ajout de rangées d'arbres, de maroquineries et de magasins vendant des articles religieux
+• Ajout de la prise en charge des limites de vitesse conditionnelles
+• La Tanzanie a été divisée en régions plus petites
+• Affichage amélioré des heures d'ouverture des entreprises
+• Correction de plusieurs crashs
+omaps.org/fr/news

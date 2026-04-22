@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Middelhavsmat";
 "type.cuisine.mexican" = "Meksikansk mat";
 "type.cuisine.moroccan" = "Marokkansk mat";
-"type.cuisine.noodles" = "Nudler";
+"type.cuisine.noodle" = "Nudler";
 "type.cuisine.oriental" = "Orientalsk mat";
 "type.cuisine.pancake" = "Pannekake";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Pølse";
 "type.cuisine.savory_pancakes" = "Fylte pannekaker";
 "type.cuisine.seafood" = "Sjømat";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Spansk mat";
 "type.cuisine.steak_house" = "Biffrestaurant";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Te";
 "type.cuisine.thai" = "Thaimat";
 "type.cuisine.turkish" = "Tyrkisk mat";
+"type.cuisine.uzbek" = "Usbekisk";
 "type.cuisine.vegan" = "Vegansk";
 "type.cuisine.vegetarian" = "Vegetarisk";
 "type.cuisine.vietnamese" = "Vietnamesisk mat";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunnel";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Hovedvei";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Sump";
 "type.noexit" = "Dead End";
 "type.office" = "Kontor";
+"type.office.architect" = "Arkitektkontor";
 "type.office.company" = "Firmakontor";
+"type.office.educational_institution" = "Utdanningsinstitusjon";
 "type.office.estate_agent" = "Eiendomsmegler";
 "type.office.government" = "Offentlig kontor";
 "type.office.insurance" = "Forsikring";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "Nedlagt jernbanetunnel";
 "type.railway.funicular" = "Kabelbane";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Husholdningsartikler";
 "type.shop.chocolate" = "Butikk";
 "type.shop.clothes" = "Klesbutikk";
+"type.shop.clothes.children" = "Barneklærbutikk";
+"type.shop.clothes.fashion" = "Motebutikk";
+"type.shop.clothes.hats" = "Hattebutikk";
+"type.shop.clothes.men" = "Herreklærbutikk";
+"type.shop.clothes.sports" = "Sportsklærbutikk";
+"type.shop.clothes.suits" = "Draktbutikk";
+"type.shop.clothes.underwear" = "Undertøybutikk";
+"type.shop.clothes.wedding" = "Brudekjolebutikk";
+"type.shop.clothes.women" = "Dameklærbutikk";
 "type.shop.coffee" = "Butikk";
 "type.shop.computer" = "Databutikk";
 "type.shop.confectionery" = "Søtsaker";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Begravelsebyrå";
 "type.shop.furniture" = "Møbelbutikk";
 "type.shop.garden_centre" = "Planteskole";
+"type.shop.games" = "Spillbutikk";
 "type.shop.gas" = "Gassbutikk";
 "type.shop.gift" = "Gavebutikk";
 "type.shop.greengrocer" = "Frukt- og grønnsakshandler";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kiosk";
 "type.shop.kitchen" = "Kjøkkenbutikk";
 "type.shop.laundry" = "Vaskeri";
+"type.shop.leather" = "Lærbutikk";
 "type.shop.mall" = "Kjøpesenter";
 "type.shop.massage" = "Massasjesalong";
 "type.shop.mobile_phone" = "Mobiltelefonbutikk";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Dyrebutikk";
 "type.shop.pet_grooming" = "Kjæledyrpleie";
 "type.shop.photo" = "Fotobutikk";
+"type.shop.religion" = "Butikk for religiøse artikler";
 "type.shop.rental" = "Utleiebutikk";
 "type.shop.rental.bicycle" = "Sykkelutleiebutikk";
 "type.amenity.bicycle_rental.shop" = "Sykkelutleiebutikk";
@@ -1459,7 +1477,7 @@
 "type.tourism.hotel" = "Hotell";
 "type.tourism.information" = "Turistinformasjon";
 "type.tourism.information.board" = "Informasjonstavle";
-"type.tourism.information.guidepost" = "Guidepost";
+"type.tourism.information.guidepost" = "Veiviser";
 "type.tourism.information.map" = "Turistkart";
 "type.tourism.information.office" = "Turistkontor";
 "type.tourism.information.visitor_centre" = "Besøkssenter";
@@ -1524,7 +1542,7 @@
 "type.piste_type.nordic" = "Nordic Ski Trail";
 "type.piste_type.sled" = "Sledding Piste";
 "type.piste_type.sled.area" = "Sledding Piste";
-"type.piste_type.snow_park" = "Snow Park";
+"type.piste_type.snow_park" = "Snøpark";
 "type.piste_type.hike" = "Tursti i snø";
 "type.piste_type.connection" = "Pisteforbindelse";
 "type.piste_type.skitour" = "Skitour-stien";

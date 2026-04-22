@@ -1,16 +1,23 @@
-• UUTTA: Tumman teeman värit korkeammalla kontrastilla
-• Päivitetyt OpenStreetMap-tiedot (11. tammikuuta)
-• Yökerhot/kasinot poistettu Viihde-kategoriasta
-• Metrolinjojen paksuutta pienennetty
-• Lisätty kapasiteettitiedot hakutuloksiin moottoripyöräparkeille, pyörävuokraamoille sekä pyörien ja autojen latauspisteille
-• Näytä kerrosnumero hakutuloksissa
-• Leveämmät reittisuunnittelun painikkeet
+• OSM-karttatiedot 10. maaliskuuta
+• Wikipedia-tiedot 1. maaliskuuta
+• Lisätty tuki ehdollisille nopeusrajoituksille
+• Yksityiskohtaisemmat korkeuskäyrät Kiinan maakunnille
+• Lisätty nahkakaupat ja uskonnollisia tuotteita myyvät kaupat
+• Lisätty puurivit
+• Lisätty julkisen liikenteen pysäkkialustat ilman lähellä olevia bussipysäkkejä
+• Korjattu maiden lataamisen edistymisen laskeminen
+• Jaettu Tansania pienempiin alueisiin
+• Lisätty äskettäin käytettyjen luokkien historia editoriin
+• Parannettu pyyhkäisy ylöspäin reitin suunnittelunäytöllä
+• Korjattu viivaimen sijainti CarPlayssa
+• Korjattu useita kaatumisia, parannettu vakautta ja suorituskykyä
 
 ### Käännökset
 
-• Lisätty Albanian sovelluskäännökset ja puheopastus
-• Päivitetty UKK ja lisätty UKK-käännökset seuraaville kielille: arabia, tšekki, hollanti, persia, kreikka, heprea, hindi, unkari, indonesia, italia, liettua, marathi, ruotsi, telugu
-• Parannettu saksan sovellus- ja UKK-käännöksiä
-• Lisätty bulgarian hakusynonyymejä
-• Nimetty "Zoomauspainikkeet"-asetus uudelleen selkeyden vuoksi
-• Käännöskorjauksia Weblate-avustajilta useille kielille
+• Parannettu maiden kuvaukset
+• Sovellettu Eugen Dedu:n romaniankielisiä korjauksia
+• Päivitetty maiden nimet
+• Päivitetty Weblate-avustajien käännökset
+• Korjattu ukrainankielinen käännös
+
+Kiitos kaikille, jotka avustavat, lahjoittavat ja tukevat Organic Mapsia! Rakennetaan yhdessä parhaat kartat!

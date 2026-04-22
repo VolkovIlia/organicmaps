@@ -2,11 +2,16 @@
 
 #include "timezone/serdes.hpp"
 
+#include "coding/bit_streams.hpp"
+#include "coding/writer.hpp"
+
+#include "base/stl_helpers.hpp"
+
 using namespace om::tz;
 
 TEST(TimeZoneSerDes, EmptyTimeZone)
 {
-  TimeZone const tz{.generation_year_offset = 0, .base_offset = 0, .dst_delta = 0, .transitions = {}};
+  constexpr TimeZone tz{.generation_year_offset = 0, .base_offset = 0, .dst_delta = 0, .transitions = {}};
 
   auto const result = Serialize(tz);
   EXPECT_TRUE(result.has_value());
@@ -25,10 +30,10 @@ TEST(TimeZoneSerDes, TimeZoneWithTransitions)
                     .base_offset = 68,  // UTC+1
                     .dst_delta = 60,    // DST +1h
                     .transitions = {
-                        {.day_delta = 88, .minute_of_day = 60},
-                        {.day_delta = 154, .minute_of_day = 60},
-                        {.day_delta = 210, .minute_of_day = 120},
-                        {.day_delta = 234, .minute_of_day = 120},
+                        Transition{.day_delta = 88, .minute_of_day = 60},
+                        Transition{.day_delta = 154, .minute_of_day = 60},
+                        Transition{.day_delta = 210, .minute_of_day = 120},
+                        Transition{.day_delta = 234, .minute_of_day = 120},
                     }};
 
   auto const result = Serialize(tz);
@@ -50,10 +55,10 @@ TEST(TimeZoneSerDes, StringView)
                     .base_offset = 68,  // UTC+1
                     .dst_delta = 60,    // DST +1h
                     .transitions = {
-                        {.day_delta = 88, .minute_of_day = 60},
-                        {.day_delta = 154, .minute_of_day = 60},
-                        {.day_delta = 210, .minute_of_day = 120},
-                        {.day_delta = 234, .minute_of_day = 120},
+                        Transition{.day_delta = 88, .minute_of_day = 60},
+                        Transition{.day_delta = 154, .minute_of_day = 60},
+                        Transition{.day_delta = 210, .minute_of_day = 120},
+                        Transition{.day_delta = 234, .minute_of_day = 120},
                     }};
 
   auto const result = Serialize(tz);
@@ -65,4 +70,60 @@ TEST(TimeZoneSerDes, StringView)
 
   std::string_view const sv{serialized};
   EXPECT_EQ(sv.size(), serialized.size());
+}
+
+TEST(TimeZoneSerDes, SerializeRejectsOddTransitions)
+{
+  TimeZone const tz{.generation_year_offset = 0,
+                    .base_offset = 68,
+                    .dst_delta = 60,
+                    .transitions = {
+                        Transition{.day_delta = 88, .minute_of_day = 60},
+                        Transition{.day_delta = 154, .minute_of_day = 60},
+                        Transition{.day_delta = 210, .minute_of_day = 120},
+                    }};
+
+  auto const result = Serialize(tz);
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), SerializationError::IncorrectTransitionsAmount);
+}
+
+TEST(TimeZoneSerDes, DeserializeRejectsOddTransitions)
+{
+  // Construct a raw blob with transitions_length = 3 (odd) using BitWriter.
+  std::string buf;
+  {
+    MemWriter w(buf);
+    BitWriter bw(w);
+    bw.Write(base::E2I(TimeZoneFormatVersion::V1), TimeZone::kFormatVersionBitSize);
+    bw.Write(0, TimeZone::kGenerationYearBitSize);
+    bw.Write(68, TimeZone::kBaseOffsetBitSize);
+    bw.WriteAtMost32Bits(60, TimeZone::kDstDeltaBitSize);
+    bw.Write(3, TimeZone::kTransitionsLengthBitSize);  // odd!
+    // Write 3 transitions so the size check passes.
+    for (int i = 0; i < 3; ++i)
+    {
+      bw.WriteAtMost32Bits(88, Transition::kDayDeltaBitSize);
+      bw.WriteAtMost32Bits(60, Transition::kMinuteOfDayBitSize);
+    }
+  }
+
+  auto const result = Deserialize(buf);
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), SerializationError::IncorrectTransitionsAmount);
+}
+
+TEST(TimeZoneSerDes, SerDesRealData)
+{
+  TimeZoneDb const & db = TimeZoneDb::Instance();
+  for (auto const & [tzName, tz] : db.GetTimeZones())
+  {
+    auto const result = Serialize(tz);
+    EXPECT_TRUE(result.has_value());
+    std::string const & serialized = result.value();
+    auto const result2 = Deserialize(serialized);
+    EXPECT_TRUE(result2.has_value());
+    TimeZone const & deserialized = result2.value();
+    EXPECT_EQ(tz, deserialized) << "Error in " << tzName << " ser/des";
+  }
 }

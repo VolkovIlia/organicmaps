@@ -6,9 +6,9 @@
 "type.addr_interpolation.even" = "Adresas / blokas";
 "type.addr_interpolation.odd" = "Adresas / blokas";
 "type.aerialway" = "Keltuvas";
-"type.aerialway.cable_car" = "Cable Car";
-"type.aerialway.chair_lift" = "Kėdė Liftas";
-"type.aerialway.drag_lift" = "Pasipriešinimas Liftas";
+"type.aerialway.cable_car" = "Kabininis keltuvas";
+"type.aerialway.chair_lift" = "Kėdutinis keltuvas";
+"type.aerialway.drag_lift" = "Vilkimo keltuvas";
 "type.aerialway.gondola" = "Gondola";
 "type.aerialway.mixed_lift" = "Mišrus keltuvas";
 "type.aerialway.station" = "Keltuvo stotis";
@@ -18,7 +18,7 @@
 "type.aeroway.apron" = "Peronas";
 "type.aeroway.gate" = "Vartai";
 "type.aeroway.helipad" = "Sraigtasparnių aikštelė";
-"type.aeroway.runway" = "Runway";
+"type.aeroway.runway" = "Kilimo ir tūpimo takas";
 "type.aeroway.taxiway" = "Riedėjimo takas";
 "type.aeroway.terminal" = "Terminalas";
 "type.amenity" = "Paslaugos";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Viduržemio jūros virtuvė";
 "type.cuisine.mexican" = "Meksikiečių virtuvė";
 "type.cuisine.moroccan" = "Maroko virtuvė";
-"type.cuisine.noodles" = "Makaronai";
+"type.cuisine.noodle" = "Makaronai";
 "type.cuisine.oriental" = "Rytų Azijos virtuvė";
 "type.cuisine.pancake" = "Blynai";
 "type.cuisine.pasta" = "Makaronai";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Dešrelės";
 "type.cuisine.savory_pancakes" = "Nesaldūs blynai";
 "type.cuisine.seafood" = "Jūros gėrybės";
+"type.cuisine.shawarma" = "Šavarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Ispanų virtuvė";
 "type.cuisine.steak_house" = "Kepsnių restoranas";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Arbata";
 "type.cuisine.thai" = "Tajų virtuvė";
 "type.cuisine.turkish" = "Turkų virtuvė";
+"type.cuisine.uzbek" = "Uzbekų";
 "type.cuisine.vegan" = "Veganiška virtuvė";
 "type.cuisine.vegetarian" = "Vegetariška virtuvė";
 "type.cuisine.vietnamese" = "Vietnamiečių virtuvė";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunelis";
+"type.highway.platform" = "Platforma";
 "type.highway.primary" = "Pagrindinis kelias";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -615,8 +618,8 @@
 "type.area_highway.track" = "Lauko kelias";
 "type.area_highway.trunk" = "Svarbus užmiesčio kelias";
 "type.area_highway.unclassified" = "Kitas kelias";
-"type.highway.world_level" = "Pasaulinio lygio kelias";
-"type.highway.world_towns_level" = "Vietinės reikšmės kelias";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Liūnas";
 "type.noexit" = "Akligatvis";
 "type.office" = "Biuras";
+"type.office.architect" = "Architektūros biuras";
 "type.office.company" = "Įmonės biuras";
+"type.office.educational_institution" = "Švietimo įstaiga";
 "type.office.estate_agent" = "Nekilnojamojo turto agentūra";
 "type.office.government" = "Valstybinė įstaiga";
 "type.office.insurance" = "Draudimo agentūra";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Geležinkelio perėja";
 "type.railway.disused" = "Nenaudojamas geležinkelis";
 "type.railway.disused.bridge" = "Nenaudojamo geležinkelio tiltas";
+"type.railway.disused.tunnel" = "Nenaudojamo geležinkelio tunelis";
 "type.railway.funicular" = "Funikulierius";
 "type.railway.funicular.bridge" = "Funikulieriaus tiltas";
 "type.railway.funicular.tunnel" = "Funikulieriaus tunelis";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Buitinė chemija";
 "type.shop.chocolate" = "Šokolado parduotuvė";
 "type.shop.clothes" = "Drabužių parduotuvė";
+"type.shop.clothes.children" = "Vaikų drabužių parduotuvė";
+"type.shop.clothes.fashion" = "Mados parduotuvė";
+"type.shop.clothes.hats" = "Kepurių parduotuvė";
+"type.shop.clothes.men" = "Vyriškų drabužių parduotuvė";
+"type.shop.clothes.sports" = "Sporto drabužių parduotuvė";
+"type.shop.clothes.suits" = "Kostiumų parduotuvė";
+"type.shop.clothes.underwear" = "Apatinių rūbų parduotuvė";
+"type.shop.clothes.wedding" = "Vestuvių drabužių parduotuvė";
+"type.shop.clothes.women" = "Moteriškų drabužių parduotuvė";
 "type.shop.coffee" = "Kavos parduotuvė";
 "type.shop.computer" = "Kompiuterių parduotuvė";
 "type.shop.confectionery" = "Saldumynų parduotuvė";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Laidojimo paslaugos";
 "type.shop.furniture" = "Baldai";
 "type.shop.garden_centre" = "Sodo centras";
+"type.shop.games" = "Žaidimų parduotuvė";
 "type.shop.gas" = "Dujų parduotuvė";
 "type.shop.gift" = "Dovanų parduotuvė";
 "type.shop.greengrocer" = "Vaisiai ir daržovės";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kioskas";
 "type.shop.kitchen" = "Virtuvės reikmenys";
 "type.shop.laundry" = "Skalbykla";
+"type.shop.leather" = "Odos gaminių parduotuvė";
 "type.shop.mall" = "Prekybos centras";
 "type.shop.massage" = "Masažo salonas";
 "type.shop.mobile_phone" = "Mobiliųjų telefonų salonas";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Gyvūnų prekės";
 "type.shop.pet_grooming" = "Gyvūnų kirpykla";
 "type.shop.photo" = "Foto prekės";
+"type.shop.religion" = "Religinių reikmenų parduotuvė";
 "type.shop.rental" = "Nuomos parduotuvė";
 "type.shop.rental.bicycle" = "Dviračių nuomos parduotuvė";
 "type.amenity.bicycle_rental.shop" = "Dviračių nuomos parduotuvė";

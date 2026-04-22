@@ -313,7 +313,7 @@
     <string name="type.cuisine.mediterranean">Välimeren keittiö</string>
     <string name="type.cuisine.mexican">Meksikolainen keittiö</string>
     <string name="type.cuisine.moroccan">Marokkolainen keittiö</string>
-    <string name="type.cuisine.noodles">Nuudelit</string>
+    <string name="type.cuisine.noodle">Nuudelit</string>
     <string name="type.cuisine.oriental">Itämainen keittiö</string>
     <string name="type.cuisine.pancake">Lettu</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -328,7 +328,8 @@
     <string name="type.cuisine.sandwich">Voileipä</string>
     <string name="type.cuisine.sausage">Makkara</string>
     <string name="type.cuisine.savory_pancakes">Suolaiset letut</string>
-    <string name="type.cuisine.seafood">Meren elävät</string>
+    <string name="type.cuisine.seafood">Merenelävät</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Sobanuudeli</string>
     <string name="type.cuisine.spanish">Espanjalainen keittiö</string>
     <string name="type.cuisine.steak_house">Pihviravintola</string>
@@ -337,6 +338,7 @@
     <string name="type.cuisine.tea">Tee</string>
     <string name="type.cuisine.thai">Thaimaalainen keittiö</string>
     <string name="type.cuisine.turkish">Turkkilainen keittiö</string>
+    <string name="type.cuisine.uzbek">Uzbekkilainen</string>
     <string name="type.cuisine.vegan">Vegaanikeittiö</string>
     <string name="type.cuisine.vegetarian">Kasviskeittiö</string>
     <string name="type.cuisine.vietnamese">Vietnamilainen keittiö</string>
@@ -407,7 +409,7 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.motorway.tunnel">Moottoritietunneli</string>
     <string name="type.highway.motorway_junction">Poistumistie</string>
-    <string name="type.highway.motorway_link">Mottoritieramppi</string>
+    <string name="type.highway.motorway_link">Moottoritieramppi</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.motorway_link.bridge">Silta</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
@@ -516,11 +518,11 @@
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">Tunneli</string>
     <string name="type.area_highway.cycleway">Pyörätie</string>
-    <string name="type.area_highway.footway">Kävelytie</string>
+    <string name="type.area_highway.footway">Polku</string>
     <string name="type.area_highway.living_street">Asuinkatu</string>
     <string name="type.area_highway.motorway">Moottoritie</string>
     <string name="type.area_highway.path">Polku</string>
-    <string name="type.area_highway.pedestrian">Kävelykatu</string>
+    <string name="type.area_highway.pedestrian">Jalankulkutie</string>
     <string name="type.area_highway.primary">Pääkatu</string>
     <string name="type.area_highway.residential">Katu</string>
     <string name="type.area_highway.secondary">Katu</string>
@@ -715,7 +717,9 @@
     <string name="type.natural.wetland.bog">Suo</string>
     <string name="type.natural.wetland.marsh">Marsh</string>
     <string name="type.office">Toimisto</string>
+    <string name="type.office.architect">Arkkitehtitoimisto</string>
     <string name="type.office.company">Yhtiön toimisto</string>
+    <string name="type.office.educational_institution">Oppilaitos</string>
     <string name="type.office.estate_agent">Kiinteistönvälittäjä</string>
     <string name="type.office.government">Viranomaisen toimisto</string>
     <string name="type.office.insurance">Vakuutuslaitos</string>
@@ -770,6 +774,7 @@
     <string name="type.power.substation">Muuntoasema</string>
     <!-- A tower or pylon carrying high voltage electricity cables. -->
     <string name="type.power.tower">Sähköpylväs</string>
+    <string name="type.railway.disused.tunnel">Käytöstä poistettu rautatietunneli</string>
     <string name="type.railway.funicular">Köysirata</string>
     <string name="type.railway.halt">Rautatieasema</string>
     <string name="type.railway.level_crossing">Rautatien tasoristeys</string>
@@ -1058,6 +1063,15 @@
     <string name="type.shop.chemist">Kosmetiikkamyymälä</string>
     <string name="type.shop.chocolate">Suklaakauppa</string>
     <string name="type.shop.clothes">Vaatekauppa</string>
+    <string name="type.shop.clothes.children">Lastenvaatekauppa</string>
+    <string name="type.shop.clothes.fashion">Muotiboutique</string>
+    <string name="type.shop.clothes.hats">Hattukauppa</string>
+    <string name="type.shop.clothes.men">Miesten vaatekauppa</string>
+    <string name="type.shop.clothes.sports">Urheiluvaatekauppa</string>
+    <string name="type.shop.clothes.suits">Pukukauppa</string>
+    <string name="type.shop.clothes.underwear">Alusvaatekauppa</string>
+    <string name="type.shop.clothes.wedding">Hääpukukauppa</string>
+    <string name="type.shop.clothes.women">Naisten vaatekauppa</string>
     <string name="type.shop.coffee">Kahvikauppa</string>
     <string name="type.shop.computer">Tietokonekauppa</string>
     <string name="type.shop.confectionery">Makeiskauppa</string>
@@ -1078,6 +1092,7 @@
     <string name="type.shop.funeral_directors">Hautaustoimisto</string>
     <string name="type.shop.furniture">Huonekalukauppa</string>
     <string name="type.shop.garden_centre">Taimitarha</string>
+    <string name="type.shop.games">Pelikauppa</string>
     <string name="type.shop.gas">Kaasukauppa</string>
     <string name="type.shop.gift">Lahjatavaraliike</string>
     <string name="type.shop.greengrocer">Vihanneskauppias</string>
@@ -1093,6 +1108,7 @@
     <string name="type.shop.kiosk">Kioski</string>
     <string name="type.shop.kitchen">Keittiökauppa</string>
     <string name="type.shop.laundry">Pesula</string>
+    <string name="type.shop.leather">Nahkatuotteiden kauppa</string>
     <string name="type.shop.mall">Ostoskeskus</string>
     <string name="type.shop.massage">Hierontahuone</string>
     <string name="type.shop.mobile_phone">Elektroniikkakauppa</string>
@@ -1111,6 +1127,7 @@
     <string name="type.shop.pet">Eläinkauppa</string>
     <string name="type.shop.pet_grooming">Lemmikkieläinten hoito</string>
     <string name="type.shop.photo">Valokuvakauppa</string>
+    <string name="type.shop.religion">Uskonnollisten esineiden kauppa</string>
     <string name="type.shop.rental">Vuokrakauppa</string>
     <string name="type.shop.rental.bicycle">Polkupyörävuokraamo</string>
     <string name="type.amenity.bicycle_rental.shop">Polkupyörävuokraamo</string>

@@ -7,12 +7,12 @@
 "type.addr_interpolation.odd" = "Адрес/Блок";
 "type.aerialway" = "Канатная дорога";
 "type.aerialway.cable_car" = "Канатная дорога";
-"type.aerialway.chair_lift" = "Кресельная канатная дорога";
-"type.aerialway.drag_lift" = "Бугельная канатная дорога";
+"type.aerialway.chair_lift" = "Кресельный подъёмник";
+"type.aerialway.drag_lift" = "Бугельный подъёмник";
 "type.aerialway.gondola" = "Канатная дорога";
 "type.aerialway.mixed_lift" = "Канатная дорога";
 "type.aerialway.station" = "Канатная дорога";
-"type.aeroway" = "Аэрокосмическая инфраструктура";
+"type.aeroway" = "Инфраструктура воздушного пространства";
 "type.aeroway.aerodrome" = "Аэропорт";
 "type.aeroway.aerodrome.international" = "Международный аэропорт";
 "type.aeroway.apron" = "Перрон";
@@ -287,7 +287,7 @@
 "type.cuisine.argentinian" = "Аргентинская кухня";
 "type.cuisine.asian" = "Азиатская кухня";
 "type.cuisine.austrian" = "Австрийская кухня";
-"type.cuisine.bagel" = "Бeйглы";
+"type.cuisine.bagel" = "Бейглы";
 "type.cuisine.balkan" = "Балканская кухня";
 "type.cuisine.barbecue" = "Барбекю";
 "type.cuisine.bavarian" = "Баварская кухня";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Средиземноморская кухня";
 "type.cuisine.mexican" = "Мексиканская кухня";
 "type.cuisine.moroccan" = "Марокканская кухня";
-"type.cuisine.noodles" = "Лапшичная";
+"type.cuisine.noodle" = "Лапшичная";
 "type.cuisine.oriental" = "Восточная кухня";
 "type.cuisine.pancake" = "Блинная";
 "type.cuisine.pasta" = "Паста";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Сосисочная";
 "type.cuisine.savory_pancakes" = "Несладкие блинчики";
 "type.cuisine.seafood" = "Морепродукты";
+"type.cuisine.shawarma" = "Шаурма";
 "type.cuisine.soba" = "Соба";
 "type.cuisine.spanish" = "Испанская кухня";
 "type.cuisine.steak_house" = "Стейк-хаус";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Чайная";
 "type.cuisine.thai" = "Тайская кухня";
 "type.cuisine.turkish" = "Турецкая кухня";
+"type.cuisine.uzbek" = "Узбекская";
 "type.cuisine.vegan" = "Веганская кухня";
 "type.cuisine.vegetarian" = "Вегетарианская кухня";
 "type.cuisine.vietnamese" = "Вьетнамская кухня";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Пешеходный тоннель";
+"type.highway.platform" = "Платформа";
 "type.highway.primary" = "Шоссе";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -615,8 +618,8 @@
 "type.area_highway.track" = "Грунтовка";
 "type.area_highway.trunk" = "Трасса";
 "type.area_highway.unclassified" = "Небольшая дорога";
-"type.highway.world_level" = "Шоссе мирового значения";
-"type.highway.world_towns_level" = "Шоссе местного значения";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Болото";
 "type.noexit" = "Тупик";
 "type.office" = "Офис";
+"type.office.architect" = "Архитектурное бюро";
 "type.office.company" = "Организация";
+"type.office.educational_institution" = "Образовательное учреждение";
 "type.office.estate_agent" = "Агентство недвижимости";
 "type.office.government" = "Госучреждение";
 "type.office.insurance" = "Страховая компания";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Пешеходный переход";
 "type.railway.disused" = "Неиспользуемая железная дорога";
 "type.railway.disused.bridge" = "Заброшенный железнодорожный мост";
+"type.railway.disused.tunnel" = "Недействующий железнодорожный туннель";
 "type.railway.funicular" = "Фуникулер";
 "type.railway.funicular.bridge" = "Фуникулер";
 "type.railway.funicular.tunnel" = "Фуникулер";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Бытовая химия";
 "type.shop.chocolate" = "Магазин шоколада";
 "type.shop.clothes" = "Магазин одежды";
+"type.shop.clothes.children" = "Детская одежда";
+"type.shop.clothes.fashion" = "Бутик";
+"type.shop.clothes.hats" = "Магазин головных уборов";
+"type.shop.clothes.men" = "Мужская одежда";
+"type.shop.clothes.sports" = "Спортивная одежда";
+"type.shop.clothes.suits" = "Магазин костюмов";
+"type.shop.clothes.underwear" = "Магазин нижнего белья";
+"type.shop.clothes.wedding" = "Свадебный салон";
+"type.shop.clothes.women" = "Женская одежда";
 "type.shop.coffee" = "Магазин кофе";
 "type.shop.computer" = "Компьютерный магазин";
 "type.shop.confectionery" = "Кондитерская";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Ритуальные услуги";
 "type.shop.furniture" = "Магазин мебели";
 "type.shop.garden_centre" = "Садовые товары";
+"type.shop.games" = "Магазин игр";
 "type.shop.gas" = "Газовый магазин";
 "type.shop.gift" = "Магазин сувениров";
 "type.shop.greengrocer" = "Овощи и фрукты";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Киоск";
 "type.shop.kitchen" = "Кухонный магазин";
 "type.shop.laundry" = "Прачечная";
+"type.shop.leather" = "Магазин кожаных изделий";
 "type.shop.mall" = "Торговый центр";
 "type.shop.massage" = "Массажный салон";
 "type.shop.mobile_phone" = "Мобильные телефоны";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Зоотовары";
 "type.shop.pet_grooming" = "Груминг";
 "type.shop.photo" = "Фототовары";
+"type.shop.religion" = "Магазин религиозных товаров";
 "type.shop.rental" = "Прокат";
 "type.shop.rental.bicycle" = "Прокат велосипедов";
 "type.amenity.bicycle_rental.shop" = "Прокат велосипедов";

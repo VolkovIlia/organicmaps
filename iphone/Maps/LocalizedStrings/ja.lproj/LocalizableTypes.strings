@@ -12,7 +12,7 @@
 "type.aerialway.gondola" = "ゴンドラ";
 "type.aerialway.mixed_lift" = "混合リフト";
 "type.aerialway.station" = "ケーブルカー駅";
-"type.aeroway" = "空路";
+"type.aeroway" = "航空インフラ";
 "type.aeroway.aerodrome" = "空港";
 "type.aeroway.aerodrome.international" = "空港";
 "type.aeroway.apron" = "エプロン";
@@ -21,7 +21,7 @@
 "type.aeroway.runway" = "滑走路";
 "type.aeroway.taxiway" = "誘導路";
 "type.aeroway.terminal" = "空港ターミナルビル";
-"type.amenity" = "アメニティー";
+"type.amenity" = "設備";
 "type.amenity.arts_centre" = "芸術センター";
 "type.amenity.atm" = "ATM";
 "type.amenity.bank" = "銀行";
@@ -36,7 +36,7 @@
 "type.amenity.brothel" = "売春宿";
 "type.amenity.love_hotel" = "Love Hotel";
 "type.amenity.bureau_de_change" = "外貨両替所";
-"type.amenity.bus_station" = "バスステーション";
+"type.amenity.bus_station" = "バスターミナル";
 "type.amenity.cafe" = "カフェ";
 "type.amenity.car_rental" = "レンタカー";
 "type.amenity.motorcycle_rental" = "レンタルバイク";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "地中海料理";
 "type.cuisine.mexican" = "メキシコ料理";
 "type.cuisine.moroccan" = "モロッコ料理";
-"type.cuisine.noodles" = "麺類";
+"type.cuisine.noodle" = "麺類";
 "type.cuisine.oriental" = "東洋料理";
 "type.cuisine.pancake" = "ホットケーキ";
 "type.cuisine.pasta" = "パスタ";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "ソーセージ";
 "type.cuisine.savory_pancakes" = "おいしいホットケーキ";
 "type.cuisine.seafood" = "シーフード";
+"type.cuisine.shawarma" = "シャワルマ";
 "type.cuisine.soba" = "そば";
 "type.cuisine.spanish" = "スペイン料理";
 "type.cuisine.steak_house" = "ステーキハウス";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "紅茶";
 "type.cuisine.thai" = "タイ料理";
 "type.cuisine.turkish" = "トルコ料理";
+"type.cuisine.uzbek" = "ウズベク";
 "type.cuisine.vegan" = "ビーガン料理";
 "type.cuisine.vegetarian" = "ベジタリアン料理";
 "type.cuisine.vietnamese" = "ベトナム料理";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "トンネル";
+"type.highway.platform" = "公共交通機関のプラットホーム";
 "type.highway.primary" = "ストリート";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "沼地";
 "type.noexit" = "行き止まり";
 "type.office" = "オフィス";
+"type.office.architect" = "建築設計事務所";
 "type.office.company" = "会社事務所";
+"type.office.educational_institution" = "教育機関";
 "type.office.estate_agent" = "不動産業者";
 "type.office.government" = "官庁";
 "type.office.insurance" = "保険会社";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "歩行者用踏切";
 "type.railway.disused" = "休止線";
 "type.railway.disused.bridge" = "休止線(橋)";
+"type.railway.disused.tunnel" = "休止線(トンネル)";
 "type.railway.funicular" = "フニクラ";
 "type.railway.funicular.bridge" = "ケーブルカー(橋)";
 "type.railway.funicular.tunnel" = "ケーブルカー(トンネル)";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "化学薬品店";
 "type.shop.chocolate" = "チョコレート屋";
 "type.shop.clothes" = "洋服";
+"type.shop.clothes.children" = "子ども服";
+"type.shop.clothes.fashion" = "ファッションブティック";
+"type.shop.clothes.hats" = "帽子屋";
+"type.shop.clothes.men" = "メンズ服";
+"type.shop.clothes.sports" = "スポーツウェア";
+"type.shop.clothes.suits" = "スーツショップ";
+"type.shop.clothes.underwear" = "下着・インナー";
+"type.shop.clothes.wedding" = "ウェディングドレスショップ";
+"type.shop.clothes.women" = "レディースファッション";
 "type.shop.coffee" = "コーヒー屋";
 "type.shop.computer" = "コンピュータショップ";
 "type.shop.confectionery" = "菓子類";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "葬儀屋";
 "type.shop.furniture" = "家具店";
 "type.shop.garden_centre" = "ガーデンセンター";
+"type.shop.games" = "ゲームショップ";
 "type.shop.gas" = "ガス屋";
 "type.shop.gift" = "ギフトショップ";
 "type.shop.greengrocer" = "八百屋";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "キオスク";
 "type.shop.kitchen" = "キッチンストア";
 "type.shop.laundry" = "ランドリー";
+"type.shop.leather" = "レザーショップ";
 "type.shop.mall" = "モール";
 "type.shop.massage" = "マッサージ店";
 "type.shop.mobile_phone" = "携帯ショップ";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "ペットショップ";
 "type.shop.pet_grooming" = "ペットグルーミング";
 "type.shop.photo" = "写真屋";
+"type.shop.religion" = "宗教用品店";
 "type.shop.rental" = "レンタルショップ";
 "type.shop.rental.bicycle" = "レンタサイクルショップ";
 "type.amenity.bicycle_rental.shop" = "レンタサイクルショップ";

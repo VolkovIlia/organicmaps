@@ -77,7 +77,7 @@ std::expected<std::string, SerializationError> Serialize(TimeZone const & timeZo
 
     bw.Write(timeZone.transitions.size(), TimeZone::kTransitionsLengthBitSize);
 
-    for (auto [dayDelta, minuteOfDay] : timeZone.transitions)
+    for (auto const [dayDelta, minuteOfDay] : timeZone.transitions)
     {
       if (!IsDayDeltaValid(dayDelta))
         return std::unexpected{SerializationError::IncorrectDayDeltaFormat};
@@ -107,28 +107,28 @@ std::expected<TimeZone, SerializationError> Deserialize(std::string_view const d
     return std::unexpected{SerializationError::UnsupportedTimeZoneFormat};
 
   tz.generation_year_offset = br.Read(TimeZone::kGenerationYearBitSize);
-  tz.base_offset = static_cast<int16_t>(br.ReadAtMost32Bits(TimeZone::kBaseOffsetBitSize));
-  tz.dst_delta = static_cast<int16_t>(br.ReadAtMost32Bits(TimeZone::kDstDeltaBitSize));
-  size_t const transitionsLength = br.Read(TimeZone::kTransitionsLengthBitSize);
-  tz.transitions.reserve(transitionsLength);
+  tz.base_offset = static_cast<uint8_t>(br.ReadAtMost32Bits(TimeZone::kBaseOffsetBitSize));
+  tz.dst_delta = static_cast<uint8_t>(br.ReadAtMost32Bits(TimeZone::kDstDeltaBitSize));
+  tz.transitions.resize(br.Read(TimeZone::kTransitionsLengthBitSize));
+
+  if (tz.transitions.size() % 2 != 0)
+    return std::unexpected{SerializationError::IncorrectTransitionsAmount};
 
   size_t const expectedTimeZoneSizeInBytes =
-      (TimeZone::kTotalSizeInBits + transitionsLength * Transition::kTotalSizeInBits + CHAR_BIT - 1) / CHAR_BIT;
+      (TimeZone::kTotalSizeInBits + tz.transitions.size() * Transition::kTotalSizeInBits + CHAR_BIT - 1) / CHAR_BIT;
   if (data.size() < expectedTimeZoneSizeInBytes)
     return std::unexpected{SerializationError::IncorrectTransitionsFormat};
 
-  for (size_t i = 0; i < transitionsLength; ++i)
+  for (auto & [dayDelta, minuteOfDay] : tz.transitions)
   {
-    Transition t{};
-    t.day_delta = static_cast<uint16_t>(br.ReadAtMost32Bits(Transition::kDayDeltaBitSize));
-    t.minute_of_day = static_cast<uint16_t>(br.ReadAtMost32Bits(Transition::kMinuteOfDayBitSize));
-    tz.transitions.push_back(t);
+    dayDelta = static_cast<uint16_t>(br.ReadAtMost32Bits(Transition::kDayDeltaBitSize));
+    minuteOfDay = static_cast<uint16_t>(br.ReadAtMost32Bits(Transition::kMinuteOfDayBitSize));
   }
 
   return tz;
 }
 
-std::string DebugPrint(SerializationError error)
+std::string DebugPrint(SerializationError const error)
 {
   switch (error)
   {

@@ -4,8 +4,9 @@
 
 #include "kml/serdes.hpp"
 #include "kml/serdes_binary.hpp"
+#include "kml/serdes_common.hpp"
 
-#include "map/bookmark_helpers.hpp"
+#include "coding/text_storage.hpp"
 
 #include "indexer/classificator_loader.hpp"
 
@@ -75,7 +76,10 @@ kml::FileData GenerateKmlFileData()
   bookmarkData.m_name[kRuLang] = "Тестовая метка";
   bookmarkData.m_description[kDefaultLang] = "Test bookmark description";
   bookmarkData.m_description[kRuLang] = "Тестовое описание метки";
-  bookmarkData.m_featureTypes = {718, 715};
+
+  auto const & cl = classif();
+  bookmarkData.m_featureTypes = {cl.GetTypeByPath({"historic", "castle"}), cl.GetTypeByPath({"historic", "memorial"})};
+
   bookmarkData.m_customName[kDefaultLang] = "Мое любимое место";
   bookmarkData.m_customName[kEnLang] = "My favorite place";
   bookmarkData.m_color = {kml::PredefinedColor::Blue, 0};
@@ -191,6 +195,7 @@ kml::FileData GenerateKmlFileDataForTrackWithTimestamps()
 // 1. Check text and binary deserialization from the prepared sources in memory.
 UNIT_TEST(Kml_Deserialization_Text_Bin_Memory)
 {
+  classificator::Load();
   UNUSED_VALUE(FormatBytesFromBuffer({}));
 
   kml::FileData dataFromText;
@@ -253,6 +258,8 @@ UNIT_TEST(Kml_Serialization_Text_Memory)
 // 3. Check binary serialization to the memory blob and compare with prepared data.
 UNIT_TEST(Kml_Serialization_Bin_Memory)
 {
+  classificator::Load();
+
   kml::FileData data;
   {
     kml::binary::DeserializerKml des(data);
@@ -314,6 +321,8 @@ UNIT_TEST(Kml_Deserialization_Text_File)
 // 5. Check deserialization from the binary file.
 UNIT_TEST(Kml_Deserialization_Bin_File)
 {
+  classificator::Load();
+
   std::string const kmbFile = base::JoinPath(GetPlatform().TmpDir(), "tmp.kmb");
   SCOPE_GUARD(fileGuard, std::bind(&FileWriter::DeleteFileX, kmbFile));
   TEST_NO_THROW(
@@ -348,7 +357,8 @@ UNIT_TEST(Kml_Deserialization_Bin_File)
 // The data in RAM must be completely equal to the data in binary file.
 UNIT_TEST(Kml_Serialization_Bin_File)
 {
-  auto data = GenerateKmlFileData();
+  classificator::Load();
+  auto const data = GenerateKmlFileData();
 
   std::string const kmbFile = base::JoinPath(GetPlatform().TmpDir(), "tmp.kmb");
   SCOPE_GUARD(fileGuard, std::bind(&FileWriter::DeleteFileX, kmbFile));
@@ -380,7 +390,7 @@ UNIT_TEST(Kml_Serialization_Text_File_Track_Without_Timestamps)
 {
   classificator::Load();
 
-  auto data = GenerateKmlFileDataForTrackWithoutTimestamps();
+  auto const data = GenerateKmlFileDataForTrackWithoutTimestamps();
 
   std::string const kmlFile = base::JoinPath(GetPlatform().TmpDir(), "tmp.kml");
   SCOPE_GUARD(fileGuard, std::bind(&FileWriter::DeleteFileX, kmlFile));
@@ -423,13 +433,13 @@ UNIT_TEST(Kml_Serialization_Text_File_Track_Without_Timestamps)
 
   std::string dataFromFileBuffer;
   {
-    MemWriter<decltype(dataFromFileBuffer)> sink(dataFromFileBuffer);
+    MemWriter sink(dataFromFileBuffer);
     kml::SerializerKml ser(dataFromFile);
     ser.Serialize(sink);
   }
   std::string dataFromGeneratedFileBuffer;
   {
-    MemWriter<decltype(dataFromGeneratedFileBuffer)> sink(dataFromGeneratedFileBuffer);
+    MemWriter sink(dataFromGeneratedFileBuffer);
     kml::SerializerKml ser(dataFromGeneratedFile);
     ser.Serialize(sink);
   }
@@ -440,7 +450,7 @@ UNIT_TEST(Kml_Serialization_Text_File_Tracks_With_Timestamps)
 {
   classificator::Load();
 
-  auto data = GenerateKmlFileDataForTrackWithTimestamps();
+  auto const data = GenerateKmlFileDataForTrackWithTimestamps();
 
   std::string const kmlFile = base::JoinPath(GetPlatform().TmpDir(), "tmp.kml");
   SCOPE_GUARD(fileGuard, std::bind(&FileWriter::DeleteFileX, kmlFile));
@@ -614,7 +624,38 @@ UNIT_TEST(Kml_Deserialization_From_KMB_V8_And_V9MM)
 
   dataFromBinV8.m_tracksData[0].m_id =
       dataFromBinV9MM.m_tracksData[0].m_id;  // V8 and V9MM tracks have different IDs. Fix ID value manually.
+  // V9MM's ConvertToLatestVersion pads m_geometry.m_timestamps to match m_lines (matching
+  // MultiGeometry's own invariant). V8's deserializer does not, so normalize before comparing.
+  dataFromBinV8.m_tracksData[0].m_geometry.m_timestamps.resize(dataFromBinV8.m_tracksData[0].m_geometry.m_lines.size());
   TEST_EQUAL(dataFromBinV8.m_tracksData, dataFromBinV9MM.m_tracksData, ());
+}
+
+UNIT_TEST(Kml_DecodeMaybeMillisSinceEpoch_Heuristic)
+{
+  using kml::binary::DecodeMaybeMillisSinceEpoch;
+
+  // Zero round-trips as zero (below 10^9 band -> /1000 -> 0).
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(0), 0u, ());
+
+  // Small test-fixture values: 800 seconds stored as 800000 ms should decode back to 800 s.
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(800000u), 800u, ());
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(1000u), 1u, ("Below 10^9 -> treat as ms"));
+
+  // Real-world post-2001 seconds (10^9 .. 10^12): Portugal.kmb bookmark 0 -> 2018-11-02.
+  constexpr uint64_t kBookmarkAsSeconds = 1541183839ULL;
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(kBookmarkAsSeconds), kBookmarkAsSeconds, ());
+
+  // Real-world post-2001 milliseconds (>= 10^12): Portugal.kmb bookmark 800 -> 2024-06-08.
+  constexpr uint64_t kBookmarkAsMillis = 1717852356329ULL;
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(kBookmarkAsMillis), kBookmarkAsMillis / 1000, ());
+
+  // Boundary values. 10^9 is treated as seconds; 10^9 - 1 as ms.
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(1'000'000'000ULL), 1'000'000'000ULL, ());
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(999'999'999ULL), 999'999ULL, ());
+
+  // 10^12 is treated as ms; 10^12 - 1 as seconds.
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(1'000'000'000'000ULL), 1'000'000'000ULL, ());
+  TEST_EQUAL(DecodeMaybeMillisSinceEpoch(999'999'999'999ULL), 999'999'999'999ULL, ());
 }
 
 UNIT_TEST(Kml_Deserialization_From_KMB_V9MM_With_MultiGeometry)
@@ -828,6 +869,33 @@ UNIT_TEST(Kml_Track_Points_And_Timestamps_Sizes_Mismatch)
   TEST_EQUAL(dataFromFile.m_tracksData.size(), 0, ());
 }
 
+UNIT_TEST(Kml_Track_With_Non_Monotonic_Timestamps)
+{
+  std::string_view constexpr input = R"(<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Placemark>
+    <name>Unordered</name>
+    <gx:Track>
+      <when>2001-06-02T00:18:15Z</when>
+      <when>2001-11-28T21:05:28Z</when>
+      <when>2001-06-02T03:26:55Z</when>
+      <gx:coord>-71.107628 42.430950 23</gx:coord>
+      <gx:coord>-71.109236 42.431240 27</gx:coord>
+      <gx:coord>-71.109942 42.434980 45</gx:coord>
+    </gx:Track>
+  </Placemark>
+</kml>)";
+
+  kml::FileData fData;
+  TEST_NO_THROW({ kml::DeserializerKml(fData).Deserialize(MemReader(input)); }, ());
+
+  TEST_EQUAL(fData.m_tracksData.size(), 1, ());
+  auto const & geom = fData.m_tracksData[0].m_geometry;
+  TEST_EQUAL(geom.m_lines.size(), 1, ());
+  TEST_EQUAL(geom.m_lines[0].size(), 3, ());
+  TEST(!geom.HasTimestamps(), ("Non-monotonic timestamps should be dropped"));
+}
+
 // https://github.com/organicmaps/organicmaps/issues/9290
 UNIT_TEST(Kml_Import_OpenTracks)
 {
@@ -914,4 +982,67 @@ UNIT_TEST(Kml_BadTracks)
     TEST_EQUAL(geom.m_lines[0].size(), 2, ());
     TEST_EQUAL(geom.m_lines[0].size(), geom.m_timestamps[0].size(), ());
   }
+}
+
+namespace
+{
+std::string WriteCDATA(std::string const & input)
+{
+  std::string buf;
+  MemWriter<std::string> writer(buf);
+  kml::SaveStringWithCDATA(writer, input);
+  return buf;
+}
+}  // namespace
+
+UNIT_TEST(SaveStringWithCDATA_EmptyString)
+{
+  TEST_EQUAL(WriteCDATA(""), "", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_PlainText)
+{
+  TEST_EQUAL(WriteCDATA("Hello World"), "Hello World", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_SpecialCharsWrappedInCDATA)
+{
+  TEST_EQUAL(WriteCDATA("a < b"), "<![CDATA[a < b]]>", ());
+  TEST_EQUAL(WriteCDATA("Tom & Jerry"), "<![CDATA[Tom & Jerry]]>", ());
+  TEST_EQUAL(WriteCDATA("<tag>"), "<![CDATA[<tag>]]>", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_InvalidXmlCharsStripped)
+{
+  // Control characters below 0x20 (except \t, \n, \r) should be removed.
+  TEST_EQUAL(WriteCDATA(std::string("ab\x01\x02"
+                                    "cd")),
+             "abcd", ());
+  TEST_EQUAL(WriteCDATA(std::string("\x03\x04\x05")), "", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_AllowedControlChars)
+{
+  // Tab (0x09), newline (0x0a), carriage return (0x0d) are valid XML 1.0 characters.
+  TEST_EQUAL(WriteCDATA("a\tb\nc\rd"), "a\tb\nc\rd", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_MixedInvalidAndSpecial)
+{
+  // Invalid XML chars stripped, then <& triggers CDATA wrapping.
+  TEST_EQUAL(WriteCDATA(std::string("\x01"
+                                    "a < b")),
+             "<![CDATA[a < b]]>", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_Utf8Preserved)
+{
+  TEST_EQUAL(WriteCDATA("Тестовая категория"), "Тестовая категория", ());
+  TEST_EQUAL(WriteCDATA("日本語テスト"), "日本語テスト", ());
+}
+
+UNIT_TEST(SaveStringWithCDATA_AllInvalidBecomesEmpty)
+{
+  // String of only invalid chars becomes empty after stripping.
+  TEST_EQUAL(WriteCDATA(std::string("\x01\x02\x03\x1F")), "", ());
 }

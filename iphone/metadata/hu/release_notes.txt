@@ -1,16 +1,23 @@
-• ÚJ: Nagyobb kontrasztú sötét téma színek
-• Frissített OpenStreetMap adatok (január 11.)
-• A kaszinók kizárva a „Szórakozás” kategóriából
-• Csökkentett metróvonal-vastagság
-• Kapacitásinformációk hozzáadva a keresési eredményekhez motorkerékpár-parkolók, kerékpárkölcsönzők, kerékpártöltők és autótöltők esetén
-• Emeletszint megjelenítése a keresési eredményekben
-• Szélesebb útvonaltervező gombok
+• OSM térképadatok március 10-i állapot szerint
+• Wikipedia-adatok március 1-i állapot szerint
+• Hozzáadott támogatás a feltételes sebességkorlátozásokhoz
+• Részletesebb magassági izolinák a kínai tartományokhoz
+• Hozzáadott bőrdíszműves üzletek és vallási cikkeket árusító üzletek
+• Hozzáadott fasorok
+• Hozzáadott tömegközlekedési megállóperonok a közeli buszmegállók nélkül
+• Javított országletöltési előrehaladás számítás
+• Tanzánia kisebb régiókra bontása
+• Hozzáadott a szerkesztőben a legutóbb használt kategóriák előzményei
+• Javítva az útvonaltervező képernyőn felfelé csúsztatás
+• Javítva a CarPlay vonalzó pozíciója
+• Javítva több összeomlás, javítva a stabilitás és a teljesítmény
 
 ### Fordítások
 
-• Albán alkalmazásfordítások és hangos navigáció hozzáadva
-• Frissített GYIK és hozzáadott GYIK fordítások arab, cseh, holland, perzsa, görög, héber, hindi, magyar, indonéz, olasz, litván, marathi, svéd, telugu nyelvekhez
-• Javított német alkalmazás- és GYIK-fordítások
-• Bolgár keresési szinonimák hozzáadva
-• A „Nagyítás gombok” beállítás átnevezése az egyértelműség érdekében
-• Fordítási javítások a Weblate közreműködőitől különböző nyelvekre
+• Javítva az országleírások
+• Alkalmazva Eugen Dedu román javításai
+• Frissítve az országnevek
+• Frissítve a Weblate közreműködők fordításai
+• Javítva az ukrán fordítás
+
+Köszönet mindenkinek, aki közreműködik, adományoz és támogatja az Organic Maps-et! Építsük együtt a legjobb térképeket!

@@ -1,16 +1,23 @@
-• NEU: Kontrastreichere Farben für das dunkle Design
-• Aktualisierte OpenStreetMap-Daten (11. Januar)
-• Casinos aus der Kategorie „Unterhaltung“ ausgeschlossen
-• Dicke der U-Bahn-Linien verringert
-• Kapazitätsinformationen in den Suchergebnissen für Motorradparkplätze, Fahrradverleih, Fahrrad- und Autoladestationen hinzugefügt
-• Anzeige der Etage in den Suchergebnissen
-• Breitere Schaltflächen für die Routenplanung
+• OSM-Kartendaten vom 10. März
+• Wikipedia-Daten vom 1. März
+• Unterstützung für bedingte Geschwindigkeitsbegrenzungen hinzugefügt
+• Detailliertere Höhenlinien für chinesische Provinzen
+• Ledergeschäfte und Geschäfte für religiöse Artikel hinzugefügt
+• Baumreihen hinzugefügt
+• Haltestellenplattformen für öffentliche Verkehrsmittel ohne nahegelegene Bushaltestellen hinzugefügt
+• Berechnung des Fortschritts beim Herunterladen von Ländern korrigiert
+• Tansania in kleinere Regionen aufgeteilt
+• Verlauf der zuletzt verwendeten Kategorien im Editor hinzugefügt
+• Verbessertes Wischen nach oben auf dem Routenplanungsbildschirm
+• Position des Lineals für CarPlay korrigiert
+• Mehrere Abstürze behoben, Stabilität und Leistung verbessert
 
 ### Übersetzungen
 
-• Albanische App-Übersetzungen und TTS-Sprachführung hinzugefügt
-• FAQ aktualisiert und FAQ-Übersetzungen für Arabisch, Tschechisch, Niederländisch, Farsi, Griechisch, Hebräisch, Hindi, Ungarisch, Indonesisch, Italienisch, Litauisch, Marathi, Schwedisch und Telugu hinzugefügt
-• Verbesserte deutsche App- und FAQ-Übersetzungen
-• Bulgarische Suchsynonyme hinzugefügt
-• Einstellung „Zoom-Tasten“ zur besseren Verständlichkeit umbenannt
-• Übersetzungsverbesserungen von Weblate-Mitwirkenden für verschiedene Sprachen
+• Verbesserte Länderbeschreibungen
+• Rumänische Korrekturen von Eugen Dedu übernommen
+• Ländernamen aktualisiert
+• Übersetzungen von Weblate-Mitwirkenden aktualisiert
+• Ukrainische Übersetzung korrigiert
+
+Vielen Dank an alle, die zu Organic Maps beitragen, spenden und es unterstützen! Lasst uns gemeinsam die besten Karten erstellen!

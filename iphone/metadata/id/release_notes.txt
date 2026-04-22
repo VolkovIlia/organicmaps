@@ -1,16 +1,23 @@
-• BARU: Warna tema gelap dengan kontras lebih tinggi
-• Data OpenStreetMap diperbarui (11 Januari)
-• Kasino dikecualikan dari kategori "Hiburan"
-• Ketebalan jalur kereta bawah tanah dikurangi
-• Informasi kapasitas ditambahkan ke hasil pencarian untuk parkir sepeda motor, penyewaan sepeda, pengisian daya sepeda, dan pengisian daya mobil
-• Tampilkan tingkat lantai di hasil pencarian
-• Tombol perencanaan rute yang lebih lebar
+• Data peta OSM per 10 Maret
+• Data Wikipedia per 1 Maret
+• Ditambahkan dukungan untuk batas kecepatan kondisional
+• Garis kontur ketinggian yang lebih detail untuk provinsi-provinsi Tiongkok
+• Ditambahkan toko kulit dan toko yang menjual barang-barang keagamaan
+• Ditambahkan barisan pohon
+• Ditambahkan platform halte transportasi umum tanpa halte bus terdekat
+• Perbaikan perhitungan kemajuan unduhan negara
+• Membagi Tanzania menjadi wilayah-wilayah yang lebih kecil
+• Ditambahkan riwayat kategori yang baru digunakan di Editor
+• Peningkatan geser ke atas di layar perencanaan rute
+• Perbaikan posisi penggaris untuk CarPlay
+• Perbaikan beberapa crash, peningkatan stabilitas dan kinerja
 
 ### Terjemahan
 
-• Menambahkan terjemahan aplikasi dan panduan suara bahasa Albania
-• Memperbarui FAQ dan menambahkan terjemahan FAQ untuk bahasa Arab, Ceko, Belanda, Farsi, Yunani, Ibrani, Hindi, Hungaria, Indonesia, Italia, Lithuania, Marathi, Swedia, Telugu
-• Meningkatkan terjemahan aplikasi dan FAQ bahasa Jerman
-• Menambahkan sinonim pencarian bahasa Bulgaria
-• Mengubah nama pengaturan "Tombol zoom" demi kejelasan
-• Perbaikan terjemahan dari kontributor Weblate untuk berbagai bahasa
+• Peningkatan deskripsi negara
+• Penerapan perbaikan Romania dari Eugen Dedu
+• Pembaruan nama negara
+• Pembaruan terjemahan dari kontributor Weblate
+• Perbaikan terjemahan Ukraina
+
+Terima kasih kepada semua yang berkontribusi, berdonasi, dan mendukung Organic Maps! Mari kita bangun peta terbaik bersama-sama!

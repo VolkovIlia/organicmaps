@@ -227,9 +227,7 @@ using namespace storage;
 
 - (void)removeBookmark:(PlacePageData *)data
 {
-  auto & f = GetFramework();
-  f.GetBookmarkManager().GetEditSession().DeleteBookmark(data.bookmarkData.bookmarkId);
-  [MWMFrameworkHelper updateAfterDeleteBookmark];
+  [[MWMBookmarksManager sharedManager] deleteBookmark:data.bookmarkData.bookmarkId];
 }
 
 - (void)updateTrack:(PlacePageData *)data
@@ -244,8 +242,7 @@ using namespace storage;
 
 - (void)removeTrack:(PlacePageData *)data
 {
-  auto & f = GetFramework();
-  f.GetBookmarkManager().GetEditSession().DeleteTrack(data.trackData.trackId);
+  [[MWMBookmarksManager sharedManager] deleteTrack:data.trackData.trackId];
 }
 
 - (void)call:(PlacePagePhone *)phone

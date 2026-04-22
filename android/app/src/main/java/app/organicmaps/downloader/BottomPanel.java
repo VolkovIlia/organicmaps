@@ -9,7 +9,6 @@ import static app.organicmaps.sdk.downloader.CountryItem.STATUS_PARTLY;
 import static app.organicmaps.sdk.downloader.CountryItem.STATUS_PROGRESS;
 import static app.organicmaps.sdk.downloader.CountryItem.STATUS_UPDATABLE;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import app.organicmaps.R;
@@ -39,11 +38,8 @@ class BottomPanel
     public void onClick(View v)
     {
       final String country = mFragment.getCurrentRoot();
-      MapManagerHelper.warnOn3gUpdate(mFragment.getContext(), country, () -> {
-        final Context context = mFragment.getContext();
-        DownloaderService.startForegroundService(context);
-        MapManagerHelper.startUpdate(context, country);
-      });
+      MapManagerHelper.warnOn3gUpdate(mFragment.getContext(), country,
+                                      () -> { MapManagerHelper.startUpdate(mFragment.getContext(), country); });
     }
   };
 
@@ -110,12 +106,14 @@ class BottomPanel
     boolean search = adapter.isSearchResultsMode();
 
     boolean show = !search;
-    UiUtils.showIf(show && adapter.isMyMapsMode(), mFab);
+    String root = adapter.getCurrentRootId();
+    int status = MapManager.nativeGetStatus(root);
+
+    // Hide FAB when all maps are already downloaded - nothing new to download
+    UiUtils.showIf(show && adapter.isMyMapsMode() && status != STATUS_DONE, mFab);
 
     if (show)
     {
-      String root = adapter.getCurrentRootId();
-      int status = MapManager.nativeGetStatus(root);
       if (adapter.isMyMapsMode())
       {
         switch (status)

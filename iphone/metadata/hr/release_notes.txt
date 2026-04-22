@@ -1,16 +1,23 @@
-• NOVO: Boje tamne teme većeg kontrasta
-• Ažurirani podaci OpenStreetMap-a (11. siječnja)
-• Isključena casina iz kategorije "Zabava"
-• Smanjena debljina linija podzemne željeznice
-• Dodane informacije o kapacitetu u rezultate pretraživanja za parkiranje motocikala, najam bicikala, punjenje bicikala i punjenje automobila
-• Prikaz kata u rezultatima pretraživanja
-• Širi gumbi za planiranje rute
+• OSM podaci o karti od 10. ožujka
+• Podaci s Wikipedije od 1. ožujka
+• Dodana podrška za uvjetna ograničenja brzine
+• Detaljnije izohipse za kineske pokrajine
+• Dodane trgovine kožom i trgovine koje prodaju vjerske predmete
+• Dodani redovi stabala
+• Dodana stajališta javnog prijevoza bez obližnjih autobusnih stajališta
+• Ispravljen izračun napretka preuzimanja zemalja
+• Tanzanija podijeljena na manje regije
+• Dodana povijest nedavno korištenih kategorija u Uređivaču
+• Poboljšano klizanje prema gore na zaslonu za planiranje rute
+• Popravljena pozicija ravnala za CarPlay
+• Popravljeno nekoliko pada, poboljšana stabilnost i performanse
 
 ### Prijevodi
 
-• Dodani prijevodi aplikacije i glasovno navođenje na albanskom jeziku
-• Ažurirana Česta pitanja (FAQ) i dodani prijevodi za arapski, češki, nizozemski, perzijski, grčki, hebrejski, hindi, mađarski, indonezijski, talijanski, litvanski, marati, švedski, telugu
-• Poboljšani njemački prijevodi aplikacije i Čestih pitanja
-• Dodani bugarski sinonimi za pretraživanje
-• Preimenovana postavka "Gumbi za zumiranje" radi jasnoće
-• Ispravci prijevoda suradnika Weblatea za razne jezike
+• Poboljšani opisi zemalja
+• Primijenjene rumunske ispravke Eugena Dedu
+• Ažurirana imena zemalja
+• Ažurirani prijevodi suradnika s Weblatea
+• Popravljen ukrajinski prijevod
+
+Hvala svima koji doprinose, doniraju i podržavaju Organic Maps! Zajedno stvorimo najbolje karte!

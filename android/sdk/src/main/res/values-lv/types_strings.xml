@@ -30,6 +30,8 @@
     <string name="type.amenity.pub">Krogs</string>
 
     <!-- SECTION: Types: Recycling -->
+    <string name="type.cuisine.shawarma">Šaurma</string>
+    <string name="type.cuisine.uzbek">Uzbeku</string>
     <!-- A place where a lifeguard is on duty. -->
     <string name="type.emergency.lifeguard">Glābējs</string>
     <!-- A mountain rescue base for search and rescue activities. -->
@@ -56,8 +58,11 @@
     <string name="type.place.sea">Jūra</string>
     <!-- Named part of a city or town, bigger than place=quarter (Wiki: https://wiki.openstreetmap.org/wiki/Tag:place%3Dsuburb) -->
     <string name="type.place.suburb">Pilsētas apgabals</string>
+    <string name="type.railway.disused.tunnel">Slēgts dzelzceļa tunelis</string>
     <string name="type.shop.hearing_aids">Dzirdes aparātu veikals</string>
+    <string name="type.shop.leather">Ādas izstrādājumu veikals</string>
     <string name="type.shop.pasta">Makaronu veikals</string>
+    <string name="type.shop.religion">Reliģisko piederumu veikals</string>
     <string name="type.attraction.amusement_ride">Atrakciju brauciens</string>
     <string name="type.attraction.carousel">Karuselis</string>
     <string name="type.attraction.historic">Vēsturiska atrakcija</string>
@@ -70,7 +75,7 @@
     <string name="type.amenity.boat_rental">Laivu noma</string>
     <string name="type.shop.telecommunication">Telekomunikāciju veikals</string>
     <string name="type.leisure.indoor_play">Spēļu centrs</string>
-    <string name="type.tourism.camp_pitch">Kempings Spot</string>
+    <string name="type.tourism.camp_pitch">Kempinga vieta</string>
     <string name="type.railway.miniature">Miniatūras dzelzceļš</string>
     <string name="type.amenity.kneipp_water_cure">Kneipa ūdens kūre</string>
     <string name="type.area_highway.traffic_island">Satiksmes sala</string>

@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "भूमध्य व्यंजन";
 "type.cuisine.mexican" = "मैक्सिकन व्यंजन";
 "type.cuisine.moroccan" = "मोरक्कन व्यंजन";
-"type.cuisine.noodles" = "नूडल्स";
+"type.cuisine.noodle" = "नूडल्स";
 "type.cuisine.oriental" = "प्राच्य व्यंजन";
 "type.cuisine.pancake" = "पैनकेक";
 "type.cuisine.pasta" = "पास्ता";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "सॉसेज";
 "type.cuisine.savory_pancakes" = "दिलकश पेनकेक्स";
 "type.cuisine.seafood" = "समुद्री भोजन";
+"type.cuisine.shawarma" = "शवर्मा";
 "type.cuisine.soba" = "सोबा";
 "type.cuisine.spanish" = "स्पेनिश व्यंजन";
 "type.cuisine.steak_house" = "स्टेक (माँस का कबाब)";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "चाय";
 "type.cuisine.thai" = "थाई पकवान";
 "type.cuisine.turkish" = "तुर्की व्यंजन";
+"type.cuisine.uzbek" = "उज़्बेक";
 "type.cuisine.vegan" = "शाकाहारी";
 "type.cuisine.vegetarian" = "शाकाहारी";
 "type.cuisine.vietnamese" = "वियतनामी व्यंजन";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Pedestrian Tunnel";
+"type.highway.platform" = "रेलवे प्लेटफार्म";
 "type.highway.primary" = "प्राथमिक सड़क";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "कच्छभूमि";
 "type.noexit" = "Dead End";
 "type.office" = "कार्यालय";
+"type.office.architect" = "वास्तुकला कार्यालय";
 "type.office.company" = "कंपनी कार्यालय";
+"type.office.educational_institution" = "शैक्षणिक संस्था";
 "type.office.estate_agent" = "संपत्ति एजेंट";
 "type.office.government" = "सरकारी कार्यालय";
 "type.office.insurance" = "बीमा कार्यालय";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "अप्रयुक्त रेलवे सुरंग";
 "type.railway.funicular" = "रज्जुरेल";
 "type.railway.funicular.bridge" = "रज्जुरेल";
 "type.railway.funicular.tunnel" = "रज्जुरेल";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "दवा की दुकान";
 "type.shop.chocolate" = "चॉकलेट की दुकान";
 "type.shop.clothes" = "कपड़े की दुकान";
+"type.shop.clothes.children" = "बच्चों के कपड़ों की दुकान";
+"type.shop.clothes.fashion" = "फैशन बुटीक";
+"type.shop.clothes.hats" = "टोपी की दुकान";
+"type.shop.clothes.men" = "पुरुषों के कपड़ों की दुकान";
+"type.shop.clothes.sports" = "खेल कपड़ों की दुकान";
+"type.shop.clothes.suits" = "सूट की दुकान";
+"type.shop.clothes.underwear" = "अंडरवियर की दुकान";
+"type.shop.clothes.wedding" = "शादी के कपड़ों की दुकान";
+"type.shop.clothes.women" = "महिलाओं के कपड़ों की दुकान";
 "type.shop.coffee" = "कॉफी की दुकान";
 "type.shop.computer" = "कंप्यूटर की दुकान";
 "type.shop.confectionery" = "हलवाई की दुकान";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "अंतिम संस्कार के निदेशक";
 "type.shop.furniture" = "फर्नीचर की दुकान";
 "type.shop.garden_centre" = "बगीचे की सामग्री की दुकान";
+"type.shop.games" = "गेम की दुकान";
 "type.shop.gas" = "Gas Store";
 "type.shop.gift" = "उपहार की दुकान";
 "type.shop.greengrocer" = "फल-सब्ज़ियों की दुकान";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "गुमटी";
 "type.shop.kitchen" = "रसोई की दुकान";
 "type.shop.laundry" = "धोबी की दुकान";
+"type.shop.leather" = "चमड़े के सामान की दुकान";
 "type.shop.mall" = "शॉपिंग मॉल";
 "type.shop.massage" = "मालिश घर";
 "type.shop.mobile_phone" = "सेल फोन की दुकान";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "पालतू जानवर की दुकान";
 "type.shop.pet_grooming" = "Pet Grooming";
 "type.shop.photo" = "छायाचित्रण की दुकान";
+"type.shop.religion" = "धार्मिक सामग्री की दुकान";
 "type.shop.rental" = "Rental Shop";
 "type.shop.rental.bicycle" = "Bicycle Rental Shop";
 "type.amenity.bicycle_rental.shop" = "Bicycle Rental Shop";

@@ -651,6 +651,12 @@
 "button_layer_subway" = "T-bane";
 "layers_title" = "Kartstiler og -lag";
 
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Endre farge på alle bokmerker";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Endre farge på alle spor";
+
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Eksporter KMZ";
 
@@ -1029,7 +1035,7 @@
 "icloud_disabled_message" = "Aktiver iCloud i enhetens innstillinger for å bruke denne funksjonen.";
 
 /* Title for the "Enable iCloud Syncronization" alert's "Enable" action button. */
-"enable" = "Aktivere";
+"enable" = "Aktiver";
 
 /* Title for the "Enable iCloud Syncronization" alert's "Backup" action button. */
 "backup" = "Sikkerhetskopiering";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Lilla nedlastede regioner";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Logg inn med passord";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Logg inn med nettleser";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Nylig brukt";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Bokmerkefarge endret";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "Sporfarge endret";

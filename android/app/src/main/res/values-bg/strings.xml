@@ -35,7 +35,7 @@
     <string name="country_status_download_failed">Изтеглянето се провали</string>
     <!-- Button text for the button under the country_status_download_failed message -->
     <string name="try_again">Опитайте отново</string>
-    <string name="about_menu_title">Относно приложението</string>
+    <string name="about_menu_title">За „Organic Maps“</string>
     <!-- Text in About screen -->
     <string name="about_headline">Безплатно за всички, направени с любов</string>
     <!-- Text in About screen -->
@@ -52,7 +52,7 @@
     <string name="unsupported_phone">Приложението изисква хардуерно ускорение на OpenGL. За съжаление вашето устройство не се поддържа.</string>
     <string name="download">Изтегляне</string>
     <!-- Used in DownloadResources startup screen -->
-    <string name="disconnect_usb_cable">Моля, изключете USB кабела или поставете карта с памет.</string>
+    <string name="disconnect_usb_cable">Моля, изключете USB кабела или поставете картата с памет, за да използвате Organic Maps</string>
     <!-- Used in DownloadResources startup screen -->
     <string name="not_enough_free_space_on_sdcard">Моля, първо освободете място на SD картата/USB паметта, за да можете да използвате приложението.</string>
     <string name="download_resources">Преди да започнете да използвате приложението, позволете ни да изтеглим основната карта на света на вашето устройство. \nТова ще използва %s от паметта.</string>
@@ -282,8 +282,6 @@
     <string name="downloader_downloading">Теглене:</string>
     <!-- Displayed in a dialog that appears when a user tries to delete a map while the app is in the follow route mode -->
     <string name="downloader_delete_map_while_routing_dialog">За да изтриете карта, моля спрете навигирането.</string>
-    <!-- PointsInDifferentMWM -->
-    <string name="routing_failed_cross_mwm_building">Могат да се създават само маршрути, които са изцяло в рамките на картата на един регион.</string>
     <!-- Context menu item for downloader. -->
     <string name="downloader_download_map">Изтегляне на карта</string>
     <!-- Item status in downloader. -->
@@ -291,15 +289,11 @@
     <!-- Item in context menu. -->
     <string name="downloader_delete_map">Изтриване на карта</string>
     <!-- Item in context menu. -->
-    <string name="downloader_update_map">Обнояване на карта</string>
+    <string name="downloader_update_map">Обновяване на карта</string>
     <!-- Preference title -->
     <string name="google_play_services">Услуги за местоположение в Google Play</string>
     <!-- Preference text -->
     <string name="pref_use_google_play">Бързо определяне на приблизителното ви местоположение чрез Bluetooth, WiFi или мобилна мрежа</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_download_maps_along">Изтегляне на всички карти по вашия маршрут</string>
-    <!-- Text for routing error dialog -->
-    <string name="routing_requires_all_map">За да създадем маршрут, трябва да изтеглим и актуализираме всички карти от местоположението ви до вашата дестинация.</string>
     <!-- Text for routing error dialog -->
     <string name="routing_not_enough_space">Недостатъчно място</string>
     <!-- location service disabled -->
@@ -344,6 +338,8 @@
     <string name="pref_appearance_light">Светъл</string>
     <!-- Settings "Appearance" category: "Dark" title, should be consistent with the pref_appearance_title translation. -->
     <string name="pref_appearance_dark">Тъмен</string>
+    <!-- Settings "Appearance" category: "Scheduled" title, should be consistent with the pref_appearance_title translation. -->
+    <string name="pref_appearance_scheduled">Светла от зори до здрач</string>
     <!-- Tex label above the Donate button -->
     <string name="donate_description">Подарете безплатни карти без реклами на милиони потребители!</string>
 
@@ -354,28 +350,9 @@
     <string name="dialog_routing_disclaimer_recommendations">- Предложените маршрути са само препоръки;</string>
     <string name="dialog_routing_disclaimer_borders">- Бъдете внимателни с маршрутите в гранични зони: маршрутите, създадени от нашето приложение, понякога могат да пресичат границите на страната на неразрешени места.</string>
     <string name="dialog_routing_disclaimer_beware">Моля, бъдете бдителни и безопасни по пътищата!</string>
-    <string name="dialog_routing_check_gps">Приверете GPS сигнала</string>
-    <string name="dialog_routing_error_location_not_found">Не е възможно да се създаде маршрут. Текущите GPS координати не могат да бъдат идентифицирани.</string>
     <string name="dialog_routing_location_turn_wifi">Моля, проверете GPS сигнала. Включването на Wi-Fi ще подобри точността на местоположението ви.</string>
-    <string name="dialog_routing_location_turn_on">Активиране на услугите за местоположение</string>
-    <string name="dialog_routing_location_unknown_turn_on">Не е възможно да се определят GPS координатите. Активирайте услугите за местоположение, за да изчислите маршрута.</string>
-    <string name="dialog_routing_unable_locate_route">Не е намерен маршрут</string>
-    <string name="dialog_routing_cant_build_route">Не е възможно да се създаде маршрут.</string>
-    <string name="dialog_routing_change_start_or_end">Моля, коригирайте началната точка или дестинацията си.</string>
-    <string name="dialog_routing_change_start">Регулиране на началната точка</string>
-    <string name="dialog_routing_start_not_determined">Маршрутът не е създаден. Не може да се намери начална точка.</string>
-    <string name="dialog_routing_select_closer_start">Моля, изберете начална точка, която е по-близо до път.</string>
-    <string name="dialog_routing_change_end">Регулиране на дестинацията</string>
-    <string name="dialog_routing_end_not_determined">Маршрутът не е създаден. Не е възможно да се открие дестинацията.</string>
-    <string name="dialog_routing_select_closer_end">Моля, изберете крайна точка, разположена по-близо до път.</string>
-    <string name="dialog_routing_change_intermediate">Не може да се открие междинната точка на маршрута.</string>
-    <string name="dialog_routing_intermediate_not_determined">Моля, коригирайте междинната си точка на маршрута.</string>
     <string name="dialog_routing_system_error">Грешка в системата</string>
-    <string name="dialog_routing_application_error">Не е възможно да се създаде маршрут поради грешка в приложението.</string>
-    <string name="dialog_routing_try_again">Моля, опитайте отново</string>
     <string name="not_now">Не сега</string>
-    <string name="dialog_routing_download_and_build_cross_route">Бихте ли искали да изтеглите картата и да създадете по-оптимален маршрут, обхващащ повече от една карта?</string>
-    <string name="dialog_routing_download_cross_route">За да създадете по-добър маршрут с граничен преход, трябва да изтеглите картата.</string>
 
     <!-- SECTION: Strings for downloading map from search -->
     <string name="search_without_internet_advertisement">За да започнете да търсите и създавате маршрути, изтеглете картата. Това ще ви позволи да пътувате без интернет връзка.</string>
@@ -394,6 +371,8 @@
     <string name="clear_search">Изчистване на историята на търсенията</string>
     <!-- Place Page link to Wikipedia article (if map object has it). -->
     <string name="read_in_wikipedia">Уикипедия</string>
+    <!-- Place Page link to Wikimedia Commons. -->
+    <string name="wikimedia_commons">Wikimedia Commons</string>
     <string name="p2p_your_location">Вашето местоположение</string>
     <string name="p2p_start">Начало</string>
     <string name="p2p_from_here">Маршрут от</string>
@@ -471,7 +450,6 @@
     <string name="level_value_generic">Ниво: %s</string>
     <string name="downloader_delete_map_dialog">Всички ваши редакции на картата ще бъдат изтрити заедно с нея.</string>
     <string name="downloader_update_maps">Обновяване на карти</string>
-    <string name="downloader_mwm_migration_dialog">За да създадете маршрут, трябва да актуализирате всички карти и след това да планирате маршрута отново.</string>
     <string name="downloader_search_field_hint">Намиране на карта</string>
     <string name="common_check_internet_connection_dialog">Моля, проверете настройките си и се уверете, че устройството ви е свързано с интернет.</string>
     <string name="downloader_no_space_title">Няма достатъчно място</string>
@@ -645,6 +623,10 @@
     <string name="layers_title">Стилове и слоеве на картата</string>
     <string name="bookmarks_empty_list_title">Този списък е празен</string>
     <string name="bookmarks_empty_list_message">За да добавите отметка, докоснете място на картата, след което докоснете звездообразната икона.</string>
+    <!-- Button to change the color of all bookmarks in the current list -->
+    <string name="change_all_bookmarks_color">Промяна на цвета на всички отметки</string>
+    <!-- Button to change the color of all tracks in the current list -->
+    <string name="change_all_tracks_color">Промяна на цвета на всички маршрути</string>
     <string name="category_desc_more">…още</string>
     <!-- Menu title for exporting a file in the default KMZ format -->
     <string name="export_file">Експорт на KMZ</string>
@@ -723,6 +705,7 @@
     <string name="moreyear_ago_sorttype">Преди повече от година</string>
     <string name="near_me_sorttype">На близо</string>
     <string name="others_sorttype">Други</string>
+    <string name="editor_add_select_category_all_subtitle">Всички категории</string>
 
     <!-- SECTION: Bookmark types used for sorting -->
     <string name="food_places">Храна</string>
@@ -742,9 +725,6 @@
     <string name="search_in_the_list">Търсене в списъка</string>
     <string name="religious_places">Храмове</string>
     <string name="select_list">Избор на списък</string>
-    <string name="transit_not_found">Навигацията за метро все още не е налична в региона</string>
-    <string name="dialog_pedestrian_route_is_long_header">Не е открит маршрут за метро</string>
-    <string name="dialog_pedestrian_route_is_long_message">Моля, изберете начална или крайна точка по-близо до метростанция</string>
     <string name="button_layer_isolines">Терен</string>
     <string name="isolines_activation_error_dialog">За да активирате и използвате топографския слой, моля, актуализирайте или изтеглете картата на района</string>
     <string name="isolines_location_error_dialog">Топографският слой все още не е наличен в тази област</string>
@@ -785,6 +765,8 @@
     <string name="tts_info_link">https://organicmaps.app/faq/text-to-speech-android-tts/</string>
     <!-- Link to OSM wiki for Editor, Profile and About pages -->
     <string name="osm_wiki_about_url">https://wiki.openstreetmap.org/wiki/Bg:About</string>
+    <!-- A number of bookmarks and a number of tracks, separated by comma, like: 1 bookmark, 5 tracks -->
+    <string name="comma_separated_pair">%1$s, %2$s</string>
     <!-- App Tip #00 -->
     <string name="app_tip_00">Благодарим ви, че използвате нашите карти, създадени от общността!</string>
     <!-- App tip #01 -->
@@ -819,8 +801,6 @@
     <string name="aa_location_permissions_request">Organic Maps се нуждае от достъп до местоположението. Когато е безопасно, проверете известието на телефона си.</string>
     <!-- Notification title for permission request from AA. -->
     <string name="aa_request_permission_notification">Това приложение се нуждае от вашето разрешение</string>
-    <!-- The text in the activity for location permission request. -->
-    <string name="aa_request_permission_activity_text">Organic Maps в Android Auto се нуждае от разрешение за местоположение, за да работи ефективно</string>
     <!-- Grant Permissions button. -->
     <string name="aa_grant_permissions">Предоставяне на разрешения</string>
     <!-- Outdoors/hiking map style (activity) name in the Styles and Layers dialog -->
@@ -879,4 +859,16 @@
     <string name="share_track">Споделяне на пистата</string>
     <!-- Title for the dialog when deleting a track with the track name passed in %@ -->
     <string name="delete_track_dialog_title">Изтриване на %s?</string>
+
+    <!-- SECTION: gps strings -->
+    <!-- Login to OSM button text -->
+    <string name="login_osm_credentials">Влизане с парола</string>
+    <!-- Login to OSM button text -->
+    <string name="login_osm_browser">Влизане чрез браузър</string>
+    <!-- Editor section title that shows recently used categories (types of objects) when adding a place on the map -->
+    <string name="editor_add_select_category_recent_subtitle">Наскоро използван</string>
+    <!-- Toast message shown when bookmark colors are changed in category settings -->
+    <string name="toast_bookmarks_color_changed">Цветът на отметките е променен</string>
+    <!-- Toast message shown when track colors are changed in category settings -->
+    <string name="toast_tracks_color_changed">Цветът на маршрутите е променен</string>
 </resources>

@@ -195,7 +195,7 @@ private:
   void InitLayer(Model::Type type, TokenRange const & tokenRange, FeaturesLayer & layer);
 
   void FillLocalityCandidates(BaseContext const & ctx, CBV const & filter, size_t const maxNumLocalities,
-                              std::vector<Locality> & preLocalities);
+                              std::vector<Locality> & preLocalities, bool keepNonOverlapping = false);
 
   void FillLocalitiesTable(BaseContext const & ctx);
 
@@ -322,8 +322,7 @@ private:
   // Geocoder params.
   Params m_params;
 
-  // This field is used to map features to a limited number of search
-  // classes.
+  // This field is used to map features to a limited number of search classes.
   Model m_model;
 
   // Following fields are set up by Search() method and can be

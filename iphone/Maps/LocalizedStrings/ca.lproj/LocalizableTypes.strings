@@ -175,7 +175,7 @@
 "type.amenity.public_bath" = "Bany públic";
 "type.amenity.shower" = "Dutxa";
 "type.amenity.stripclub" = "Club de striptease";
-"type.amenity.taxi" = "Desocupada de taxis";
+"type.amenity.taxi" = "Parada de taxis";
 "type.amenity.telephone" = "Telèfon";
 "type.amenity.theatre" = "Teatre";
 "type.amenity.toilets" = "Vàter";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterrània";
 "type.cuisine.mexican" = "Mexicana";
 "type.cuisine.moroccan" = "Marroquina";
-"type.cuisine.noodles" = "Fideus xinesos";
+"type.cuisine.noodle" = "Fideus xinesos";
 "type.cuisine.oriental" = "Cuina de l’Àsia oriental";
 "type.cuisine.pancake" = "Pancake";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Salsitxa";
 "type.cuisine.savory_pancakes" = "Creps salades";
 "type.cuisine.seafood" = "Marisc";
+"type.cuisine.shawarma" = "Xauarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Espanyola";
 "type.cuisine.steak_house" = "Restaurant de carn";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Te";
 "type.cuisine.thai" = "Tailandès";
 "type.cuisine.turkish" = "Turca";
+"type.cuisine.uzbek" = "Uzbeka";
 "type.cuisine.vegan" = "Vegà";
 "type.cuisine.vegetarian" = "Vegetarià";
 "type.cuisine.vietnamese" = "Vietnamita";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Túnel de vianants";
+"type.highway.platform" = "Andana";
 "type.highway.primary" = "Carretera primària";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -593,7 +596,7 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.trunk_link.tunnel" = "Túnel";
 "type.highway.unclassified" = "Carretera sense classificar";
-"type.highway.unclassified.area" = "Àrea sense classificar";
+"type.highway.unclassified.area" = "Carretera sense classificar";
 
 /* These translations are used for all type.highway.*.bridge. */
 "type.highway.unclassified.bridge" = "Pont";
@@ -604,17 +607,17 @@
 "type.area_highway.footway" = "Camí per a vianants";
 "type.area_highway.living_street" = "Carrer residencial";
 "type.area_highway.motorway" = "Autopista";
-"type.area_highway.path" = "Camí";
+"type.area_highway.path" = "Corriol";
 "type.area_highway.pedestrian" = "Carrer de vianants";
 "type.area_highway.primary" = "Carretera primària";
 "type.area_highway.residential" = "Carrer urbà";
 "type.area_highway.secondary" = "Carretera secundària";
-"type.area_highway.service" = "Carretera de servei";
+"type.area_highway.service" = "Via de servei";
 "type.area_highway.tertiary" = "Carretera terciària";
 "type.area_highway.steps" = "Escales";
-"type.area_highway.track" = "Via";
+"type.area_highway.track" = "Sender";
 "type.area_highway.trunk" = "Carretera nacional";
-"type.area_highway.unclassified" = "Àrea de carretera sense classificar";
+"type.area_highway.unclassified" = "Carretera sense classificar";
 "type.highway.world_level" = "highway-world_level";
 "type.highway.world_towns_level" = "highway-world_towns_level";
 
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Aiguamoll";
 "type.noexit" = "Atzucac";
 "type.office" = "Oficina";
+"type.office.architect" = "Estudi d'arquitectura";
 "type.office.company" = "Oficina d’empresa";
+"type.office.educational_institution" = "Institució educativa";
 "type.office.estate_agent" = "Agent immobiliari";
 "type.office.government" = "Oficina governamental";
 "type.office.insurance" = "Oficina d’assegurances";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Passatge a nivell";
 "type.railway.disused" = "Ferrocarril en desús";
 "type.railway.disused.bridge" = "Pont ferroviari en desús";
+"type.railway.disused.tunnel" = "Túnel ferroviari en desús";
 "type.railway.funicular" = "Funicular";
 "type.railway.funicular.bridge" = "Pont funicular";
 "type.railway.funicular.tunnel" = "Túnel funicular";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Farmacia";
 "type.shop.chocolate" = "Xocolateria";
 "type.shop.clothes" = "Botiga de roba";
+"type.shop.clothes.children" = "Botiga de roba infantil";
+"type.shop.clothes.fashion" = "Boutique de moda";
+"type.shop.clothes.hats" = "Botiga de barrets";
+"type.shop.clothes.men" = "Botiga de roba per a homes";
+"type.shop.clothes.sports" = "Botiga de roba esportiva";
+"type.shop.clothes.suits" = "Sastreria";
+"type.shop.clothes.underwear" = "Botiga de roba interior";
+"type.shop.clothes.wedding" = "Botiga de vestits de casament";
+"type.shop.clothes.women" = "Botiga de roba de dona";
 "type.shop.coffee" = "Cafeteria";
 "type.shop.computer" = "Botiga d’informàtica";
 "type.shop.confectionery" = "Botiga de llaminadures";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Funeraris";
 "type.shop.furniture" = "Botiga de mobles";
 "type.shop.garden_centre" = "Centre de jardineria";
+"type.shop.games" = "Botiga de jocs";
 "type.shop.gas" = "Botiga de gas";
 "type.shop.gift" = "Botiga de regals";
 "type.shop.greengrocer" = "Fruiteria";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Quiosc";
 "type.shop.kitchen" = "Botiga de cuina";
 "type.shop.laundry" = "Bugaderia";
+"type.shop.leather" = "Botiga d'articles de pell";
 "type.shop.mall" = "Centre comercial";
 "type.shop.massage" = "Saló de massatges";
 "type.shop.mobile_phone" = "Botiga de telèfons mòbils";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Botiga d’animals";
 "type.shop.pet_grooming" = "Peluca de mascotes";
 "type.shop.photo" = "Botiga de fotografia";
+"type.shop.religion" = "Botiga d'articles religiosos";
 "type.shop.rental" = "Botiga de lloguer";
 "type.shop.rental.bicycle" = "Botiga de lloguer de bicicletes";
 "type.amenity.bicycle_rental.shop" = "Botiga de lloguer de bicicletes";

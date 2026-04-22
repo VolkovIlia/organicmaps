@@ -118,9 +118,6 @@ public:
   void SetCuisines(std::vector<std::string_view> const & cuisines);
   void SetCuisines(std::vector<std::string> const & cuisines);
 
-  /// Special mark that it's a point feature, not area or line.
-  void SetPointType();
-
   static bool ValidateBuildingLevels(std::string const & buildingLevels);
   static bool ValidateHouseNumber(std::string const & houseNumber);
   static bool ValidateFlats(std::string const & flats);
@@ -141,10 +138,10 @@ public:
   void LogDiffInJournal(EditableMapObject const & unedited_emo);
 
   /// Check whether langCode can be used as default name.
-  static bool CanUseAsDefaultName(int8_t const langCode, std::vector<int8_t> const & nativeMwmLanguages);
+  static bool CanUseAsDefaultName(int8_t const langCode, LangsBufferT const & nativeMwmLanguages);
 
   /// See comment for NamesDataSource class.
-  static NamesDataSource GetNamesDataSource(FeatureNames const & source, std::vector<int8_t> const & nativeMwmLanguages,
+  static NamesDataSource GetNamesDataSource(FeatureNames const & source, LangsBufferT const & nativeMwmLanguages,
                                             int8_t const userLanguage);
 
   /// Compares editable fields connected with feature ignoring street.

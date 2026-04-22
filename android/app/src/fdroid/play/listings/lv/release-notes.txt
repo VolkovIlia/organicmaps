@@ -1,9 +1,9 @@
-• JAUNUMS: Augstāka kontrasta tumšās tēmas krāsas
-• JAUNUMS: Google Assistant navigācijai un meklēšanai
-• OSM kartes dati uz 11. janvāri
-• "Auto" navigācijas tēmas iestatījums seko sistēmas tumšajam/gaišajam režīmam
-• Plānākas metro līnijas
-• Meklēšanas rezultāti rāda motociklu stāvvietu, velosipēdu nomas, velosipēdu uzlādes un automašīnu uzlādes ietilpību
-• Rādīt stāva līmeni meklēšanas rezultātos
-• Albāņu tulkojumi un TTS balss vadība
-…vairāk vietnē omaps.org/news
+• OSM kartes dati uz 10. martu, Vikipēdija uz 1. martu
+• Detalizētākas pacēluma izolīnas Ķīnas provincēm
+• Pievienotas koku rindas, ādas veikali un veikali, kas pārdod reliģiskas preces
+• Pievienots atbalsts nosacītajiem ātruma ierobežojumiem
+• Tanzānija sadalīta mazākos reģionos
+• Uzlabota uzņēmuma darba laika attēlošana
+• Novērstas vairākas avārijas
+• Uzlaboti lietotņu un valstu nosaukumu tulkojumi
+omaps.org/news

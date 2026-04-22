@@ -591,13 +591,13 @@ area|z17-[historic=memorial][memorial=cross],
 
 node|z13-14[historic=city_gate],
 area|z13-14[historic=city_gate]
-{icon-image: remains-s.svg;text-offset: 1;icon-min-distance: 12;}
+{icon-image: city_gate-s.svg;text-offset: 1;icon-min-distance: 12;}
 node|z15[historic=city_gate],
 area|z15[historic=city_gate],
-{icon-image: remains-m.svg;icon-min-distance: 24;}
+{icon-image: city_gate-m.svg;icon-min-distance: 24;}
 node|z16-[historic=city_gate],
 area|z16-[historic=city_gate],
-{icon-image: remains-m.svg;icon-min-distance: 12;}
+{icon-image: city_gate-m.svg;icon-min-distance: 12;}
 
 node|z13-14[tourism=museum],
 area|z13-14[tourism=museum]
@@ -864,9 +864,9 @@ area|z15[amenity=cafe]
 {icon-image: cafe-m.svg;icon-min-distance: 12;}
 node|z15[amenity=restaurant],
 area|z15[amenity=restaurant],
-node|z15[amenity=food_court],
-area|z15[amenity=food_court]
 {icon-image: restaurant-m.svg;icon-min-distance: 28;}
+node|z15[amenity=food_court],
+{icon-image: food-m.svg;icon-min-distance: 28;}
 node|z15[amenity=fast_food],
 area|z15[amenity=fast_food],
 {icon-image: fastfood-m.svg;icon-min-distance: 28;}
@@ -884,9 +884,9 @@ area|z16-[amenity=cafe]
 {icon-image: cafe-m.svg;icon-min-distance: 12;}
 node|z16-[amenity=restaurant],
 area|z16-[amenity=restaurant],
-node|z16-[amenity=food_court],
-area|z16-[amenity=food_court]
 {icon-image: restaurant-m.svg;icon-min-distance: 12;}
+node|z16-[amenity=food_court],
+{icon-image: food-m.svg;icon-min-distance: 12;}
 node|z16-[amenity=fast_food],
 area|z16-[amenity=fast_food],
 {icon-image: fastfood-m.svg;icon-min-distance: 12;}

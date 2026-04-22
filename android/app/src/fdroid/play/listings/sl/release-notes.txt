@@ -1,8 +1,10 @@
-• NOVO: Barve temne teme z višjim kontrastom
-• NOVO: Google Assistant za navigacijo in iskanje
-• Podatki zemljevida OSM z dne 11. januarja
-• Nastavitev navigacijske teme »Samodejno« sledi sistemskemu temnemu/svetlemu načinu
-• Tanjše linije podzemne železnice
-• Rezultati iskanja prikazujejo zmogljivost za parkiranje motornih koles, izposojo koles, polnjenje koles in polnjenje avtomobilov
-• Prikaži nivo nadstropja v rezultatih iskanja
-…več na omaps.org/news
+• Podatki zemljevidov OSM od 10. marca, Wikipedia od 1. marca
+• Podrobnejše višinske izolinije za kitajske province
+• Dodane so vrste dreves, trgovine z usnjem in trgovine z verskimi izdelki
+• Dodana podpora za pogojne omejitve hitrosti
+• Tanzanija razdeljena na manjše regije
+• Izboljšan prikaz obratovalnega časa podjetja
+• Odpravljenih več zrušitev
+• Izboljšani prevodi imen aplikacij in držav
+• Dodana postajališča javnega prevoza brez bližnjih avtobusnih postajališč
+omaps.org/news

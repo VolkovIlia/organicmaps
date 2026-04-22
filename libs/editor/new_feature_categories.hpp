@@ -39,7 +39,12 @@ public:
   // The returned list is sorted.
   TypeNames Search(std::string const & query) const;
 
+  TypeNames GetRecentCategories() const;
+
+  void AddToRecentCategories(std::string const & category);
+
   // Returns all registered classifier category types (GetReadableObjectName).
+  // The returned list is sorted.
   TypeNames const & GetAllCreatableTypeNames() const { return m_types; }
 
 private:

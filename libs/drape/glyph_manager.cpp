@@ -19,6 +19,7 @@
 #include <ft2build.h>
 #include <hb-ft.h>
 #include <unicode/unistr.h>
+#include <cstring>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -170,18 +171,16 @@ FreetypeError constexpr g_FT_Errors[] =
       if (bitmap.buffer != nullptr)
       {
         // Bitmap is stored without a padding.
-        data = SharedBufferManager::instance().reserveSharedBuffer(bitmap.width * bitmap.rows);
+        data = SharedBufferManager::Instance().ReserveSharedBuffer(bitmap.width * bitmap.rows);
         auto ptr = data->data();
 
-        for (unsigned int row = 0; row < bitmap.rows; ++row)
-        {
-          unsigned int const dstBaseIndex = row * bitmap.width;
-          int const srcBaseIndex = static_cast<int>(row) * bitmap.pitch;
-          for (unsigned int column = 0; column < bitmap.width; ++column)
-            ptr[dstBaseIndex + column] = bitmap.buffer[srcBaseIndex + column];
-        }
+        if (bitmap.pitch == static_cast<int>(bitmap.width))
+          std::memcpy(ptr, bitmap.buffer, bitmap.width * bitmap.rows);
+        else
+          for (unsigned int row = 0; row < bitmap.rows; ++row)
+            std::memcpy(ptr + row * bitmap.width, bitmap.buffer + row * bitmap.pitch, bitmap.width);
       }
-      return {bitmap.width, bitmap.rows, data};
+      return {bitmap.width, bitmap.rows, std::move(data)};
     }
 
     void GetCharcodes(std::vector<FT_ULong> & charcodes) const
@@ -330,14 +329,8 @@ FreetypeError constexpr g_FT_Errors[] =
     TUniBlockIter m_lastUsedBlock;
     std::vector<std::unique_ptr<Font>> m_fonts;
 
-    // Required to use std::string_view as a search key for std::unordered_map::find().
-    struct StringHash : public std::hash<std::string_view>
-    {
-      using is_transparent = void;
-    };
-
     // TODO(AB): Compare performance with std::map.
-    std::unordered_map<std::string, text::TextMetrics, StringHash, std::equal_to<>> m_textMetricsCache;
+    std::unordered_map<std::string, text::TextMetrics, base::StringHash, std::equal_to<>> m_textMetricsCache;
     hb_buffer_t * m_harfbuzzBuffer;
   };
 
@@ -647,9 +640,8 @@ FreetypeError constexpr g_FT_Errors[] =
       m_impl->m_textMetricsCache.clear();
     }
 
-    m_impl->m_textMetricsCache.emplace(utf8, allGlyphs);
-
-    return allGlyphs;
+    auto [it, _] = m_impl->m_textMetricsCache.emplace(utf8, std::move(allGlyphs));
+    return it->second;
   }
 
   text::TextMetrics GlyphManager::ShapeText(std::string_view utf8, int fontPixelHeight, char const * lang)

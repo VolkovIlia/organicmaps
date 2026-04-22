@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Välimeren keittiö";
 "type.cuisine.mexican" = "Meksikolainen keittiö";
 "type.cuisine.moroccan" = "Marokkolainen keittiö";
-"type.cuisine.noodles" = "Nuudelit";
+"type.cuisine.noodle" = "Nuudelit";
 "type.cuisine.oriental" = "Itämainen keittiö";
 "type.cuisine.pancake" = "Lettu";
 "type.cuisine.pasta" = "Pasta";
@@ -355,7 +355,8 @@
 "type.cuisine.sandwich" = "Voileipä";
 "type.cuisine.sausage" = "Makkara";
 "type.cuisine.savory_pancakes" = "Suolaiset letut";
-"type.cuisine.seafood" = "Meren elävät";
+"type.cuisine.seafood" = "Merenelävät";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Sobanuudeli";
 "type.cuisine.spanish" = "Espanjalainen keittiö";
 "type.cuisine.steak_house" = "Pihviravintola";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Tee";
 "type.cuisine.thai" = "Thaimaalainen keittiö";
 "type.cuisine.turkish" = "Turkkilainen keittiö";
+"type.cuisine.uzbek" = "Uzbekkilainen";
 "type.cuisine.vegan" = "Vegaanikeittiö";
 "type.cuisine.vegetarian" = "Kasviskeittiö";
 "type.cuisine.vietnamese" = "Vietnamilainen keittiö";
@@ -454,7 +456,7 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.motorway.tunnel" = "Moottoritietunneli";
 "type.highway.motorway_junction" = "Poistumistie";
-"type.highway.motorway_link" = "Mottoritieramppi";
+"type.highway.motorway_link" = "Moottoritieramppi";
 
 /* These translations are used for all type.highway.*.bridge. */
 "type.highway.motorway_link.bridge" = "Silta";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Jalankulkutunneli";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Pääkatu";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -601,11 +604,11 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.unclassified.tunnel" = "Tunneli";
 "type.area_highway.cycleway" = "Pyörätie";
-"type.area_highway.footway" = "Kävelytie";
+"type.area_highway.footway" = "Polku";
 "type.area_highway.living_street" = "Asuinkatu";
 "type.area_highway.motorway" = "Moottoritie";
 "type.area_highway.path" = "Polku";
-"type.area_highway.pedestrian" = "Kävelykatu";
+"type.area_highway.pedestrian" = "Jalankulkutie";
 "type.area_highway.primary" = "Pääkatu";
 "type.area_highway.residential" = "Katu";
 "type.area_highway.secondary" = "Katu";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Marsh";
 "type.noexit" = "Dead End";
 "type.office" = "Toimisto";
+"type.office.architect" = "Arkkitehtitoimisto";
 "type.office.company" = "Yhtiön toimisto";
+"type.office.educational_institution" = "Oppilaitos";
 "type.office.estate_agent" = "Kiinteistönvälittäjä";
 "type.office.government" = "Viranomaisen toimisto";
 "type.office.insurance" = "Vakuutuslaitos";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Railway Crossing";
 "type.railway.disused" = "Disused Railway";
 "type.railway.disused.bridge" = "Disused Railway Bridge";
+"type.railway.disused.tunnel" = "Käytöstä poistettu rautatietunneli";
 "type.railway.funicular" = "Köysirata";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Kosmetiikkamyymälä";
 "type.shop.chocolate" = "Suklaakauppa";
 "type.shop.clothes" = "Vaatekauppa";
+"type.shop.clothes.children" = "Lastenvaatekauppa";
+"type.shop.clothes.fashion" = "Muotiboutique";
+"type.shop.clothes.hats" = "Hattukauppa";
+"type.shop.clothes.men" = "Miesten vaatekauppa";
+"type.shop.clothes.sports" = "Urheiluvaatekauppa";
+"type.shop.clothes.suits" = "Pukukauppa";
+"type.shop.clothes.underwear" = "Alusvaatekauppa";
+"type.shop.clothes.wedding" = "Hääpukukauppa";
+"type.shop.clothes.women" = "Naisten vaatekauppa";
 "type.shop.coffee" = "Kahvikauppa";
 "type.shop.computer" = "Tietokonekauppa";
 "type.shop.confectionery" = "Makeiskauppa";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Hautaustoimisto";
 "type.shop.furniture" = "Huonekalukauppa";
 "type.shop.garden_centre" = "Taimitarha";
+"type.shop.games" = "Pelikauppa";
 "type.shop.gas" = "Kaasukauppa";
 "type.shop.gift" = "Lahjatavaraliike";
 "type.shop.greengrocer" = "Vihanneskauppias";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kioski";
 "type.shop.kitchen" = "Keittiökauppa";
 "type.shop.laundry" = "Pesula";
+"type.shop.leather" = "Nahkatuotteiden kauppa";
 "type.shop.mall" = "Ostoskeskus";
 "type.shop.massage" = "Hierontahuone";
 "type.shop.mobile_phone" = "Elektroniikkakauppa";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Eläinkauppa";
 "type.shop.pet_grooming" = "Lemmikkieläinten hoito";
 "type.shop.photo" = "Valokuvakauppa";
+"type.shop.religion" = "Uskonnollisten esineiden kauppa";
 "type.shop.rental" = "Vuokrakauppa";
 "type.shop.rental.bicycle" = "Polkupyörävuokraamo";
 "type.amenity.bicycle_rental.shop" = "Polkupyörävuokraamo";

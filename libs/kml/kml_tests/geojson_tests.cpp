@@ -1,9 +1,12 @@
 #include "testing/testing.hpp"
 
+#include "kml/serdes_geojson.hpp"
+
+#include "indexer/classificator.hpp"
+
 #include "geometry/mercator.hpp"
 
 #include "coding/string_utf8_multilang.hpp"
-#include "kml/serdes_geojson.hpp"
 
 namespace geojson_tests
 {
@@ -245,7 +248,7 @@ UNIT_TEST(GeoJson_Parse_UMapOptions)
   std::string const & umapOptionsStr = umapOptionsIt->second;
   glz::generic umapOptionsJson;
   auto const parseResult = glz::read_json(umapOptionsJson, umapOptionsStr);
-  TEST_EQUAL(parseResult, glz::error_code::none, ("Should be able to parse stored _umap_options JSON"));
+  TEST(parseResult == glz::error_code::none, ("Should be able to parse stored _umap_options JSON"));
 
   TEST(umapOptionsJson.is_object(), ("_umap_options should be an object"));
   auto const & umapObj = umapOptionsJson.get_object();
@@ -270,7 +273,7 @@ UNIT_TEST(GeoJson_Parse_UMapOptions)
   std::string const & trackUmapOptionsStr = trackUmapOptionsIt->second;
   glz::generic trackUmapOptionsJson;
   auto const trackParseResult = glz::read_json(trackUmapOptionsJson, trackUmapOptionsStr);
-  TEST_EQUAL(trackParseResult, glz::error_code::none, ("Should be able to parse stored track _umap_options JSON"));
+  TEST(trackParseResult == glz::error_code::none, ("Should be able to parse stored track _umap_options JSON"));
 
   TEST(trackUmapOptionsJson.is_object(), ("track _umap_options should be an object"));
   auto const & trackUmapObj = trackUmapOptionsJson.get_object();
@@ -378,9 +381,9 @@ UNIT_TEST(GeoJson_Writer_Simple)
         ]
       },
       "properties": {
-        "description": "Test bookmark description",
+        "name": "Marcador de prueba",
         "marker-color": "blue",
-        "name": "Marcador de prueba"
+        "description": "Test bookmark description"
       }
     },
     {
@@ -403,9 +406,9 @@ UNIT_TEST(GeoJson_Writer_Simple)
         ]
       },
       "properties": {
-        "description": "Test track description",
         "name": "Test track",
-        "stroke": "#FF0000"
+        "stroke": "#FF0000",
+        "description": "Test track description"
       }
     },
     {
@@ -486,9 +489,9 @@ UNIT_TEST(GeoJson_Writer_MultiTrack)
         ]
       },
       "properties": {
-        "description": "Test multitrack description",
         "name": "Test multitrack",
-        "stroke": "#00FF00"
+        "stroke": "#00FF00",
+        "description": "Test multitrack description"
       }
     }
   ]
@@ -504,7 +507,7 @@ UNIT_TEST(GeoJson_Writer_MultiTrack)
 UNIT_TEST(GeoJson_Writer_Simple_Minimized)
 {
   // clang-format off
-  std::string_view constexpr expected_geojson = R"({"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[13.39712,52.48982]},"properties":{"description":"Test bookmark description","marker-color":"blue","name":"Marcador de prueba"}}]})";
+  std::string_view constexpr expected_geojson = R"({"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[13.39712,52.48982]},"properties":{"name":"Marcador de prueba","marker-color":"blue","description":"Test bookmark description"}}]})";
   // clang-format on
 
   kml::FileData const testData = GenerateKmlFileData();
@@ -528,16 +531,16 @@ UNIT_TEST(GeoJson_Writer_UMap)
         ]
       },
       "properties": {
-        "_umap_options": {
-          "color": "blue",
-          "customProperty": "should be preserved",
-          "iconClass": "Drop",
-          "opacity": 0.8,
-          "weight": 4
-        },
-        "description": "Test bookmark description",
+        "name": "Marcador de prueba",
         "marker-color": "blue",
-        "name": "Marcador de prueba"
+        "description": "Test bookmark description",
+        "_umap_options": {
+          "iconClass": "Drop",
+          "color": "blue",
+          "weight": 4,
+          "opacity": 0.8,
+          "customProperty": "should be preserved"
+        }
       }
     },
     {
@@ -560,15 +563,15 @@ UNIT_TEST(GeoJson_Writer_UMap)
         ]
       },
       "properties": {
+        "name": "Test track",
+        "stroke": "#FF0000",
+        "description": "Test track description",
         "_umap_options": {
           "color": "#FF0000",
-          "dashArray": "5,10",
+          "weight": 2,
           "opacity": 0.5,
-          "weight": 2
-        },
-        "description": "Test track description",
-        "name": "Test track",
-        "stroke": "#FF0000"
+          "dashArray": "5,10"
+        }
       }
     },
     {
@@ -591,14 +594,14 @@ UNIT_TEST(GeoJson_Writer_UMap)
         ]
       },
       "properties": {
+        "name": "Another track",
+        "stroke": "#93BF39",
         "_umap_options": {
           "color": "#93BF39",
-          "dashArray": "5,10",
+          "weight": 2,
           "opacity": 0.5,
-          "weight": 2
-        },
-        "name": "Another track",
-        "stroke": "#93BF39"
+          "dashArray": "5,10"
+        }
       }
     }
   ]
@@ -649,9 +652,9 @@ UNIT_TEST(GeoJson_Writer_UMap_Invalid_Json)
         ]
       },
       "properties": {
-        "description": "Test bookmark description",
+        "name": "Marcador de prueba",
         "marker-color": "blue",
-        "name": "Marcador de prueba"
+        "description": "Test bookmark description"
       }
     }
   ]
@@ -671,6 +674,67 @@ UNIT_TEST(GeoJson_Writer_UMap_Invalid_Json)
   TEST_EQUAL(jsonString, expected_geojson, ());
 }
 
+UNIT_TEST(GeoJson_Parse_FeatureCollection_NonStringProperties)
+{
+  // FeatureCollection-level "properties" may contain non-string values
+  // (numbers, booleans, nested objects). This should parse without errors.
+  std::string_view constexpr input = R"({
+  "type": "FeatureCollection",
+  "properties": {
+    "name": "My Collection",
+    "count": 42,
+    "active": true,
+    "rating": 3.14,
+    "metadata": {
+      "source": "test",
+      "version": 2
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Test Point"
+      },
+      "geometry": {
+        "coordinates": [13.39712, 52.48982],
+        "type": "Point"
+      }
+    }
+  ]
+})";
+
+  kml::FileData const dataFromText = LoadGeojsonFromString(input);
+
+  TEST_EQUAL(dataFromText.m_bookmarksData.size(), 1, ());
+  TEST_EQUAL(kml::GetDefaultStr(dataFromText.m_bookmarksData.front().m_name), "Test Point", ());
+}
+
+UNIT_TEST(GeoJson_Parse_FeatureCollection_NoProperties)
+{
+  // FeatureCollection without "properties" field should also parse fine.
+  std::string_view constexpr input = R"({
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "No Collection Props"
+      },
+      "geometry": {
+        "coordinates": [2.3522, 48.8566],
+        "type": "Point"
+      }
+    }
+  ]
+})";
+
+  kml::FileData const dataFromText = LoadGeojsonFromString(input);
+
+  TEST_EQUAL(dataFromText.m_bookmarksData.size(), 1, ());
+  TEST_EQUAL(kml::GetDefaultStr(dataFromText.m_bookmarksData.front().m_name), "No Collection Props", ());
+}
+
 kml::FileData GenerateKmlFileData()
 {
   auto const kDefaultLang = StringUtf8Multilang::kDefaultCode;
@@ -686,7 +750,10 @@ kml::FileData GenerateKmlFileData()
   bookmarkData.m_name[kEnLang] = "Test bookmark";
   bookmarkData.m_description[kDefaultLang] = "Test bookmark description";
   bookmarkData.m_description[kEsLang] = "Descripción del marcador de prueba";
-  bookmarkData.m_featureTypes = {718, 715};
+
+  auto const & cl = classif();
+  bookmarkData.m_featureTypes = {cl.GetTypeByPath({"historic", "castle"}), cl.GetTypeByPath({"historic", "memorial"})};
+
   bookmarkData.m_customName[kDefaultLang] = "Mi lugar favorito";
   bookmarkData.m_customName[kEnLang] = "My favorite place";
   bookmarkData.m_color = {kml::PredefinedColor::Blue, 0};

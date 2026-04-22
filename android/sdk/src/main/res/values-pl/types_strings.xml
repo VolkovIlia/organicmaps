@@ -25,7 +25,7 @@
     <string name="type.amenity.arts_centre">Centrum sztuki</string>
     <string name="type.amenity.atm">Bankomat</string>
     <string name="type.amenity.bank">Bank</string>
-    <string name="type.amenity.bar">Bar alkoholowy</string>
+    <string name="type.amenity.bar">Bar</string>
     <string name="type.amenity.bbq">Grill</string>
     <string name="type.amenity.bench">Ławka</string>
     <string name="type.amenity.bicycle_parking">Parking dla rowerów</string>
@@ -116,7 +116,7 @@
     <string name="type.amenity.parking_space.private">Miejsce parkingowe</string>
     <string name="type.amenity.parking_space.underground">Miejsce parkingowe</string>
     <string name="type.amenity.parking_space.disabled">Miejsce parkingowe dla niepełnosprawnych</string>
-    <string name="type.amenity.payment_terminal">Wpłatomat</string>
+    <string name="type.amenity.payment_terminal">Terminal płatniczy</string>
     <string name="type.amenity.pharmacy">Apteka</string>
     <string name="type.amenity.place_of_worship">Świątynia</string>
     <string name="type.amenity.place_of_worship.buddhist">Świątynia buddyjska</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Kuchnia śródziemnomorska</string>
     <string name="type.cuisine.mexican">Kuchnia meksykańska</string>
     <string name="type.cuisine.moroccan">Kuchnia marokańska</string>
-    <string name="type.cuisine.noodles">Noodle</string>
+    <string name="type.cuisine.noodle">Noodle</string>
     <string name="type.cuisine.oriental">Kuchnia orientalna</string>
     <string name="type.cuisine.pancake">Naleśniki</string>
     <string name="type.cuisine.pasta">Makarony</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Kiełbasiarnia</string>
     <string name="type.cuisine.savory_pancakes">Wytrawne naleśniki</string>
     <string name="type.cuisine.seafood">Owoce morza</string>
+    <string name="type.cuisine.shawarma">Szawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Kuchnia hiszpańska</string>
     <string name="type.cuisine.steak_house">Steki</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Herbaciarnia</string>
     <string name="type.cuisine.thai">Kuchnia tajska</string>
     <string name="type.cuisine.turkish">Kuchnia turecka</string>
+    <string name="type.cuisine.uzbek">Uzbecka</string>
     <string name="type.cuisine.vegan">Kuchnia wegańska</string>
     <string name="type.cuisine.vegetarian">Kuchnia wegetariańska</string>
     <string name="type.cuisine.vietnamese">Kuchnia wietnamska</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Most dla pieszych</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Tunel dla pieszych</string>
+    <string name="type.highway.platform">Przystanek transportu publicznego</string>
     <string name="type.highway.primary">Ulica</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Most</string>
@@ -531,7 +534,7 @@
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.unclassified.bridge">Most</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.unclassified.tunnel">Tunel drogowy</string>
+    <string name="type.highway.unclassified.tunnel">Tunel</string>
     <string name="type.area_highway.cycleway">Droga rowerowa</string>
     <string name="type.area_highway.footway">Droga piesza</string>
     <string name="type.area_highway.living_street">Ulica w strefie zamieszkania</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Droga na pola lub do lasu</string>
     <string name="type.area_highway.trunk">Ulica</string>
     <string name="type.area_highway.unclassified">Ulica</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Obiekt historyczny</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Moczary</string>
     <string name="type.noexit">Ślepy koniec drogi</string>
     <string name="type.office">Biuro</string>
+    <string name="type.office.architect">Pracownia architektoniczna</string>
     <string name="type.office.company">Biuro przedsiębiorstwa</string>
+    <string name="type.office.educational_institution">Placówka oświatowa</string>
     <string name="type.office.estate_agent">Pośrednik handlu nieruchomościami</string>
     <string name="type.office.government">Biuro administracji rządowej</string>
     <string name="type.office.insurance">Biuro ubezpieczeń</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Przejście przez tory</string>
     <string name="type.railway.disused">Nieużywane tory kolejowe</string>
     <string name="type.railway.disused.bridge">Nieczynny most kolejowy</string>
+    <string name="type.railway.disused.tunnel">Nieczynny tunel kolejowy</string>
     <string name="type.railway.funicular">Kolej linowo-terenowa</string>
     <string name="type.railway.funicular.bridge">Most kolejki linowej</string>
     <string name="type.railway.funicular.tunnel">Tunel kolejki linowej</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Drogeria</string>
     <string name="type.shop.chocolate">Sklep z czekoladą</string>
     <string name="type.shop.clothes">Sklep z ubraniami</string>
+    <string name="type.shop.clothes.children">Sklep z odzieżą dziecięcą</string>
+    <string name="type.shop.clothes.fashion">Butik modowy</string>
+    <string name="type.shop.clothes.hats">Sklep z kapeluszami</string>
+    <string name="type.shop.clothes.men">Sklep z odzieżą męską</string>
+    <string name="type.shop.clothes.sports">Sklep z odzieżą sportową</string>
+    <string name="type.shop.clothes.suits">Sklep z garniturami</string>
+    <string name="type.shop.clothes.underwear">Sklep z bielizną</string>
+    <string name="type.shop.clothes.wedding">Salon sukien ślubnych</string>
+    <string name="type.shop.clothes.women">Sklep z odzieżą damską</string>
     <string name="type.shop.coffee">Sklep z kawą</string>
     <string name="type.shop.computer">Sklep komputerowy</string>
     <string name="type.shop.confectionery">Sklep ze słodyczami</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Zakład pogrzebowy</string>
     <string name="type.shop.furniture">Sklep meblowy</string>
     <string name="type.shop.garden_centre">Sklep ogrodniczy</string>
+    <string name="type.shop.games">Sklep z grami</string>
     <string name="type.shop.gas">Sklep gazowy</string>
     <string name="type.shop.gift">Sklep z pamiątkami</string>
     <string name="type.shop.greengrocer">Warzywniak</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Sklep kuchenny</string>
     <string name="type.shop.laundry">Pralnia</string>
+    <string name="type.shop.leather">Sklep z wyrobami skórzanymi</string>
     <string name="type.shop.mall">Centrum handlowe</string>
     <string name="type.shop.massage">Salon masażu</string>
     <string name="type.shop.mobile_phone">Sklep z telefonami komórkowymi</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Sklep zoologiczny</string>
     <string name="type.shop.pet_grooming">Pielęgnacja zwierząt</string>
     <string name="type.shop.photo">Fotograf</string>
+    <string name="type.shop.religion">Sklep z dewocjonaliami</string>
     <string name="type.shop.rental">Wypożyczalnia</string>
     <string name="type.shop.rental.bicycle">Wypożyczalnia rowerów</string>
     <string name="type.amenity.bicycle_rental.shop">Wypożyczalnia rowerów</string>

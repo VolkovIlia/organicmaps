@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Mediterranean</string>
     <string name="type.cuisine.mexican">Mexican</string>
     <string name="type.cuisine.moroccan">Moroccan</string>
-    <string name="type.cuisine.noodles">Noodles</string>
+    <string name="type.cuisine.noodle">Noodles</string>
     <string name="type.cuisine.oriental">East Asian</string>
     <string name="type.cuisine.pancake">Pancake</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Sausage</string>
     <string name="type.cuisine.savory_pancakes">Savory Pancakes</string>
     <string name="type.cuisine.seafood">Seafood</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Spanish</string>
     <string name="type.cuisine.steak_house">Steak House</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Tea</string>
     <string name="type.cuisine.thai">Thai</string>
     <string name="type.cuisine.turkish">Turkish</string>
+    <string name="type.cuisine.uzbek">Uzbek</string>
     <string name="type.cuisine.vegan">Vegan</string>
     <string name="type.cuisine.vegetarian">Vegetarian</string>
     <string name="type.cuisine.vietnamese">Vietnamese</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Pedestrian Bridge</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Pedestrian Tunnel</string>
+    <string name="type.highway.platform">Platform</string>
     <string name="type.highway.primary">Primary Road</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Bridge</string>
@@ -790,7 +793,9 @@
     <string name="type.natural.wetland.marsh">Marsh</string>
     <string name="type.noexit">Dead End</string>
     <string name="type.office">Office</string>
+    <string name="type.office.architect">Architect Office</string>
     <string name="type.office.company">Company Office</string>
+    <string name="type.office.educational_institution">Educational Institution</string>
     <string name="type.office.estate_agent">Estate Agent</string>
     <string name="type.office.government">Government Office</string>
     <string name="type.office.insurance">Insurance Office</string>
@@ -872,6 +877,7 @@
     <string name="type.railway.crossing">Railway Crossing</string>
     <string name="type.railway.disused">Disused Railway</string>
     <string name="type.railway.disused.bridge">Disused Railway Bridge</string>
+    <string name="type.railway.disused.tunnel">Disused Railway Tunnel</string>
     <string name="type.railway.funicular">Funicular</string>
     <string name="type.railway.funicular.bridge">Funicular Bridge</string>
     <string name="type.railway.funicular.tunnel">Funicular Tunnel</string>
@@ -1184,6 +1190,15 @@
     <string name="type.shop.chemist">Chemist</string>
     <string name="type.shop.chocolate">Chocolate Shop</string>
     <string name="type.shop.clothes">Clothes Shop</string>
+    <string name="type.shop.clothes.children">Children\'s Clothes Shop</string>
+    <string name="type.shop.clothes.fashion">Fashion Boutique</string>
+    <string name="type.shop.clothes.hats">Hat Shop</string>
+    <string name="type.shop.clothes.men">Men\'s Clothes Shop</string>
+    <string name="type.shop.clothes.sports">Sports Clothes Shop</string>
+    <string name="type.shop.clothes.suits">Suits Shop</string>
+    <string name="type.shop.clothes.underwear">Underwear Shop</string>
+    <string name="type.shop.clothes.wedding">Wedding Clothes Shop</string>
+    <string name="type.shop.clothes.women">Women\'s Clothes Shop</string>
     <string name="type.shop.coffee">Coffee Shop</string>
     <string name="type.shop.computer">Computer Store</string>
     <string name="type.shop.confectionery">Candy Shop</string>
@@ -1204,6 +1219,7 @@
     <string name="type.shop.funeral_directors">Funeral Directors</string>
     <string name="type.shop.furniture">Furniture Store</string>
     <string name="type.shop.garden_centre">Garden Center</string>
+    <string name="type.shop.games">Games Shop</string>
     <string name="type.shop.gas">Gas Store</string>
     <string name="type.shop.gift">Gift Shop</string>
     <string name="type.shop.greengrocer">Greengrocer</string>
@@ -1219,6 +1235,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Kitchen Store</string>
     <string name="type.shop.laundry">Laundry</string>
+    <string name="type.shop.leather">Leather Shop</string>
     <string name="type.shop.mall">Mall</string>
     <string name="type.shop.massage">Massage Salon</string>
     <string name="type.shop.mobile_phone">Cell Phone Store</string>
@@ -1237,6 +1254,7 @@
     <string name="type.shop.pet">Pet Store</string>
     <string name="type.shop.pet_grooming">Pet Grooming</string>
     <string name="type.shop.photo">Photo Shop</string>
+    <string name="type.shop.religion">Religion Shop</string>
     <string name="type.shop.rental">Rental Shop</string>
     <string name="type.shop.rental.bicycle">Bicycle Rental Shop</string>
     <string name="type.amenity.bicycle_rental.shop">Bicycle Rental Shop</string>

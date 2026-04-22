@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdint>
 
 namespace
 {
@@ -114,6 +115,62 @@ StringUtf8Multilang::Languages constexpr languagesWithoutService = [] consteval
                        [](StringUtf8Multilang::Lang const & lang) { return !IsServiceLang(lang.m_code); });
   return langs;
 }();
+
+// Compile-time perfect hash table for O(1) language code lookup.
+constexpr uint32_t LangHash(std::string_view s)
+{
+  uint32_t h = 0x811c9dc5u;  // FNV-1a offset basis
+  for (char c : s)
+  {
+    h ^= static_cast<uint32_t>(static_cast<unsigned char>(c));
+    h *= 0x01000193u;  // FNV-1a prime
+  }
+  return h;
+}
+
+struct LangHashEntry
+{
+  std::string_view code;
+  int8_t index = StringUtf8Multilang::kUnsupportedLanguageCode;
+};
+
+constexpr size_t kHashTableSize = 128;
+constexpr size_t kHashMask = kHashTableSize - 1;
+
+using LangHashTable = std::array<LangHashEntry, kHashTableSize>;
+
+constexpr LangHashTable kLangHashTable = [] consteval
+{
+  LangHashTable table{};
+  for (size_t i = 0; i < kLanguages.size(); ++i)
+  {
+    auto const & lang = kLanguages[i];
+    if (lang.m_code == StringUtf8Multilang::kReservedLang)
+      continue;
+
+    uint32_t slot = LangHash(lang.m_code) & kHashMask;
+    while (!table[slot].code.empty())
+      slot = (slot + 1) & kHashMask;
+
+    table[slot].code = lang.m_code;
+    table[slot].index = static_cast<int8_t>(i);
+  }
+  return table;
+}();
+
+constexpr int8_t LookupLangIndex(std::string_view lang)
+{
+  uint32_t slot = LangHash(lang) & kHashMask;
+  for (;;)
+  {
+    auto const & entry = kLangHashTable[slot];
+    if (entry.code.empty())
+      return StringUtf8Multilang::kUnsupportedLanguageCode;
+    if (entry.code == lang)
+      return entry.index;
+    slot = (slot + 1) & kHashMask;
+  }
+}
 }  // namespace
 
 bool StringUtf8Multilang::IsServiceLang(std::string_view const lang)
@@ -132,12 +189,7 @@ int8_t StringUtf8Multilang::GetLangIndex(std::string_view lang)
   if (lang == kReservedLang)
     return kUnsupportedLanguageCode;
 
-  for (size_t i = 0; i < kLanguages.size(); ++i)
-
-    if (lang == kLanguages[i].m_code)
-      return static_cast<int8_t>(i);
-
-  return kUnsupportedLanguageCode;
+  return LookupLangIndex(lang);
 }
 
 // static
@@ -165,6 +217,38 @@ StringUtf8Multilang::Lang::TransliteratorsList const * StringUtf8Multilang::GetT
     return nullptr;
 
   return &kLanguages[langCode].m_transliteratorsIds;
+}
+
+namespace
+{
+
+struct SimilarLangsEntry
+{
+  int8_t code;
+  std::array<int8_t, 2> val;
+};
+
+using SimilarLangsArray = std::array<SimilarLangsEntry, 4>;
+
+constexpr SimilarLangsArray kSimilarLangs = [] consteval
+{
+  int8_t constexpr nolang = StringUtf8Multilang::kUnsupportedLanguageCode;
+  return SimilarLangsArray{{
+      {LookupLangIndex("be"), {LookupLangIndex("ru"), nolang}},
+      {LookupLangIndex("ja"), {LookupLangIndex("ja_kana"), LookupLangIndex("ja_rm")}},
+      {LookupLangIndex("ko"), {LookupLangIndex("ko_rm"), nolang}},
+      {LookupLangIndex("zh"), {LookupLangIndex("zh_pinyin"), nolang}},
+  }};
+}();
+
+}  // namespace
+
+std::array<int8_t, 2> const * StringUtf8Multilang::GetSimilarLanguages(int8_t langCode)
+{
+  for (auto const & e : kSimilarLangs)
+    if (e.code == langCode)
+      return &e.val;
+  return nullptr;
 }
 
 std::string StringUtf8Multilang::GetOSMTagByCode(uint8_t const langCode)
@@ -291,7 +375,7 @@ bool StringUtf8Multilang::GetString(int8_t lang, std::string_view & utf8s) const
   return false;
 }
 
-std::string_view StringUtf8Multilang::GetBestString(buffer_vector<int8_t, 4> const & langs) const
+std::string_view StringUtf8Multilang::GetBestString(LangsBufferT const & langs) const
 {
   size_t langIdx = langs.size() + 1;
   std::string_view res;

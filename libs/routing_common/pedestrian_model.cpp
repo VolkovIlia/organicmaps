@@ -52,6 +52,7 @@ HighwayBasedSpeeds const kDefaultSpeeds = {
 
     // Set 10% higher weight (than default 5) for foot designated ways.
     {HighwayType::HighwayPedestrian, InOutCitySpeedKMpH(SpeedKMpH(5.5, 5.0))},
+    {HighwayType::HighwayPlatform, InOutCitySpeedKMpH(SpeedKMpH(5.5, 5.0))},
     {HighwayType::HighwayFootway, InOutCitySpeedKMpH(SpeedKMpH(5.5, 5.0))},
 
     /// @todo A car ferry has {10, 10}. Weight = 3 is 60% from reasonable 5 max speed.
@@ -84,6 +85,7 @@ VehicleModel::LimitsInitList const kDefaultOptions = {
     {HighwayType::HighwayLadder, true},
     {HighwayType::HighwaySteps, true},
     {HighwayType::HighwayPedestrian, true},
+    {HighwayType::HighwayPlatform, true},
     {HighwayType::HighwayFootway, true},
     {HighwayType::ManMadePier, true},
     {HighwayType::RouteFerry, true}};
@@ -157,13 +159,13 @@ PedestrianModel::PedestrianModel(VehicleModel::LimitsInitList const & limits, Hi
   // No bridleway and cycleway in default.
   ASSERT_EQUAL(kDefaultOptions.size(), kDefaultSpeeds.size() - 2, ());
 
-  std::vector<std::string> hwtagYesFoot = {"hwtag", "yesfoot"};
+  base::StringIL hwtagYesFoot = {"hwtag", "yesfoot"};
   auto const & cl = classif();
 
   m_noType = cl.GetTypeByPath({"hwtag", "nofoot"});
   m_yesType = cl.GetTypeByPath(hwtagYesFoot);
 
-  AddAdditionalRoadTypes(cl, {{std::move(hwtagYesFoot), kDefaultSpeeds.Get(HighwayType::HighwayLivingStreet)}});
+  AddAdditionalRoadTypes(cl, {{hwtagYesFoot, kDefaultSpeeds.Get(HighwayType::HighwayLivingStreet)}});
 
   // Update max pedestrian speed with possible ferry transfer. See EdgeEstimator::CalcHeuristic.
   SpeedKMpH constexpr kMaxPedestrianSpeedKMpH(60.0);

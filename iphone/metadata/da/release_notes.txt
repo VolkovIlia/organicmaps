@@ -1,16 +1,23 @@
-• NYHED: Mørkt tema med højere kontrast
-• Opdateret OpenStreetMap-data (11. januar)
-• Ekskluderede kasinoer fra kategorien "Underholdning"
-• Reducerede tykkelsen på metrolinjer
-• Tilføjet kapacitetsinformation i søgeresultater for motorcykelparkering, cykeludlejning, cykelopladning og bilopladning
-• Vis etage i søgeresultater
-• Bredere ruteplanlægningsknapper
+• OSM-kortdata pr. 10. marts
+• Wikipedia-data pr. 1. marts
+• Tilføjet support for betingede hastighedsbegrænsninger
+• Mere detaljerede højdekurver for kinesiske provinser
+• Tilføjet læderbutikker og butikker, der sælger religiøse varer
+• Tilføjet trærækker
+• Tilføjet stoppesteder for offentlig transport uden nærliggende busstoppesteder
+• Rettet beregning af landenes download-fremskridt
+• Opdelt Tanzania i mindre regioner
+• Tilføjet historik over nyligt anvendte kategorier i Editor
+• Forbedret opadgående strygning på ruteplanlægningsskærmen
+• Rettet linjalposition for CarPlay
+• Rettet flere nedbrud, forbedret stabilitet og ydeevne
 
 ### Oversættelser
 
-• Tilføjet albansk oversættelse af appen og stemmevejledning
-• Opdateret FAQ og tilføjet FAQ-oversættelser til arabisk, tjekkisk, hollandsk, farsi, græsk, hebraisk, hindi, ungarsk, indonesisk, italiensk, litauisk, marathi, svensk, telugu
-• Forbedret tyske app- og FAQ-oversættelser
-• Tilføjet bulgarske søgesynonymer
-• Omdøbt indstillingen "Zoom-knapper" for tydelighedens skyld
-• Oversættelsesrettelser fra Weblate-bidragydere til forskellige sprog
+• Forbedrede landebeskrivelser
+• Anvendt rumænske rettelser fra Eugen Dedu
+• Opdaterede landenavne
+• Opdaterede oversættelser fra Weblate-bidragydere
+• Rettet ukrainsk oversættelse
+
+Tak til alle, der bidrager, donerer og støtter Organic Maps! Lad os sammen skabe de bedste kort!

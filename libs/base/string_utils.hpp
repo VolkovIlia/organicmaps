@@ -1,20 +1,17 @@
 #pragma once
 
 #include "base/buffer_vector.hpp"
-#include "base/checked_cast.hpp"
 
 #include <algorithm>
 #include <cerrno>
 #include <charconv>
 #include <cstdint>
 #include <cstdlib>
-#include <iomanip>
 #include <iterator>
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <system_error>
-#include <type_traits>
 
 #include <utf8/unchecked.h>
 
@@ -34,12 +31,13 @@ public:
 
   using value_type = UniChar;
 
-  UniString() = default;
-  explicit UniString(size_t n) : BaseT(n) {}
-  UniString(size_t n, UniChar c) { resize(n, c); }
+  constexpr UniString() = default;
+  constexpr explicit UniString(size_t n) : BaseT(n) {}
+  constexpr explicit UniString(UniChar const * s) : BaseT(s, s + std::char_traits<UniChar>::length(s)) {}
+  constexpr UniString(size_t n, UniChar c) { resize(n, c); }
 
   template <typename Iter>
-  UniString(Iter b, Iter e) : BaseT(b, e)
+  constexpr UniString(Iter b, Iter e) : BaseT(b, e)
   {}
 
   bool IsEqualAscii(char const * s) const;
@@ -88,6 +86,12 @@ UniString MakeLowerCase(UniString s);
 /// to rules in ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt
 /// For implementation @see base/normalize_unicode.cpp
 void NormalizeInplace(UniString & s);
+
+/// Allocation-free single-character normalization. Writes result into out[].
+/// Returns the number of characters written (0 = stripped, 1+ = mapping).
+/// @param out must have space for at least kMaxNormalizedLen characters.
+static constexpr size_t kMaxNormalizedLen = 18;
+size_t NormalizeChar(UniChar c, UniChar * out);
 
 UniString Normalize(UniString s);
 std::string Normalize(std::string const & s);
@@ -524,20 +528,32 @@ inline std::string to_string(uint64_t i)
 {
   return std::to_string(i);
 }
-/// Use this function to get string with fixed count of
-/// "Digits after comma".
-std::string to_string_dac(double d, int dac);
+// @returns string with fixed count of "digits after comma"
+std::string to_string_dac(double d, uint8_t dac);
+// @returns string with fixed count of "digits after comma"
+inline std::string to_string_dac(float d, uint8_t dac)
+{
+  return to_string_dac(static_cast<double>(d), dac);
+}
 //@}
 
 // Get string with fixed width. Extra '0' are added at the begining to fit size.
 template <std::integral T>
 std::string to_string_width(T l, int width)
 {
-  std::ostringstream ss;
+  auto const absVal = std::abs(l);
+  char buf[32];
+  auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), absVal);
+
+  std::string result;
   if (l < 0)
-    ss << '-';
-  ss << std::setfill('0') << std::setw(width) << std::abs(l);
-  return ss.str();
+    result += '-';
+
+  auto const digits = static_cast<int>(ptr - buf);
+  if (digits < width)
+    result.append(width - digits, '0');
+  result.append(buf, ptr);
+  return result;
 }
 
 template <typename IterT1, typename IterT2>
@@ -610,8 +626,8 @@ size_t EditDistance(Iter const & b1, Iter const & e1, Iter const & b2, Iter cons
 
   // |curr| and |prev| are current and previous rows of the
   // dynamic programming table.
-  std::vector<size_t> prev(m + 1);
-  std::vector<size_t> curr(m + 1);
+  buffer_vector<size_t, 128> prev(m + 1);
+  buffer_vector<size_t, 128> curr(m + 1);
   for (size_t j = 0; j <= m; ++j)
     prev[j] = j;
   auto it1 = b1;

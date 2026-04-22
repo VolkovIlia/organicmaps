@@ -31,7 +31,7 @@
 "type.amenity.bicycle_parking" = "Parkim biçikletash";
 "type.amenity.bicycle_parking.covered" = "Parkim i mbuluar";
 "type.amenity.bicycle_rental" = "Marrje biçikletash me qira";
-"type.amenity.bicycle_repair_station" = "Stacion riparimi";
+"type.amenity.bicycle_repair_station" = "Stacion riparimi biçikletash";
 "type.amenity.biergarten" = "Birrari";
 "type.amenity.brothel" = "Shtëpi publike";
 "type.amenity.love_hotel" = "Hotel dashurie";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mesdhetare";
 "type.cuisine.mexican" = "Meksikane";
 "type.cuisine.moroccan" = "Marokene";
-"type.cuisine.noodles" = "Nudëll";
+"type.cuisine.noodle" = "Nudëll";
 "type.cuisine.oriental" = "Aziatike Lindore";
 "type.cuisine.pancake" = "Pankake";
 "type.cuisine.pasta" = "Makarna";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Salsiçe";
 "type.cuisine.savory_pancakes" = "Pankake të kripura";
 "type.cuisine.seafood" = "Ushqim deti";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Spanjolle";
 "type.cuisine.steak_house" = "Steak House";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Çaj";
 "type.cuisine.thai" = "Tajlandeze";
 "type.cuisine.turkish" = "Turke";
+"type.cuisine.uzbek" = "Uzbeke";
 "type.cuisine.vegan" = "Vegane";
 "type.cuisine.vegetarian" = "Vegjetariane";
 "type.cuisine.vietnamese" = "Vietnameze";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunel këmbësorësh";
+"type.highway.platform" = "Platformë";
 "type.highway.primary" = "Rrugë kryesore";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Kënetë";
 "type.noexit" = "Rrugë pa krye";
 "type.office" = "Zyrë";
+"type.office.architect" = "Studio arkitekture";
 "type.office.company" = "Zyrë kompanie";
+"type.office.educational_institution" = "Institucion arsimor";
 "type.office.estate_agent" = "Agjent imobiliar";
 "type.office.government" = "Zyrë qeveritare";
 "type.office.insurance" = "Zyre sigurimesh";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Kryqëzim hekurudhor";
 "type.railway.disused" = "Hekurudhë jashtë përdorimit";
 "type.railway.disused.bridge" = "Urë hekurudhore jashtë përdorimit";
+"type.railway.disused.tunnel" = "Tunel hekurudhor jashtë përdorimit";
 "type.railway.funicular" = "Funikular";
 "type.railway.funicular.bridge" = "Urë funikulari";
 "type.railway.funicular.tunnel" = "Tunel funikulari";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Farmaci";
 "type.shop.chocolate" = "Dyqan çokollatash";
 "type.shop.clothes" = "Dyqan rrobash";
+"type.shop.clothes.children" = "Dyqan rrobash fëmijësh";
+"type.shop.clothes.fashion" = "Butik mode";
+"type.shop.clothes.hats" = "Dyqan kapelash";
+"type.shop.clothes.men" = "Dyqan rrobash për burra";
+"type.shop.clothes.sports" = "Dyqan rrobash sportive";
+"type.shop.clothes.suits" = "Dyqan kostumesh";
+"type.shop.clothes.underwear" = "Dyqan rrobash të brendshme";
+"type.shop.clothes.wedding" = "Dyqan rrobash nusërie";
+"type.shop.clothes.women" = "Dyqan rrobash për gra";
 "type.shop.coffee" = "Dyqan kafeje";
 "type.shop.computer" = "Dyqan kompjuterash";
 "type.shop.confectionery" = "Dyqan ëmbëlsirash";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Agjenci funerale";
 "type.shop.furniture" = "Dyqan mobiljesh";
 "type.shop.garden_centre" = "Qendër kopshtarie";
+"type.shop.games" = "Dyqan lojërash";
 "type.shop.gas" = "Dyqan gazi";
 "type.shop.gift" = "Dyqan dhuratash";
 "type.shop.greengrocer" = "Dyqan frutash-perimesh";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kioskë";
 "type.shop.kitchen" = "Pajisje kuzhine";
 "type.shop.laundry" = "Lavanderi";
+"type.shop.leather" = "Dyqan artikujsh lëkure";
 "type.shop.mall" = "Qendër tregtare";
 "type.shop.massage" = "Sallon masazhi";
 "type.shop.mobile_phone" = "Dyqan celularësh";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Dyqan kafshësh";
 "type.shop.pet_grooming" = "Kujdes për kafshët";
 "type.shop.photo" = "Foto studio";
+"type.shop.religion" = "Dyqan i artikujve fetarë";
 "type.shop.rental" = "Dyqan me qira";
 "type.shop.rental.bicycle" = "Qira biçikletash";
 "type.amenity.bicycle_rental.shop" = "Qira biçikletash";

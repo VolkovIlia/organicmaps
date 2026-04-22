@@ -56,18 +56,19 @@ import app.organicmaps.sdk.bookmarks.data.TrackRecording;
 import app.organicmaps.sdk.downloader.CountryItem;
 import app.organicmaps.sdk.downloader.MapManager;
 import app.organicmaps.sdk.editor.Editor;
+import app.organicmaps.sdk.location.LocationCompatExtractor;
 import app.organicmaps.sdk.location.LocationListener;
 import app.organicmaps.sdk.location.SensorListener;
 import app.organicmaps.sdk.routing.RoutingController;
 import app.organicmaps.sdk.util.StringUtils;
 import app.organicmaps.sdk.util.concurrency.UiThread;
 import app.organicmaps.sdk.widget.placepage.CoordinatesFormat;
-import app.organicmaps.util.Graphics;
 import app.organicmaps.util.SharingUtils;
 import app.organicmaps.util.UiUtils;
 import app.organicmaps.util.Utils;
 import app.organicmaps.util.bottomsheet.MenuBottomSheetFragment;
 import app.organicmaps.util.bottomsheet.MenuBottomSheetItem;
+import app.organicmaps.utils.Graphics;
 import app.organicmaps.widget.ArrowView;
 import app.organicmaps.widget.placepage.sections.PlacePageBookmarkFragment;
 import app.organicmaps.widget.placepage.sections.PlacePageLinksFragment;
@@ -85,7 +86,8 @@ import java.util.List;
 public class PlacePageView extends Fragment
     implements View.OnClickListener, View.OnLongClickListener, LocationListener, SensorListener, Observer<MapObject>,
                ChooseBookmarkCategoryFragment.Listener, EditBookmarkFragment.EditBookmarkListener,
-               MenuBottomSheetFragment.MenuBottomSheetInterface, BookmarkManager.BookmarksSharingListener
+               MenuBottomSheetFragment.MenuBottomSheetInterface, BookmarkManager.BookmarksSharingListener,
+               BookmarkColorDialogFragment.OnBookmarkColorChangeListener
 
 {
   private static final String PREF_COORDINATES_FORMAT = "coordinates_format";
@@ -140,6 +142,7 @@ public class PlacePageView extends Fragment
   private TextView mTvEntrance;
   private View mRouteRef;
   private TextView mTvRouteRef;
+  private ImageView mIvRouteRef;
   private View mEditPlace;
   private View mAddOrganisation;
   private View mAddPlace;
@@ -151,6 +154,9 @@ public class PlacePageView extends Fragment
   private TextView mTvOsmDescription;
   private MaterialButton mShareButton;
   private MaterialButton closeButton;
+
+  @Nullable
+  private Observer<String> mTrackRecordingObserver;
 
   // Data
   private CoordinatesFormat mCoordsFormat = CoordinatesFormat.LatLonDecimal;
@@ -315,6 +321,7 @@ public class PlacePageView extends Fragment
     mRouteRef = mFrame.findViewById(R.id.ll__place_route_ref);
     mRouteRef.setOnClickListener(this);
     mTvRouteRef = mFrame.findViewById(R.id.tv__place_route_ref);
+    mIvRouteRef = mFrame.findViewById(R.id.iv__place_route_ref);
     mEditPlace = mFrame.findViewById(R.id.ll__place_editor);
     mEditPlace.setOnClickListener(this);
     mAddOrganisation = mFrame.findViewById(R.id.ll__add_organisation);
@@ -504,9 +511,11 @@ public class PlacePageView extends Fragment
     else if (mMapObject.isTrackRecording())
     {
       TrackRecording trackRecording = (TrackRecording) mMapObject;
-      trackRecording.getTrackRecordingPPDescription().observe(requireActivity(), s -> {
-        UiUtils.setTextAndHideIfEmpty(mTvTitle, trackRecording.getTrackRecordingPPDescription().getValue());
-      });
+      final var liveData = trackRecording.getTrackRecordingPPDescription();
+      if (mTrackRecordingObserver != null)
+        liveData.removeObserver(mTrackRecordingObserver);
+      mTrackRecordingObserver = s -> UiUtils.setTextAndHideIfEmpty(mTvTitle, s);
+      liveData.observe(getViewLifecycleOwner(), mTrackRecordingObserver);
       UiUtils.hide(mAvDirection, mTvDistance);
     }
   }
@@ -514,13 +523,16 @@ public class PlacePageView extends Fragment
   void refreshCategoryPreview()
   {
     View categoryContainer = mFrame.findViewById(R.id.category_container);
+    boolean showCategory;
     if (mMapObject.isTrack())
     {
       Track track = (Track) mMapObject;
       Drawable circle = Graphics.drawCircle(track.getColor(), R.dimen.place_page_icon_background_size,
                                             requireContext().getResources());
       mColorIcon.setImageDrawable(circle);
-      mTvCategory.setText(BookmarkManager.INSTANCE.getCategoryById(track.getCategoryId()).getName());
+      showCategory = !track.isTempRelationTrack();
+      if (showCategory)
+        mTvCategory.setText(BookmarkManager.INSTANCE.getCategoryById(track.getCategoryId()).getName());
     }
     else if (mMapObject.isBookmark())
     {
@@ -533,53 +545,64 @@ public class PlacePageView extends Fragment
         mColorIcon.setImageDrawable(circle);
         mTvCategory.setText(BookmarkManager.INSTANCE.getCategoryById(bookmark.getCategoryId()).getName());
       }
+      showCategory = true;
     }
-    UiUtils.showIf(mMapObject.isTrack() || mMapObject.isBookmark(), categoryContainer);
+    else
+      showCategory = false;
+    UiUtils.showIf(showCategory, categoryContainer);
   }
 
   void showColorDialog()
   {
     final Bundle args = new Bundle();
     final FragmentManager manager = getChildFragmentManager();
-    String className = BookmarkColorDialogFragment.class.getName();
-    final FragmentFactory factory = manager.getFragmentFactory();
-    final BookmarkColorDialogFragment dialogFragment =
-        (BookmarkColorDialogFragment) factory.instantiate(getContext().getClassLoader(), className);
-    dialogFragment.setArguments(args);
+    final BookmarkColorDialogFragment dialogFragment = new BookmarkColorDialogFragment();
 
     if (mMapObject.isTrack())
     {
       final Track track = (Track) mMapObject;
       args.putInt(BookmarkColorDialogFragment.ICON_COLOR, PredefinedColors.getPredefinedColorIndex(track.getColor()));
-      dialogFragment.setOnColorSetListener((colorPos) -> {
-        int from = track.getColor();
-        int to = PredefinedColors.getColor(colorPos);
-        if (from == to)
-          return;
-        track.setColor(to);
-        Drawable circle =
-            Graphics.drawCircle(to, R.dimen.place_page_icon_background_size, requireContext().getResources());
-        mColorIcon.setImageDrawable(circle);
-      });
-      dialogFragment.show(requireActivity().getSupportFragmentManager(), null);
     }
     else if (mMapObject.isBookmark())
     {
       final Bookmark bookmark = (Bookmark) mMapObject;
       args.putInt(BookmarkColorDialogFragment.ICON_COLOR, bookmark.getIcon().getColor());
       args.putInt(BookmarkColorDialogFragment.ICON_RES, bookmark.getIcon().getResId());
-      dialogFragment.setOnColorSetListener((colorPos) -> {
-        int from = bookmark.getIcon().argb();
-        int to = PredefinedColors.getColor(colorPos);
-        if (from == to)
-          return;
-        bookmark.setIconColor(to);
-        Drawable circle =
-            Graphics.drawCircleAndImage(to, R.dimen.place_page_icon_background_size, bookmark.getIcon().getResId(),
-                                        R.dimen.place_page_icon_size, requireContext());
-        mColorIcon.setImageDrawable(circle);
-      });
-      dialogFragment.show(requireActivity().getSupportFragmentManager(), null);
+    }
+
+    dialogFragment.setArguments(args);
+    dialogFragment.show(manager, null);
+  }
+
+  @Override
+  public void onBookmarkColorSet(int colorPos)
+  {
+    if (mMapObject == null)
+      return;
+    if (mMapObject.isTrack())
+    {
+      final Track track = (Track) mMapObject;
+      int from = track.getColor();
+      int to = PredefinedColors.getColor(colorPos);
+      if (from == to)
+        return;
+      track.setColor(to);
+      Drawable circle =
+          Graphics.drawCircle(to, R.dimen.place_page_icon_background_size, requireContext().getResources());
+      mColorIcon.setImageDrawable(circle);
+    }
+    else if (mMapObject.isBookmark())
+    {
+      final Bookmark bookmark = (Bookmark) mMapObject;
+      int from = bookmark.getIcon().argb();
+      int to = PredefinedColors.getColor(colorPos);
+      if (from == to)
+        return;
+      bookmark.setIconColor(to);
+      Drawable circle =
+          Graphics.drawCircleAndImage(to, R.dimen.place_page_icon_background_size, bookmark.getIcon().getResId(),
+                                      R.dimen.place_page_icon_size, requireContext());
+      mColorIcon.setImageDrawable(circle);
     }
   }
 
@@ -707,6 +730,13 @@ public class PlacePageView extends Fragment
 
     // showTaxiOffer(mapObject);
     refreshMetadataOrHide(Framework.nativeGetActiveObjectFormattedRouteRefs(), mRouteRef, mTvRouteRef);
+    if (mRouteRef.getVisibility() == VISIBLE)
+    {
+      if (mMapObject.isTramStop())
+        mIvRouteRef.setImageResource(R.drawable.ic_category_tram);
+      else
+        mIvRouteRef.setImageResource(R.drawable.ic_category_bus);
+    }
 
     if (RoutingController.get().isNavigating() || RoutingController.get().isPlanning())
     {
@@ -772,8 +802,9 @@ public class PlacePageView extends Fragment
       return;
 
     final StringBuilder builder = new StringBuilder();
-    if (l.hasAltitude())
-      builder.append("▲").append(Framework.nativeFormatAltitude(l.getAltitude()));
+    final LocationCompatExtractor.Altitude altitude = LocationCompatExtractor.getAltitude(l);
+    if (altitude != null)
+      builder.append("▲").append(Framework.nativeFormatAltitude(altitude.altitude()));
     if (l.hasSpeed())
       builder.append("   ").append(Framework.nativeFormatSpeed(l.getSpeed()));
 

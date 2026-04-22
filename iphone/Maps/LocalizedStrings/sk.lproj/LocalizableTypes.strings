@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Stredomorská kuchyňa";
 "type.cuisine.mexican" = "Mexická kuchyňa";
 "type.cuisine.moroccan" = "Marocká kuchyňa";
-"type.cuisine.noodles" = "Rezance";
+"type.cuisine.noodle" = "Rezance";
 "type.cuisine.oriental" = "Orientálna kuchyňa";
 "type.cuisine.pancake" = "Lievance";
 "type.cuisine.pasta" = "Cestoviny";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Klobása";
 "type.cuisine.savory_pancakes" = "Palacinky na slano";
 "type.cuisine.seafood" = "Morské plody";
+"type.cuisine.shawarma" = "Šawarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Španielska kuchyňa";
 "type.cuisine.steak_house" = "Steak house";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Čaj";
 "type.cuisine.thai" = "Thajská kuchyňa";
 "type.cuisine.turkish" = "Turecká kuchyňa";
+"type.cuisine.uzbek" = "Uzbecká";
 "type.cuisine.vegan" = "Vegánske jedlá";
 "type.cuisine.vegetarian" = "Vegetariánske jedlá";
 "type.cuisine.vietnamese" = "Vietnamská kuchyňa";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Tunel pre chodcov";
+"type.highway.platform" = "Nástupište";
 "type.highway.primary" = "Cesta I. triedy";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Močiar";
 "type.noexit" = "Koniec cesty";
 "type.office" = "Kancelária";
+"type.office.architect" = "Architektonická kancelária";
 "type.office.company" = "Sídlo spoločnosti";
+"type.office.educational_institution" = "Vzdelávacia inštitúcia";
 "type.office.estate_agent" = "Realitný agent";
 "type.office.government" = "Štátny úrad";
 "type.office.insurance" = "Poisťovňa";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Železničné priecestie";
 "type.railway.disused" = "Nepoužívaná trať";
 "type.railway.disused.bridge" = "Nepoužívaný železničný most";
+"type.railway.disused.tunnel" = "Nepoužívaný železničný tunel";
 "type.railway.funicular" = "Lanovka";
 "type.railway.funicular.bridge" = "Funicular Bridge";
 "type.railway.funicular.tunnel" = "Funicular Tunnel";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Drogéria";
 "type.shop.chocolate" = "Obchod s čokoládou";
 "type.shop.clothes" = "Oblečenie";
+"type.shop.clothes.children" = "Detský obchod s oblečením";
+"type.shop.clothes.fashion" = "Módny butik";
+"type.shop.clothes.hats" = "Obchod s klobúkmi";
+"type.shop.clothes.men" = "Pánsky obchod s oblečením";
+"type.shop.clothes.sports" = "Obchod so športovým oblečením";
+"type.shop.clothes.suits" = "Obchod s oblekmi";
+"type.shop.clothes.underwear" = "Obchod so spodnou bielizňou";
+"type.shop.clothes.wedding" = "Obchod so svadobnými šatami";
+"type.shop.clothes.women" = "Dámsky obchod s oblečením";
 "type.shop.coffee" = "Obchod s kávou";
 "type.shop.computer" = "Obchod s výpočtovou technikou";
 "type.shop.confectionery" = "Cukrovinky";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Pohrebníctvo";
 "type.shop.furniture" = "Nábytok";
 "type.shop.garden_centre" = "Záhradkárske potreby";
+"type.shop.games" = "Obchod s hrami";
 "type.shop.gas" = "Obchod s plynom";
 "type.shop.gift" = "Darčeky";
 "type.shop.greengrocer" = "Zelovoc";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Stánok";
 "type.shop.kitchen" = "Obchod s kuchynským vybavením";
 "type.shop.laundry" = "Práčovňa";
+"type.shop.leather" = "Obchod s koženým tovarom";
 "type.shop.mall" = "Nákupné centrum";
 "type.shop.massage" = "Masážny salón";
 "type.shop.mobile_phone" = "Mobilné telefóny";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Chovateľské potreby";
 "type.shop.pet_grooming" = "Zvierací salón";
 "type.shop.photo" = "Fotografické služby";
+"type.shop.religion" = "Obchod s náboženskými predmetmi";
 "type.shop.rental" = "Požičovňa";
 "type.shop.rental.bicycle" = "Požičovňa bicyklov";
 "type.amenity.bicycle_rental.shop" = "Požičovňa bicyklov";

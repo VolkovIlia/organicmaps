@@ -15,6 +15,7 @@
 #include <regex>
 #include <string>
 
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>  // for sysconf
 
@@ -229,12 +230,11 @@ void Platform::GetSystemFontNames(FilesList & res) const
 // static
 time_t Platform::GetFileCreationTime(std::string const & path)
 {
+  // Note: Android's plain stat() does not expose birth time. Using st_atim as an approximation
+  // is a pre-existing behavior quirk; statx would require API >= 30 (current minSdk is 21).
   struct stat st;
   if (0 == stat(path.c_str(), &st))
     return st.st_atim.tv_sec;
-
-  LOG(LERROR, ("GetFileCreationTime stat failed for", path, "with error", strerror(errno)));
-  // TODO(AB): Refactor to return std::optional<time_t>.
   return 0;
 }
 
@@ -244,8 +244,14 @@ time_t Platform::GetFileModificationTime(std::string const & path)
   struct stat st;
   if (0 == stat(path.c_str(), &st))
     return st.st_mtim.tv_sec;
-
-  LOG(LERROR, ("GetFileModificationTime stat failed for", path, "with error", strerror(errno)));
-  // TODO(AB): Refactor to return std::optional<time_t>.
   return 0;
+}
+
+// static
+bool Platform::SetFileModificationTime(std::string const & path, time_t modTime)
+{
+  struct timespec times[2] = {};
+  times[0].tv_nsec = UTIME_OMIT;  // access time: unchanged
+  times[1].tv_sec = modTime;      // modification time
+  return utimensat(AT_FDCWD, path.c_str(), times, 0) == 0;
 }

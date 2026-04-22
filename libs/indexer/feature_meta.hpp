@@ -149,7 +149,7 @@ public:
   static std::string ToWikiURL(std::string v);
   std::string GetWikiURL() const;
   static std::string ToWikimediaCommonsURL(std::string v);
-  static void EncodeWikiURL(int startIndex, std::string & url);
+  static void EncodeWikiURL(size_t startIndex, std::string & url);
 
   void ClearPOIAttribs();
 };
@@ -230,7 +230,7 @@ public:
   }
 
   void SetLanguages(std::vector<std::string> const & codes);
-  void GetLanguages(std::vector<int8_t> & langs) const;
+  void GetLanguages(LangsBufferT & langs) const;
   bool HasLanguage(int8_t const lang) const;
   bool IsSingleLanguage(int8_t const lang) const;
 

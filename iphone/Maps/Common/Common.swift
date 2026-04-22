@@ -1,7 +1,7 @@
 import Foundation
 
 var isiPad: Bool {
-  if #available(iOS 14.0, *), ProcessInfo.processInfo.isiOSAppOnMac {
+  if ProcessInfo.processInfo.isiOSAppOnMac {
     return true
   }
   return UIDevice.current.userInterfaceIdiom == .pad
@@ -37,11 +37,6 @@ func toString(_ cls: AnyClass) -> String {
   String(describing: cls)
 }
 
-func statusBarHeight() -> CGFloat {
-  let statusBarSize = UIApplication.shared.statusBarFrame.size
-  return min(statusBarSize.height, statusBarSize.width)
-}
-
 func LOG(_ level: LogLevel,
          _ message: @autoclosure () -> Any,
          functionName: StaticString = #function,
@@ -54,6 +49,6 @@ func LOG(_ level: LogLevel,
   }
 }
 
-struct Weak<T> where T: AnyObject {
+struct Weak<T: AnyObject> {
   weak var value: T?
 }

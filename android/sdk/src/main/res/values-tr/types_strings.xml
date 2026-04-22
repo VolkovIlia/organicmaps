@@ -11,7 +11,7 @@
     <string name="type.aerialway.drag_lift">Kayak Teleferiği</string>
     <string name="type.aerialway.gondola">Telekabin</string>
     <string name="type.aerialway.mixed_lift">Karışık Teleferik</string>
-    <string name="type.aerialway.station">Havayolu İstasyonu</string>
+    <string name="type.aerialway.station">Teleferik İstasyonu</string>
     <string name="type.aeroway">Hava Sahası Alt Yapısı</string>
     <string name="type.aeroway.aerodrome">Havaalanı</string>
     <string name="type.aeroway.aerodrome.international">Uluslararası Havalimanı</string>
@@ -80,7 +80,7 @@
     <!-- In most (European) countries, сemeteries are usually independent of places of worship (e.g. military cemeteries), while grave yards are usually the yard of a place of worship. -->
     <string name="type.amenity.grave_yard.christian">Hristiyan Mezarlığı</string>
     <string name="type.amenity.hospital">Hastane</string>
-    <string name="type.amenity.hunting_stand">Avlanma Alanı</string>
+    <string name="type.amenity.hunting_stand">Avlanma Kulübesi</string>
     <string name="type.amenity.ice_cream">Dondurma</string>
     <string name="type.amenity.internet_cafe">İnternet Kafe</string>
     <string name="type.amenity.kindergarten">Anaokulu</string>
@@ -181,7 +181,7 @@
     <string name="type.amenity.vending_machine.drinks">İçecek Dağıtıcı</string>
     <string name="type.amenity.vending_machine.food">Yiyecek Dağıtıcı</string>
     <string name="type.amenity.vending_machine.newspapers">Gazete Dağıtıcı</string>
-    <string name="type.amenity.vending_machine.parking_tickets">Otopark Fişi</string>
+    <string name="type.amenity.vending_machine.parking_tickets">Parkmetre</string>
     <string name="type.amenity.vending_machine.public_transport_tickets">Bilet Dağıtıcı</string>
     <string name="type.amenity.vending_machine.sweets">Şekerleme Dağıtıcı</string>
     <string name="type.amenity.vending_machine.excrement_bags">Dışkı Torbası Dağıtıcı</string>
@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Akdeniz Mutfağı</string>
     <string name="type.cuisine.mexican">Meksika Mutfağı</string>
     <string name="type.cuisine.moroccan">Fas Mutfağı</string>
-    <string name="type.cuisine.noodles">Erişte</string>
+    <string name="type.cuisine.noodle">Erişte</string>
     <string name="type.cuisine.oriental">Uzak Doğu Mutfağı</string>
     <string name="type.cuisine.pancake">Gözleme</string>
     <string name="type.cuisine.pasta">Makarna</string>
@@ -343,6 +343,7 @@
     <string name="type.cuisine.sausage">Sucuk</string>
     <string name="type.cuisine.savory_pancakes">Açma</string>
     <string name="type.cuisine.seafood">Deniz Ürünleri</string>
+    <string name="type.cuisine.shawarma">Şavurma</string>
     <string name="type.cuisine.soba">Erişte</string>
     <string name="type.cuisine.spanish">İspanyol Mutfağı</string>
     <string name="type.cuisine.steak_house">Biftekçi</string>
@@ -351,6 +352,7 @@
     <string name="type.cuisine.tea">Çay</string>
     <string name="type.cuisine.thai">Tay Mutfağı</string>
     <string name="type.cuisine.turkish">Türk Mutfağı</string>
+    <string name="type.cuisine.uzbek">Özbek</string>
     <string name="type.cuisine.vegan">Vegan Mutfağı</string>
     <string name="type.cuisine.vegetarian">Vejetaryen Mutfağı</string>
     <string name="type.cuisine.vietnamese">Vietnam Mutfağı</string>
@@ -446,6 +448,7 @@
     <string name="type.highway.pedestrian.bridge">Yaya Köprüsü</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Yaya Tüneli</string>
+    <string name="type.highway.platform">Platform</string>
     <string name="type.highway.primary">Ana Yol</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Köprü</string>
@@ -537,7 +540,7 @@
     <string name="type.area_highway.living_street">Cadde</string>
     <string name="type.area_highway.motorway">Otoyol</string>
     <string name="type.area_highway.path">Yol</string>
-    <string name="type.area_highway.pedestrian">Yayalar için Cadde</string>
+    <string name="type.area_highway.pedestrian">Yaya Caddesi</string>
     <string name="type.area_highway.primary">Ana Yol</string>
     <string name="type.area_highway.residential">Sokak</string>
     <string name="type.area_highway.secondary">Tali Yol</string>
@@ -547,8 +550,6 @@
     <string name="type.area_highway.track">Pist</string>
     <string name="type.area_highway.trunk">Devlet Yolu</string>
     <string name="type.area_highway.unclassified">Tali Yol</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Tarihi Nesne</string>
@@ -760,7 +761,9 @@
     <string name="type.natural.wetland.marsh">Sazlık</string>
     <string name="type.noexit">Çıkmaz</string>
     <string name="type.office">Ofis</string>
+    <string name="type.office.architect">Mimarlık bürosu</string>
     <string name="type.office.company">Şirket Bürosu</string>
+    <string name="type.office.educational_institution">Eğitim kurumu</string>
     <string name="type.office.estate_agent">Emlakçı</string>
     <string name="type.office.government">Devlet Dairesi</string>
     <string name="type.office.insurance">Sigorta Acentesi</string>
@@ -842,6 +845,7 @@
     <string name="type.railway.crossing">Demir Yolu Geçişi</string>
     <string name="type.railway.disused">Kullanılmayan Demir Yolu</string>
     <string name="type.railway.disused.bridge">Kullanılmayan Demir Yolu Köprüsü</string>
+    <string name="type.railway.disused.tunnel">Kullanılmayan Demir Yolu Tüneli</string>
     <string name="type.railway.funicular">Füniküler</string>
     <string name="type.railway.funicular.bridge">Füniküler Köprüsü</string>
     <string name="type.railway.funicular.tunnel">Füniküler Tüneli</string>
@@ -1154,6 +1158,15 @@
     <string name="type.shop.chemist">Temizlik Ürünleri Mağazası</string>
     <string name="type.shop.chocolate">Çikolata Dükkanı</string>
     <string name="type.shop.clothes">Giyim Mağazası</string>
+    <string name="type.shop.clothes.children">Çocuk giyim mağazası</string>
+    <string name="type.shop.clothes.fashion">Moda butik</string>
+    <string name="type.shop.clothes.hats">Şapka mağazası</string>
+    <string name="type.shop.clothes.men">Erkek giyim mağazası</string>
+    <string name="type.shop.clothes.sports">Spor giyim mağazası</string>
+    <string name="type.shop.clothes.suits">Takım elbise mağazası</string>
+    <string name="type.shop.clothes.underwear">İç çamaşırı mağazası</string>
+    <string name="type.shop.clothes.wedding">Gelinlik mağazası</string>
+    <string name="type.shop.clothes.women">Kadın giyim mağazası</string>
     <string name="type.shop.coffee">Kahve Dükkanı</string>
     <string name="type.shop.computer">Bilgisayar Mağazası</string>
     <string name="type.shop.confectionery">Şekerci</string>
@@ -1174,6 +1187,7 @@
     <string name="type.shop.funeral_directors">Cenaze Levazımcısı</string>
     <string name="type.shop.furniture">Mobilya Mağazası</string>
     <string name="type.shop.garden_centre">Bahçe Mağazası</string>
+    <string name="type.shop.games">Oyun mağazası</string>
     <string name="type.shop.gas">Gaz İstasyonu</string>
     <string name="type.shop.gift">Hediyelik Eşya Mağazası</string>
     <string name="type.shop.greengrocer">Manav</string>
@@ -1189,6 +1203,7 @@
     <string name="type.shop.kiosk">Büfe</string>
     <string name="type.shop.kitchen">Mutfak Mağazası</string>
     <string name="type.shop.laundry">Çamaşırhane</string>
+    <string name="type.shop.leather">Deri ürünleri mağazası</string>
     <string name="type.shop.mall">Alışveriş Merkezi</string>
     <string name="type.shop.massage">Masaj Salonu</string>
     <string name="type.shop.mobile_phone">Cep Telefonu Mağazası</string>
@@ -1207,6 +1222,7 @@
     <string name="type.shop.pet">Evcil Hayvan Mağazası</string>
     <string name="type.shop.pet_grooming">Evcil Hayvan Bakıcısı</string>
     <string name="type.shop.photo">Fotoğrafçı</string>
+    <string name="type.shop.religion">Dini Eşya Mağazası</string>
     <string name="type.shop.rental">Kiralık Mağaza</string>
     <string name="type.shop.rental.bicycle">Bisiklet Kiralama Mağazası</string>
     <string name="type.amenity.bicycle_rental.shop">Bisiklet Kiralama Mağazası</string>

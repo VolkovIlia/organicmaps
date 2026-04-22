@@ -46,7 +46,7 @@ bool GuidesConnections::IsActive() const
 
 std::vector<ConnectionToOsm> GuidesConnections::GetOsmConnections(size_t checkpointIdx) const
 {
-  auto it = m_connectionsToOsm.find(checkpointIdx);
+  auto const it = m_connectionsToOsm.find(checkpointIdx);
   if (it == m_connectionsToOsm.end())
     return {};
   return it->second;
@@ -64,9 +64,7 @@ void GuidesConnections::UpdateOsmConnections(size_t checkpointIdx, std::vector<C
     m_connectionsToOsm.erase(it);
 }
 
-GuidesConnections::GuidesConnections(GuidesTracks const & guides) : m_allTracks(guides) {}
-
-void GuidesConnections::PullCheckpointsToTracks(std::vector<m2::PointD> const & checkpoints)
+void GuidesConnections::PullCheckpointsToTracks(CheckpointsGeometry const & checkpoints)
 {
   for (size_t checkpointIdx = 0; checkpointIdx < checkpoints.size(); ++checkpointIdx)
   {
@@ -166,7 +164,7 @@ bool GuidesConnections::FitsForDirectLinkToGuide(size_t checkpointIdx, size_t ch
   return true;
 }
 
-void GuidesConnections::PullAdditionalCheckpointsToTracks(std::vector<m2::PointD> const & checkpoints)
+void GuidesConnections::PullAdditionalCheckpointsToTracks(CheckpointsGeometry const & checkpoints)
 {
   for (size_t i : {size_t(0), checkpoints.size() - 1})
   {
@@ -230,7 +228,7 @@ void GuidesConnections::SetGuidesGraphParams(NumMwmId mwmId, double maxSpeed)
   m_graph = GuidesGraph(maxSpeed, mwmId);
 }
 
-void GuidesConnections::ConnectToGuidesGraph(std::vector<m2::PointD> const & checkpoints)
+void GuidesConnections::ConnectToGuidesGraph(CheckpointsGeometry const & checkpoints)
 {
   PullCheckpointsToTracks(checkpoints);
 

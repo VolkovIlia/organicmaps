@@ -15,11 +15,11 @@
 "type.aeroway" = "Օդային ենթակառուցվածք";
 "type.aeroway.aerodrome" = "Օդանավակայան";
 "type.aeroway.aerodrome.international" = "Միջազգային օդանավակայան";
-"type.aeroway.apron" = "Օդանավակայանի կայանատեղի";
-"type.aeroway.gate" = "Ելք";
+"type.aeroway.apron" = "Օդանավերի կայանման հարթակ";
+"type.aeroway.gate" = "Ելքի դարպաս";
 "type.aeroway.helipad" = "Ուղղաթիռի հրապարակ";
 "type.aeroway.runway" = "Թռիչքուղի";
-"type.aeroway.taxiway" = "Գնացուղի";
+"type.aeroway.taxiway" = "Օդանավերի շարժուղի";
 "type.aeroway.terminal" = "Տերմինալ";
 "type.amenity" = "Ծառայություններ";
 "type.amenity.arts_centre" = "Արվեստի կենտրոն";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Միջերկրածովյան";
 "type.cuisine.mexican" = "Մեքսիկական";
 "type.cuisine.moroccan" = "Մարոկկոյական";
-"type.cuisine.noodles" = "Լապշա";
+"type.cuisine.noodle" = "Լապշա";
 "type.cuisine.oriental" = "Արևելաասիական";
 "type.cuisine.pancake" = "Նրբաբլիթներ";
 "type.cuisine.pasta" = "Պաստա";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Նրբերշիկներ";
 "type.cuisine.savory_pancakes" = "Չուղղված նրբաբլիթներ";
 "type.cuisine.seafood" = "Ծովամթերք";
+"type.cuisine.shawarma" = "Shawarma";
 "type.cuisine.soba" = "Սոբա";
 "type.cuisine.spanish" = "Իսպանական";
 "type.cuisine.steak_house" = "Սթեյք հաուս";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Թեյ";
 "type.cuisine.thai" = "Թայլանդական";
 "type.cuisine.turkish" = "Թուրքական";
+"type.cuisine.uzbek" = "Uzbek";
 "type.cuisine.vegan" = "Վեգան";
 "type.cuisine.vegetarian" = "Բուսական";
 "type.cuisine.vietnamese" = "Վիետնամական";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Հետիոտնային թունել";
+"type.highway.platform" = "Հարթակ";
 "type.highway.primary" = "Առաջնային ճանապարհ";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Ճահիճ";
 "type.noexit" = "Փակուղի";
 "type.office" = "Գրասենյակ";
+"type.office.architect" = "Ճարտարապետական բյուրո";
 "type.office.company" = "Ընկերության գրասենյակ";
+"type.office.educational_institution" = "Ուսումնական հաստատություն";
 "type.office.estate_agent" = "Անշարժ գույքի գործակալություն";
 "type.office.government" = "Կառավարական գրասենյակ";
 "type.office.insurance" = "Ապահովագրական գրասենյակ";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Երկաթուղային անցում";
 "type.railway.disused" = "Չօգտագործվող երկաթուղի";
 "type.railway.disused.bridge" = "Չօգտագործվող երկաթուղային կամուրջ";
+"type.railway.disused.tunnel" = "Disused Railway Tunnel";
 "type.railway.funicular" = "Ֆունիկուլյոր";
 "type.railway.funicular.bridge" = "Ֆունիկուլյորի կամուրջ";
 "type.railway.funicular.tunnel" = "Ֆունիկուլյորի թունել";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Դեղատուն";
 "type.shop.chocolate" = "Շոկոլադի խանութ";
 "type.shop.clothes" = "Հագուստի խանութ";
+"type.shop.clothes.children" = "Մանկական հագուստի խանութ";
+"type.shop.clothes.fashion" = "Նորաձևության բուտիկ";
+"type.shop.clothes.hats" = "Գլխարկների խանութ";
+"type.shop.clothes.men" = "Տղամարդկանց հագուստի խանութ";
+"type.shop.clothes.sports" = "Սպորտային հագուստի խանութ";
+"type.shop.clothes.suits" = "Կոստյումների խանութ";
+"type.shop.clothes.underwear" = "Ներքնազգեստի խանութ";
+"type.shop.clothes.wedding" = "Հարսանյաց հագուստի խանութ";
+"type.shop.clothes.women" = "Կանացի հագուստի խանութ";
 "type.shop.coffee" = "Սուրճի խանութ";
 "type.shop.computer" = "Համակարգչային խանութ";
 "type.shop.confectionery" = "Քաղցրավենիքի խանութ";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Սգո ծառայություններ";
 "type.shop.furniture" = "Կահույքի խանութ";
 "type.shop.garden_centre" = "Այգեգործական կենտրոն";
+"type.shop.games" = "Խաղերի խանութ";
 "type.shop.gas" = "Գազի խանութ";
 "type.shop.gift" = "Նվերների խանութ";
 "type.shop.greengrocer" = "Մրգի և բանջարեղենի խանութ";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Կրպակ";
 "type.shop.kitchen" = "Խոհանոցային պարագաների խանութ";
 "type.shop.laundry" = "Լվացքատուն";
+"type.shop.leather" = "Կաշվե իրերի խանութ";
 "type.shop.mall" = "Առևտրի կենտրոն";
 "type.shop.massage" = "Մերսման սրահ";
 "type.shop.mobile_phone" = "Բջջային հեռախոսների խանութ";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Կենդանիների խանութ";
 "type.shop.pet_grooming" = "Կենդանիների խնամք";
 "type.shop.photo" = "Լուսանկարչական խանութ";
+"type.shop.religion" = "Կրոնական պարագաների խանութ";
 "type.shop.rental" = "Վարձույթի կետ";
 "type.shop.rental.bicycle" = "Հեծանիվների վարձույթ";
 "type.amenity.bicycle_rental.shop" = "Հեծանիվների վարձույթ";

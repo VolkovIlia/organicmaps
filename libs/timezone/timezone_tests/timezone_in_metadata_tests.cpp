@@ -14,10 +14,10 @@ TEST(TimeZoneInMetadata, ShouldCorrectlyStoreAndLoadTimeZone)
                     .base_offset = 68,  // UTC+1
                     .dst_delta = 60,    // DST +1h
                     .transitions = {
-                        {.day_delta = 88, .minute_of_day = 60},
-                        {.day_delta = 154, .minute_of_day = 60},
-                        {.day_delta = 210, .minute_of_day = 120},
-                        {.day_delta = 234, .minute_of_day = 120},
+                        Transition{.day_delta = 88, .minute_of_day = 60},
+                        Transition{.day_delta = 154, .minute_of_day = 60},
+                        Transition{.day_delta = 210, .minute_of_day = 120},
+                        Transition{.day_delta = 234, .minute_of_day = 120},
                     }};
 
   feature::RegionData rd;

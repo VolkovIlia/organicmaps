@@ -327,7 +327,7 @@
     <string name="type.cuisine.mediterranean">Miðjarðarhafs</string>
     <string name="type.cuisine.mexican">Mexíkanskt</string>
     <string name="type.cuisine.moroccan">Marokkanskt</string>
-    <string name="type.cuisine.noodles">Núðlur</string>
+    <string name="type.cuisine.noodle">Núðlur</string>
     <string name="type.cuisine.oriental">Austur-asískt</string>
     <string name="type.cuisine.pancake">Pönnukökur</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -351,6 +351,7 @@
     <string name="type.cuisine.tea">Te</string>
     <string name="type.cuisine.thai">Taílenskt</string>
     <string name="type.cuisine.turkish">Tyrkneskt</string>
+    <string name="type.cuisine.uzbek">Úsbekska</string>
     <string name="type.cuisine.vegan">Grænkerafæði</string>
     <string name="type.cuisine.vegetarian">Grænmetisfæði</string>
     <string name="type.cuisine.vietnamese">Víetnamskt</string>
@@ -446,6 +447,7 @@
     <string name="type.highway.pedestrian.bridge">Göngubrú</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Göng fyrir fótgangandi</string>
+    <string name="type.highway.platform">Pallur</string>
     <string name="type.highway.primary">Stofnvegur</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Brú</string>
@@ -547,8 +549,6 @@
     <string name="type.area_highway.track">Slóði</string>
     <string name="type.area_highway.trunk">Stofnbraut</string>
     <string name="type.area_highway.unclassified">Aukavegur</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">Sögulegur hlutur</string>
@@ -760,7 +760,9 @@
     <string name="type.natural.wetland.marsh">Mýri</string>
     <string name="type.noexit">Blindgata</string>
     <string name="type.office">Skrifstofa</string>
+    <string name="type.office.architect">Arkitektaskrifstofa</string>
     <string name="type.office.company">Skrifstofa fyrirtækis</string>
+    <string name="type.office.educational_institution">Menntastofnun</string>
     <string name="type.office.estate_agent">Fasteignasali</string>
     <string name="type.office.government">Stjórnsýsluskrifstofa</string>
     <string name="type.office.insurance">Tryggingaskrifstofa</string>
@@ -842,6 +844,7 @@
     <string name="type.railway.crossing">Þverun járnbrauta</string>
     <string name="type.railway.disused">Aflögð járnbraut</string>
     <string name="type.railway.disused.bridge">Aflögð járnbrautarbrú</string>
+    <string name="type.railway.disused.tunnel">Aflögð járnbrautargöng</string>
     <string name="type.railway.funicular">Dráttarlest</string>
     <string name="type.railway.funicular.bridge">Dráttarlestarbrú</string>
     <string name="type.railway.funicular.tunnel">Dráttarlestargöng</string>
@@ -892,7 +895,7 @@
     <string name="type.railway.station.light_rail">Léttlestarstöð</string>
     <string name="type.railway.station.light_rail.berlin">S-Bahn stöð</string>
     <string name="type.railway.station.light_rail.london">Lestarstöð (DLR)</string>
-    <string name="type.railway.station.light_rail.porto">Neðanjarðarlestarstöð (PM)</string>
+    <string name="type.railway.station.light_rail.porto">Lestarstöð (PM)</string>
     <string name="type.railway.station.monorail">Einteinungslestarstöð</string>
     <string name="type.railway.station.subway">Neðanjarðarlestarstöð</string>
     <string name="type.railway.station.subway.adana">Neðanjarðarlestarstöð</string>
@@ -1154,6 +1157,15 @@
     <string name="type.shop.chemist">Lyfsali</string>
     <string name="type.shop.chocolate">Súkkulaðiverslun</string>
     <string name="type.shop.clothes">Fataverslun</string>
+    <string name="type.shop.clothes.children">Barnafataverslun</string>
+    <string name="type.shop.clothes.fashion">Tískubúð</string>
+    <string name="type.shop.clothes.hats">Hattaverslun</string>
+    <string name="type.shop.clothes.men">Herrafataverslun</string>
+    <string name="type.shop.clothes.sports">Íþróttafataverslun</string>
+    <string name="type.shop.clothes.suits">Jakkafötverslun</string>
+    <string name="type.shop.clothes.underwear">Nærfötverslun</string>
+    <string name="type.shop.clothes.wedding">Brúðarfataverslun</string>
+    <string name="type.shop.clothes.women">Damafataverslun</string>
     <string name="type.shop.coffee">Kaffiverslun</string>
     <string name="type.shop.computer">Tölvuverslun</string>
     <string name="type.shop.confectionery">Sælgætisverslun</string>
@@ -1174,6 +1186,7 @@
     <string name="type.shop.funeral_directors">Útfararstjóri</string>
     <string name="type.shop.furniture">Húsgagnaverslun</string>
     <string name="type.shop.garden_centre">Garðvöruverslun</string>
+    <string name="type.shop.games">Leikjaverslun</string>
     <string name="type.shop.gas">Gasverslun</string>
     <string name="type.shop.gift">Gjafavöruverslun</string>
     <string name="type.shop.greengrocer">Grænmetissala</string>
@@ -1189,6 +1202,7 @@
     <string name="type.shop.kiosk">Söluturn</string>
     <string name="type.shop.kitchen">Eldhúsvörur</string>
     <string name="type.shop.laundry">Þvottahús</string>
+    <string name="type.shop.leather">Leðurverslun</string>
     <string name="type.shop.mall">Verslunarkjarni</string>
     <string name="type.shop.massage">Nuddstofa</string>
     <string name="type.shop.mobile_phone">Farsímaverslun</string>
@@ -1207,6 +1221,7 @@
     <string name="type.shop.pet">Gæludýraverslun</string>
     <string name="type.shop.pet_grooming">Snyrting fyrir gæludýr</string>
     <string name="type.shop.photo">Ljósmyndavöruverslun</string>
+    <string name="type.shop.religion">Trúarvöruverslun</string>
     <string name="type.shop.rental">Leiga</string>
     <string name="type.shop.rental.bicycle">Reiðhjólaleiga</string>
     <string name="type.amenity.bicycle_rental.shop">Hjólaleiga</string>

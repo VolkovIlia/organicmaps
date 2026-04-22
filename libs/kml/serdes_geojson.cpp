@@ -66,10 +66,9 @@ std::string DebugPrint(GenericJsonMap const & p)
 std::string DebugPrint(glz::generic const & json)
 {
   std::string buffer;
-  if (glz::write_json(json, buffer))
-    return buffer;
-  else
-    return "<JSON_ERROR>";
+  if (auto err = glz::write_json(json, buffer))
+    return "Could not serialize to Json: " + glz::format_error(err, buffer);
+  return buffer;
 }
 
 std::string DebugPrint(GeoJsonFeature const & c)
@@ -174,9 +173,9 @@ PredefinedColor FindPredefinedColor(std::string colorName)
 
 }  // namespace geojson
 
-std::vector<geometry::PointWithAltitude> CoordsToPoints(std::vector<std::vector<double>> const & coords)
+kml::TrackGeometry CoordsToPoints(std::vector<std::vector<double>> const & coords)
 {
-  std::vector<geometry::PointWithAltitude> points;
+  kml::TrackGeometry points;
   points.reserve(coords.size());
   for (auto const & c : coords)
   {
@@ -355,21 +354,27 @@ bool GeoJsonReader::Parse(std::string_view jsonContent)
         track.m_layers.push_back(TrackLayer{.m_color = *lineColor});
 
       // Convert line(s) coordinates
-      if (lineGeometry)
+      if (lineGeometry && !lineGeometry->coordinates.empty())
       {
         track.m_geometry.m_lines.push_back(CoordsToPoints(lineGeometry->coordinates));
         track.m_geometry.AddTimestamps({});  // TODO: parse timestamps from GeoJson.
       }
       if (multilineGeometry)
       {
-        for (auto & coords : multilineGeometry->coordinates)
+        for (auto const & coords : multilineGeometry->coordinates)
         {
-          track.m_geometry.m_lines.push_back(CoordsToPoints(coords));
-          track.m_geometry.AddTimestamps({});  // TODO: parse timestamps from GeoJson.
+          if (!coords.empty())
+          {
+            track.m_geometry.m_lines.push_back(CoordsToPoints(coords));
+            track.m_geometry.AddTimestamps({});  // TODO: parse timestamps from GeoJson.
+          }
         }
       }
 
-      m_fileData.m_tracksData.push_back(std::move(track));
+      if (track.m_geometry.IsValid())
+        m_fileData.m_tracksData.push_back(std::move(track));
+      else
+        LOG(LWARNING, ("GeoJson track without geometry:", GetDefaultStr(track.m_name)));
     }
   }
 
@@ -389,7 +394,7 @@ void GeoJsonReader::Deserialize(std::string_view content)
   }
 }
 
-std::vector<std::vector<double>> ConvertPoints2GeoJsonCoords(std::vector<geometry::PointWithAltitude> const & points,
+std::vector<std::vector<double>> ConvertPoints2GeoJsonCoords(kml::TrackGeometry const & points,
                                                              bool addAltitude = false)
 {
   std::vector<std::vector<double>> coordinates;
@@ -405,13 +410,18 @@ std::vector<std::vector<double>> ConvertPoints2GeoJsonCoords(std::vector<geometr
   return coordinates;
 }
 
-// Options for Glaze Json writer
 struct GeoJsonOpts : glz::opts
 {
   static constexpr std::string_view float_format = "{:.10g}";
 };
 
-void GeoJsonWriter::Write(FileData const & fileData, bool minimize_output)
+struct GeoJsonOptsPrettify : GeoJsonOpts
+{
+  static constexpr bool prettify = true;
+  static constexpr auto indentation_width = 2;
+};
+
+void GeoJsonWriter::Write(FileData const & fileData, bool minimizeOutput)
 {
   using namespace geojson;
 
@@ -507,26 +517,14 @@ void GeoJsonWriter::Write(FileData const & fileData, bool minimize_output)
 
   GeoJsonData const geoJsonData{.features = std::move(geoJsonFeatures), .properties = std::nullopt};
 
-  // Export to GeoJson string.
-  glz::error_ctx error;
   std::string buffer;
-
-  if (minimize_output)
-  {
-    GeoJsonOpts constexpr opts{glz::opts{.prettify = false}};
-    error = glz::write<opts>(geoJsonData, buffer);
-  }
-  else
-  {
-    GeoJsonOpts constexpr opts{glz::opts{.prettify = true, .indentation_width = 2}};
-    error = glz::write<opts>(geoJsonData, buffer);
-  }
+  static constexpr GeoJsonOpts opts{};
+  static constexpr GeoJsonOptsPrettify prettyOpts{};
+  auto const error =
+      minimizeOutput ? glz::write<opts>(geoJsonData, buffer) : glz::write<prettyOpts>(geoJsonData, buffer);
 
   if (error)
-  {
-    std::string const err = glz::format_error(error, buffer);
-    MYTHROW(WriteGeoJsonException, ("Could not write to GeoJson: " + err));
-  }
+    MYTHROW(WriteGeoJsonException, ("Could not write to GeoJson: " + glz::format_error(error)));
 
   // Write GeoJson.
   this->m_writer << buffer;

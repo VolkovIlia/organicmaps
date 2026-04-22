@@ -24,7 +24,7 @@
     <string name="type.amenity.atm">Bankomat</string>
     <string name="type.amenity.bank">Bank</string>
     <string name="type.amenity.bar">Bar</string>
-    <string name="type.amenity.bbq">Grill för barbecue</string>
+    <string name="type.amenity.bbq">Grillplats</string>
     <string name="type.amenity.bench">Bänk</string>
     <string name="type.amenity.bicycle_parking">Cykelparkering</string>
     <string name="type.amenity.bicycle_rental">Cykeluthyrning</string>
@@ -39,7 +39,7 @@
     <string name="type.amenity.car_sharing">Samåkning</string>
     <string name="type.amenity.car_wash">Biltvätt</string>
     <string name="type.amenity.casino">Kasino</string>
-    <string name="type.amenity.gambling">Spelande</string>
+    <string name="type.amenity.gambling">Hasardspel</string>
     <string name="type.leisure.adult_gaming_centre">Spelcenter för vuxna</string>
     <string name="type.leisure.amusement_arcade">Arkad</string>
     <string name="type.amenity.charging_station">Laddstation</string>
@@ -59,7 +59,7 @@
     <string name="type.amenity.drinking_water">Dricksvatten</string>
     <string name="type.drinking_water.yes">Dricksvatten</string>
     <string name="type.amenity.driving_school">Körskola</string>
-    <string name="type.amenity.exhibition_centre">Mässa</string>
+    <string name="type.amenity.exhibition_centre">Utställningscentrum</string>
     <string name="type.amenity.money_transfer">Pengaöverföring</string>
     <string name="type.amenity.music_school">Musikskola</string>
     <string name="type.amenity.language_school">Språkskola</string>
@@ -76,7 +76,7 @@
     <string name="type.amenity.grave_yard.christian">Begravningsplats</string>
     <string name="type.amenity.hospital">Sjukhus</string>
     <string name="type.amenity.hunting_stand">Jakttorn</string>
-    <string name="type.amenity.ice_cream">Glasstånd</string>
+    <string name="type.amenity.ice_cream">Glassstånd</string>
     <string name="type.amenity.internet_cafe">Internetkafé</string>
     <string name="type.amenity.kindergarten">Förskola</string>
     <string name="type.amenity.library">Bibliotek</string>
@@ -313,7 +313,7 @@
     <string name="type.cuisine.mediterranean">Medelhavsmat</string>
     <string name="type.cuisine.mexican">Mexikansk mat</string>
     <string name="type.cuisine.moroccan">Marockansk mat</string>
-    <string name="type.cuisine.noodles">Nudlar</string>
+    <string name="type.cuisine.noodle">Nudlar</string>
     <string name="type.cuisine.oriental">Orientalisk mat</string>
     <string name="type.cuisine.pancake">Pannkaka</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -329,6 +329,7 @@
     <string name="type.cuisine.sausage">Korv</string>
     <string name="type.cuisine.savory_pancakes">Fyllda pannkakor</string>
     <string name="type.cuisine.seafood">Skaldjur</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Sobanudlar</string>
     <string name="type.cuisine.spanish">Spansk mat</string>
     <string name="type.cuisine.steak_house">Stekhus</string>
@@ -337,6 +338,7 @@
     <string name="type.cuisine.tea">Te</string>
     <string name="type.cuisine.thai">Thailändsk mat</string>
     <string name="type.cuisine.turkish">Turkisk mat</string>
+    <string name="type.cuisine.uzbek">Uzbekisk</string>
     <string name="type.cuisine.vegan">Vegansk mat</string>
     <string name="type.cuisine.vegetarian">Vegetarisk mat</string>
     <string name="type.cuisine.vietnamese">Vietnamesisk mat</string>
@@ -432,6 +434,7 @@
     <string name="type.highway.pedestrian.bridge">Bro</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Tunnel</string>
+    <string name="type.highway.platform">Perrong</string>
     <string name="type.highway.primary">Gata</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Bro</string>
@@ -738,7 +741,9 @@
     <string name="type.natural.wetland.marsh">Kärr</string>
     <string name="type.noexit">Återvändsgränd</string>
     <string name="type.office">Kontor</string>
+    <string name="type.office.architect">Arkitektkontor</string>
     <string name="type.office.company">Företagskontor</string>
+    <string name="type.office.educational_institution">Utbildningsinstitution</string>
     <string name="type.office.estate_agent">Fastighetsmäklare</string>
     <string name="type.office.government">Ämbetsverk</string>
     <string name="type.office.insurance">Försäkringskontor</string>
@@ -809,6 +814,7 @@
     <string name="type.railway.crossing">Järnvägsövergång</string>
     <string name="type.railway.disused">Otrafikerad järnväg</string>
     <string name="type.railway.disused.bridge">Otrafikerad järnvägsbro</string>
+    <string name="type.railway.disused.tunnel">Nedlagd järnvägstunnel</string>
     <string name="type.railway.funicular">Bergbana</string>
     <string name="type.railway.funicular.tunnel">Bergbanetunnel</string>
     <string name="type.railway.halt">Tågstation</string>
@@ -1109,6 +1115,15 @@
     <string name="type.shop.chemist">Hushållskemikalier</string>
     <string name="type.shop.chocolate">Chokladbutik</string>
     <string name="type.shop.clothes">Klädbutik</string>
+    <string name="type.shop.clothes.children">Barnkläder</string>
+    <string name="type.shop.clothes.fashion">Modeboutique</string>
+    <string name="type.shop.clothes.hats">Hatteaffär</string>
+    <string name="type.shop.clothes.men">Herrklädbutik</string>
+    <string name="type.shop.clothes.sports">Sportklädesbutik</string>
+    <string name="type.shop.clothes.suits">Kostymaffär</string>
+    <string name="type.shop.clothes.underwear">Underkläder</string>
+    <string name="type.shop.clothes.wedding">Brudklänningsaffär</string>
+    <string name="type.shop.clothes.women">Damklädbutik</string>
     <string name="type.shop.coffee">Kaffebutik</string>
     <string name="type.shop.computer">Datorbutik</string>
     <string name="type.shop.confectionery">Konditori</string>
@@ -1129,6 +1144,7 @@
     <string name="type.shop.funeral_directors">Begravningsentreprenörer</string>
     <string name="type.shop.furniture">Möbelaffär</string>
     <string name="type.shop.garden_centre">Plantskola</string>
+    <string name="type.shop.games">Spelbutik</string>
     <string name="type.shop.gas">Gasaffär</string>
     <string name="type.shop.gift">Presentaffär</string>
     <string name="type.shop.greengrocer">Grönsakshandlare</string>
@@ -1144,6 +1160,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Köksbutik</string>
     <string name="type.shop.laundry">Tvättstuga</string>
+    <string name="type.shop.leather">Läderbutik</string>
     <string name="type.shop.mall">Galleria</string>
     <string name="type.shop.massage">Massagesalong</string>
     <string name="type.shop.mobile_phone">Mobilbutik</string>
@@ -1162,6 +1179,7 @@
     <string name="type.shop.pet">Djuraffär</string>
     <string name="type.shop.pet_grooming">Husdjursvård</string>
     <string name="type.shop.photo">Fotoaffär</string>
+    <string name="type.shop.religion">Butik för religiösa artiklar</string>
     <string name="type.shop.rental">Uthyrningsbutik</string>
     <string name="type.shop.rental.bicycle">Cykeluthyrningsbutik</string>
     <string name="type.amenity.bicycle_rental.shop">Cykeluthyrningsbutik</string>
@@ -1274,7 +1292,7 @@
     <string name="type.tourism.hotel">Hotell</string>
     <string name="type.tourism.information">Turistinformation</string>
     <string name="type.tourism.information.board">Informationstavla</string>
-    <string name="type.tourism.information.guidepost">Vägledning</string>
+    <string name="type.tourism.information.guidepost">Vägvisare</string>
     <string name="type.tourism.information.map">Turistkarta</string>
     <string name="type.tourism.information.office">Turistcenter</string>
     <string name="type.tourism.information.visitor_centre">Besökscentrum</string>

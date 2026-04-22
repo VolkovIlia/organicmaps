@@ -1,16 +1,23 @@
-• NOVINKA: Farby tmavého motívu s vyšším kontrastom
-• Aktualizované údaje OpenStreetMap (11. januára)
-• Kasína vylúčené z kategórie „Zábava“
-• Znížená hrúbka liniek metra
-• Pridané informácie o kapacite do výsledkov vyhľadávania pre parkovanie motocyklov, požičovne bicyklov, nabíjanie bicyklov a nabíjanie áut
-• Zobrazenie poschodia vo výsledkoch vyhľadávania
-• Širšie tlačidlá na plánovanie trasy
+• Mapové údaje OSM k 10. marcu
+• Údaje z Wikipédie k 1. marcu
+• Pridaná podpora podmienených rýchlostných obmedzení
+• Podrobnejšie izolinie nadmorskej výšky pre čínske provincie
+• Pridané kožiarne a obchody s náboženskými predmetmi
+• Pridané rady stromov
+• Pridané nástupišťa verejnej dopravy bez blízkych autobusových zastávok
+• Opravené výpočty priebehu sťahovania krajín
+• Rozdelenie Tanzánie na menšie regióny
+• Pridaná história nedávno použitých kategórií v editore
+• Vylepšené potiahnutie nahor na obrazovke plánovania trasy
+• Opravená poloha pravítka pre CarPlay
+• Opravených niekoľko zlyhaní, vylepšená stabilita a výkon
 
 ### Preklady
 
-• Pridaný preklad aplikácie a hlasová navigácia do albánčiny
-• Aktualizované Často kladené otázky (FAQ) a pridané preklady pre arabčinu, češtinu, holandčinu, perzštinu, gréčtinu, hebrejčinu, hindčinu, maďarčinu, indonézštinu, taliančinu, litovčinu, maráthčinu, švédčinu a telugčinu
-• Vylepšené nemecké preklady aplikácie a FAQ
-• Pridané bulharské synonymá pre vyhľadávanie
-• Premenované nastavenie „Tlačidlá priblíženia“ pre lepšiu zrozumiteľnosť
-• Opravy prekladov od prispievateľov Weblate pre rôzne jazyky
+• Vylepšené popisy krajín
+• Použité rumunské opravy od Eugena Dedu
+• Aktualizované názvy krajín
+• Aktualizované preklady od prispievateľov Weblate
+• Opravený ukrajinský preklad
+
+Ďakujeme všetkým, ktorí prispievajú, darujú a podporujú Organic Maps! Spoločne vytvoríme najlepšie mapy!

@@ -15,6 +15,7 @@ world  +
         rope_tow  -
         station  -
         t-bar  -
+        zip_line  -
         {}
     aeroway  +
         aerodrome  +
@@ -369,7 +370,7 @@ world  +
         mediterranean  -
         mexican  -
         moroccan  -
-        noodles  -
+        noodle  -
         oriental  -
         pancake  -
         pasta  -
@@ -385,6 +386,7 @@ world  +
         sausage  -
         savory_pancakes  -
         seafood  -
+        shawarma  -
         soba  -
         spanish  -
         steak_house  -
@@ -393,6 +395,7 @@ world  +
         tea  -
         thai  -
         turkish  -
+        uzbek  -
         vegan  -
         vegetarian  -
         vietnamese  -
@@ -485,6 +488,7 @@ world  +
             bridge  -
             tunnel  -
             {}
+        platform  -
         primary  +
             bridge  -
             tunnel  -
@@ -819,8 +823,10 @@ world  +
         {}
     noexit  -
     office  +
+        architect  -
         company  -
         diplomatic  -
+        educational_institution  -
         estate_agent  -
         government  -
         insurance  -
@@ -1307,7 +1313,17 @@ world  +
         cheese  -
         chemist  -
         chocolate  -
-        clothes  -
+        clothes  +
+            children  -
+            fashion  -
+            hats  -
+            men  -
+            sports  -
+            suits  -
+            underwear  -
+            wedding  -
+            women  -
+            {}
         coffee  -
         collector  -
         computer  -
@@ -1332,6 +1348,7 @@ world  +
         florist  -
         funeral_directors  -
         furniture  -
+        games  -
         garden_centre  -
         gas  -
         gift  -
@@ -1349,6 +1366,7 @@ world  +
         kiosk  -
         kitchen  -
         laundry  -
+        leather  -
         lighting  -
         lottery  -
         mall  -
@@ -1373,6 +1391,7 @@ world  +
         pet  -
         pet_grooming  -
         photo  -
+        religion  -
         rental  -
         seafood  -
         second_hand  -

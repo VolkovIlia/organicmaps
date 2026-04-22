@@ -45,6 +45,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -95,6 +96,7 @@ import app.organicmaps.sdk.editor.OsmOAuth;
 import app.organicmaps.sdk.location.LocationHelper;
 import app.organicmaps.sdk.location.LocationListener;
 import app.organicmaps.sdk.location.LocationState;
+import app.organicmaps.sdk.location.LocationUtils;
 import app.organicmaps.sdk.location.SensorListener;
 import app.organicmaps.sdk.location.TrackRecorder;
 import app.organicmaps.sdk.maplayer.isolines.IsolinesState;
@@ -105,7 +107,6 @@ import app.organicmaps.sdk.search.SearchEngine;
 import app.organicmaps.sdk.settings.RoadType;
 import app.organicmaps.sdk.settings.UnitLocale;
 import app.organicmaps.sdk.util.Config;
-import app.organicmaps.sdk.util.LocationUtils;
 import app.organicmaps.sdk.util.PowerManagment;
 import app.organicmaps.sdk.util.StringUtils;
 import app.organicmaps.sdk.util.log.Logger;
@@ -145,6 +146,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
   public static final String EXTRA_TRACK_ID = "track_id";
   public static final String EXTRA_UPDATE_THEME = "update_theme";
   private static final String EXTRA_CONSUMED = "mwm.extra.intent.processed";
+  private boolean mIntentConsumed = false;
   private boolean mPreciseLocationDialogShown = false;
 
   private static final String[] DOCKED_FRAGMENTS = {SearchFragment.class.getName(), DownloaderFragment.class.getName(),
@@ -204,22 +206,18 @@ public class MwmActivity extends BaseMwmFragmentActivity
   private Dialog mAlertDialog;
 
   @SuppressWarnings("NotNullFieldNotInitialized")
-  @NonNull
   private ActivityResultLauncher<String[]> mLocationPermissionRequest;
   private boolean mLocationPermissionRequestedForRecording = false;
 
   @SuppressWarnings("NotNullFieldNotInitialized")
-  @NonNull
   private ActivityResultLauncher<String> mPostNotificationPermissionRequest;
 
   @SuppressWarnings("NotNullFieldNotInitialized")
-  @NonNull
   private ActivityResultLauncher<IntentSenderRequest> mLocationResolutionRequest;
   @SuppressWarnings("NotNullFieldNotInitialized")
   @NonNull
   private ActivityResultLauncher<SharingUtils.SharingIntent> mShareLauncher;
   @SuppressWarnings("NotNullFieldNotInitialized")
-  @NonNull
   private ActivityResultLauncher<Intent> mPowerSaveSettings;
   private boolean mPowerSaveDisclaimerShown = false;
 
@@ -287,9 +285,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
       throw new AssertionError("Must be called with initialized Drape");
 
     final Intent intent = getIntent();
-    if (intent == null || intent.getBooleanExtra(EXTRA_CONSUMED, false))
+    if (intent == null || mIntentConsumed)
       return;
-    intent.putExtra(EXTRA_CONSUMED, true);
+    mIntentConsumed = true;
 
     final long categoryId = intent.getLongExtra(EXTRA_CATEGORY_ID, -1);
     final long bookmarkId = intent.getLongExtra(EXTRA_BOOKMARK_ID, -1);
@@ -504,6 +502,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
   protected void onSafeCreate(@Nullable Bundle savedInstanceState)
   {
     super.onSafeCreate(savedInstanceState);
+
+    if (savedInstanceState != null)
+      mIntentConsumed = savedInstanceState.getBoolean(EXTRA_CONSUMED, false);
 
     mIsTabletLayout = getResources().getBoolean(R.bool.tabletLayout);
 
@@ -971,6 +972,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
       RoutingController.get().deleteSavedRoute();
 
     outState.putBoolean(POWER_SAVE_DISCLAIMER_SHOWN, mPowerSaveDisclaimerShown);
+    outState.putBoolean(EXTRA_CONSUMED, mIntentConsumed);
     super.onSaveInstanceState(outState);
   }
 
@@ -1037,6 +1039,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
   protected void onNewIntent(Intent intent)
   {
     setIntent(intent);
+    mIntentConsumed = false;
     super.onNewIntent(intent);
     if (mMapController.isRenderingActive())
       processIntent();
@@ -1112,10 +1115,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
     BookmarkManager.INSTANCE.removeLoadingListener(this);
     MwmApplication.from(this).getLocationHelper().removeListener(this);
     if (mDisplayManager.isDeviceDisplayUsed() && !RoutingController.get().isNavigating())
-    {
       LocationState.nativeRemoveListener();
-      RoutingController.get().detach();
-    }
+    // Attached unconditionally in onStart()
+    RoutingController.get().detach();
     MwmApplication.from(getApplicationContext()).getIsolinesManager().detach();
     mSearchController.detach();
     Utils.keepScreenOn(false, getWindow());
@@ -2228,6 +2230,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
   public void onDonateOptionSelected()
   {
     Utils.openUrl(this, mDonatesUrl);
+    Framework.nativeDidShowDonationPage();
   }
 
   public void onSettingsOptionSelected()
@@ -2385,24 +2388,12 @@ public class MwmActivity extends BaseMwmFragmentActivity
 
   private void makeNavigationBarTransparentInLightMode()
   {
-    int nightMask = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-    if (nightMask == Configuration.UI_MODE_NIGHT_NO) // if light mode
-    {
-      Window window = getWindow();
-      window.setNavigationBarColor(Color.TRANSPARENT);
-      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
-      int flags = window.getDecorView().getSystemUiVisibility();
-      flags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
-        flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-
-      window.getDecorView().setSystemUiVisibility(flags);
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-        window.setNavigationBarContrastEnforced(false);
-    }
+    final boolean isLightMode = !app.organicmaps.sdk.util.Utils.isDarkMode(this);
+    final Window window = getWindow();
+    window.setNavigationBarColor(Color.TRANSPARENT);
+    new WindowInsetsControllerCompat(window, window.getDecorView()).setAppearanceLightNavigationBars(isLightMode);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+      window.setNavigationBarContrastEnforced(false);
   }
 
   private void reportUnsupported()

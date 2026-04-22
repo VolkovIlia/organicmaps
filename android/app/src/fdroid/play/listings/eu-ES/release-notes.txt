@@ -1,9 +1,9 @@
-• BERRIA: Kontraste handiagoko gai iluneko koloreak
-• Google Assistant nabigaziorako eta bilaketarako
-• OSM maparen datuak urtarrilaren 11koak
-• "Auto" nabigazio-gaiak sistemaren modu iluna/argia jarraitzen du
-• Metro linea meheagoak
-• Bilaketa-emaitzek motozikletak aparkatzeko, bizikletak alokatzeko, bizikletak kargatzeko eta autoak kargatzeko edukiera erakusten dute
-• Erakutsi solairuaren maila bilaketa-emaitzetan
-• Albaniako itzulpenak eta TTS ahots-gida
-…gehiago hemen omaps.org/eu/news
+• OSM maparen datuak martxoaren 10etik aurrera, Wikipedia martxoaren 1etik aurrera
+• Txinako probintzietarako kota-isolinea zehatzagoak
+• Zuhaitz lerroak, larru-dendak eta erlijio-ondasunak saltzen dituzten dendak gehitu dira
+• Baldintzapeko abiadura-mugetarako laguntza gehitu da
+• Tanzania eskualde txikiagotan banatu da
+• Negozioen ordutegiaren bistaratzea hobetu
+• Hainbat hutsegite konpondu dira
+• Aplikazioen eta herrialdeen izenen itzulpenak hobetu dira
+omaps.org/eu/news

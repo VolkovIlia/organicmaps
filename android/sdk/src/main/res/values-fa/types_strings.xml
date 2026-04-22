@@ -278,6 +278,7 @@
     <string name="type.cuisine.lebanese">لبنانی</string>
     <string name="type.cuisine.sausage">سوسیس</string>
     <string name="type.cuisine.seafood">غذای دریایی</string>
+    <string name="type.cuisine.shawarma">شاورما</string>
     <string name="type.cuisine.soba">سوبا­­</string>
     <string name="type.cuisine.spanish">اسپانیایی</string>
     <string name="type.cuisine.steak_house">خانه استیک</string>
@@ -286,6 +287,7 @@
     <string name="type.cuisine.tea">چای</string>
     <string name="type.cuisine.thai">تایلندی</string>
     <string name="type.cuisine.turkish">ترکی</string>
+    <string name="type.cuisine.uzbek">ازبکی</string>
     <string name="type.cuisine.vegan">گیاهخوار</string>
     <string name="type.cuisine.vegetarian">گیاه خوار</string>
     <string name="type.cuisine.vietnamese">ویتنامی</string>
@@ -380,6 +382,7 @@
     <string name="type.highway.pedestrian.bridge">پل</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">تونل</string>
+    <string name="type.highway.platform">سکو</string>
     <string name="type.highway.primary">جاده</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">پل</string>
@@ -466,7 +469,6 @@
     <string name="type.highway.unclassified.bridge">پل</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.unclassified.tunnel">تونل</string>
-    <string name="type.area_highway.cycleway">مسیر دوچرخه</string>
     <string name="type.area_highway.footway">مسیر</string>
     <string name="type.area_highway.living_street">جاده</string>
     <string name="type.area_highway.motorway">جاده</string>
@@ -481,7 +483,6 @@
     <string name="type.area_highway.track">جاده</string>
     <string name="type.area_highway.trunk">جاده</string>
     <string name="type.area_highway.unclassified">جاده</string>
-    <string name="type.highway.world_level">بزرگراه جهانی</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic">شیء تاریخی</string>
@@ -662,7 +663,9 @@
     <string name="type.natural.wetland.marsh">مرداب</string>
     <string name="type.noexit">بن‌بست</string>
     <string name="type.office">اداره</string>
+    <string name="type.office.architect">دفتر معماری</string>
     <string name="type.office.company">دفتر شرکت</string>
+    <string name="type.office.educational_institution">مؤسسه آموزشی</string>
     <string name="type.office.estate_agent">بنگاه معاملات ملکی</string>
     <string name="type.office.government">اداره دولتی</string>
     <string name="type.office.insurance">دفتر بیمه</string>
@@ -739,6 +742,7 @@
     <string name="type.railway.crossing">گذرگاه راه‌آهن</string>
     <string name="type.railway.disused">راه‌آهن رها شده</string>
     <string name="type.railway.disused.bridge">پل راه‌آهن رها شده</string>
+    <string name="type.railway.disused.tunnel">تونل راهآهن رها شده</string>
     <string name="type.railway.funicular">فونیکولور</string>
     <string name="type.railway.funicular.bridge">پل کابلی</string>
     <string name="type.railway.funicular.tunnel">تونل کابلی</string>
@@ -1042,6 +1046,15 @@
     <string name="type.shop.chemist">فروشگاه</string>
     <string name="type.shop.chocolate">فروشگاه</string>
     <string name="type.shop.clothes">لباس فروشی</string>
+    <string name="type.shop.clothes.children">فروشگاه لباس کودک</string>
+    <string name="type.shop.clothes.fashion">بوتیک مد</string>
+    <string name="type.shop.clothes.hats">کلاه فروشی</string>
+    <string name="type.shop.clothes.men">فروشگاه لباس مردانه</string>
+    <string name="type.shop.clothes.sports">فروشگاه لباس ورزشی</string>
+    <string name="type.shop.clothes.suits">فروشگاه کت و شلوار</string>
+    <string name="type.shop.clothes.underwear">فروشگاه لباس زیر</string>
+    <string name="type.shop.clothes.wedding">فروشگاه لباس عروس</string>
+    <string name="type.shop.clothes.women">فروشگاه لباس زنانه</string>
     <string name="type.shop.coffee">فروشگاه</string>
     <string name="type.shop.computer">فروشگاه</string>
     <string name="type.shop.confectionery">فروشگاه</string>
@@ -1062,6 +1075,7 @@
     <string name="type.shop.funeral_directors">مسئول تشییع جنازه</string>
     <string name="type.shop.furniture">فروشگاه</string>
     <string name="type.shop.garden_centre">فروشگاه</string>
+    <string name="type.shop.games">فروشگاه بازی</string>
     <string name="type.shop.gas">فروشگاه گاز</string>
     <string name="type.shop.gift">فروشگاه</string>
     <string name="type.shop.greengrocer">فروشگاه</string>
@@ -1077,6 +1091,7 @@
     <string name="type.shop.kiosk">دَکهِ</string>
     <string name="type.shop.kitchen">ﻪﻧﺎﺧﺰﭙﺷﺁ ﻩﺎﮕﺷﻭﺮﻓ</string>
     <string name="type.shop.laundry">لباس شویی</string>
+    <string name="type.shop.leather">فروشگاه محصولات چرمی</string>
     <string name="type.shop.mall">فروشگاه</string>
     <string name="type.shop.massage">سالن ماساژ</string>
     <string name="type.shop.mobile_phone">فروشگاه</string>
@@ -1095,6 +1110,7 @@
     <string name="type.shop.pet">فروشگاه</string>
     <string name="type.shop.pet_grooming">نظافت حیوانات خانگی</string>
     <string name="type.shop.photo">فروشگاه</string>
+    <string name="type.shop.religion">فروشگاه لوازم مذهبی</string>
     <string name="type.shop.rental">مغازه اجاره ای</string>
     <string name="type.shop.rental.bicycle">مغازه اجاره دوچرخه</string>
     <string name="type.amenity.bicycle_rental.shop">مغازه اجاره دوچرخه</string>

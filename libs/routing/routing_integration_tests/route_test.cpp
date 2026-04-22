@@ -638,7 +638,6 @@ UNIT_TEST(Germany_Italy_Malcesine)
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), FromLatLon(45.7662964, 10.8111554), {0., 0.},
                                    FromLatLon(48.4101446, 11.5892265), 431341);
 
-  /// @todo Again strange detour (near finish) on a long route.
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), FromLatLon(50.8499365, 12.4662169), {0., 0.},
                                    FromLatLon(45.7662964, 10.8111554), 776000);
 }
@@ -675,14 +674,10 @@ UNIT_TEST(USA_Birmingham_AL_KeyWest_FL_NoMotorway)
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), FromLatLon(28.9666499, -82.127271), {0., 0.},
                                    FromLatLon(25.8633542, -80.3878891), 457734);
 
-  /// @note These tests works good on release server, my desktop release skips MWM Florida_Orlando ...
-  /// 15 vs 8 cross-mwm candidates.
-
   auto const start = FromLatLon(33.5209837, -86.807945);
   auto const finish = FromLatLon(24.5534713, -81.7932587);
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), start, {0., 0.}, finish, 1'471'410);
 
-  /// @todo Fails on sever also.
   RoutingOptionSetter optionsGuard(RoutingOptions::Motorway);
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), start, {0., 0.}, finish, 1'495'860);
 }
@@ -935,6 +930,32 @@ UNIT_TEST(Belarus_Kopyl_Minsk)
   // https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=53.131897%2C27.018889%3B53.57253%2C27.47209
   CalculateRouteAndTestRouteLength(GetVehicleComponents(VehicleType::Car), FromLatLon(53.131897, 27.018889), {0., 0.},
                                    FromLatLon(53.57253, 27.47209), 82109);
+}
+
+UNIT_TEST(Germany_MaxspeedConditional)
+{
+  using namespace platform::tests_support;
+
+  auto const from = FromLatLon(50.853998, 12.837031);
+  auto const to = FromLatLon(50.867373, 12.806966);
+
+  auto components = CreateAllMapsComponents(VehicleType::Car, {});
+  time_t currentTime;
+  components->SetCurrentTimeGetter([&currentTime] { return currentTime; });
+
+  // maxspeed = 100
+  currentTime = GetUnixtimeByDate(2026, Month::Feb, 20, 19, 00);
+  TRouteResult result = CalculateRoute(*components, from, {0., 0.}, to);
+  TEST_EQUAL(result.second, RouterResultCode::NoError, ());
+  auto const eta1 = result.first->GetTotalTimeSec();
+
+  // maxspeed = none
+  currentTime = GetUnixtimeByDate(2026, Month::Feb, 20, 14, 00);
+  result = CalculateRoute(*components, from, {0., 0.}, to);
+  TEST_EQUAL(result.second, RouterResultCode::NoError, ());
+  auto const eta2 = result.first->GetTotalTimeSec();
+
+  TEST_LESS(eta2 * 1.2, eta1, ());
 }
 
 }  // namespace route_test

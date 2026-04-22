@@ -19,10 +19,8 @@
 #include "indexer/scales.hpp"
 
 #include "geometry/clipping.hpp"
-#include "geometry/mercator.hpp"
 
 #include <array>
-#include <cmath>
 #include <vector>
 
 namespace df
@@ -301,8 +299,7 @@ void GenerateTextShapes(ref_ptr<dp::GraphicsContext> context, ref_ptr<dp::Textur
 
 m2::SharedSpline SimplifySpline(m2::SharedSpline const & in, double minSqrLength)
 {
-  m2::SharedSpline spline;
-  spline.Reset(new m2::Spline(in->GetSize()));
+  auto spline = std::make_unique<m2::Spline>(in->GetSize());
 
   m2::PointD lastAddedPoint;
   for (auto const & point : in->GetPath())
@@ -342,32 +339,24 @@ drape_ptr<dp::OverlayHandle> CreateSymbolOverlayHandle(UserMarkRenderParams cons
 
   dp::OverlayID overlayId(renderInfo.m_featureId, renderInfo.m_markId, tileKey.GetTileCoords(),
                           kStartUserMarkOverlayIndex + renderInfo.m_index);
+  m2::PointD const pivot(renderInfo.m_pivot.x + tileKey.GetTileXOffset(), renderInfo.m_pivot.y);
   drape_ptr<dp::OverlayHandle> handle = make_unique_dp<dp::SquareHandle>(
-      overlayId, renderInfo.m_anchor, renderInfo.m_pivot, pixelRect.RightTop() - pixelRect.LeftBottom(),
-      m2::PointD(symbolOffset), 0 /*priority*/, true /* isBound */, renderInfo.m_minZoom, true /* isBillboard */);
+      overlayId, renderInfo.m_anchor, pivot, pixelRect.RightTop() - pixelRect.LeftBottom(), m2::PointD(symbolOffset),
+      0 /*priority*/, true /* isBound */, renderInfo.m_minZoom, true /* isBillboard */);
   return handle;
 }
 }  // namespace
 
 void CacheUserMarks(ref_ptr<dp::GraphicsContext> context, TileKey const & tileKey, ref_ptr<dp::TextureManager> textures,
-                    kml::MarkIdCollection const & marksId, UserMarksRenderCollection const & renderParams,
-                    dp::Batcher & batcher)
+                    MarksSource const & source, UserMarksRenderCollection const & renderParams, dp::Batcher & batcher)
 {
   using UPV = UserPointVertex;
   buffer_vector<UPV, dp::Batcher::VertexPerQuad> buffer;
 
-  for (auto const id : marksId)
+  m2::PointD const tileCenter = tileKey.GetWrappedDataRect().Center();
+
+  source.ForEachMark(tileKey, renderParams, [&](UserMarkRenderParams const & renderInfo)
   {
-    auto const it = renderParams.find(id);
-    if (it == renderParams.end())
-      continue;
-
-    UserMarkRenderParams const & renderInfo = *it->second;
-    if (!renderInfo.m_isVisible)
-      continue;
-
-    m2::PointD const tileCenter = tileKey.GetGlobalRect().Center();
-
     m2::PointF symbolSize(0.0f, 0.0f);
     dp::TextureManager::SymbolRegion symbolRegion;
     auto const symbolName = GetSymbolNameForZoomLevel(make_ref(renderInfo.m_symbolNames), tileKey);
@@ -476,39 +465,11 @@ void CacheUserMarks(ref_ptr<dp::GraphicsContext> context, TileKey const & tileKe
       GenerateTextShapes(context, textures, renderInfo, tileKey, tileCenter, symbolOffset, symbolSize, batcher);
 
     renderInfo.m_justCreated = false;
-  }
-}
-
-void ProcessSplineSegmentRects(m2::SharedSpline const & spline, double maxSegmentLength,
-                               std::function<bool(m2::RectD const & segmentRect)> const & func)
-{
-  double const splineFullLength = spline->GetLength();
-  double length = 0;
-  while (length < splineFullLength)
-  {
-    m2::RectD splineRect;
-
-    auto const itBegin = spline->GetPoint(length);
-    auto itEnd = spline->GetPoint(length + maxSegmentLength);
-    if (itEnd.BeginAgain())
-    {
-      double const lastSegmentLength = spline->GetLastLength();
-      itEnd = spline->GetPoint(splineFullLength - lastSegmentLength / 2.0);
-      splineRect.Add(spline->GetPath().back());
-    }
-
-    spline->ForEachNode(itBegin, itEnd, [&splineRect](m2::PointD const & pt) { splineRect.Add(pt); });
-
-    length += maxSegmentLength;
-
-    if (!func(splineRect))
-      return;
-  }
+  });
 }
 
 void CacheUserLines(ref_ptr<dp::GraphicsContext> context, TileKey const & tileKey, ref_ptr<dp::TextureManager> textures,
-                    kml::TrackIdCollection const & linesId, UserLinesRenderCollection const & renderParams,
-                    dp::Batcher & batcher)
+                    TracksSource const & source, UserLinesRenderCollection const & renderParams, dp::Batcher & batcher)
 {
   CHECK_GREATER(tileKey.m_zoomLevel, 0, ());
   CHECK_LESS(tileKey.m_zoomLevel - 1, static_cast<int>(kLineWidthZoomFactor.size()), ());
@@ -521,39 +482,13 @@ void CacheUserLines(ref_ptr<dp::GraphicsContext> context, TileKey const & tileKe
   if (simplify)
     minSegmentSqrLength = math::Pow2(4.0 * vs * GetScreenScale(tileKey.m_zoomLevel));
 
-  m2::RectD const tileRect = tileKey.GetGlobalRect();
+  m2::RectD const tileRect = tileKey.GetWrappedDataRect();
 
-  // Process spline by segments that are no longer than tile size.
-  // double const maxLength = mercator::Bounds::kRangeX / (1 << (tileKey.m_zoomLevel - 1));
-
-  for (auto const & id : linesId)
+  source.ForEachUniqueTrack(tileKey.m_zoomLevel, renderParams, [&](UserLineRenderParams const & renderInfo)
   {
-    auto const it = renderParams.find(id);
-    if (it == renderParams.end())
-      continue;
-
-    UserLineRenderParams const & renderInfo = *it->second;
-
     // Spline is a shared_ptr here, can reassign later.
     for (auto spline : renderInfo.m_splines)
     {
-      // This check is redundant, because we already made rough check while covering tracks by tiles
-      // (see UserMarkGenerator::UpdateIndex).
-      // Also looks like ClipSplineByRect works faster than Spline iterating in ProcessSplineSegmentRects
-      // by |maxLength| segments on high zoom levels.
-      /*
-      bool intersected = false;
-      ProcessSplineSegmentRects(spline, maxLength, [&tileRect, &intersected](m2::RectD const & segmentRect)
-      {
-        if (segmentRect.IsIntersect(tileRect))
-          intersected = true;
-        return !intersected;
-      });
-
-      if (!intersected)
-        continue;
-      */
-
       if (simplify)
         spline = SimplifySpline(spline, minSegmentSqrLength);
 
@@ -581,6 +516,6 @@ void CacheUserLines(ref_ptr<dp::GraphicsContext> context, TileKey const & tileKe
         }
       }
     }
-  }
+  });
 }
 }  // namespace df

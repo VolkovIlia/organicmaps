@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Міжземнаморская";
 "type.cuisine.mexican" = "Мексіканская";
 "type.cuisine.moroccan" = "Мараканская";
-"type.cuisine.noodles" = "Локшына";
+"type.cuisine.noodle" = "Локшына";
 "type.cuisine.oriental" = "Усходнеазіяцкая";
 "type.cuisine.pancake" = "Блінніца";
 "type.cuisine.pasta" = "Паста";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Каўбасная";
 "type.cuisine.savory_pancakes" = "Несалодкія бліны";
 "type.cuisine.seafood" = "Морапрадукты";
+"type.cuisine.shawarma" = "Шаўрма";
 "type.cuisine.soba" = "Соба";
 "type.cuisine.spanish" = "Іспанская";
 "type.cuisine.steak_house" = "Стэйк-хаус";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Чай";
 "type.cuisine.thai" = "Тайская";
 "type.cuisine.turkish" = "Турэцкая";
+"type.cuisine.uzbek" = "Узбекская";
 "type.cuisine.vegan" = "Веганская";
 "type.cuisine.vegetarian" = "Вегетарыянская";
 "type.cuisine.vietnamese" = "В'етнамская";
@@ -377,7 +379,7 @@
 "type.emergency.lifeguard" = "Ратавальнік";
 
 /* A mountain rescue base for search and rescue activities. */
-"type.emergency.mountain_rescue" = "ГорныГ ратавальны пункт";
+"type.emergency.mountain_rescue" = "Горны ратавальны пункт";
 
 /* This is for secondary entrances, for main entrances see type.entrance.main */
 "type.entrance" = "Уваход";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Тунэль";
+"type.highway.platform" = "Платформа";
 "type.highway.primary" = "Галоўная дарога";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Балота";
 "type.noexit" = "Тупік";
 "type.office" = "Офіс";
+"type.office.architect" = "Архітэктурнае бюро";
 "type.office.company" = "Офіс кампаніі";
+"type.office.educational_institution" = "Адукацыйная ўстанова";
 "type.office.estate_agent" = "Агент па нерухомасці";
 "type.office.government" = "Урадавая ўстанова";
 "type.office.insurance" = "Страхавое бюро";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Чыгуначны пераезд";
 "type.railway.disused" = "Закінутая чыгунка";
 "type.railway.disused.bridge" = "Закінуты чыгуначны мост";
+"type.railway.disused.tunnel" = "Закінуты чыгуначны тунэль";
 "type.railway.funicular" = "Фунікулёр";
 "type.railway.funicular.bridge" = "Фунікулярны мост";
 "type.railway.funicular.tunnel" = "Фунікулярны тунэль";
@@ -1290,6 +1296,15 @@
 "type.shop.chemist" = "Бытавая хімія";
 "type.shop.chocolate" = "Крама шакалада";
 "type.shop.clothes" = "Крама адзення";
+"type.shop.clothes.children" = "Дзіцячая крама адзення";
+"type.shop.clothes.fashion" = "Модны бутык";
+"type.shop.clothes.hats" = "Крама галаўных убораў";
+"type.shop.clothes.men" = "Мужчынская крама адзення";
+"type.shop.clothes.sports" = "Крама спартыўнага адзення";
+"type.shop.clothes.suits" = "Крама касцюмаў";
+"type.shop.clothes.underwear" = "Крама бялізны";
+"type.shop.clothes.wedding" = "Вясельны салон";
+"type.shop.clothes.women" = "Жаночая крама адзення";
 "type.shop.coffee" = "Крама кавы";
 "type.shop.computer" = "Камп'ютэрная крама";
 "type.shop.confectionery" = "Цукерня";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Рытуальныя паслугі";
 "type.shop.furniture" = "Мэблевая крама";
 "type.shop.garden_centre" = "Тавары для саду";
+"type.shop.games" = "Крама гульняў";
 "type.shop.gas" = "Газавая крама";
 "type.shop.gift" = "Сувенірная крама";
 "type.shop.greengrocer" = "Крама гародніны і садавіны";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Кіёск";
 "type.shop.kitchen" = "Крама для кухні";
 "type.shop.laundry" = "Пральня";
+"type.shop.leather" = "Крама скураных вырабаў";
 "type.shop.mall" = "Гандлёвы цэнтр";
 "type.shop.massage" = "Масажны салон";
 "type.shop.mobile_phone" = "Крама мабільных тэлефонаў";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Зоамагазін";
 "type.shop.pet_grooming" = "Грумінг";
 "type.shop.photo" = "Фотамагазін";
+"type.shop.religion" = "Крама рэлігійных тавараў";
 "type.shop.rental" = "Пракат";
 "type.shop.rental.bicycle" = "Пракат ровараў";
 "type.amenity.bicycle_rental.shop" = "Пракат ровараў";

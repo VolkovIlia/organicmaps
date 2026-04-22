@@ -1,0 +1,17 @@
+plugins {
+  id 'com.android.library'
+}
+
+apply from: "${rootProject.rootDir}/groovy/common-config.gradle"
+
+android {
+  namespace 'app.organicmaps.sdk.car'
+}
+
+dependencies {
+  implementation project(':sdk')
+  implementation project(':sdk:widgets:speedlimit')
+  implementation project(':sdk:widgets:lanes')
+
+  implementation libs.androidx.car.app
+}

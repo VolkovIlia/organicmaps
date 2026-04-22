@@ -1,16 +1,23 @@
-• NIEUW: Donker thema kleuren met hoger contrast
-• OpenStreetMap-gegevens bijgewerkt (11 januari)
-• Casino's uitgesloten van de categorie "Entertainment"
-• Dikte van metrolijnen verminderd
-• Capaciteitsinformatie toegevoegd aan zoekresultaten voor motorparkeren, fietsverhuur, fiets opladen en auto opladen
-• Toon verdieping in zoekresultaten
-• Bredere knoppen voor routeplanning
+• OSM-kaartgegevens per 10 maart
+• Wikipedia-gegevens per 1 maart
+• Ondersteuning toegevoegd voor voorwaardelijke snelheidslimieten
+• Gedetailleerdere hoogtelijnen voor Chinese provincies
+• Lederwinkels en winkels die religieuze artikelen verkopen toegevoegd
+• Rijen bomen toegevoegd
+• Haltes van het openbaar vervoer zonder nabijgelegen bushaltes toegevoegd
+• Berekening van voortgang bij het downloaden van landen gecorrigeerd
+• Tanzania opgesplitst in kleinere regio's
+• Geschiedenis van recent gebruikte categorieën toegevoegd in de Editor
+• Verbeterd omhoog vegen op het routeplanningsscherm
+• Positie van liniaal voor CarPlay gecorrigeerd
+• Diverse crashes gecorrigeerd, stabiliteit en prestaties verbeterd
 
 ### Vertalingen
 
-• Albanese app-vertalingen en stembegeleiding toegevoegd
-• FAQ bijgewerkt en FAQ-vertalingen toegevoegd voor Arabisch, Tsjechisch, Nederlands, Farsi, Grieks, Hebreeuws, Hindi, Hongaars, Indonesisch, Italiaans, Litouws, Marathi, Zweeds, Telugu
-• Duitse app- en FAQ-vertalingen verbeterd
-• Bulgaarse zoeksynoniemen toegevoegd
-• Instelling "Zoomknoppen" hernoemd voor meer duidelijkheid
-• Vertaalcorrecties van Weblate-bijdragers voor diverse talen
+• Landbeschrijvingen verbeterd
+• Roemeense correcties van Eugen Dedu toegepast
+• Landnamen bijgewerkt
+• Vertalingen van Weblate-bijdragers bijgewerkt
+• Oekraïense vertaling gecorrigeerd
+
+Hartelijk dank aan iedereen die bijdraagt, doneert en Organic Maps ondersteunt! Laten we samen de beste kaarten maken!

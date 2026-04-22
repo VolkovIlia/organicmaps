@@ -16,6 +16,8 @@
 #include <CoreApi/Framework.h>
 #include <CoreApi/StringUtils+Core.h>
 
+#include "map/chart_generator.hpp"
+
 #include "platform/distance.hpp"
 #include "platform/local_country_file_utils.hpp"
 #include "platform/localization.hpp"
@@ -405,7 +407,6 @@ char const * kRenderAltitudeImagesQueueLabel = "mapsme.mwmrouter.renderAltitudeI
       {
         rm.FollowRoute();
         [[MWMMapViewControlsManager manager] onRouteStart];
-        [MWMThemeManager setAutoUpdates:YES];
       }
       else
       {
@@ -448,7 +449,6 @@ char const * kRenderAltitudeImagesQueueLabel = "mapsme.mwmrouter.renderAltitudeI
   GetFramework().GetRoutingManager().CloseRouting(removeRoutePoints);
   if (removeRoutePoints)
     GetFramework().GetRoutingManager().DeleteSavedRoutePoints();
-  [MWMThemeManager setAutoUpdates:NO];
 }
 
 - (void)updateFollowingInfo
@@ -472,11 +472,11 @@ char const * kRenderAltitudeImagesQueueLabel = "mapsme.mwmrouter.renderAltitudeI
   if (![self hasRouteAltitude])
     return;
 
-  auto altitudes = std::make_shared<RoutingManager::DistanceAltitude>();
-  if (!GetFramework().GetRoutingManager().GetRouteAltitudesAndDistancesM(*altitudes))
+  auto ei = std::make_shared<ElevationInfo>();
+  if (!GetFramework().GetRoutingManager().GetRouteElevationInfo(*ei))
     return;
 
-  // |altitudes| should not be used in the method after line below.
+  // |ei| should not be used in the method after line below.
   dispatch_async(self.router.renderAltitudeImagesQueue, [=]()
   {
     auto router = self.router;
@@ -493,22 +493,18 @@ char const * kRenderAltitudeImagesQueueLabel = "mapsme.mwmrouter.renderAltitudeI
     NSData * imageData = router.altitudeImagesData[sizeValue];
     if (!imageData)
     {
-      altitudes->Simplify();
-
       std::vector<uint8_t> imageRGBAData;
-      if (!altitudes->GenerateRouteAltitudeChart(width, height, imageRGBAData))
+      if (!ChartGenerator(*ei).Generate(width, height, imageRGBAData))
         return;
       if (imageRGBAData.empty())
         return;
       imageData = [NSData dataWithBytes:imageRGBAData.data() length:imageRGBAData.size()];
       router.altitudeImagesData[sizeValue] = imageData;
 
-      uint32_t totalAscentM, totalDescentM;
-      altitudes->CalculateAscentDescent(totalAscentM, totalDescentM);
+      auto const altInfo = ei->CalculateAltitudesInfo(ElevationInfo::kDefThresholdMWM);
 
-      auto const localizedUnits = platform::GetLocalizedAltitudeUnits();
-      router.totalAscent = @(platform::Distance::FormatAltitude(totalAscentM).c_str());
-      router.totalDescent = @(platform::Distance::FormatAltitude(totalDescentM).c_str());
+      router.totalAscent = @(platform::Distance::FormatAltitude(altInfo.GetTotalAscent()).c_str());
+      router.totalDescent = @(platform::Distance::FormatAltitude(altInfo.GetTotalDescent()).c_str());
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -568,9 +564,16 @@ char const * kRenderAltitudeImagesQueueLabel = "mapsme.mwmrouter.renderAltitudeI
   {
   case routing::RouterResultCode::NoError: [self onRouteReady:NO]; break;
   case routing::RouterResultCode::HasWarnings: [self onRouteReady:YES]; break;
+  case routing::RouterResultCode::NeedMoreMaps:
+    self.routingOptions = [MWMRoutingOptions new];
+    [self presentDownloaderAlert:code countries:absentCountries];
+    // NeedMoreMaps can arrive after a valid route is already built. In that case
+    // the user may decline extra maps and still navigate along the current route.
+    if (![MWMRouter IsRouteValid])
+      [[MWMNavigationDashboardManager sharedManager] onRouteError:L(@"routing_planning_error")];
+    break;
   case routing::RouterResultCode::RouteFileNotExist:
   case routing::RouterResultCode::InconsistentMWMandRoute:
-  case routing::RouterResultCode::NeedMoreMaps:
   case routing::RouterResultCode::FileTooOld:
   case routing::RouterResultCode::RouteNotFound:
     self.routingOptions = [MWMRoutingOptions new];

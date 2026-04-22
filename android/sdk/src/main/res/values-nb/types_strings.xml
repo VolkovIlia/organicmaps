@@ -276,7 +276,7 @@
     <string name="type.cuisine.mediterranean">Middelhavsmat</string>
     <string name="type.cuisine.mexican">Meksikansk mat</string>
     <string name="type.cuisine.moroccan">Marokkansk mat</string>
-    <string name="type.cuisine.noodles">Nudler</string>
+    <string name="type.cuisine.noodle">Nudler</string>
     <string name="type.cuisine.oriental">Orientalsk mat</string>
     <string name="type.cuisine.pancake">Pannekake</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -292,6 +292,7 @@
     <string name="type.cuisine.sausage">Pølse</string>
     <string name="type.cuisine.savory_pancakes">Fylte pannekaker</string>
     <string name="type.cuisine.seafood">Sjømat</string>
+    <string name="type.cuisine.shawarma">Shawarma</string>
     <string name="type.cuisine.soba">Soba</string>
     <string name="type.cuisine.spanish">Spansk mat</string>
     <string name="type.cuisine.steak_house">Biffrestaurant</string>
@@ -300,6 +301,7 @@
     <string name="type.cuisine.tea">Te</string>
     <string name="type.cuisine.thai">Thaimat</string>
     <string name="type.cuisine.turkish">Tyrkisk mat</string>
+    <string name="type.cuisine.uzbek">Usbekisk</string>
     <string name="type.cuisine.vegan">Vegansk</string>
     <string name="type.cuisine.vegetarian">Vegetarisk</string>
     <string name="type.cuisine.vietnamese">Vietnamesisk mat</string>
@@ -642,7 +644,9 @@
     <string name="type.natural.wetland.bog">Myr</string>
     <string name="type.natural.wetland.marsh">Sump</string>
     <string name="type.office">Kontor</string>
+    <string name="type.office.architect">Arkitektkontor</string>
     <string name="type.office.company">Firmakontor</string>
+    <string name="type.office.educational_institution">Utdanningsinstitusjon</string>
     <string name="type.office.estate_agent">Eiendomsmegler</string>
     <string name="type.office.government">Offentlig kontor</string>
     <string name="type.office.insurance">Forsikring</string>
@@ -699,6 +703,7 @@
     <string name="type.power.tower">Strømmast</string>
     <string name="type.public_transport">Offentlig transport</string>
     <string name="type.railway">Jernbane</string>
+    <string name="type.railway.disused.tunnel">Nedlagt jernbanetunnel</string>
     <string name="type.railway.funicular">Kabelbane</string>
     <string name="type.railway.halt">Togstasjon</string>
     <string name="type.railway.level_crossing">Planovergang</string>
@@ -987,6 +992,15 @@
     <string name="type.shop.chemist">Husholdningsartikler</string>
     <string name="type.shop.chocolate">Butikk</string>
     <string name="type.shop.clothes">Klesbutikk</string>
+    <string name="type.shop.clothes.children">Barneklærbutikk</string>
+    <string name="type.shop.clothes.fashion">Motebutikk</string>
+    <string name="type.shop.clothes.hats">Hattebutikk</string>
+    <string name="type.shop.clothes.men">Herreklærbutikk</string>
+    <string name="type.shop.clothes.sports">Sportsklærbutikk</string>
+    <string name="type.shop.clothes.suits">Draktbutikk</string>
+    <string name="type.shop.clothes.underwear">Undertøybutikk</string>
+    <string name="type.shop.clothes.wedding">Brudekjolebutikk</string>
+    <string name="type.shop.clothes.women">Dameklærbutikk</string>
     <string name="type.shop.coffee">Butikk</string>
     <string name="type.shop.computer">Databutikk</string>
     <string name="type.shop.confectionery">Søtsaker</string>
@@ -1007,6 +1021,7 @@
     <string name="type.shop.funeral_directors">Begravelsebyrå</string>
     <string name="type.shop.furniture">Møbelbutikk</string>
     <string name="type.shop.garden_centre">Planteskole</string>
+    <string name="type.shop.games">Spillbutikk</string>
     <string name="type.shop.gas">Gassbutikk</string>
     <string name="type.shop.gift">Gavebutikk</string>
     <string name="type.shop.greengrocer">Frukt- og grønnsakshandler</string>
@@ -1021,6 +1036,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Kjøkkenbutikk</string>
     <string name="type.shop.laundry">Vaskeri</string>
+    <string name="type.shop.leather">Lærbutikk</string>
     <string name="type.shop.mall">Kjøpesenter</string>
     <string name="type.shop.massage">Massasjesalong</string>
     <string name="type.shop.mobile_phone">Mobiltelefonbutikk</string>
@@ -1039,6 +1055,7 @@
     <string name="type.shop.pet">Dyrebutikk</string>
     <string name="type.shop.pet_grooming">Kjæledyrpleie</string>
     <string name="type.shop.photo">Fotobutikk</string>
+    <string name="type.shop.religion">Butikk for religiøse artikler</string>
     <string name="type.shop.rental">Utleiebutikk</string>
     <string name="type.shop.rental.bicycle">Sykkelutleiebutikk</string>
     <string name="type.amenity.bicycle_rental.shop">Sykkelutleiebutikk</string>
@@ -1149,7 +1166,7 @@
     <string name="type.tourism.hotel">Hotell</string>
     <string name="type.tourism.information">Turistinformasjon</string>
     <string name="type.tourism.information.board">Informasjonstavle</string>
-    <string name="type.tourism.information.guidepost">Guidepost</string>
+    <string name="type.tourism.information.guidepost">Veiviser</string>
     <string name="type.tourism.information.map">Turistkart</string>
     <string name="type.tourism.information.office">Turistkontor</string>
     <string name="type.tourism.information.visitor_centre">Besøkssenter</string>
@@ -1179,7 +1196,7 @@
     <string name="type.wheelchair.limited">Begrenset tilgang for rullestol</string>
     <string name="type.wheelchair.no">Ingen tilgang for rullestol</string>
     <string name="type.wheelchair.yes">Full tilgang for rullestol</string>
-    <string name="type.piste_type.snow_park">Snow Park</string>
+    <string name="type.piste_type.snow_park">Snøpark</string>
     <string name="type.piste_type.hike">Tursti i snø</string>
     <string name="type.piste_type.connection">Pisteforbindelse</string>
     <string name="type.piste_type.skitour">Skitour-stien</string>

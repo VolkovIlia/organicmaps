@@ -43,7 +43,7 @@ glsl::vec2 GetNormalsAndMask(dp::TextureManager::GlyphRegion const & glyph, floa
   return {xOffset, yOffset};
 }
 
-void FillCommonDecl(dp::BindingDecl & decl, std::string const & name, uint8_t compCount, uint8_t stride, uint8_t offset)
+void FillCommonDecl(dp::BindingDecl & decl, std::string_view name, uint8_t compCount, uint8_t stride, uint8_t offset)
 {
   decl.m_attributeName = name;
   decl.m_componentCount = compCount;
@@ -460,10 +460,7 @@ void MutableLabelHandle::GetAttributeMutation(ref_ptr<dp::AttributeBufferMutator
   ASSERT_EQUAL(node.first.GetElementSize(), sizeof(MutableLabel::DynamicVertex), ());
   ASSERT_EQUAL(node.second.m_count, result.m_buffer.size(), ());
 
-  dp::MutateNode mutateNode;
-  mutateNode.m_data = make_ref(dataPointer);
-  mutateNode.m_region = node.second;
-  mutator->AddMutation(node.first, mutateNode);
+  mutator->AddMutation(node.first, node.second, make_ref(dataPointer));
 }
 
 bool MutableLabelHandle::Update(ScreenBase const & screen)

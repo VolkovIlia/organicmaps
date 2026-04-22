@@ -193,8 +193,9 @@ extension EditTrackViewController: MWMButtonCellDelegate {
     case .info:
       break
     case .delete:
+      cell.isUserInteractionEnabled = false
+      // goBack() is called by onTrackDeleted observer.
       bookmarksManager.deleteTrack(trackId)
-      goBack()
     default:
       fatalError("Invalid section")
     }
@@ -233,6 +234,12 @@ extension EditTrackViewController: BookmarksObserver {
 
   func onBookmarksCategoryDeleted(_ groupId: MWMMarkGroupID) {
     if trackGroupId == groupId {
+      goBack()
+    }
+  }
+
+  func onTrackDeleted(_ deletedTrackId: MWMTrackID) {
+    if trackId == deletedTrackId {
       goBack()
     }
   }

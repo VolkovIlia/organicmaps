@@ -14,25 +14,15 @@
 
 #include "base/control_flow.hpp"
 
-#include <unordered_map>
-#include <utility>
-
 namespace feature
 {
-using namespace std;
-
 namespace
 {
 using StrUtf8 = StringUtf8Multilang;
 
-int8_t GetIndex(string const & lang)
+void GetMwmLangName(feature::RegionData const & regionData, StrUtf8 const & src, std::string_view & out)
 {
-  return StrUtf8::GetLangIndex(lang);
-}
-
-void GetMwmLangName(feature::RegionData const & regionData, StrUtf8 const & src, string_view & out)
-{
-  vector<int8_t> mwmLangCodes;
+  LangsBufferT mwmLangCodes;
   regionData.GetLanguages(mwmLangCodes);
 
   for (auto const code : mwmLangCodes)
@@ -40,14 +30,14 @@ void GetMwmLangName(feature::RegionData const & regionData, StrUtf8 const & src,
       return;
 }
 
-bool GetTransliteratedName(RegionData const & regionData, StrUtf8 const & src, string & out)
+bool GetTransliteratedName(RegionData const & regionData, StrUtf8 const & src, std::string & out)
 {
-  vector<int8_t> mwmLangCodes;
+  LangsBufferT mwmLangCodes;
   regionData.GetLanguages(mwmLangCodes);
 
   auto const & translator = Transliteration::Instance();
 
-  string_view srcName;
+  std::string_view srcName;
   for (auto const code : mwmLangCodes)
     if (src.GetString(code, srcName) && translator.Transliterate(srcName, code, out))
       return true;
@@ -60,16 +50,16 @@ bool GetTransliteratedName(RegionData const & regionData, StrUtf8 const & src, s
   return false;
 }
 
-bool GetBestName(StrUtf8 const & src, vector<int8_t> const & priorityList, string_view & out)
+bool GetBestName(StrUtf8 const & src, LangsBufferT const & priorityList, std::string_view & out)
 {
   size_t bestIndex = priorityList.size();
 
-  src.ForEach([&](int8_t code, string_view name)
+  src.ForEach([&](int8_t code, std::string_view name)
   {
     if (bestIndex == 0)
       return base::ControlFlow::Break;
 
-    size_t const idx = std::distance(priorityList.begin(), find(priorityList.begin(), priorityList.end(), code));
+    size_t const idx = std::distance(priorityList.begin(), std::find(priorityList.begin(), priorityList.end(), code));
     if (bestIndex > idx)
     {
       bestIndex = idx;
@@ -86,36 +76,24 @@ bool GetBestName(StrUtf8 const & src, vector<int8_t> const & priorityList, strin
   return bestIndex < priorityList.size();
 }
 
-vector<int8_t> GetSimilarLanguages(int8_t lang)
-{
-  static unordered_map<int8_t, vector<int8_t>> const kSimilarLanguages = {
-      {GetIndex("be"), {GetIndex("ru")}},
-      {GetIndex("ja"), {GetIndex("ja_kana"), GetIndex("ja_rm")}},
-      {GetIndex("ko"), {GetIndex("ko_rm")}},
-      {GetIndex("zh"), {GetIndex("zh_pinyin")}}};
-
-  auto const it = kSimilarLanguages.find(lang);
-  if (it != kSimilarLanguages.cend())
-    return it->second;
-
-  return {};
-}
-
 bool IsNativeLang(feature::RegionData const & regionData, int8_t deviceLang)
 {
   if (regionData.HasLanguage(deviceLang))
     return true;
 
-  for (auto const lang : GetSimilarLanguages(deviceLang))
-    if (regionData.HasLanguage(lang))
-      return true;
+  if (auto const * similar = StrUtf8::GetSimilarLanguages(deviceLang))
+  {
+    for (int8_t l : *similar)
+      if (l != StrUtf8::kUnsupportedLanguageCode && regionData.HasLanguage(l))
+        return true;
+  }
 
   return false;
 }
 
-vector<int8_t> MakeLanguagesPriorityList(int8_t deviceLang, bool preferDefault)
+LangsBufferT MakeLanguagesPriorityList(int8_t deviceLang, bool preferDefault)
 {
-  vector<int8_t> langPriority = {deviceLang};
+  LangsBufferT langPriority = {deviceLang};
   if (preferDefault)
     langPriority.push_back(StrUtf8::kDefaultCode);
 
@@ -123,9 +101,15 @@ vector<int8_t> MakeLanguagesPriorityList(int8_t deviceLang, bool preferDefault)
   // Add ru lang for descriptions/rendering tests.
   // langPriority.push_back(StrUtf8::GetLangIndex("ru"));
 
-  auto const similarLangs = GetSimilarLanguages(deviceLang);
-  langPriority.insert(langPriority.cend(), similarLangs.cbegin(), similarLangs.cend());
-  langPriority.insert(langPriority.cend(), {StrUtf8::kInternationalCode, StrUtf8::kEnglishCode});
+  if (auto const * similar = StrUtf8::GetSimilarLanguages(deviceLang))
+  {
+    for (int8_t l : *similar)
+      if (l != StrUtf8::kUnsupportedLanguageCode)
+        langPriority.push_back(l);
+  }
+
+  langPriority.push_back(StrUtf8::kInternationalCode);
+  langPriority.push_back(StrUtf8::kEnglishCode);
 
   return langPriority;
 }
@@ -152,10 +136,10 @@ void GetReadableNameImpl(NameParamsIn const & in, bool preferDefault, NameParams
 // Filters types with |checker|, returns vector of raw type second components.
 // For example for types {"cuisine-sushi", "cuisine-pizza", "cuisine-seafood"} vector
 // of second components is {"sushi", "pizza", "seafood"}.
-vector<string> GetRawTypeSecond(ftypes::BaseChecker const & checker, TypesHolder const & types)
+std::vector<std::string> GetRawTypeSecond(ftypes::BaseCheckerEx const & checker, TypesHolder const & types)
 {
   auto const & c = classif();
-  vector<string> res;
+  std::vector<std::string> res;
   for (auto const t : types)
   {
     if (!checker(t))
@@ -167,10 +151,10 @@ vector<string> GetRawTypeSecond(ftypes::BaseChecker const & checker, TypesHolder
   return res;
 }
 
-vector<string> GetLocalizedTypes(ftypes::BaseChecker const & checker, TypesHolder const & types)
+std::vector<std::string> GetLocalizedTypes(ftypes::BaseCheckerEx const & checker, TypesHolder const & types)
 {
   auto const & c = classif();
-  vector<string> localized;
+  std::vector<std::string> localized;
   for (auto const t : types)
     if (checker(t))
       localized.push_back(platform::GetLocalizedTypeName(c.GetReadableObjectName(t)));
@@ -219,7 +203,7 @@ public:
 
   void CorrectScaleForVisibility(TypesHolder const & types, int & scale) const
   {
-    pair<int, int> const scaleR = GetDrawableScaleRangeForRules(types, RULE_ANY_TEXT);
+    std::pair<int, int> const scaleR = GetDrawableScaleRangeForRules(types, RULE_ANY_TEXT);
     ASSERT_LESS_OR_EQUAL(scaleR.first, scaleR.second, ());
 
     // Result types can be without visible texts (matched by category).
@@ -238,7 +222,7 @@ public:
 
     if (types.GetGeomType() == GeomType::Point)
       for (uint32_t t : types)
-        scale = min(scale, GetScaleForType(t));
+        scale = std::min(scale, GetScaleForType(t));
 
     CorrectScaleForVisibility(types, scale);
     return scale;
@@ -299,9 +283,9 @@ static constexpr std::string_view kMountainSymbol = "▲";
 static constexpr std::string_view kDrinkingWaterYes = "🚰";
 static constexpr std::string_view kDrinkingWaterNo = "🚱";
 
-NameParamsIn::NameParamsIn(StringUtf8Multilang const & src_, RegionData const & regionData_,
-                           std::string_view deviceLang_, bool allowTranslit_)
-  : NameParamsIn(src_, regionData_, StringUtf8Multilang::GetLangIndex(deviceLang_), allowTranslit_)
+NameParamsIn::NameParamsIn(StrUtf8 const & src_, RegionData const & regionData_, std::string_view deviceLang_,
+                           bool allowTranslit_)
+  : NameParamsIn(src_, regionData_, StrUtf8::GetLangIndex(deviceLang_), allowTranslit_)
 {}
 
 bool NameParamsIn::IsNativeOrSimilarLang() const
@@ -319,12 +303,17 @@ int GetFeatureViewportScale(FeatureID const & fid, TypesHolder const & types)
   return scale;
 }
 
-vector<int8_t> GetSimilar(int8_t lang)
+LangsBufferT GetSimilar(int8_t lang)
 {
-  vector<int8_t> langs = {lang};
+  LangsBufferT langs = {lang};
 
-  auto const similarLangs = GetSimilarLanguages(lang);
-  langs.insert(langs.cend(), similarLangs.cbegin(), similarLangs.cend());
+  if (auto const * similar = StrUtf8::GetSimilarLanguages(lang))
+  {
+    for (int8_t l : *similar)
+      if (l != StrUtf8::kUnsupportedLanguageCode)
+        langs.push_back(l);
+  }
+
   return langs;
 }
 
@@ -345,9 +334,9 @@ void GetPreferredNames(NameParamsIn const & in, NameParamsOut & out)
   if (!GetBestName(in.src, primaryCodes, out.primary) && in.allowTranslit)
     GetTransliteratedName(in.regionData, in.src, out.transliterated);
 
-  vector<int8_t> secondaryCodes = {StrUtf8::kDefaultCode, StrUtf8::kInternationalCode};
+  LangsBufferT secondaryCodes = {StrUtf8::kDefaultCode, StrUtf8::kInternationalCode};
 
-  vector<int8_t> mwmLangCodes;
+  LangsBufferT mwmLangCodes;
   in.regionData.GetLanguages(mwmLangCodes);
   secondaryCodes.insert(secondaryCodes.end(), mwmLangCodes.begin(), mwmLangCodes.end());
 
@@ -357,7 +346,7 @@ void GetPreferredNames(NameParamsIn const & in, NameParamsOut & out)
 
   if (out.primary.empty())
     out.primary.swap(out.secondary);
-  else if (!out.secondary.empty() && out.primary.find(out.secondary) != string::npos)
+  else if (!out.secondary.empty() && out.primary.find(out.secondary) != std::string::npos)
     out.secondary = {};
 }
 
@@ -370,12 +359,12 @@ void GetReadableName(NameParamsIn const & in, NameParamsOut & out)
 }
 
 /*
-int8_t GetNameForSearchOnBooking(RegionData const & regionData, StringUtf8Multilang const & src, string & name)
+int8_t GetNameForSearchOnBooking(RegionData const & regionData, StrUtf8 const & src, string & name)
 {
-  if (src.GetString(StringUtf8Multilang::kDefaultCode, name))
-    return StringUtf8Multilang::kDefaultCode;
+  if (src.GetString(StrUtf8::kDefaultCode, name))
+    return StrUtf8::kDefaultCode;
 
-  vector<int8_t> mwmLangs;
+  LangsBufferT mwmLangs;
   regionData.GetLanguages(mwmLangs);
 
   for (auto mwmLang : mwmLangs)
@@ -384,51 +373,51 @@ int8_t GetNameForSearchOnBooking(RegionData const & regionData, StringUtf8Multil
       return mwmLang;
   }
 
-  if (src.GetString(StringUtf8Multilang::kEnglishCode, name))
-    return StringUtf8Multilang::kEnglishCode;
+  if (src.GetString(StrUtf8::kEnglishCode, name))
+    return StrUtf8::kEnglishCode;
 
   name.clear();
-  return StringUtf8Multilang::kUnsupportedLanguageCode;
+  return StrUtf8::kUnsupportedLanguageCode;
 }
 */
 
-bool GetPreferredName(StringUtf8Multilang const & src, int8_t deviceLang, string_view & out)
+bool GetPreferredName(StrUtf8 const & src, int8_t deviceLang, std::string_view & out)
 {
   auto const priorityList = MakeLanguagesPriorityList(deviceLang, true /* preferDefault */);
   return GetBestName(src, priorityList, out);
 }
 
-vector<int8_t> GetDescriptionLangPriority(RegionData const & regionData, int8_t const deviceLang)
+LangsBufferT GetDescriptionLangPriority(RegionData const & regionData, int8_t const deviceLang)
 {
   bool const preferDefault = IsNativeLang(regionData, deviceLang);
   return MakeLanguagesPriorityList(deviceLang, preferDefault);
 }
 
-vector<string> GetCuisines(TypesHolder const & types)
+std::vector<std::string> GetCuisines(TypesHolder const & types)
 {
   auto const & isCuisine = ftypes::IsCuisineChecker::Instance();
   return GetRawTypeSecond(isCuisine, types);
 }
 
-vector<string> GetLocalizedCuisines(TypesHolder const & types)
+std::vector<std::string> GetLocalizedCuisines(TypesHolder const & types)
 {
   auto const & isCuisine = ftypes::IsCuisineChecker::Instance();
   return GetLocalizedTypes(isCuisine, types);
 }
 
-vector<string> GetRecyclingTypes(TypesHolder const & types)
+std::vector<std::string> GetRecyclingTypes(TypesHolder const & types)
 {
   auto const & isRecyclingType = ftypes::IsRecyclingTypeChecker::Instance();
   return GetRawTypeSecond(isRecyclingType, types);
 }
 
-vector<string> GetLocalizedRecyclingTypes(TypesHolder const & types)
+std::vector<std::string> GetLocalizedRecyclingTypes(TypesHolder const & types)
 {
   auto const & isRecyclingType = ftypes::IsRecyclingTypeChecker::Instance();
   return GetLocalizedTypes(isRecyclingType, types);
 }
 
-string GetLocalizedFeeType(TypesHolder const & types)
+std::string GetLocalizedFeeType(TypesHolder const & types)
 {
   auto const & isFeeType = ftypes::IsFeeTypeChecker::Instance();
   auto localized_types = GetLocalizedTypes(isFeeType, types);
@@ -438,7 +427,7 @@ string GetLocalizedFeeType(TypesHolder const & types)
   return localized_types[0];
 }
 
-string GetReadableWheelchairType(TypesHolder const & types)
+std::string GetReadableWheelchairType(TypesHolder const & types)
 {
   auto const value = ftraits::Wheelchair::GetValue(types);
   if (!value.has_value())
@@ -470,7 +459,7 @@ bool HasToilets(TypesHolder const & types)
   return isToiletsType(types);
 }
 
-string FormatDrinkingWater(TypesHolder const & types)
+std::string FormatDrinkingWater(TypesHolder const & types)
 {
   auto const value = ftraits::DrinkingWater::GetValue(types);
   if (!value.has_value())
@@ -484,7 +473,7 @@ string FormatDrinkingWater(TypesHolder const & types)
   UNREACHABLE();
 }
 
-string FormatStars(uint8_t starsCount)
+std::string FormatStars(uint8_t starsCount)
 {
   std::string stars;
   for (int i = 0; i < starsCount && i < kMaxStarsCount; ++i)
@@ -492,7 +481,7 @@ string FormatStars(uint8_t starsCount)
   return stars;
 }
 
-string FormatElevation(string_view elevation)
+std::string FormatElevation(std::string_view elevation)
 {
   if (!elevation.empty())
   {
@@ -505,7 +494,7 @@ string FormatElevation(string_view elevation)
   return {};
 }
 
-string FormatCapacity(std::string_view capacity, TypesHolder const & types)
+std::string FormatCapacity(std::string_view capacity, TypesHolder const & types)
 {
   if (!capacity.empty())
   {
@@ -533,7 +522,7 @@ constexpr char const * kYes = "yes";
 constexpr char const * kNo = "no";
 constexpr char const * kOnly = "only";
 
-string DebugPrint(Internet internet)
+std::string DebugPrint(Internet internet)
 {
   switch (internet)
   {
@@ -551,11 +540,11 @@ Internet InternetFromString(std::string_view inet)
 {
   if (inet.empty())
     return Internet::Unknown;
-  if (inet.find(kWlan) != string::npos)
+  if (inet.find(kWlan) != std::string::npos)
     return Internet::Wlan;
-  if (inet.find(kWired) != string::npos)
+  if (inet.find(kWired) != std::string::npos)
     return Internet::Wired;
-  if (inet.find(kTerminal) != string::npos)
+  if (inet.find(kTerminal) != std::string::npos)
     return Internet::Terminal;
   if (inet == kYes)
     return Internet::Yes;
@@ -568,11 +557,11 @@ YesNoUnknown YesNoUnknownFromString(std::string_view str)
 {
   if (str.empty())
     return Unknown;
-  if (str.find(kOnly) != string::npos)
+  if (str.find(kOnly) != std::string::npos)
     return Yes;
-  if (str.find(kYes) != string::npos)
+  if (str.find(kYes) != std::string::npos)
     return Yes;
-  if (str.find(kNo) != string::npos)
+  if (str.find(kNo) != std::string::npos)
     return No;
   else
     return YesNoUnknown::Unknown;

@@ -11,7 +11,7 @@
 "type.aerialway.drag_lift" = "Sleeplift";
 "type.aerialway.gondola" = "Gondelbaan";
 "type.aerialway.mixed_lift" = "Gecombineerde kabelbaan";
-"type.aerialway.station" = "Kabelwagenstation";
+"type.aerialway.station" = "Kabelbaanstation";
 "type.aeroway" = "Luchtvaartinfrastructuur";
 "type.aeroway.aerodrome" = "Vliegveld";
 "type.aeroway.aerodrome.international" = "Vliegveld";
@@ -41,7 +41,7 @@
 "type.amenity.car_rental" = "Autoverhuur";
 "type.amenity.motorcycle_rental" = "Motorverhuur";
 "type.amenity.car_sharing" = "Autodelen";
-"type.amenity.car_wash" = "Wasserette";
+"type.amenity.car_wash" = "Autowasstraat";
 "type.amenity.casino" = "Casino";
 "type.amenity.gambling" = "Gokken";
 "type.leisure.adult_gaming_centre" = "Gamingcentrum voor volwassenen";
@@ -87,7 +87,7 @@
 "type.amenity.internet_cafe" = "Internetcafé";
 "type.amenity.kindergarten" = "Kleuterschool";
 "type.amenity.library" = "Bibliotheek";
-"type.amenity.loading_dock" = "Laad-dock";
+"type.amenity.loading_dock" = "Laaddock";
 "type.amenity.luggage_locker" = "Baggage Kluis";
 "type.amenity.marketplace" = "Markt";
 "type.amenity.motorcycle_parking" = "Parking Motorfietsen";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "Mediterraans";
 "type.cuisine.mexican" = "Mexicaans";
 "type.cuisine.moroccan" = "Marokkaans";
-"type.cuisine.noodles" = "Noedels";
+"type.cuisine.noodle" = "Noedels";
 "type.cuisine.oriental" = "Oosters";
 "type.cuisine.pancake" = "Pannenkoek";
 "type.cuisine.pasta" = "Pasta";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "Worst";
 "type.cuisine.savory_pancakes" = "Hartige pannenkoeken";
 "type.cuisine.seafood" = "Vis en zeevruchten";
+"type.cuisine.shawarma" = "Shoarma";
 "type.cuisine.soba" = "Soba";
 "type.cuisine.spanish" = "Spaans";
 "type.cuisine.steak_house" = "Steakhouse";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "Thee";
 "type.cuisine.thai" = "Thais gerechten";
 "type.cuisine.turkish" = "Turks";
+"type.cuisine.uzbek" = "Oezbeeks";
 "type.cuisine.vegan" = "Veganistisch";
 "type.cuisine.vegetarian" = "Vegetarisch";
 "type.cuisine.vietnamese" = "Vietnamees";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "Voetgangerstunnel";
+"type.highway.platform" = "Platform";
 "type.highway.primary" = "Hoofdweg";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -611,7 +614,7 @@
 "type.area_highway.secondary" = "Secundaire weg";
 "type.area_highway.service" = "Straat";
 "type.area_highway.tertiary" = "Tertiaire weg";
-"type.area_highway.steps" = "Trappen";
+"type.area_highway.steps" = "Trap";
 "type.area_highway.track" = "Straat";
 "type.area_highway.trunk" = "Straat";
 "type.area_highway.unclassified" = "Straat";
@@ -808,10 +811,10 @@
 "type.man_made.tower" = "Toren";
 
 /* A huge telecommunications tower. Often a local monument or a landmark. */
-"type.man_made.communications_tower" = "Communicatie Toren";
+"type.man_made.communications_tower" = "Communicatietoren";
 
 /* A regular telecommunications tower / mast. */
-"type.man_made.tower.communication" = "Communicatie Toren";
+"type.man_made.tower.communication" = "Communicatietoren";
 
 /* A deep hole drilled into the earth to extract oil or gas. */
 "type.man_made.petroleum_well" = "Olie- of gasput";
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "Moeras";
 "type.noexit" = "Doodlopende weg";
 "type.office" = "Kantoor";
+"type.office.architect" = "Architectenbureau";
 "type.office.company" = "Bedrijfskantoor";
+"type.office.educational_institution" = "Onderwijsinstelling";
 "type.office.estate_agent" = "Makelaar";
 "type.office.government" = "Overheidskantoor";
 "type.office.insurance" = "Verzekeringskantoor";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "Spoorwegovergang";
 "type.railway.disused" = "Ongebruikt spoor";
 "type.railway.disused.bridge" = "Ongebruikte spoorbrug";
+"type.railway.disused.tunnel" = "Ongebruikte spoortunnel";
 "type.railway.funicular" = "Tunnel";
 "type.railway.funicular.bridge" = "Kabelspoorbuur";
 "type.railway.funicular.tunnel" = "Kabelspoortunnel";
@@ -1290,13 +1296,22 @@
 "type.shop.chemist" = "Drogisterij";
 "type.shop.chocolate" = "Chocolaterie";
 "type.shop.clothes" = "Kledingwinkel";
+"type.shop.clothes.children" = "Kinderkledingwinkel";
+"type.shop.clothes.fashion" = "Modeboutique";
+"type.shop.clothes.hats" = "Hoedenzaak";
+"type.shop.clothes.men" = "Herenkledingwinkel";
+"type.shop.clothes.sports" = "Sportkledingwinkel";
+"type.shop.clothes.suits" = "Pakkenwinkel";
+"type.shop.clothes.underwear" = "Ondergoedwinkel";
+"type.shop.clothes.wedding" = "Bruidswinkel";
+"type.shop.clothes.women" = "Dameskledingwinkel";
 "type.shop.coffee" = "Koffiewinkel";
 "type.shop.computer" = "Computerwinkel";
 "type.shop.confectionery" = "Snoepwinkel";
 "type.shop.convenience" = "Buurtwinkel";
 "type.shop.copyshop" = "Kopieerwinkel";
-"type.shop.cosmetics" = "Schoonheidsmiddelen";
-"type.shop.curtain" = "Gordijnen";
+"type.shop.cosmetics" = "Cosmeticawinkel";
+"type.shop.curtain" = "Gordijnenwinkel";
 "type.shop.deli" = "Delicatessenwinkel";
 "type.shop.department_store" = "Warenhuis";
 "type.shop.doityourself" = "IJzerhandel";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "Begrafenisondernemer";
 "type.shop.furniture" = "Meubelzaak";
 "type.shop.garden_centre" = "Tuincentrum";
+"type.shop.games" = "Spellenwinkel";
 "type.shop.gas" = "Gas winkel";
 "type.shop.gift" = "Cadeauwinkel";
 "type.shop.greengrocer" = "Groentenwinkel";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "Kiosk";
 "type.shop.kitchen" = "Keukenwinkel";
 "type.shop.laundry" = "Wasserette";
+"type.shop.leather" = "Lederwinkel";
 "type.shop.mall" = "Winkelcentrum";
 "type.shop.massage" = "Massagesalon";
 "type.shop.mobile_phone" = "Mobiele telefoonwinkel";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "Dierenwinkel";
 "type.shop.pet_grooming" = "Huisdierverzorging";
 "type.shop.photo" = "Fotowinkel";
+"type.shop.religion" = "Winkel in religieuze artikelen";
 "type.shop.rental" = "Verhuur winkel";
 "type.shop.rental.bicycle" = "Fietsverhuurwinkel";
 "type.amenity.bicycle_rental.shop" = "Fietsverhuurwinkel";
@@ -1421,7 +1439,7 @@
 "type.sport.10pin" = "Bowlen";
 "type.sport.9pin" = "Bowlen";
 "type.sport.padel" = "Padel";
-"type.sport.futsal" = "Futsal";
+"type.sport.futsal" = "Zaalvoetbal";
 "type.sport.ice_hockey" = "IJshockey";
 "type.sport.field_hockey" = "Veldhockey";
 "type.sport.badminton" = "Badminton";
@@ -1553,7 +1571,7 @@
 "type.barrier.yes" = "Barrière";
 "type.building.guardhouse" = "Wacht";
 "type.office.security" = "Beveiligingsbureau";
-"type.power.portal" = "Kracht Toren (Portaal)";
+"type.power.portal" = "Krachttoren (Portaal)";
 "type.shop.lighting" = "Verlichtingswinkel";
 "type.barrier.jersey_barrier" = "Blok";
 "type.barrier.debris" = "Puin";

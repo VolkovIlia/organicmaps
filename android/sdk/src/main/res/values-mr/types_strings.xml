@@ -248,13 +248,15 @@
     <string name="type.cuisine.italian_pizza">इटालियन, पिझ्झा</string>
     <string name="type.cuisine.japanese">जपानी</string>
     <string name="type.cuisine.local">स्थानिक</string>
-    <string name="type.cuisine.noodles">नूडल्स</string>
+    <string name="type.cuisine.noodle">नूडल्स</string>
     <string name="type.cuisine.pasta">पास्ता</string>
     <string name="type.cuisine.pizza">पिझ्झा</string>
     <string name="type.cuisine.regional">प्रादेशिक</string>
     <string name="type.cuisine.sandwich">सँडविच</string>
     <string name="type.cuisine.seafood">मासळी जेवण</string>
+    <string name="type.cuisine.shawarma">शोरमा</string>
     <string name="type.cuisine.tea">चहा</string>
+    <string name="type.cuisine.uzbek">उझ्बेक</string>
     <string name="type.cuisine.vegetarian">शाकाहारी</string>
     <string name="type.emergency">आणीबाणी</string>
     <string name="type.emergency.assembly_point">आपत्कालीन विधानसभा पॉइंट</string>
@@ -344,6 +346,7 @@
     <string name="type.highway.pedestrian.bridge">पादचारी पूल</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">पादचारी बोगदा</string>
+    <string name="type.highway.platform">फलाट</string>
     <string name="type.highway.primary">प्राथमिक मार्ग</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">पूल</string>
@@ -707,6 +710,7 @@
     <string name="type.railway">रेल्वे</string>
     <string name="type.railway.construction">रेल्वेचे बांधकाम</string>
     <string name="type.railway.crossing">रेल्वे ओलांडणी</string>
+    <string name="type.railway.disused.tunnel">वापरात नसलेला रेल्वे बोगदा</string>
     <string name="type.railway.funicular">फ्युनिक्युलर</string>
     <string name="type.railway.funicular.bridge">हवाई रज्जुमार्ग</string>
     <string name="type.railway.funicular.tunnel">हवाई रज्जुमार्ग</string>
@@ -1034,6 +1038,7 @@
     <string name="type.shop.jewelry">दागिने</string>
     <string name="type.shop.kiosk">टपरी</string>
     <string name="type.shop.laundry">धुलाईघर</string>
+    <string name="type.shop.leather">चामड्याच्या वस्तूंचे दुकान</string>
     <string name="type.shop.mall">मॉल</string>
     <string name="type.shop.massage">मालिश गृह</string>
     <string name="type.shop.mobile_phone">मोबाईल</string>
@@ -1051,6 +1056,7 @@
     <string name="type.shop.pet">पाळीव प्राण्यांचे दुकान</string>
     <string name="type.shop.pet_grooming">पाळीव प्राणी ग्रूमिंग</string>
     <string name="type.shop.photo">फोटोचे दुकान</string>
+    <string name="type.shop.religion">धार्मिक वस्तूंचे दुकान</string>
     <string name="type.shop.rental">भाड्याचे दुकान</string>
     <string name="type.shop.rental.bicycle">सायकल भाड्याचे दुकान</string>
     <string name="type.amenity.bicycle_rental.shop">सायकल भाड्याचे दुकान</string>

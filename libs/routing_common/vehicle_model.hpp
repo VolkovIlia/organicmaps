@@ -55,6 +55,7 @@ enum class HighwayType : uint16_t
   RouteFerry = 259,
   HighwayTertiaryLink = 272,
   HighwayLadder = 478,
+  HighwayPlatform = 700,
   HighwayBusway = 857,  // reserve type here, but this type is not used for any routing by default
   RouteShuttleTrain = 1054,
 };
@@ -65,28 +66,24 @@ using HighwayBasedSpeeds = base::SmallMap<HighwayType, InOutCitySpeedKMpH>;
 /// \brief Params for calculation of an approximate speed on a feature.
 struct SpeedParams
 {
-  /// @deprecated For unit tests compatibility.
-  SpeedParams(bool forward, bool inCity, Maxspeed const & maxspeed)
-    : m_maxspeed(maxspeed)
+  SpeedParams(MaxspeedType maxSpeedKmPH, bool inCity)
+    : m_maxSpeedKmPH(maxSpeedKmPH)
     , m_defSpeedKmPH(kInvalidSpeed)
     , m_inCity(inCity)
-    , m_forward(forward)
   {}
 
-  SpeedParams(Maxspeed const & maxspeed, MaxspeedType defSpeedKmPH, bool inCity)
-    : m_maxspeed(maxspeed)
+  SpeedParams(MaxspeedType maxSpeedKmPH, MaxspeedType defSpeedKmPH, bool inCity)
+    : m_maxSpeedKmPH(maxSpeedKmPH)
     , m_defSpeedKmPH(defSpeedKmPH)
     , m_inCity(inCity)
   {}
 
   // Maxspeed stored for feature, if any.
-  Maxspeed m_maxspeed;
+  MaxspeedType m_maxSpeedKmPH;
   // Default speed for this feature type in MWM, if any (kInvalidSpeed otherwise).
   MaxspeedType m_defSpeedKmPH;
   // If a corresponding feature lies inside a city of a town.
   bool m_inCity;
-  // Retrieve forward (true) or backward (false) speed.
-  bool m_forward;
 };
 
 /// \brief Speeds which are used for edge weight and ETA estimations.
@@ -99,7 +96,11 @@ struct SpeedKMpH
   bool operator==(SpeedKMpH const & rhs) const { return m_weight == rhs.m_weight && m_eta == rhs.m_eta; }
   bool operator!=(SpeedKMpH const & rhs) const { return !(*this == rhs); }
 
-  bool operator<(SpeedKMpH const & rhs) const { return m_weight < rhs.m_weight && m_eta < rhs.m_eta; }
+  bool operator<(SpeedKMpH const & rhs) const
+  {
+    ASSERT((m_weight <= rhs.m_weight) == (m_eta <= rhs.m_eta), ());
+    return m_weight < rhs.m_weight;
+  }
 
   bool IsValid() const { return m_weight > 0 && m_eta > 0; }
 
@@ -253,13 +254,13 @@ public:
 
   struct FeatureTypeSurface
   {
-    std::vector<std::string> m_type;  // road surface type 'psurface=*'
+    base::StringIL m_type;  // road surface type 'psurface=*'
     SpeedFactor m_factor;
   };
 
   struct AdditionalRoad
   {
-    std::vector<std::string> m_type;
+    base::StringIL m_type;
     InOutCitySpeedKMpH m_speed;
   };
 

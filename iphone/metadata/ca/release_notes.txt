@@ -1,16 +1,23 @@
-• NOVETAT: Colors del tema fosc amb més contrast
-• Dades d’OpenStreetMap actualitzades (11 de gener)
-• Exclosos els casinos de la categoria "Entreteniment"
-• Reduït el gruix de les línies de metro
-• Afegida informació de capacitat als resultats de cerca per a aparcaments de motos, lloguer de bicicletes, càrrega de bicicletes i càrrega de cotxes
-• Mostra el nivell del pis als resultats de cerca
-• Botons de planificació de rutes més amples
+• Dades del mapa OSM a data de 10 de març
+• Dades de la Viquipèdia a data de 1 de març
+• S'ha afegit suport per a límits de velocitat condicionals
+• Isòlines d'altitud més detallades per a les províncies xineses
+• S'han afegit botigues de cuir i botigues que venen articles religiosos
+• S'han afegit fileres d'arbres
+• S'han afegit plataformes d'aturada de transport públic sense aturades d'autobús a prop
+• S'ha corregit el càlcul del progrés de la descàrrega de països
+• S'ha dividit Tanzània en regions més petites
+• S'ha afegit un historial de les categories utilitzades recentment a l'Editor
+• Millorada la gestió de l'esllavetada cap amunt a la pantalla de planificació d'itineraris
+• Corregida la posició de la regla per a CarPlay
+• Corregits diversos bloquejos, i millorada l'estabilitat i el rendiment
 
 ### Traduccions
 
-• Afegides traduccions de l'aplicació i guiatge per veu en albanès
-• Actualitzades les PMF i afegides traduccions de les PMF per a àrab, txec, neerlandès, farsi, grec, hebreu, hindi, hongarès, indonesi, italià, lituà, marathi, suec i telugu
-• Millorades les traduccions de l'aplicació i de les PMF en alemany
-• Afegits sinònims de cerca en búlgar
-• Canviat el nom de la configuració "Botons de zoom" per a més claredat
-• Correccions de traducció dels col·laboradors de Weblate per a diversos idiomes
+• Millorades les descripcions dels països
+• Aplicades les correccions romaneses d'Eugen Dedu
+• Actualitzats els noms dels països
+• Actualitzades les traduccions dels col·laboradors de Weblate
+• Corregida la traducció a l'ucraïnès
+
+Gràcies a tothom qui col·labora, fa donacions i dona suport a Organic Maps! Creem junts els millors mapes!

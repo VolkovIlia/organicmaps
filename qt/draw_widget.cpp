@@ -117,21 +117,12 @@ DrawWidget::DrawWidget(Framework & framework, std::unique_ptr<ScreenshotParams> 
     auto const routerType = routingManager.GetLastUsedRouter();
     if (routerType == routing::RouterType::Pedestrian || routerType == routing::RouterType::Bicycle)
     {
-      RoutingManager::DistanceAltitude da;
-      if (!routingManager.GetRouteAltitudesAndDistancesM(da))
+      ElevationInfo ei;
+      if (!routingManager.GetRouteElevationInfo(ei))
         return;
 
-      for (int iter = 0; iter < 2; ++iter)
-      {
-        LOG(LINFO, ("Altitudes", iter == 0 ? "before" : "after", "simplify:"));
-        LOG_SHORT(LDEBUG, (da));
-
-        uint32_t totalAscent, totalDescent;
-        da.CalculateAscentDescent(totalAscent, totalDescent);
-        LOG_SHORT(LINFO, ("Ascent:", totalAscent, "Descent:", totalDescent));
-
-        da.Simplify();
-      }
+      auto const altInfo = ei.CalculateAltitudesInfo(ElevationInfo::kDefThresholdMWM);
+      LOG(LINFO, ("Ascent:", altInfo.GetTotalAscent(), "Descent:", altInfo.GetTotalDescent()));
     }
   });
 
@@ -561,20 +552,20 @@ void DrawWidget::SubmitRulerPoint(m2::PointD const & pt)
 
 void DrawWidget::SubmitRoutingPoint(m2::PointD const & pt, bool pointIsMercator)
 {
-  auto & routingManager = m_framework.GetRoutingManager();
+  auto & rm = m_framework.GetRoutingManager();
 
   // Check if limit of intermediate points is reached.
   bool const isIntermediate = m_routePointAddMode == RouteMarkType::Intermediate;
-  if (isIntermediate && !routingManager.CouldAddIntermediatePoint())
-    routingManager.RemoveRoutePoint(RouteMarkType::Intermediate, 0);
+  if (isIntermediate && !rm.CouldAddIntermediatePoint())
+    rm.RemoveRoutePoint(RouteMarkType::Intermediate, 0);
 
   // Insert implicit start point.
-  if (m_routePointAddMode == RouteMarkType::Finish && routingManager.GetRoutePoints().empty())
+  if (m_routePointAddMode == RouteMarkType::Finish && rm.GetRoutePoints().empty())
   {
     RouteMarkData startPoint;
     startPoint.m_pointType = RouteMarkType::Start;
     startPoint.m_isMyPosition = true;
-    routingManager.AddRoutePoint(std::move(startPoint));
+    rm.AddRoutePoint(std::move(startPoint));
   }
 
   RouteMarkData point;
@@ -585,23 +576,22 @@ void DrawWidget::SubmitRoutingPoint(m2::PointD const & pt, bool pointIsMercator)
   else
     point.m_position = pointIsMercator ? pt : P2G(pt);
 
-  routingManager.AddRoutePoint(std::move(point));
+  // Fill title/subtitle from the nearest feature and address, like Android/iOS do.
+  if (auto const fid = m_framework.GetFeatureAtPoint(point.m_position); fid.IsValid())
+    m_framework.GetDataSource().ReadFeature([&](FeatureType & ft) { point.m_title = ft.GetReadableName(); }, fid);
+  auto const addr = m_framework.GetAddressAtPoint(point.m_position);
+  point.m_subTitle = addr.FormatAddress();
 
-  if (routingManager.GetRoutePoints().size() >= 2)
+  rm.AddRoutePoint(std::move(point));
+
+  if (rm.GetRoutePoints().size() >= 2)
   {
-    if (RoutingSettings::UseDebugGuideTrack())
-    {
-      // Like in guides_tests.cpp, GetTestGuides().
-      routing::GuidesTracks guides;
-      guides[10] = {{{mercator::FromLatLon(48.13999, 11.56873), 10},
-                     {mercator::FromLatLon(48.14096, 11.57246), 10},
-                     {mercator::FromLatLon(48.14487, 11.57259), 10}}};
-      routingManager.RoutingSession().SetGuidesForTests(std::move(guides));
-    }
+    if (RoutingSettings::UseDebugGuideTrack() && !m_guideTracks.empty())
+      rm.RoutingSession().SetGuidesForTests(m_guideTracks);
     else
-      routingManager.RoutingSession().SetGuidesForTests({});
+      rm.RoutingSession().SetGuidesForTests({});
 
-    routingManager.BuildRoute();
+    rm.BuildRoute();
   }
 }
 
@@ -619,9 +609,8 @@ void DrawWidget::FollowRoute()
 {
   auto & routingManager = m_framework.GetRoutingManager();
 
-  /// @DebugNote
-  /// Uncomment to debug TTS.
-  // routingManager.SetTurnNotificationsLocale("es");
+  routingManager.SetTurnNotificationsLocale("en");
+  /// @DebugNote Uncomment to Debug TTS.
   // routingManager.EnableTurnNotifications(true);
 
   auto const points = routingManager.GetRoutePoints();
@@ -713,6 +702,14 @@ void DrawWidget::ShowPlacePage()
     SetRoutePointAddMode(RouteMarkType::Finish);
     SubmitRoutingPoint(info.GetMercator(), true);
     break;
+  case place_page_dialog::RouteAlong:
+  {
+    ASSERT(info.IsTrack(), ());
+    m_guideTracks.clear();
+    auto const trackID = info.GetTrackId();
+    m_guideTracks[trackID].push_back(m_framework.GetBookmarkManager().GetTrack(trackID)->GetGeometry());
+    break;
+  }
   default: break;
   }
 

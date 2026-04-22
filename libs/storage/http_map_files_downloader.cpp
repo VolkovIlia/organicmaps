@@ -3,14 +3,11 @@
 #include "storage/downloader.hpp"
 
 #include "platform/downloader_defines.hpp"
-#include "platform/servers_list.hpp"
 
-#include "base/assert.hpp"
-#include "base/string_utils.hpp"
-
-#include <algorithm>
 #include <functional>
 
+namespace storage
+{
 namespace
 {
 class ErrorHttpRequest : public downloader::HttpRequest
@@ -21,15 +18,13 @@ public:
     m_status = downloader::DownloadStatus::Failed;
   }
 
-  virtual std::string const & GetData() const { return m_filePath; }
+  virtual std::string const & GetFilePath() const { return m_filePath; }
 
 private:
   std::string m_filePath;
 };
 }  // anonymous namespace
 
-namespace storage
-{
 HttpMapFilesDownloader::~HttpMapFilesDownloader()
 {
   CHECK_THREAD_CHECKER(m_checker, ());

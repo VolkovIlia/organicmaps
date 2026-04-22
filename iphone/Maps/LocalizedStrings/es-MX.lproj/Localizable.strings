@@ -535,7 +535,7 @@
 "message_invalid_feature_position" = "Ningún objeto puede ser localizado aquí";
 
 /* Text in About and OSM Login screens. First %@ is replaced by a local, human readable date. */
-"osm_presentation" = "Datos de OpenStreetMap creados por la comunidad a partir de %@. Obtenga más información sobre cómo editar y actualizar el mapa en OpenStreetMap.org";
+"osm_presentation" = "Datos de OpenStreetMap creados por la comunidad a fecha de %@. Obtenga más información sobre cómo editar y actualizar el mapa en OpenStreetMap.org";
 "login_to_make_edits_visible" = "Crea una cuenta OpenStreetMap o inicia sesión para publicar tus ediciones de mapas en todo el mundo.";
 
 /* Downloaded 10 **of** 20 <- it is that "of" */
@@ -650,6 +650,12 @@
 "button_layer_cycling" = "Ciclismo";
 "button_layer_subway" = "Metro";
 "layers_title" = "Estilos de mapa y capas";
+
+/* Button to change the color of all bookmarks in the current list */
+"change_all_bookmarks_color" = "Cambiar el color de todos los marcadores";
+
+/* Button to change the color of all tracks in the current list */
+"change_all_tracks_color" = "Cambiar el color de todos los trayectos";
 
 /* Menu title for exporting a file in the default KMZ format */
 "export_file" = "Exportar KMZ";
@@ -1106,3 +1112,22 @@
 
 /* Settings/Highlight downloaded regions on the map */
 "show_downloaded_regions" = "Regiones descargadas en morado";
+
+
+/********** gps strings **********/
+
+
+/* Login to OSM button text */
+"login_osm_credentials" = "Iniciar sesión con contraseña";
+
+/* Login to OSM button text */
+"login_osm_browser" = "Iniciar sesión utilizando el navegador";
+
+/* Editor section title that shows recently used categories (types of objects) when adding a place on the map */
+"editor_add_select_category_recent_subtitle" = "Recientes";
+
+/* Toast message shown when bookmark colors are changed in category settings */
+"toast_bookmarks_color_changed" = "Color de los marcadores cambiado";
+
+/* Toast message shown when track colors are changed in category settings */
+"toast_tracks_color_changed" = "Color de los trayectos cambiado";

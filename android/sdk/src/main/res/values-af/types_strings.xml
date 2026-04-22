@@ -134,7 +134,7 @@
     <string name="type.recycling.shoes">Skoene</string>
     <string name="type.recycling.green_waste">Groen-/organiese afval</string>
     <string name="type.recycling.cartons">Drankverpakking</string>
-    <string name="type.amenity.restaurant">Restourant</string>
+    <string name="type.amenity.restaurant">Restaurant</string>
     <string name="type.amenity.sanitary_dump_station">Opgaartenkstortstasie</string>
     <string name="type.amenity.school">Skool</string>
     <!-- Weather shelter (including sun shelters and natural rock shelters). -->
@@ -298,7 +298,7 @@
     <string name="type.cuisine.mediterranean">Mediterreens</string>
     <string name="type.cuisine.mexican">Meksikaans</string>
     <string name="type.cuisine.moroccan">Marokkaans</string>
-    <string name="type.cuisine.noodles">Noedels</string>
+    <string name="type.cuisine.noodle">Noedels</string>
     <string name="type.cuisine.oriental">Oosters</string>
     <string name="type.cuisine.pancake">Pannekoek</string>
     <string name="type.cuisine.pasta">Pasta</string>
@@ -322,6 +322,7 @@
     <string name="type.cuisine.tea">Tee</string>
     <string name="type.cuisine.thai">Thai</string>
     <string name="type.cuisine.turkish">Turks</string>
+    <string name="type.cuisine.uzbek">Oesbekies</string>
     <string name="type.cuisine.vegan">Veganisties</string>
     <string name="type.cuisine.vegetarian">Vegetaries</string>
     <string name="type.cuisine.vietnamese">Viëtnamees</string>
@@ -414,6 +415,7 @@
     <string name="type.highway.pedestrian.bridge">Voetgangerbrug</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.pedestrian.tunnel">Voetgangertonnel</string>
+    <string name="type.highway.platform">Platform</string>
     <string name="type.highway.primary">Primêre pad</string>
     <!-- These translations are used for all type.highway.*.bridge. -->
     <string name="type.highway.primary.bridge">Brug</string>
@@ -708,7 +710,9 @@
     <string name="type.natural.wetland.marsh">Moeras</string>
     <string name="type.noexit">Doodloop</string>
     <string name="type.office">Kantoor</string>
+    <string name="type.office.architect">Argitekskantoor</string>
     <string name="type.office.company">Maatskappykantoor</string>
+    <string name="type.office.educational_institution">Opvoedkundige instelling</string>
     <string name="type.office.estate_agent">Eiendomsagent</string>
     <string name="type.office.government">Regeringskantoor</string>
     <string name="type.office.insurance">Versekeringskantoor</string>
@@ -786,6 +790,7 @@
     <string name="type.railway.crossing">Spoorwegoorgang</string>
     <string name="type.railway.disused">Ongebruikte spoor</string>
     <string name="type.railway.disused.bridge">Ongebruikte spoorbrug</string>
+    <string name="type.railway.disused.tunnel">Ongebruikte treintonnel</string>
     <string name="type.railway.funicular">Kabelspoor</string>
     <string name="type.railway.funicular.bridge">Kabelspoorbrug</string>
     <string name="type.railway.funicular.tunnel">Kabelspoortonnel</string>
@@ -1086,6 +1091,15 @@
     <string name="type.shop.chemist">Drogistery</string>
     <string name="type.shop.chocolate">Sjokoladewinkel</string>
     <string name="type.shop.clothes">Kledingwinkel</string>
+    <string name="type.shop.clothes.children">Kinderkledingwinkel</string>
+    <string name="type.shop.clothes.fashion">Modeboetiek</string>
+    <string name="type.shop.clothes.hats">Hoedewinkel</string>
+    <string name="type.shop.clothes.men">Hereklerewinkel</string>
+    <string name="type.shop.clothes.sports">Sportklerewinkel</string>
+    <string name="type.shop.clothes.suits">Pakwinkel</string>
+    <string name="type.shop.clothes.underwear">Onderklerewinkel</string>
+    <string name="type.shop.clothes.wedding">Trouklerewinkel</string>
+    <string name="type.shop.clothes.women">Damesklerewinkel</string>
     <string name="type.shop.coffee">Koffiewinkel</string>
     <string name="type.shop.computer">Rekenaarwinkel</string>
     <string name="type.shop.confectionery">Lekkergoedwinkel</string>
@@ -1106,6 +1120,7 @@
     <string name="type.shop.funeral_directors">Begrafnisondernemer</string>
     <string name="type.shop.furniture">Meubelwinkel</string>
     <string name="type.shop.garden_centre">Tuinsentrum</string>
+    <string name="type.shop.games">Speletjieswinkel</string>
     <string name="type.shop.gas">Gaswinkel</string>
     <string name="type.shop.gift">Geskenkwinkel</string>
     <string name="type.shop.greengrocer">Groentewinkel</string>
@@ -1121,6 +1136,7 @@
     <string name="type.shop.kiosk">Kiosk</string>
     <string name="type.shop.kitchen">Kombuiswinkel</string>
     <string name="type.shop.laundry">Kitswassery</string>
+    <string name="type.shop.leather">Leerwinkel</string>
     <string name="type.shop.mall">Winkelsentrum</string>
     <string name="type.shop.massage">Masseersalon</string>
     <string name="type.shop.mobile_phone">Selfoonwinkel</string>
@@ -1139,6 +1155,7 @@
     <string name="type.shop.pet">Troeteldierwinkel</string>
     <string name="type.shop.pet_grooming">Troeteldierversorging</string>
     <string name="type.shop.photo">Fotowinkel</string>
+    <string name="type.shop.religion">Godsdienswinkel</string>
     <string name="type.shop.seafood">Vishandelaar</string>
     <string name="type.shop.second_hand">Tweedehandsewinkel</string>
     <string name="type.shop.shoes">Skoenwinkel</string>

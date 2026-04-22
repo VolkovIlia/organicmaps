@@ -1,11 +1,10 @@
-• NYHET: Mörkare temafärger med högre kontrast
-• NYHET: Google Assistant för navigering och sökning
-• OSM-kartdata från 11 januari
-• Navigeringstemainställningen "Auto" följer systemets mörka/ljusa läge
-• Tunnare tunnelbanelinjer
-• Sökresultat visar kapacitet för motorcykelparkering, cykeluthyrning, cykelladdning och billaddning
-• Visa våningsplan i sökresultat
-• Albanska översättningar och TTS-röstguidning
-• Uppdaterade FAQ och appöversättningar
-• Fixade krascher
-…mer på omaps.org/sv/news
+• OSM-kartdata från 10 mars, Wikipedia från 1 mars
+• Mer detaljerade höjdisoler för kinesiska provinser
+• Lade till rader av träd, läderbutiker och butiker som säljer religiösa varor
+• Tillagt stöd för villkorade hastighetsbegränsningar
+• Tanzania uppdelat i mindre regioner
+• Förbättrad visning av verksamhetens öppettider
+• Fixat flera krascher
+• Förbättrade översättningar av app- och landsnamn
+• Lagt till hållplatser för kollektivtrafiken utan närliggande busshållplatser
+omaps.org/sv/news

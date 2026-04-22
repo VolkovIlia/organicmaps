@@ -6,16 +6,19 @@
     <string name="type.addr_interpolation.even">Endereço/Bloco</string>
     <string name="type.addr_interpolation.odd">Endereço/Bloco</string>
     <string name="type.aeroway.gate">Portão de embarque</string>
+    <string name="type.aeroway.helipad">Heliporto</string>
     <string name="type.aeroway.taxiway">Pista de rolagem</string>
     <string name="type.aeroway.terminal">Aerogare de passageiros</string>
     <string name="type.amenity">Amenidades</string>
     <string name="type.amenity.atm">Caixa eletrônico</string>
-    <string name="type.amenity.bar">Drinqueria</string>
+    <string name="type.amenity.bar">Bar</string>
+    <string name="type.amenity.bench">Banco</string>
     <string name="type.amenity.bicycle_parking">Bicicletário</string>
     <string name="type.amenity.bicycle_parking.covered">Estacionamento de bicicletas coberto</string>
     <string name="type.amenity.bicycle_rental">Aluguel de bicicletas</string>
     <string name="type.amenity.bicycle_repair_station">Oficina de conserto de bicicletas</string>
-    <string name="type.amenity.love_hotel">Hotel</string>
+    <string name="type.amenity.biergarten">Jardim de cerveja</string>
+    <string name="type.amenity.love_hotel">Hotel para casais</string>
     <string name="type.amenity.bus_station">Rodoviária</string>
     <string name="type.amenity.car_rental">Aluguel de automóveis</string>
     <string name="type.amenity.motorcycle_rental">Aluguel de motocicletas</string>
@@ -119,7 +122,7 @@
     <string name="type.cuisine.ice_cream">Sorvete</string>
     <string name="type.cuisine.italian_pizza">Italiana, pizza</string>
     <string name="type.cuisine.kebab">Espetinho</string>
-    <string name="type.cuisine.noodles">Macarrão</string>
+    <string name="type.cuisine.noodle">Macarrão</string>
     <string name="type.cuisine.pancake">Panquecas</string>
     <string name="type.cuisine.pizza">Pizza</string>
     <string name="type.cuisine.sausage">Linguiças</string>
@@ -179,53 +182,34 @@
     <string name="type.highway.primary">Estrada</string>
     <!-- These translations are used for all type.highway.*.tunnel. -->
     <string name="type.highway.primary.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.primary_link">Saída de rodovia</string>
+    <string name="type.highway.primary_link">Rampa de Estrada Primária</string>
     <string name="type.highway.raceway">Pista de corrida</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.residential.tunnel">Túnel residencial</string>
-    <string name="type.highway.secondary">Estrada</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.secondary.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.secondary_link">Saída de rodovia</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.secondary_link.tunnel">Túnel rodoviário</string>
+    <string name="type.highway.secondary_link">Rampa de acesso à estrada secundária</string>
+    <string name="type.highway.service">Estrada de serviço</string>
+    <string name="type.highway.service.area">Estrada de serviço</string>
     <string name="type.highway.service.driveway">Via de acesso</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.service.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.services">Área de serviços de estrada</string>
+    <string name="type.highway.service.parking_aisle">Corredor de estacionamento</string>
+    <string name="type.highway.steps">Escadaria</string>
     <string name="type.highway.ladder">Escada</string>
-    <string name="type.highway.tertiary">Estrada</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.tertiary.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.tertiary_link">Saída de rodovia</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.tertiary_link.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.track">Estrada rústica</string>
-    <string name="type.highway.track.area">Estrada rústica</string>
-    <string name="type.highway.track.grade1">Estrada rústica</string>
-    <string name="type.highway.track.no.access">Estrada rústica</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.track.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.trunk">Via expressa</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.trunk.tunnel">Túnel rodoviário</string>
-    <string name="type.highway.trunk_link">Saída de rodovia</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.trunk_link.tunnel">Túnel rodoviário</string>
-    <!-- These translations are used for all type.highway.*.tunnel. -->
-    <string name="type.highway.unclassified.tunnel">Túnel rodoviário</string>
-    <string name="type.area_highway.cycleway">Caminho para ciclistas</string>
-    <string name="type.area_highway.living_street">Rua residencial</string>
+    <string name="type.highway.tertiary">Estrada Terciária</string>
+    <string name="type.highway.tertiary_link">Rampa de acesso à estrada terciária</string>
+    <string name="type.highway.track">Trilha</string>
+    <string name="type.highway.track.area">Trilha</string>
+    <string name="type.highway.track.grade1">Trilha</string>
+    <string name="type.highway.track.no.access">Trilha</string>
+    <string name="type.highway.traffic_signals">Semáforos</string>
+    <string name="type.highway.trunk">Estrada Troncal</string>
+    <string name="type.highway.trunk_link">Rampa de acesso à estrada Tronco</string>
+    <string name="type.highway.unclassified">Via Local ou Estrada Vicinal</string>
+    <string name="type.highway.unclassified.area">Via Local ou Estrada Vicinal</string>
     <string name="type.area_highway.motorway">Rodovia</string>
-    <string name="type.area_highway.pedestrian">Caminho pedonal</string>
     <string name="type.area_highway.primary">Estrada</string>
-    <string name="type.area_highway.secondary">Estrada</string>
-    <string name="type.area_highway.tertiary">Estrada</string>
-    <string name="type.area_highway.steps">Travessia</string>
-    <string name="type.area_highway.track">Estrada rústica</string>
-    <string name="type.area_highway.trunk">Via expressa</string>
-    <string name="type.highway.world_level">highway-world_level</string>
-    <string name="type.highway.world_towns_level">highway-world_towns_level</string>
+    <string name="type.area_highway.service">Estrada de serviço</string>
+    <string name="type.area_highway.tertiary">Estrada Terciária</string>
+    <string name="type.area_highway.steps">Escadaria</string>
+    <string name="type.area_highway.track">Trilha</string>
+    <string name="type.area_highway.trunk">Estrada Troncal</string>
+    <string name="type.area_highway.unclassified">Via Local ou Estrada Vicinal</string>
 
     <!-- SECTION: Types: Historic -->
     <string name="type.historic.battlefield">Campo de batalha histórico</string>
@@ -309,6 +293,7 @@
     <string name="type.railway.abandoned.bridge">Ferrovia abandonada</string>
     <string name="type.railway.abandoned.tunnel">Ferrovia abandonada</string>
     <string name="type.railway.crossing">Passagem pedestre</string>
+    <string name="type.railway.disused.tunnel">Túnel ferroviário desativado</string>
     <string name="type.railway.funicular.bridge">Funicular</string>
     <string name="type.railway.funicular.tunnel">Funicular</string>
     <string name="type.railway.halt">Ponto de parada</string>
@@ -458,6 +443,9 @@
     <string name="type.shop.car_repair.tyres">Borracheiro</string>
     <string name="type.shop.caravan">Concessionária de trailers</string>
     <string name="type.shop.chemist">Drogaria</string>
+    <string name="type.shop.clothes.hats">Loja de chapéus</string>
+    <string name="type.shop.clothes.suits">Loja de ternos</string>
+    <string name="type.shop.clothes.underwear">Loja de lingerie</string>
     <string name="type.shop.copyshop">Copiadora</string>
     <string name="type.shop.department_store">Loja de departamentos</string>
     <string name="type.shop.doityourself">Loja de ferramentas e materiais de bricolagem</string>
@@ -537,9 +525,9 @@
     <string name="type.leisure.sports_hall">Salão de esportes</string>
     <string name="type.sport.diving">Mergulho</string>
     <string name="type.man_made.crane">Guindaste</string>
-    <string name="type.barrier.wicket_gate">Portão Maldito</string>
+    <string name="type.barrier.wicket_gate">Portão de passagem</string>
     <string name="type.barrier.yes">Barreira</string>
-    <string name="type.building.guardhouse">Guarda</string>
+    <string name="type.building.guardhouse">Guarita</string>
     <string name="type.office.security">Escritório de Segurança</string>
     <string name="type.shop.lighting">Loja de iluminação</string>
     <string name="type.barrier.debris">Destroços</string>

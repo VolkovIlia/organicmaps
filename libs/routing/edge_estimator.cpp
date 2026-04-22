@@ -18,7 +18,6 @@
 
 namespace routing
 {
-using namespace std;
 using namespace traffic;
 using measurement_utils::KmphToMps;
 
@@ -47,9 +46,10 @@ double CalcTrafficFactor(SpeedGroup speedGroup)
   return 1.0 / percentage;
 }
 
-double GetSpeedMpS(EdgeEstimator::Purpose purpose, Segment const & segment, RoadGeometry const & road)
+double GetSpeedMpS(EdgeEstimator::Purpose purpose, Segment const & segment, RoadGeometry const & road,
+                   time_t arrivalTime = 0)
 {
-  SpeedKMpH const & speed = road.GetSpeed(segment.IsForward());
+  SpeedKMpH const & speed = road.GetSpeed(segment.IsForward(), arrivalTime);
   double const speedMpS = KmphToMps(purpose == EdgeEstimator::Purpose::Weight ? speed.m_weight : speed.m_eta);
   ASSERT_GREATER(speedMpS, 0.0, (segment));
   return speedMpS;
@@ -281,7 +281,8 @@ public:
     UNREACHABLE();
   }
 
-  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const override
+  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose,
+                           time_t arrivalTime) const override
   {
     return CalcClimbSegment(purpose, segment, road,
                             [purpose](double speedMpS, double tangent, geometry::Altitude altitude)
@@ -309,7 +310,8 @@ public:
     UNREACHABLE();
   }
 
-  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const override
+  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose,
+                           time_t arrivalTime) const override
   {
     return CalcClimbSegment(purpose, segment, road,
                             [purpose, this](double speedMpS, double tangent, geometry::Altitude altitude)
@@ -352,18 +354,17 @@ class CarEstimator final : public EdgeEstimator
 #endif
 
 public:
-  CarEstimator(DataSource * dataSourcePtr, std::shared_ptr<NumMwmIds> numMwmIds, shared_ptr<TrafficStash> trafficStash,
-               double maxWeightSpeedKMpH, SpeedKMpH const & offroadSpeedKMpH)
+  CarEstimator(DataSource * dataSourcePtr, std::shared_ptr<NumMwmIds> numMwmIds,
+               std::shared_ptr<TrafficStash> trafficStash, double maxWeightSpeedKMpH,
+               SpeedKMpH const & offroadSpeedKMpH)
     : EdgeEstimator(maxWeightSpeedKMpH, offroadSpeedKMpH, dataSourcePtr, numMwmIds)
     , m_trafficStash(std::move(trafficStash))
     , m_turnCostModel(std::make_shared<DefaultTurnCostModel>())
   {}
 
   // EdgeEstimator overrides:
-  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const override;
-
-  // Returns default U-turn penalty when road class is unknown.
-  // For context-aware penalty, use GetUTurnPenalty(HighwayType, Purpose).
+  double CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose,
+                           time_t arrivalTime) const override;
   double GetUTurnPenalty(Purpose /* purpose */) const override
   {
     // Default penalty for unknown road class (2 minutes).
@@ -394,9 +395,10 @@ private:
   std::shared_ptr<ITurnCostModel> m_turnCostModel;
 };
 
-double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose) const
+double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry const & road, Purpose purpose,
+                                       time_t arrivalTime) const
 {
-  double const speed = GetSpeedMpS(purpose, segment, road);
+  double const speed = GetSpeedMpS(purpose, segment, road, arrivalTime);
 
   // Debug log ETA calculated speed.
 #ifdef DEBUG
@@ -430,27 +432,28 @@ double CarEstimator::CalcSegmentWeight(Segment const & segment, RoadGeometry con
 
 // EdgeEstimator -----------------------------------------------------------------------------------
 // static
-shared_ptr<EdgeEstimator> EdgeEstimator::Create(VehicleType vehicleType, double maxWeighSpeedKMpH,
-                                                SpeedKMpH const & offroadSpeedKMpH,
-                                                shared_ptr<TrafficStash> trafficStash, DataSource * dataSourcePtr,
-                                                std::shared_ptr<NumMwmIds> numMwmIds)
+std::shared_ptr<EdgeEstimator> EdgeEstimator::Create(VehicleType vehicleType, double maxWeighSpeedKMpH,
+                                                     SpeedKMpH const & offroadSpeedKMpH,
+                                                     std::shared_ptr<TrafficStash> trafficStash,
+                                                     DataSource * dataSourcePtr, std::shared_ptr<NumMwmIds> numMwmIds)
 {
   switch (vehicleType)
   {
   case VehicleType::Pedestrian:
-  case VehicleType::Transit: return make_shared<PedestrianEstimator>(maxWeighSpeedKMpH, offroadSpeedKMpH);
-  case VehicleType::Bicycle: return make_shared<BicycleEstimator>(maxWeighSpeedKMpH, offroadSpeedKMpH);
+  case VehicleType::Transit: return std::make_shared<PedestrianEstimator>(maxWeighSpeedKMpH, offroadSpeedKMpH);
+  case VehicleType::Bicycle: return std::make_shared<BicycleEstimator>(maxWeighSpeedKMpH, offroadSpeedKMpH);
   case VehicleType::Car:
-    return make_shared<CarEstimator>(dataSourcePtr, numMwmIds, trafficStash, maxWeighSpeedKMpH, offroadSpeedKMpH);
+    return std::make_shared<CarEstimator>(dataSourcePtr, numMwmIds, trafficStash, maxWeighSpeedKMpH, offroadSpeedKMpH);
   case VehicleType::Count: CHECK(false, ("Can't create EdgeEstimator for", vehicleType)); return nullptr;
   }
   UNREACHABLE();
 }
 
 // static
-shared_ptr<EdgeEstimator> EdgeEstimator::Create(VehicleType vehicleType, VehicleModelInterface const & vehicleModel,
-                                                shared_ptr<TrafficStash> trafficStash, DataSource * dataSourcePtr,
-                                                std::shared_ptr<NumMwmIds> numMwmIds)
+std::shared_ptr<EdgeEstimator> EdgeEstimator::Create(VehicleType vehicleType,
+                                                     VehicleModelInterface const & vehicleModel,
+                                                     std::shared_ptr<TrafficStash> trafficStash,
+                                                     DataSource * dataSourcePtr, std::shared_ptr<NumMwmIds> numMwmIds)
 {
   return Create(vehicleType, vehicleModel.GetMaxWeightSpeed(), vehicleModel.GetOffroadSpeed(), trafficStash,
                 dataSourcePtr, numMwmIds);

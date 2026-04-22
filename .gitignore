@@ -116,10 +116,6 @@ tizen/*/.*
 !tizen/*/.cproject
 !tizen/*/.project
 
-3party/osrm/osrm-backend/util/fingerprint_impl.hpp
-3party/osrm/osrm-backend/util/git_sha.cpp
-3party/osrm/osrm-backend/build/
-
 tizen/*/crash-info/*
 .idea/*
 .idea
@@ -193,3 +189,6 @@ android/src/google/play/listings/
 keywords/
 iphone/metadata/**/keywords.txt
 deadlion-studio/
+
+# clangd cache
+.cache/clangd/

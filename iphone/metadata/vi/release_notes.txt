@@ -1,16 +1,23 @@
-• MỚI: Màu sắc giao diện tối có độ tương phản cao hơn
-• Cập nhật dữ liệu OpenStreetMap (11 tháng 1)
-• Loại bỏ sòng bạc khỏi danh mục "Giải trí"
-• Giảm độ dày của các tuyến tàu điện ngầm
-• Thêm thông tin sức chứa vào kết quả tìm kiếm cho bãi đậu xe máy, thuê xe đạp, sạc xe đạp và sạc ô tô
-• Hiển thị tầng trong kết quả tìm kiếm
-• Các nút lập kế hoạch lộ trình rộng hơn
+• Dữ liệu bản đồ OSM tính đến ngày 10 tháng 3
+• Dữ liệu Wikipedia tính đến ngày 1 tháng 3
+• Thêm hỗ trợ cho giới hạn tốc độ điều kiện
+• Đường đồng mức độ cao chi tiết hơn cho các tỉnh Trung Quốc
+• Thêm cửa hàng da và cửa hàng bán đồ tôn giáo
+• Thêm hàng cây
+• Thêm bến xe buýt công cộng mà không có bến xe buýt gần đó
+• Sửa lỗi tính toán tiến độ tải xuống quốc gia
+• Chia Tanzania thành các khu vực nhỏ hơn
+• Thêm lịch sử các danh mục đã sử dụng gần đây trong Trình chỉnh sửa
+• Cải thiện thao tác vuốt lên trên màn hình lập kế hoạch đường đi
+• Sửa vị trí thước đo cho CarPlay
+• Sửa một số lỗi crash, cải thiện độ ổn định và hiệu suất
 
-### Bản dịch
+### Dịch thuật
 
-• Thêm bản dịch ứng dụng và hướng dẫn bằng giọng nói tiếng Albania
-• Cập nhật câu hỏi thường gặp (FAQ) và thêm bản dịch cho tiếng Ả Rập, Séc, Hà Lan, Farsi, Hy Lạp, Do Thái, Hindi, Hungary, Indonesia, Ý, Litva, Marathi, Thụy Điển, Telugu
-• Cải thiện bản dịch ứng dụng và FAQ tiếng Đức
-• Thêm từ đồng nghĩa tìm kiếm tiếng Bulgaria
-• Đổi tên cài đặt "Nút thu phóng" để rõ ràng hơn
-• Các sửa lỗi dịch thuật từ những người đóng góp trên Weblate cho nhiều ngôn ngữ
+• Cải thiện mô tả quốc gia
+• Áp dụng các bản sửa lỗi tiếng Romania từ Eugen Dedu
+• Cập nhật tên quốc gia
+• Cập nhật bản dịch từ các nhà đóng góp trên Weblate
+• Sửa bản dịch tiếng Ukraine
+
+Cảm ơn tất cả mọi người đã đóng góp, ủng hộ và hỗ trợ Organic Maps! Hãy cùng nhau xây dựng những bản đồ tốt nhất!

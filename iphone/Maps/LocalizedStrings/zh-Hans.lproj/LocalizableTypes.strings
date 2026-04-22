@@ -37,8 +37,8 @@
 "type.amenity.love_hotel" = "情侣酒店";
 "type.amenity.bureau_de_change" = "货币兑换";
 "type.amenity.bus_station" = "公交车站";
-"type.amenity.cafe" = "咖啡馆่";
-"type.amenity.car_rental" = "汽车出租์";
+"type.amenity.cafe" = "咖啡馆";
+"type.amenity.car_rental" = "汽车出租";
 "type.amenity.motorcycle_rental" = "摩托车租赁";
 "type.amenity.car_sharing" = "拼车点";
 "type.amenity.car_wash" = "洗车";
@@ -340,7 +340,7 @@
 "type.cuisine.mediterranean" = "地中海菜";
 "type.cuisine.mexican" = "墨西哥菜";
 "type.cuisine.moroccan" = "摩洛哥菜";
-"type.cuisine.noodles" = "面";
+"type.cuisine.noodle" = "面";
 "type.cuisine.oriental" = "东方菜";
 "type.cuisine.pancake" = "煎饼";
 "type.cuisine.pasta" = "意大利面";
@@ -356,6 +356,7 @@
 "type.cuisine.sausage" = "火腿";
 "type.cuisine.savory_pancakes" = "咸味煎饼";
 "type.cuisine.seafood" = "海鲜";
+"type.cuisine.shawarma" = "沙威玛";
 "type.cuisine.soba" = "荞麦面";
 "type.cuisine.spanish" = "西班牙菜";
 "type.cuisine.steak_house" = "牛排馆";
@@ -364,6 +365,7 @@
 "type.cuisine.tea" = "茶";
 "type.cuisine.thai" = "泰国菜";
 "type.cuisine.turkish" = "土耳其菜";
+"type.cuisine.uzbek" = "乌兹别克";
 "type.cuisine.vegan" = "全素菜";
 "type.cuisine.vegetarian" = "素菜";
 "type.cuisine.vietnamese" = "越南菜";
@@ -485,6 +487,7 @@
 
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.pedestrian.tunnel" = "人行隧道";
+"type.highway.platform" = "公共交通站台";
 "type.highway.primary" = "主要道路";
 
 /* These translations are used for all type.highway.*.bridge. */
@@ -615,8 +618,8 @@
 "type.area_highway.track" = "土路";
 "type.area_highway.trunk" = "干线道路";
 "type.area_highway.unclassified" = "道路";
-"type.highway.world_level" = "高速公路—世界级";
-"type.highway.world_towns_level" = "高速公路—城镇级";
+"type.highway.world_level" = "highway-world_level";
+"type.highway.world_towns_level" = "highway-world_towns_level";
 
 
 /********** Types: Historic **********/
@@ -886,7 +889,9 @@
 "type.natural.wetland.marsh" = "草沼";
 "type.noexit" = "死胡同";
 "type.office" = "办公室";
+"type.office.architect" = "建筑师事务所";
 "type.office.company" = "企业公司";
+"type.office.educational_institution" = "教育机构";
 "type.office.estate_agent" = "地产中介";
 "type.office.government" = "政府办公点";
 "type.office.insurance" = "保险公司";
@@ -974,6 +979,7 @@
 "type.railway.crossing" = "铁路道口";
 "type.railway.disused" = "废弃铁路";
 "type.railway.disused.bridge" = "废弃铁路桥梁";
+"type.railway.disused.tunnel" = "废弃铁路隧道";
 "type.railway.funicular" = "缆车";
 "type.railway.funicular.bridge" = "缆车桥";
 "type.railway.funicular.tunnel" = "缆车隧道";
@@ -1290,12 +1296,21 @@
 "type.shop.chemist" = "药妆店";
 "type.shop.chocolate" = "巧克力店";
 "type.shop.clothes" = "服装店";
+"type.shop.clothes.children" = "童装店";
+"type.shop.clothes.fashion" = "时装精品店";
+"type.shop.clothes.hats" = "帽子店";
+"type.shop.clothes.men" = "男装店";
+"type.shop.clothes.sports" = "运动服装店";
+"type.shop.clothes.suits" = "西装店";
+"type.shop.clothes.underwear" = "内衣店";
+"type.shop.clothes.wedding" = "婚纱礼服店";
+"type.shop.clothes.women" = "女装店";
 "type.shop.coffee" = "咖啡店";
 "type.shop.computer" = "电脑店";
 "type.shop.confectionery" = "糖果店";
 "type.shop.convenience" = "便利店";
 "type.shop.copyshop" = "复印店";
-"type.shop.cosmetics" = "化妝品店";
+"type.shop.cosmetics" = "化妆品店";
 "type.shop.curtain" = "窗帘";
 "type.shop.deli" = "熟食店";
 "type.shop.department_store" = "百货商场";
@@ -1310,6 +1325,7 @@
 "type.shop.funeral_directors" = "殡仪馆";
 "type.shop.furniture" = "家具店";
 "type.shop.garden_centre" = "幼儿园";
+"type.shop.games" = "游戏店";
 "type.shop.gas" = "燃气站";
 "type.shop.gift" = "礼品店";
 "type.shop.greengrocer" = "蔬果零售店";
@@ -1325,6 +1341,7 @@
 "type.shop.kiosk" = "售货亭";
 "type.shop.kitchen" = "厨房用品店";
 "type.shop.laundry" = "洗衣店";
+"type.shop.leather" = "皮具店";
 "type.shop.mall" = "商场";
 "type.shop.massage" = "按摩院";
 "type.shop.mobile_phone" = "手机专卖店";
@@ -1343,6 +1360,7 @@
 "type.shop.pet" = "宠物店";
 "type.shop.pet_grooming" = "宠物美容";
 "type.shop.photo" = "照片店";
+"type.shop.religion" = "宗教用品店";
 "type.shop.rental" = "租赁店";
 "type.shop.rental.bicycle" = "自行车租赁店";
 "type.amenity.bicycle_rental.shop" = "自行车租赁店";

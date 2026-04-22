@@ -24,9 +24,11 @@ std::string_view constexpr kStyleMap = "StyleMap";
 std::string_view constexpr kStyleUrl = "styleUrl";
 std::string_view constexpr kPair = "Pair";
 std::string_view constexpr kExtendedData = "ExtendedData";
-std::string const kCompilation = "mwm:compilation";
-
-std::string_view const kCoordinates = "coordinates";
+std::string_view constexpr kCompilation = "mwm:compilation";
+std::string_view constexpr kCompilationFooter = "</mwm:compilation>\n";
+std::string_view constexpr kExtendedDataHeader = "<ExtendedData xmlns:mwm=\"https://omaps.app\">\n";
+std::string_view constexpr kExtendedDataFooter = "</ExtendedData>\n";
+std::string_view constexpr kCoordinates = "coordinates";
 
 bool IsTrack(std::string const & s)
 {
@@ -51,12 +53,6 @@ std::string_view constexpr kKmlHeader =
 std::string_view constexpr kKmlFooter =
     "</Document>\n"
     "</kml>\n";
-
-std::string_view constexpr kExtendedDataHeader = "<ExtendedData xmlns:mwm=\"https://omaps.app\">\n";
-
-std::string_view constexpr kExtendedDataFooter = "</ExtendedData>\n";
-
-std::string const kCompilationFooter = "</" + kCompilation + ">\n";
 
 PredefinedColor ExtractPlacemarkPredefinedColor(std::string const & s)
 {
@@ -97,7 +93,7 @@ PredefinedColor ExtractPlacemarkPredefinedColor(std::string const & s)
   return PredefinedColor::Red;
 }
 
-std::string GetStyleForPredefinedColor(PredefinedColor color)
+constexpr std::string_view GetStyleForPredefinedColor(PredefinedColor color)
 {
   switch (color)
   {
@@ -134,7 +130,7 @@ BookmarkIcon GetIcon(std::string const & iconName)
   return BookmarkIcon::None;
 }
 
-void SaveStyle(Writer & writer, std::string const & style, std::string_view const indent)
+void SaveStyle(Writer & writer, std::string_view style, std::string_view const indent)
 {
   if (style.empty())
     return;
@@ -342,10 +338,8 @@ void SaveBookmarkExtendedData(Writer & writer, BookmarkData const & bookmarkData
     std::vector<std::string> types;
     types.reserve(bookmarkData.m_featureTypes.size());
     auto const & c = classif();
-    if (!c.HasTypesMapping())
-      MYTHROW(SerializerKml::SerializeException, ("Types mapping is not loaded."));
-    for (auto const & t : bookmarkData.m_featureTypes)
-      types.push_back(c.GetReadableObjectName(c.GetTypeForIndex(t)));
+    for (auto const type : bookmarkData.m_featureTypes)
+      types.push_back(c.GetReadableObjectName(type));
 
     SaveStringsArray(writer, types, "featureTypes", kIndent6);
   }
@@ -798,7 +792,7 @@ void KmlParser::ParseColor(std::string const & value)
   m_color = ToRGBA(fromHex[3], fromHex[2], fromHex[1], fromHex[0]);
 }
 
-bool KmlParser::GetColorForStyle(std::string const & styleUrl, uint32_t & color) const
+bool KmlParser::GetColorForStyle(std::string_view styleUrl, uint32_t & color) const
 {
   if (styleUrl.empty())
     return false;
@@ -813,7 +807,7 @@ bool KmlParser::GetColorForStyle(std::string const & styleUrl, uint32_t & color)
   return false;
 }
 
-double KmlParser::GetTrackWidthForStyle(std::string const & styleUrl) const
+double KmlParser::GetTrackWidthForStyle(std::string_view styleUrl) const
 {
   if (styleUrl.empty())
     return kDefaultTrackWidth;
@@ -1034,6 +1028,18 @@ void KmlParser::Pop(std::string_view tag)
       lines.pop_back();
       m_geometry.m_timestamps.pop_back();
     }
+    else
+    {
+      // KML does not require <when> timestamps to be ordered, but downstream time
+      // metadata code assumes they are monotonic non-decreasing. Drop broken
+      // timestamps rather than the track -- geometry is preserved.
+      auto & timestamps = m_geometry.m_timestamps.back();
+      if (!std::is_sorted(timestamps.begin(), timestamps.end()))
+      {
+        LOG(LWARNING, ("Non-monotonic timestamps in track, dropping them"));
+        timestamps.clear();
+      }
+    }
   }
   else if (IsProcessTrackCoord())
   {
@@ -1077,10 +1083,7 @@ void KmlParser::CharData(std::string & value)
         auto const timestamp = base::StringToTimestamp(value);
         ASSERT(timestamp != base::INVALID_TIME_STAMP, (value));
 
-        auto & cont = timestamps.back();
-        if (!cont.empty())
-          ASSERT_LESS_OR_EQUAL(cont.back(), timestamp, ());
-        cont.emplace_back(timestamp);
+        timestamps.back().emplace_back(timestamp);
       }
       else if (IsCoord(currTag))
       {
@@ -1375,15 +1378,10 @@ void KmlParser::CharData(std::string & value)
           uint32_t i;
           if (prevTag == "mwm:featureTypes")
           {
-            auto const & c = classif();
-            if (!c.HasTypesMapping())
-              MYTHROW(DeserializerKml::DeserializeException, ("Types mapping is not loaded."));
-            auto const type = c.GetTypeByReadableObjectName(value);
-            if (c.IsTypeValid(type))
-            {
-              auto const typeInd = c.GetIndexForType(type);
-              m_featureTypes.push_back(typeInd);
-            }
+            auto const & cl = classif();
+            auto const type = cl.GetTypeByReadableObjectName(value);
+            if (type != Classificator::INVALID_TYPE && type != cl.GetStubType())
+              m_featureTypes.push_back(type);
           }
           else if (prevTag == "mwm:boundTracks" && strings::to_uint(value, i))
           {

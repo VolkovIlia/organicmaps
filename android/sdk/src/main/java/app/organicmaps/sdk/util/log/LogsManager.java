@@ -1,6 +1,7 @@
 package app.organicmaps.sdk.util.log;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,9 +16,11 @@ import android.util.Log;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import app.organicmaps.sdk.BuildConfig;
 import app.organicmaps.sdk.R;
+import app.organicmaps.sdk.util.Assert;
 import app.organicmaps.sdk.util.Config;
 import app.organicmaps.sdk.util.ROMUtils;
 import app.organicmaps.sdk.util.StringUtils;
@@ -80,7 +83,8 @@ public final class LogsManager
 
   private void assertFileLoggingInit()
   {
-    assert mApplicationContext != null : "mApplicationContext must be initialized first by calling initFileLogging()";
+    Assert.always(mApplicationContext != null,
+                  "mApplicationContext must be initialized first by calling initFileLogging()");
   }
 
   /**
@@ -257,11 +261,10 @@ public final class LogsManager
         (ConnectivityManager) mApplicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
     if (manager != null)
     {
-      for (Network network : manager.getAllNetworks())
-      {
-        final NetworkCapabilities cap = manager.getNetworkCapabilities(network);
-        sb.append("\n\tid=").append(network.toString()).append("\n").append(cap != null ? cap.toString() : "null");
-      }
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        ImplApi23.appendActiveNetworkInfo(sb, manager);
+      else
+        ImplApi21.appendActiveNetworkInfo(sb, manager);
     }
     sb.append("\nLocation providers:");
     final LocationManager locMngr =
@@ -320,5 +323,39 @@ public final class LogsManager
     return log.toString();
   }
 
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  private static class ImplApi21
+  {
+    @SuppressWarnings("deprecation")
+    public static void appendActiveNetworkInfo(@NonNull StringBuilder sb, @NonNull ConnectivityManager manager)
+    {
+      final android.net.NetworkInfo activeNetworkInfo = manager.getActiveNetworkInfo();
+      if (activeNetworkInfo != null)
+        sb.append("\n\tActive Network: ").append(activeNetworkInfo.toString());
+      else
+        sb.append("\n\tNo active network.");
+    }
+  }
+
+  @RequiresApi(Build.VERSION_CODES.M)
+  private static class ImplApi23
+  {
+    private static void appendActiveNetworkInfo(@NonNull StringBuilder sb, @NonNull ConnectivityManager manager)
+    {
+      final Network activeNetwork = manager.getActiveNetwork();
+      if (activeNetwork != null)
+      {
+        final NetworkCapabilities cap = manager.getNetworkCapabilities(activeNetwork);
+        sb.append("\n\tActive Network id=")
+            .append(activeNetwork.toString())
+            .append("\n")
+            .append(cap != null ? cap.toString() : "null");
+      }
+      else
+      {
+        sb.append("\n\tNo active network.");
+      }
+    }
+  }
   private static native void nativeToggleCoreDebugLogs(boolean enabled);
 }

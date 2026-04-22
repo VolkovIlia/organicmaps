@@ -1,9 +1,10 @@
-• UUS: Suurema kontrastsusega tumeda teema värvid
-• Google Assistant navigeerimiseks ja otsinguks
-• OSM kaardiandmed seisuga 11. jaanuar
-• Navigeerimisteema säte "Automaatne" järgib süsteemi tumedat/heledat režiimi
-• Peenemad metrooliinid
-• Otsingutulemused näitavad mootorrataste parkimise, jalgrattarendi, jalgrataste laadimise ja autode laadimise mahtu
-• Näita korruse taset otsingutulemustes
-• Albaania tõlked ja TTS hääljuhised
-…rohkem aadressil omaps.org/et/news
+• OSM-i kaardiandmed 10. märtsi seisuga, Vikipeedia 1. märtsi seisuga
+• Hiina provintside täpsemad kõrgusisoliinid
+• Lisatud puude read, nahapoed ja religioosseid kaupu müüvad poed
+• Lisatud tingimuslike kiiruspiirangute tugi
+• Tansaania jagatud väiksemateks piirkondadeks
+• Lahtiolekuaegade täiustatud kuvamine
+• Parandatud mitu krahhi
+• Täiustatud rakenduste ja riikide nimede tõlked
+• Lisatud ühistranspordipeatuste platvormid ilma lähedal asuvate bussipeatusteta
+omaps.org/et/news

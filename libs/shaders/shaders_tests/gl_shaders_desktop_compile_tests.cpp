@@ -8,22 +8,18 @@
 
 #include <functional>
 
-using namespace std::placeholders;
-
+namespace gl_shaders_desktop_compile_tests
+{
 void CompileShaders(bool enableVTF)
 {
   auto constexpr api = dp::ApiVersion::OpenGLES3;
   GLFunctions::Init(api);
-  gpu::GLProgramPool pool(api);
-  if (enableVTF)
-    pool.SetDefines("#define ENABLE_VTF\n");
+  gpu::GLProgramPool pool(api, enableVTF ? "#define ENABLE_VTF\n" : "");
 
   for (size_t i = 0; i < static_cast<size_t>(gpu::Program::ProgramsCount); ++i)
     pool.Get(static_cast<gpu::Program>(i));
 }
 
-// These unit tests create Qt application and OGL context so can't be run in GUI-less Linux machine.
-#ifdef OMIM_OS_MAC
 UNIT_TEST(DesktopCompileShaders_GLES3_Test)
 {
   RunTestInOpenGLOffscreenEnvironment("DesktopCompileShaders_GLES3_Test",
@@ -35,4 +31,4 @@ UNIT_TEST(DesktopCompileShaders_GLES3_VTF_Test)
   RunTestInOpenGLOffscreenEnvironment("DesktopCompileShaders_GLES3_VTF_Test",
                                       std::bind(&CompileShaders, true /* enableVTF */));
 }
-#endif
+}  // namespace gl_shaders_desktop_compile_tests

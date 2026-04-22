@@ -16,11 +16,6 @@ struct TypeAggregatedDescription
   using EType = feature::Metadata::EType;
   using FeatureFields = std::vector<EType>;
 
-  bool IsEmpty() const
-  {
-    return IsNameEditable() || IsAddressEditable() || IsCuisineEditable() || !m_editableFields.empty();
-  }
-
   FeatureFields const & GetEditableFields() const { return m_editableFields; }
 
   bool IsNameEditable() const { return m_name; }
@@ -44,10 +39,6 @@ public:
   std::vector<std::string> GetTypesThatCanBeAdded() const;
 
   void SetConfig(pugi::xml_document const & doc);
-
-  // TODO(mgsergio): Implement this getter to avoid hard-code in XMLFeature::ApplyPatch.
-  // It should return [[phone, contact:phone, contact:mobile], [website, contact:website, url], ...].
-  // vector<vector<string>> GetAlternativeFields() const;
 
 private:
   pugi::xml_document m_document;

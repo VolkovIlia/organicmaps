@@ -70,10 +70,6 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
-  packagingOptions{
-      doNotStrip "**/liborganicmaps.so"
-  }
-
   externalNativeBuild {
     cmake {
       version = '3.22.1+'
@@ -88,17 +84,21 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+  api project(':sdk:location:core')
 
-  implementation 'androidx.annotation:annotation:1.9.1'
-  implementation 'androidx.core:core:1.17.0'
-  implementation 'androidx.recyclerview:recyclerview:1.4.0'
-  implementation 'androidx.fragment:fragment:1.8.9'
-  implementation 'androidx.lifecycle:lifecycle-process:2.9.4'
+  coreLibraryDesugaring libs.android.tools.desugaring
 
-  testImplementation 'androidx.test.ext:junit:1.3.0'
-  androidTestImplementation 'androidx.test.ext:junit:1.3.0'
-  androidTestImplementation 'androidx.test:runner:1.7.0'
+  implementation libs.androidx.annotation
+  implementation libs.androidx.core
+  implementation libs.androidx.recyclerview
+  implementation libs.androidx.fragment
+  implementation libs.androidx.lifecycle
+  implementation libs.androidx.media
+  implementation libs.okhttp
+
+  testImplementation libs.androidx.junit
+  androidTestImplementation libs.androidx.junit
+  androidTestImplementation libs.androidx.test.runner
 }
 
 // TODO: Running lint task triggers native build. Find a better solution.

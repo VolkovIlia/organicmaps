@@ -152,6 +152,19 @@ bool IsExist(Cont const & c, T const & t)
   return std::find(std::cbegin(c), end, t) != end;
 }
 
+template <typename Cont, class FnT>
+bool IsExistIf(Cont const & c, FnT && fn)
+{
+  auto const end = std::cend(c);
+  return std::find_if(std::cbegin(c), end, std::ref(fn)) != end;
+}
+
+template <typename Cont, typename T>
+bool BinarySearch(Cont const & c, T const & t)
+{
+  return std::binary_search(std::cbegin(c), std::cend(c), t);
+}
+
 template <class MapT, class K, class V>
 auto EmplaceOrAssign(MapT & theMap, K && k, V && v)
 {
@@ -232,26 +245,16 @@ IgnoreFirstArgument<Fn> MakeIgnoreFirstArgument(Fn && fn)
   return IgnoreFirstArgument<Fn>(std::forward<Fn>(fn));
 }
 
-template <size_t I = 0, typename Fn, typename... Tp>
-std::enable_if_t<I == sizeof...(Tp), void> for_each_in_tuple(std::tuple<Tp...> &, Fn &&)
-{}
-
-template <size_t I = 0, typename Fn, typename... Tp>
-std::enable_if_t<I != sizeof...(Tp), void> for_each_in_tuple(std::tuple<Tp...> & t, Fn && fn)
+template <typename Fn, typename... Tp>
+void for_each_in_tuple(std::tuple<Tp...> & t, Fn const & fn)
 {
-  fn(I, std::get<I>(t));
-  for_each_in_tuple<I + 1, Fn, Tp...>(t, std::forward<Fn>(fn));
+  [&]<size_t... Is>(std::index_sequence<Is...>) { (fn(Is, std::get<Is>(t)), ...); }(std::index_sequence_for<Tp...>{});
 }
 
-template <size_t I = 0, typename Fn, typename... Tp>
-std::enable_if_t<I == sizeof...(Tp), void> for_each_in_tuple_const(std::tuple<Tp...> const &, Fn &&)
-{}
-
-template <size_t I = 0, typename Fn, typename... Tp>
-std::enable_if_t<I != sizeof...(Tp), void> for_each_in_tuple_const(std::tuple<Tp...> const & t, Fn && fn)
+template <typename Fn, typename... Tp>
+void for_each_in_tuple_const(std::tuple<Tp...> const & t, Fn const & fn)
 {
-  fn(I, std::get<I>(t));
-  for_each_in_tuple_const<I + 1, Fn, Tp...>(t, std::forward<Fn>(fn));
+  [&]<size_t... Is>(std::index_sequence<Is...>) { (fn(Is, std::get<Is>(t)), ...); }(std::index_sequence_for<Tp...>{});
 }
 
 template <typename Container>
@@ -450,15 +453,6 @@ void AccumulateIntervals1With2(Iter1 b1, Iter1 e1, Iter2 b2, Iter2 e2, InsertIte
     *res++ = prev;
 }
 
-struct EnumClassHash
-{
-  template <typename T, std::enable_if_t<std::is_enum<T>::value> * = nullptr>
-  size_t operator()(T const & t) const noexcept
-  {
-    return static_cast<size_t>(t);
-  }
-};
-
 struct RetrieveFirst
 {
   template <typename T>
@@ -484,4 +478,10 @@ consteval bool HasUniqueElements(Container container)
   std::sort(container.begin(), container.end());
   return std::adjacent_find(container.begin(), container.end()) == container.end();
 }
+
+// Required to use std::string_view as a search key for std::unordered_map::find().
+struct StringHash : public std::hash<std::string_view>
+{
+  using is_transparent = void;
+};
 }  // namespace base

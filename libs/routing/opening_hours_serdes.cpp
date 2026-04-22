@@ -1,7 +1,5 @@
 #include "routing/opening_hours_serdes.hpp"
 
-#include "coding/writer.hpp"
-
 #include "base/assert.hpp"
 #include "base/stl_helpers.hpp"
 
@@ -87,6 +85,18 @@ OpeningHoursSerDes::OpeningHoursSerDes() : m_currentYear(GetCurrentYear())
     m_unsupportedFeatures.emplace_back(static_cast<Header::Bits>(bit));
     bit <<= 1U;
   }
+}
+
+OpeningHoursSerDes OpeningHoursSerDes::ForRouting()
+{
+  OpeningHoursSerDes res;
+  res.Enable(OpeningHoursSerDes::Header::Bits::Year);
+  res.Enable(OpeningHoursSerDes::Header::Bits::Month);
+  res.Enable(OpeningHoursSerDes::Header::Bits::MonthDay);
+  res.Enable(OpeningHoursSerDes::Header::Bits::WeekDay);
+  res.Enable(OpeningHoursSerDes::Header::Bits::Hours);
+  res.Enable(OpeningHoursSerDes::Header::Bits::Minutes);
+  return res;
 }
 
 void OpeningHoursSerDes::Enable(OpeningHoursSerDes::Header::Bits bit)
@@ -321,12 +331,20 @@ bool OpeningHoursSerDes::IsTwentyFourHourRule(osmoh::RuleSequence const & rule) 
          rule.GetTimes().back().GetEnd() == kTwentyFourHourEnd;
 }
 
-bool OpeningHoursSerDes::IsSerializable(osmoh::OpeningHours const & openingHours)
+std::vector<osmoh::RuleSequence> OpeningHoursSerDes::DecomposeAndValidate(osmoh::OpeningHours const & openingHours)
 {
-  std::vector<uint8_t> buffer;
-  MemWriter memWriter(buffer);
-  BitWriter tmpBitWriter(memWriter);
+  CheckSupportedFeatures();
 
-  return SerializeImpl(tmpBitWriter, openingHours);
+  auto decomposedRules = DecomposeOh(openingHours);
+  if (decomposedRules.empty())
+    return {};
+
+  if (!m_serializeEverything && !HaveSameHeaders(decomposedRules))
+    return {};
+
+  if (decomposedRules.size() > kMaxRulesCount)
+    return {};
+
+  return decomposedRules;
 }
 }  // namespace routing

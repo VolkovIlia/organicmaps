@@ -3,6 +3,8 @@
 #include "drape/constants.hpp"
 #include "drape/debug_renderer.hpp"
 
+#include "geometry/mercator.hpp"
+
 #include <algorithm>
 
 namespace dp
@@ -13,7 +15,7 @@ int const kMaxFrameUpdatePeriod = 15;
 uint32_t const kMinHandlesCount = 100;
 uint32_t const kMaxHandlesCount = 1000;
 
-size_t const kAverageHandlesCount[dp::OverlayRanksCount] = {300, 200, 50};
+size_t constexpr kAverageHandlesCount[dp::OverlayRanksCount] = {300, 200, 50, 20};
 int const kInvalidFrame = -1;
 
 namespace
@@ -461,9 +463,11 @@ bool OverlayTree::GetSelectedFeatureRect(ScreenBase const & screen, m2::RectD & 
   return false;
 }
 
-void OverlayTree::Select(m2::PointD const & glbPoint, TOverlayContainer & result) const
+void OverlayTree::Select(m2::PointD glbPoint, TOverlayContainer & result) const
 {
   ScreenBase const & screen = GetModelView();
+
+  glbPoint.x = mercator::NearestWrapX(glbPoint.x, screen.GetOrg().x);
   m2::PointD const pxPoint = screen.GtoP(glbPoint);
 
   double const kSearchRectHalfSize = 10.0;
@@ -479,7 +483,7 @@ void OverlayTree::Select(m2::PointD const & glbPoint, TOverlayContainer & result
 
 void OverlayTree::Select(m2::RectD const & rect, TOverlayContainer & result) const
 {
-  ScreenBase screen = GetModelView();
+  ScreenBase const & screen = GetModelView();
   ForEachInRect(rect, [&](ref_ptr<OverlayHandle> const & h)
   {
     ASSERT(h->GetOverlayID().IsValid(), ());
