@@ -1,0 +1,1 @@
+../../deadlion-studio/agents/platform/django-specialist.md

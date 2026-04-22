@@ -1,0 +1,152 @@
+repos:
+  # ==================== SECURITY HOOKS (CRITICAL) ====================
+  # Prevent secrets, vulnerabilities, and insecure code from being committed
+
+  # Secrets detection - CRITICAL priority
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.63.0
+    hooks:
+      - id: trufflehog
+        name: TruffleHog (detect secrets)
+        description: Scan for API keys, tokens, passwords, and credentials
+        entry: bash -c 'trufflehog filesystem --directory=. --no-update'
+        language: system
+        pass_filenames: false
+
+  # Python security linting
+  - repo: https://github.com/PyCQA/bandit
+    rev: '1.7.5'
+    hooks:
+      - id: bandit
+        name: Bandit (Python SAST)
+        description: Detect common security issues in Python code
+        args: ['-ll', '--recursive', '.', '--exclude', './venv,./node_modules,./build,./.venv,./.git']
+        pass_filenames: false
+
+  # General security checks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect hardcoded secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: ^(.git/|.telemetry/|.dev-docs/research/|venv/|node_modules/)
+
+  # ==================== CONFIGURATION VALIDATION ====================
+
+  - repo: local
+    hooks:
+      # Python dependency vulnerabilities
+      - id: safety-check
+        name: Safety (dependency vulnerabilities)
+        description: Check for known CVEs in Python dependencies
+        entry: bash -c 'safety check --json || echo "⚠️ Vulnerabilities detected - review and update dependencies"'
+        language: system
+        pass_filenames: false
+        files: requirements\.txt$
+
+      - id: validate-pipelines
+        name: Validate Pipeline Configurations
+        entry: python scripts/validate-config.py config/pipelines.yaml
+        language: system
+        files: ^config/pipelines\.yaml$
+        pass_filenames: false
+
+      - id: validate-agent-templates
+        name: Validate Agent Templates
+        entry: python scripts/validate-config.py config/agent-templates.yaml
+        language: system
+        files: ^config/agent-templates\.yaml$
+        pass_filenames: false
+
+      - id: check-agent-sync
+        name: Check Agent Synchronization
+        entry: bash scripts/pre-commit-validate.sh
+        language: system
+        files: ^config/pipelines\.yaml$
+        pass_filenames: false
+
+  # ==================== GIT GUARD (CRITICAL) ====================
+  # Comprehensive protection against large files, binaries, forbidden directories
+  # This runs BEFORE other hooks to catch issues early
+
+  - repo: local
+    hooks:
+      - id: git-guard
+        name: Git Guard (prevent large files, binaries, node_modules)
+        entry: python scripts/git-guard.py --staged
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]
+        description: |
+          Prevents committing:
+          - Video files (mp4, webm, avi, etc.)
+          - node_modules/, __pycache__/, dist/
+          - Files > 500KB
+          - Binary files
+          See config/git-guard-rules.yaml for full rules
+
+      - id: git-guard-strict
+        name: Git Guard Strict (CI mode - warnings as errors)
+        entry: python scripts/git-guard.py --staged --strict
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+        description: Strict mode for pre-push validation
+
+  # ==================== CODE QUALITY GATES ====================
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+        # Backup check - git-guard is primary
+      - id: check-ast
+        name: Check Python AST
+      - id: check-json
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # ==================== PROGRESS TRACKING (POST-COMMIT) ====================
+  # Updates project state after successful commits
+
+  - repo: local
+    hooks:
+      - id: progress-tracker
+        name: Update project progress state
+        entry: bash -c 'if [ -f scripts/progress-tracker.py ]; then python scripts/progress-tracker.py update-changes --commit HEAD; elif [ -f deadlion-studio/scripts/progress-tracker.py ]; then python deadlion-studio/scripts/progress-tracker.py update-changes --commit HEAD; fi'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+        description: |
+          Updates project state in Memory MCP after commit:
+          - Records commit in recent_changes
+          - Runs change-impact-analyzer
+          - Flags affected documentation for update
+
+      - id: context-store-update
+        name: Update context store index
+        entry: bash -c 'CS="scripts/context-store.py"; [ ! -f "$CS" ] && CS="deadlion-studio/scripts/context-store.py"; [ -f "$CS" ] && { python3 "$CS" ensure-init 2>/dev/null; CHANGED=$(git diff --name-only HEAD~1 2>/dev/null | grep -E "\.(py|ts|tsx|js|jsx|md|yaml)$" | tr "\n" ","); [ -n "$CHANGED" ] && python3 "$CS" update --changed-docs "$CHANGED" 2>/dev/null; python3 "$CS" cleanup 2>/dev/null; } || true'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
+        description: |
+          Updates context-store after each commit:
+          - Ensures store is initialized (first run)
+          - Updates embeddings for changed code/docs
+          - Removes stale entries for deleted files
+
+# ==================== SETUP INSTRUCTIONS ====================
+# 1. Install: pip install pre-commit
+# 2. Activate: pre-commit install
+# 3. Test: pre-commit run --all-files
+# 4. Generate secrets baseline: detect-secrets scan > .secrets.baseline
+#
+# To bypass hooks in emergency (NOT RECOMMENDED):
+# git commit --no-verify

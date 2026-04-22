@@ -1,0 +1,1 @@
+../../deadlion-studio/agents/specialized/pixel-art-artist.md

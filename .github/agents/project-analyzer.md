@@ -1,0 +1,1 @@
+../../deadlion-studio/agents/operations/project-analyzer.md

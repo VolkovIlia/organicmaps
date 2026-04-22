@@ -1,0 +1,659 @@
+# Routing Improvements Internal API Contracts
+# Version: 1.0
+# Date: 2026-02-03
+
+openapi: 3.0.3
+info:
+  title: Organic Maps Routing Internal APIs
+  description: |
+    Internal C++ interface contracts for routing improvements.
+    These are not REST APIs but C++ class interfaces documented in OpenAPI format
+    for clarity and contract-first development.
+  version: 1.0.0
+
+# NOTE: This document defines C++ interfaces using OpenAPI schema notation.
+# Implementation should follow these contracts exactly.
+
+components:
+  schemas:
+    # ============================================================
+    # PHASE 1: Quick Wins - Turn Cost Model
+    # ============================================================
+
+    JunctionType:
+      type: string
+      enum:
+        - TrafficSignals
+        - StopSign
+        - GiveWay
+        - Roundabout
+        - Uncontrolled
+        - Unknown
+      description: Type of junction from OSM data
+
+    RoadClass:
+      type: string
+      enum:
+        - Motorway
+        - MotorwayLink
+        - Trunk
+        - TrunkLink
+        - Primary
+        - PrimaryLink
+        - Secondary
+        - SecondaryLink
+        - Tertiary
+        - TertiaryLink
+        - Residential
+        - LivingStreet
+        - Service
+        - Unclassified
+        - Track
+        - Path
+      description: Road classification from OSM highway tag
+
+    SurfaceType:
+      type: string
+      enum:
+        - Paved
+        - Asphalt
+        - Concrete
+        - Compacted
+        - Gravel
+        - Unpaved
+        - Ground
+        - Unknown
+      description: Road surface quality from OSM surface tag
+
+    TurnCostParams:
+      type: object
+      required:
+        - turnAngleDegrees
+        - fromRoadClass
+        - toRoadClass
+        - junctionType
+      properties:
+        turnAngleDegrees:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 180
+          description: Turn angle in degrees (0=straight, 180=U-turn)
+        fromRoadClass:
+          $ref: '#/components/schemas/RoadClass'
+        toRoadClass:
+          $ref: '#/components/schemas/RoadClass'
+        junctionType:
+          $ref: '#/components/schemas/JunctionType'
+        hasTrafficSignals:
+          type: boolean
+          default: false
+
+    TurnCostResult:
+      type: object
+      required:
+        - totalCostSeconds
+      properties:
+        totalCostSeconds:
+          type: number
+          format: double
+          description: Total turn cost in seconds
+        baseAngleCost:
+          type: number
+          format: double
+          description: Cost based on turn angle (0-45s range)
+        junctionDelay:
+          type: number
+          format: double
+          description: Delay for junction type (signals=30s, stop=10s, etc.)
+        roadClassPenalty:
+          type: number
+          format: double
+          description: Penalty for road class downgrade
+
+    RegionalSpeedProfile:
+      type: object
+      required:
+        - countryCode
+        - roadSpeeds
+      properties:
+        countryCode:
+          type: string
+          description: ISO 3166-1 alpha-2 country code (RU, UA, etc.)
+        roadSpeeds:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              inCity:
+                type: number
+                format: double
+                description: Speed in km/h for urban areas
+              outCity:
+                type: number
+                format: double
+                description: Speed in km/h for rural areas
+        surfaceFactors:
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+            description: Speed multiplier (0.0-1.0) for surface type
+
+    # ============================================================
+    # PHASE 2: Corridor-Based Following
+    # ============================================================
+
+    CorridorState:
+      type: string
+      enum:
+        - OnRoute
+        - Monitoring
+        - Deciding
+        - SuggestingReturn
+        - Rerouting
+      description: State machine state for off-route handling
+
+    CorridorConfig:
+      type: object
+      properties:
+        baseWidths:
+          type: object
+          description: Base corridor widths per road class
+          additionalProperties:
+            type: number
+            format: double
+        minGpsCompensation:
+          type: number
+          format: double
+          default: 10.0
+          description: Minimum GPS accuracy compensation in meters
+        offRouteTimeThreshold:
+          type: number
+          format: double
+          default: 10.0
+          description: Seconds outside corridor before triggering decision
+        returnDistanceThreshold:
+          type: number
+          format: double
+          default: 200.0
+          description: Max distance (meters) for suggesting return
+        returnTurnCountMax:
+          type: integer
+          default: 2
+          description: Max turns allowed for return route suggestion
+        forwardRatioThreshold:
+          type: number
+          format: double
+          default: 1.2
+          description: Accept deviation if forward <= return * this ratio
+
+    PositionInfo:
+      type: object
+      required:
+        - latitude
+        - longitude
+        - timestamp
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        altitude:
+          type: number
+          format: double
+        accuracy:
+          type: number
+          format: double
+          description: GPS accuracy in meters
+        bearing:
+          type: number
+          format: double
+          description: Heading in degrees (0-360)
+        speed:
+          type: number
+          format: double
+          description: Speed in m/s
+        timestamp:
+          type: integer
+          format: int64
+          description: Unix timestamp in milliseconds
+
+    CorridorCheckResult:
+      type: object
+      required:
+        - state
+        - isInsideCorridor
+      properties:
+        state:
+          $ref: '#/components/schemas/CorridorState'
+        isInsideCorridor:
+          type: boolean
+        lateralDistanceMeters:
+          type: number
+          format: double
+          description: Distance from route centerline
+        corridorWidthMeters:
+          type: number
+          format: double
+          description: Current corridor width at this position
+        timeOutsideCorridorSeconds:
+          type: number
+          format: double
+          description: Time spent outside corridor (if applicable)
+
+    RerouteDecision:
+      type: string
+      enum:
+        - StayOnRoute
+        - SuggestReturn
+        - SuggestReturnWithReason
+        - CalculateNewRoute
+      description: Decision for how to handle off-route situation
+
+    RerouteDecisionResult:
+      type: object
+      required:
+        - decision
+      properties:
+        decision:
+          $ref: '#/components/schemas/RerouteDecision'
+        returnDistanceMeters:
+          type: number
+          format: double
+        forwardDistanceMeters:
+          type: number
+          format: double
+        returnTurnCount:
+          type: integer
+        timeDifferenceSeconds:
+          type: number
+          format: double
+          description: Time saved by returning vs going forward
+
+    # ============================================================
+    # PHASE 3: CCH Preprocessing
+    # ============================================================
+
+    CCHTopology:
+      type: object
+      description: Metric-independent CCH topology stored in MWM
+      properties:
+        version:
+          type: integer
+          description: CCH format version for compatibility
+        nodeCount:
+          type: integer
+          format: int64
+        edgeCount:
+          type: integer
+          format: int64
+        shortcutCount:
+          type: integer
+          format: int64
+        levelCount:
+          type: integer
+          description: Number of contraction levels
+
+    CCHProfile:
+      type: string
+      enum:
+        - Car
+        - Bicycle
+        - Pedestrian
+      description: Routing profile for CCH customization
+
+    CCHCustomizationConfig:
+      type: object
+      properties:
+        profile:
+          $ref: '#/components/schemas/CCHProfile'
+        avoidTolls:
+          type: boolean
+          default: false
+        avoidHighways:
+          type: boolean
+          default: false
+        avoidFerries:
+          type: boolean
+          default: false
+
+    CCHQueryRequest:
+      type: object
+      required:
+        - originLat
+        - originLon
+        - destinationLat
+        - destinationLon
+        - profile
+      properties:
+        originLat:
+          type: number
+          format: double
+        originLon:
+          type: number
+          format: double
+        destinationLat:
+          type: number
+          format: double
+        destinationLon:
+          type: number
+          format: double
+        profile:
+          $ref: '#/components/schemas/CCHProfile'
+        computeAlternatives:
+          type: boolean
+          default: false
+        maxAlternatives:
+          type: integer
+          default: 3
+          maximum: 5
+
+    CCHQueryResult:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        errorMessage:
+          type: string
+        queryTimeMs:
+          type: number
+          format: double
+          description: Query execution time in milliseconds
+        route:
+          $ref: '#/components/schemas/RouteResult'
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteResult'
+        usedFallback:
+          type: boolean
+          description: True if A* fallback was used (no CCH available)
+
+    RouteResult:
+      type: object
+      properties:
+        distanceMeters:
+          type: number
+          format: double
+        durationSeconds:
+          type: number
+          format: double
+        segmentCount:
+          type: integer
+        # Actual path data is internal (Segment[] vector)
+
+    # ============================================================
+    # PHASE 4: Alternative Routes
+    # ============================================================
+
+    AlternativeParams:
+      type: object
+      properties:
+        k:
+          type: integer
+          default: 3
+          description: Number of alternatives to compute (including primary)
+        overlapThreshold:
+          type: number
+          format: double
+          default: 0.6
+          description: Maximum allowed overlap ratio (0.0-1.0)
+        maxLengthRatio:
+          type: number
+          format: double
+          default: 1.3
+          description: Max length of alternative relative to primary
+        minLengthMeters:
+          type: number
+          format: double
+          default: 50000
+          description: Minimum route length to compute alternatives
+
+    AlternativeRoute:
+      type: object
+      required:
+        - routeIndex
+        - distanceMeters
+        - durationSeconds
+      properties:
+        routeIndex:
+          type: integer
+          description: 0 = primary, 1+ = alternatives
+        distanceMeters:
+          type: number
+          format: double
+        durationSeconds:
+          type: number
+          format: double
+        overlapWithPrimary:
+          type: number
+          format: double
+          description: Overlap ratio with primary route (0.0-1.0)
+        diversityScore:
+          type: number
+          format: double
+          description: How different this route is (higher = more different)
+        decisionPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/DecisionPoint'
+
+    DecisionPoint:
+      type: object
+      required:
+        - latitude
+        - longitude
+        - distanceFromStartMeters
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        distanceFromStartMeters:
+          type: number
+          format: double
+          description: Distance along primary route to this point
+        alternativeIndex:
+          type: integer
+          description: Which alternative diverges at this point
+        timeSavingSeconds:
+          type: number
+          format: double
+          description: Time saved by taking alternative (negative if slower)
+
+    # ============================================================
+    # Common Types
+    # ============================================================
+
+    Segment:
+      type: object
+      description: Road segment identifier (matches existing C++ Segment class)
+      required:
+        - mwmId
+        - featureId
+        - segmentIdx
+        - forward
+      properties:
+        mwmId:
+          type: integer
+          format: int32
+        featureId:
+          type: integer
+          format: int32
+        segmentIdx:
+          type: integer
+          format: int32
+        forward:
+          type: boolean
+
+    RouteWeight:
+      type: object
+      description: Composite weight for routing (matches existing C++ RouteWeight)
+      properties:
+        weight:
+          type: number
+          format: double
+          description: Primary weight (typically time in seconds)
+        eta:
+          type: number
+          format: double
+          description: Estimated time of arrival component
+
+# ============================================================
+# C++ Interface Signatures (Documentation)
+# ============================================================
+
+paths:
+  /turn-cost-model:
+    post:
+      summary: ITurnCostModel::CalcTurnCost
+      description: |
+        C++ Interface:
+        ```cpp
+        class ITurnCostModel {
+        public:
+          virtual ~ITurnCostModel() = default;
+
+          // Calculate turn cost based on turn parameters
+          virtual TurnCostResult CalcTurnCost(TurnCostParams const & params) const = 0;
+
+          // Get U-turn penalty for specific road class
+          virtual double GetUTurnPenalty(RoadClass roadClass) const = 0;
+        };
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TurnCostParams'
+      responses:
+        '200':
+          description: Turn cost calculation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TurnCostResult'
+
+  /corridor-tracker:
+    post:
+      summary: ICorridorTracker::CheckPosition
+      description: |
+        C++ Interface:
+        ```cpp
+        class ICorridorTracker {
+        public:
+          virtual ~ICorridorTracker() = default;
+
+          // Check position against corridor, update state machine
+          virtual CorridorCheckResult CheckPosition(
+            PositionInfo const & position,
+            Route const & route
+          ) = 0;
+
+          // Get current corridor width at position along route
+          virtual double GetCorridorWidth(
+            Route const & route,
+            size_t segmentIndex
+          ) const = 0;
+
+          // Reset state machine to OnRoute
+          virtual void Reset() = 0;
+        };
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PositionInfo'
+      responses:
+        '200':
+          description: Corridor check result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CorridorCheckResult'
+
+  /cch-query:
+    post:
+      summary: ICCHQueryEngine::Query
+      description: |
+        C++ Interface:
+        ```cpp
+        class ICCHQueryEngine {
+        public:
+          virtual ~ICCHQueryEngine() = default;
+
+          // Query CCH for route
+          virtual CCHQueryResult Query(CCHQueryRequest const & request) = 0;
+
+          // Check if CCH is available for given MWM
+          virtual bool IsCCHAvailable(NumMwmId mwmId) const = 0;
+
+          // Customize CCH for profile (must call before Query)
+          virtual bool Customize(CCHCustomizationConfig const & config) = 0;
+        };
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CCHQueryRequest'
+      responses:
+        '200':
+          description: CCH query result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CCHQueryResult'
+
+  /alternative-finder:
+    post:
+      summary: IAlternativeFinder::Find
+      description: |
+        C++ Interface:
+        ```cpp
+        class IAlternativeFinder {
+        public:
+          virtual ~IAlternativeFinder() = default;
+
+          // Find alternative routes using k-SPwLO algorithm
+          virtual std::vector<AlternativeRoute> Find(
+            Route const & primaryRoute,
+            AlternativeParams const & params,
+            ICCHQueryEngine & cchEngine
+          ) = 0;
+
+          // Calculate overlap ratio between two routes
+          virtual double CalcOverlap(
+            Route const & route1,
+            Route const & route2
+          ) const = 0;
+
+          // Find decision points where alternatives diverge
+          virtual std::vector<DecisionPoint> FindDecisionPoints(
+            Route const & primary,
+            std::vector<AlternativeRoute> const & alternatives
+          ) const = 0;
+        };
+        ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlternativeParams'
+      responses:
+        '200':
+          description: Alternative routes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlternativeRoute'

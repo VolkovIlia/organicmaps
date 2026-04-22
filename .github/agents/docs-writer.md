@@ -1,0 +1,1 @@
+../../deadlion-studio/agents/operations/docs-writer.md

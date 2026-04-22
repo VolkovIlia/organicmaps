@@ -1,0 +1,1 @@
+../../deadlion-studio/agents/testing/isolated-testing-specialist.md

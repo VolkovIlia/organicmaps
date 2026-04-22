@@ -1,0 +1,22 @@
+{
+  "project": {
+    "name": "organicmaps",
+    "repo_path": "/home/volk/vibeprojects/organicmaps"
+  },
+  "phase": {
+    "current": "1",
+    "name": "Initial Setup",
+    "progress_percent": 0,
+    "tasks_completed": 0,
+    "tasks_total": 0
+  },
+  "milestones": [],
+  "blockers": [],
+  "recent_changes": [],
+  "documentation_health": {
+    "total_docs": 0,
+    "fresh_docs": 0,
+    "stale_docs": 0,
+    "critical_staleness": 0
+  }
+}
