@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="horizontal"
+  android:orientation="vertical"
   android:background="?cardBackground"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-  <include layout="@layout/altitude_chart_panel" />
+  <include
+    layout="@layout/altitude_chart_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 
-  <include layout="@layout/routing_bottom_panel_transit"/>
+  <include
+    layout="@layout/alternative_routes_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <include
+    layout="@layout/routing_bottom_panel_transit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 
   <TextView
     android:id="@+id/error"

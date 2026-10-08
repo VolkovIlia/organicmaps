@@ -1333,6 +1333,24 @@ JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRoutingListener(JNIEn
   { CallRoutingListener(rf, static_cast<int>(e), countries); });
 }
 
+JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetAlternativesReadyListener(JNIEnv * env, jclass,
+                                                                                     jobject listener)
+{
+  if (listener == nullptr)
+  {
+    frm()->GetRoutingManager().SetAlternativesReadyListener(nullptr);
+    return;
+  }
+  frm()->GetRoutingManager().SetAlternativesReadyListener(
+      [rf = jni::make_global_ref(listener)]()
+  {
+    JNIEnv * e = jni::GetEnv();
+    jmethodID const method = jni::GetMethodID(e, *rf, "onAlternativesReady", "()V");
+    ASSERT(method, ());
+    e->CallVoidMethod(*rf, method);
+  });
+}
+
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSetRouteProgressListener(JNIEnv * env, jclass, jobject listener)
 {
   frm()->GetRoutingManager().SetRouteProgressListener(
@@ -1430,9 +1448,11 @@ JNIEXPORT jint Java_app_organicmaps_sdk_Framework_nativeGetSelectedRouteIndex(JN
   return static_cast<jint>(frm()->GetRoutingManager().GetSelectedRouteIndex());
 }
 
-JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute(JNIEnv *, jclass, jint routeIndex)
+JNIEXPORT jboolean Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute(JNIEnv *, jclass,
+                                                                                   jint routeIndex)
 {
-  frm()->GetRoutingManager().SelectAlternativeRoute(static_cast<int>(routeIndex));
+  return static_cast<jboolean>(
+      frm()->GetRoutingManager().SelectAlternativeRoute(static_cast<int>(routeIndex)));
 }
 
 JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetAlternativeRoutes(JNIEnv * env, jclass)
@@ -1442,12 +1462,43 @@ JNIEXPORT jobjectArray Java_app_organicmaps_sdk_Framework_nativeGetAlternativeRo
   if (alternatives.empty())
     return nullptr;
 
-  // Get primary route duration for time difference calculation
   routing::FollowingInfo info;
   rm.GetRouteFollowingInfo(info);
-  double const primaryDuration = info.IsValid() ? static_cast<double>(info.m_time) : 0.0;
+  if (!info.IsValid())
+    return nullptr;
 
-  return CreateAlternativeRouteInfoArray(env, alternatives, primaryDuration);
+  double const primaryDuration = static_cast<double>(info.m_time);
+
+  static jclass const klass = jni::GetGlobalClassRef(env, "app/organicmaps/sdk/routing/AlternativeRouteInfo");
+  static jmethodID const ctor = jni::GetConstructorID(env, klass, "(ILapp/organicmaps/sdk/util/Distance;III)V");
+
+  // Include primary route (index 0) as first card, then alternatives.
+  jsize const totalSize = static_cast<jsize>(1 + alternatives.size());
+  jobjectArray const result = env->NewObjectArray(totalSize, klass, nullptr);
+
+  // Primary route card: routeIndex=0, timeDiff=0.
+  {
+    jobject const distObj = ToJavaDistance(env, info.m_distToTarget);
+    jobject const primaryInfo = env->NewObject(klass, ctor,
+        static_cast<jint>(0),
+        distObj,
+        static_cast<jint>(info.m_time),
+        static_cast<jint>(0),
+        static_cast<jint>(0));
+    env->DeleteLocalRef(distObj);
+    env->SetObjectArrayElement(result, 0, primaryInfo);
+    env->DeleteLocalRef(primaryInfo);
+  }
+
+  // Alternative route cards.
+  for (size_t i = 0; i < alternatives.size(); ++i)
+  {
+    jobject const altInfo = CreateAlternativeRouteInfo(env, alternatives[i], primaryDuration);
+    env->SetObjectArrayElement(result, static_cast<jsize>(i + 1), altInfo);
+    env->DeleteLocalRef(altInfo);
+  }
+
+  return result;
 }
 
 JNIEXPORT void Java_app_organicmaps_sdk_Framework_nativeReloadWorldMaps(JNIEnv * env, jclass)
@@ -1845,7 +1896,7 @@ JNINativeMethod const frameworkMethods[] = {
     // Alternative routes
     {"nativeGetAlternativeRoutes", "()[Lapp/organicmaps/sdk/routing/AlternativeRouteInfo;",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeGetAlternativeRoutes)},
-    {"nativeSelectAlternativeRoute", "(I)V",
+    {"nativeSelectAlternativeRoute", "(I)Z",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeSelectAlternativeRoute)},
     {"nativeHasAlternativeRoutes", "()Z",
      reinterpret_cast<void *>(&Java_app_organicmaps_sdk_Framework_nativeHasAlternativeRoutes)},

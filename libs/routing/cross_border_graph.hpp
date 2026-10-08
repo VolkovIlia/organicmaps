@@ -194,10 +194,9 @@ void CrossBorderGraphSerializer::Deserialize(CrossBorderGraph & graph, Source & 
     }
     else
     {
-      // Triggering of this check in runtime means that the latest built mwm set differs from
-      // the previous one ("classic" mwm set which is constant for many years). The solution is to
-      // download the latest World.mwm.
-      LOG(LERROR, ("World.mwm is outdated. Mwm hash:", mwmHash));
+      // This is recoverable at runtime: some cross-border edges from World.mwm become unusable
+      // until the world dataset is refreshed, but route building should not abort the app.
+      LOG(LWARNING, ("World.mwm is outdated. Mwm hash:", mwmHash));
       return false;
     }
   };

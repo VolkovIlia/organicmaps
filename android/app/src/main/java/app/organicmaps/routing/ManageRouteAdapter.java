@@ -1,11 +1,8 @@
 package app.organicmaps.routing;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.RectF;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,6 +32,7 @@ public class ManageRouteAdapter extends RecyclerView.Adapter<ManageRouteAdapter.
     void startDrag(RecyclerView.ViewHolder viewHolder);
     void showMyLocationIcon(boolean showMyLocationIcon);
     void onRoutePointDeleted(RecyclerView.ViewHolder viewHolder);
+    void onRoutePointEdit(int position);
   }
 
   public ManageRouteAdapter(Context context, RouteMarkData[] routeMarkData, ManageRouteListener listener)
@@ -55,7 +53,6 @@ public class ManageRouteAdapter extends RecyclerView.Adapter<ManageRouteAdapter.
     return new ManageRouteViewHolder(view);
   }
 
-  @SuppressLint("ClickableViewAccessibility")
   @Override
   public void onBindViewHolder(@NonNull ManageRouteViewHolder holder, int position)
   {
@@ -117,27 +114,11 @@ public class ManageRouteAdapter extends RecyclerView.Adapter<ManageRouteAdapter.
 
     // Show 'Delete' icon button only if we have intermediate stops.
     UiUtils.showIf(mRoutePoints.size() > 2, holder.mImageViewDelete);
-
-    // Detection of touch events on holder view.
-    holder.mItemView.setOnTouchListener((v, event) -> {
-      if (event.getAction() == MotionEvent.ACTION_DOWN)
-      {
-        RectF deleteButtonRect = new RectF(holder.mImageViewDelete.getLeft(), holder.mImageViewDelete.getTop(),
-                                           holder.mImageViewDelete.getRight(), holder.mImageViewDelete.getBottom());
-
-        if (holder.mImageViewDelete.isShown() && deleteButtonRect.contains(event.getX(), event.getY()))
-        {
-          // User has clicked on the 'Delete' icon button.
-          mManageRouteListener.onRoutePointDeleted(holder);
-        }
-        else
-        {
-          // Call start drag listener on touch.
-          mManageRouteListener.startDrag(holder);
-        }
-      }
-
-      return false;
+    holder.mImageViewDelete.setOnClickListener(v -> mManageRouteListener.onRoutePointDeleted(holder));
+    holder.mItemView.setOnClickListener(v -> mManageRouteListener.onRoutePointEdit(holder.getAbsoluteAdapterPosition()));
+    holder.mItemView.setOnLongClickListener(v -> {
+      mManageRouteListener.startDrag(holder);
+      return true;
     });
   }
 

@@ -79,6 +79,30 @@ bool AsyncRouter::FindClosestProjectionToRoad(m2::PointD const & point, m2::Poin
   return m_router->FindClosestProjectionToRoad(point, direction, radius, proj);
 }
 
+RouterResultCode AsyncRouter::ReconstructRoute(Route const & currentRoute, std::vector<Segment> const & segments,
+                                               Route & route)
+{
+  lock_guard ul(m_guard);
+  if (!m_router)
+    return RouterResultCode::InternalError;
+  return m_router->ReconstructRoute(currentRoute, segments, route);
+}
+
+std::vector<AlternativeRoute> AsyncRouter::FindAlternativeRoutes(Route const & currentRoute,
+                                                                 AlternativeParams const & params)
+{
+  // Copy the shared_ptr under lock, then release before the heavy A* computation
+  // to avoid blocking CalculateRoute (called on GUI thread) during alternatives search.
+  std::shared_ptr<IRouter> router;
+  {
+    lock_guard ul(m_guard);
+    router = m_router;
+  }
+  if (!router)
+    return {};
+  return router->FindAlternativeRoutes(currentRoute, params);
+}
+
 void AsyncRouter::RouterDelegateProxy::OnProgress(float progress)
 {
   ProgressCallback onProgress = nullptr;

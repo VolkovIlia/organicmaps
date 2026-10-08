@@ -48,6 +48,8 @@ public class RoutingController
     default void onResetToPlanningState() {}
     default void onBuiltRoute() {}
     default void onDrivingOptionsWarning() {}
+    /** Called when alternative routes have been computed and are ready to display in the UI. */
+    default void onAlternativesReady() {}
 
     default void onCommonBuildError(int lastResultCode, @NonNull String[] lastMissingMaps) {}
     default void onDrivingOptionsBuildError() {}
@@ -237,6 +239,10 @@ public class RoutingController
     mRemovingIntermediatePointsTransactionId = mInvalidRoutePointsTransactionId;
 
     Framework.nativeSetRoutingListener(mRoutingListener);
+    Framework.nativeSetAlternativesReadyListener(() -> UiThread.run(() -> {
+      if (mContainer != null)
+        mContainer.onAlternativesReady();
+    }));
     Framework.nativeSetRouteProgressListener(mRoutingProgressListener);
     Framework.nativeSetRoutingRecommendationListener(recommendation -> UiThread.run(() -> {
       if (recommendation == RouteRecommendationType.RebuildAfterPointsLoading)

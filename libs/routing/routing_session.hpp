@@ -169,6 +169,14 @@ public:
 
   std::shared_ptr<Route> GetRouteForTests() const { return m_route; }
   void SetGuidesForTests(GuidesTracks guides) { m_router->SetGuidesTracks(std::move(guides)); }
+  void SetCorridorTrackerForTesting(std::unique_ptr<ICorridorTracker> tracker)
+  {
+    m_corridorTracker = std::move(tracker);
+  }
+  void SetRerouteDecisionForTesting(std::unique_ptr<IRerouteDecision> decision)
+  {
+    m_rerouteDecision = std::move(decision);
+  }
 
   double GetCompletionPercent() const;
 
@@ -181,6 +189,16 @@ public:
 
   /// @brief Set alternatives computed by IndexRouter.
   void SetAlternatives(std::vector<AlternativeRoute> && alternatives);
+  std::vector<AlternativeRoute> FindAlternativeRoutes(AlternativeParams const & params);
+
+  /// @brief Returns shared ownership of current route for use on background threads.
+  /// Must be called from GUI thread.
+  std::shared_ptr<Route> GetCurrentRouteRef() const;
+
+  /// @brief Compute alternative routes for a given route without GUI thread requirement.
+  /// Safe to call from any thread (no thread checker). Used for background computation.
+  std::vector<AlternativeRoute> FindAlternativeRoutesBackground(
+      std::shared_ptr<Route> const & route, AlternativeParams const & params) const;
 
   /// @brief Switch navigation to alternative route.
   /// @param index 1-based alternative index.
@@ -266,6 +284,7 @@ private:
   int m_routingRebuildCount = -1;         // -1 for the first rebuild called in BuildRoute().
   int m_routingRebuildAnnounceCount = 0;  // track TTS announcement state (ignore the first build)
   mutable double m_lastCompletionPercent = 0.0;
+  size_t m_corridorSuggestReturnCount = 0;
 
   // Phase 4: Alternative routes
   std::vector<AlternativeRoute> m_alternatives;

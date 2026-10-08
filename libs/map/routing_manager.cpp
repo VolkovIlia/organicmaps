@@ -43,6 +43,36 @@ std::string const kRoutePointsFile = "route_points.dat";
 
 uint32_t constexpr kInvalidTransactionId = 0;
 
+AlternativeParams GetAlternativeParamsForRoute(double routeDistanceMeters)
+{
+  if (routeDistanceMeters >= AlternativeParams::Default().minLengthMeters)
+    return AlternativeParams::Default();
+
+  if (routeDistanceMeters >= AlternativeParams::ForMediumRoutes().minLengthMeters)
+    return AlternativeParams::ForMediumRoutes();
+
+  AlternativeParams params = AlternativeParams::ForMediumRoutes();
+  params.minLengthMeters = 500.0;  // DEBUG: lowered for testing short routes
+  params.k = 2;
+  params.maxViaNodeCandidates = 3;
+  params.overlapThreshold = 0.93;
+  params.maxComputeTimeSec = 20.0;
+  return params;
+}
+
+std::optional<AlternativeParams> GetAlternativeParams(Route const & route, RouterType routerType)
+{
+  if (routerType != RouterType::Vehicle || !route.IsValid() || route.GetSubrouteCount() != 1)
+    return std::nullopt;
+
+  auto const routeDistanceMeters = route.GetTotalDistanceMeters();
+  auto const params = GetAlternativeParamsForRoute(routeDistanceMeters);
+  if (routeDistanceMeters < params.minLengthMeters)
+    return std::nullopt;
+
+  return params;
+}
+
 void FillTurnsDistancesForRendering(std::vector<RouteSegment> const & segments, double baseDistance,
                                     std::vector<double> & turns)
 {
@@ -396,30 +426,8 @@ void RoutingManager::OnBuildRouteReady(Route const & route, RouterResultCode cod
 
   auto const hasWarnings = InsertRoute(route);
   m_drapeEngine.SafeCall(&df::DrapeEngine::StopLocationFollow);
-
-  // Phase 4: Compute alternative routes for car routing on long routes
-  if (m_currentRouterType == RouterType::Vehicle && route.IsValid())
-  {
-    double const routeDistanceMeters = route.GetTotalDistanceMeters();
-    AlternativeParams params = AlternativeParams::Default();
-
-    // Only compute alternatives for routes longer than minimum threshold
-    if (routeDistanceMeters >= params.minLengthMeters)
-    {
-      // Create alternative finder if not already created
-      if (!m_alternativeFinder)
-        m_alternativeFinder = CreateAlternativeFinder();
-
-      if (m_alternativeFinder)
-      {
-        auto alternatives = m_alternativeFinder->Find(route, params);
-        if (!alternatives.empty())
-        {
-          InsertAlternativeRoutes(alternatives);
-        }
-      }
-    }
-  }
+  m_routingSession.SetCorridorTrackingEnabled(m_currentRouterType == RouterType::Vehicle);
+  ClearAlternativeRoutes();
 
   // Validate route (in case of bicycle routing it can be invalid).
   ASSERT(route.IsValid(), ());
@@ -432,7 +440,18 @@ void RoutingManager::OnBuildRouteReady(Route const & route, RouterResultCode cod
                            true /* isAnim */, true /* useVisibleViewport */);
   }
 
-  CallRouteBuilded(hasWarnings ? RouterResultCode::HasWarnings : code, storage::CountriesSet());
+  auto const routeCode = hasWarnings ? RouterResultCode::HasWarnings : code;
+  CallRouteBuilded(routeCode, storage::CountriesSet());
+
+  auto const params = GetAlternativeParams(route, m_currentRouterType);
+  LOG(LINFO, ("OnBuildRouteReady alternatives:",
+              "routerType =", m_currentRouterType,
+              "routeValid =", route.IsValid(),
+              "subroutes =", route.GetSubrouteCount(),
+              "distanceMeters =", route.GetTotalDistanceMeters(),
+              "hasParams =", params.has_value()));
+  if (params)
+    ScheduleAlternativeRoutesUpdate(route.GetRouteId(), *params);
 }
 
 void RoutingManager::OnRebuildRouteReady(Route const & route, RouterResultCode code)
@@ -443,7 +462,20 @@ void RoutingManager::OnRebuildRouteReady(Route const & route, RouterResultCode c
     return;
 
   auto const hasWarnings = InsertRoute(route);
-  CallRouteBuilded(hasWarnings ? RouterResultCode::HasWarnings : code, storage::CountriesSet());
+  m_routingSession.SetCorridorTrackingEnabled(m_currentRouterType == RouterType::Vehicle);
+  ClearAlternativeRoutes();
+  auto const routeCode = hasWarnings ? RouterResultCode::HasWarnings : code;
+  CallRouteBuilded(routeCode, storage::CountriesSet());
+
+  auto const params = GetAlternativeParams(route, m_currentRouterType);
+  LOG(LINFO, ("OnRebuildRouteReady alternatives:",
+              "routerType =", m_currentRouterType,
+              "routeValid =", route.IsValid(),
+              "subroutes =", route.GetSubrouteCount(),
+              "distanceMeters =", route.GetTotalDistanceMeters(),
+              "hasParams =", params.has_value()));
+  if (params)
+    ScheduleAlternativeRoutesUpdate(route.GetRouteId(), *params);
 }
 
 void RoutingManager::OnNeedMoreMaps(uint64_t routeId, storage::CountriesSet const & absentCountries)
@@ -1571,59 +1603,133 @@ bool RoutingManager::IsSpeedCamLimitExceeded() const
 
 void RoutingManager::InsertAlternativeRoutes(std::vector<AlternativeRoute> const & alternatives)
 {
+  LOG(LINFO, ("InsertAlternativeRoutes:", "drapeEngine =", (bool)m_drapeEngine,
+              "alternatives =", alternatives.size()));
+
   if (!m_drapeEngine || alternatives.empty())
     return;
 
-  // Clear any existing alternative subroutes
   ClearAlternativeRoutes();
+  m_routingSession.SetAlternatives(std::vector<AlternativeRoute>(alternatives));
 
-  // For now, we create simple subroutes for alternatives using a lighter style
-  // In Phase 4, we will add full polyline rendering from Route objects
+  for (size_t i = 0; i < alternatives.size(); ++i)
+  {
+    auto const & alt = alternatives[i];
+    LOG(LINFO, ("InsertAlternativeRoutes: alt", i, "polylinePoints =", alt.polylinePoints.size()));
 
-  // Store alternatives in routing session
-  std::vector<AlternativeRoute> altCopy = alternatives;
-  m_routingSession.SetAlternatives(std::move(altCopy));
+    if (alt.polylinePoints.size() < 2)
+    {
+      LOG(LWARNING, ("InsertAlternativeRoutes: alt", i, "skipped — too few points"));
+      continue;
+    }
 
-  // TODO: In Phase 4, create actual subroutes from alternative route polylines
-  // For now, alternatives are stored but not rendered as full routes
-  // The UI will show alternative route cards with time/distance info
+    m2::PolylineD const polyline(alt.polylinePoints);
+    double const polylineLen = polyline.GetLength();
+
+    auto subroute = make_unique_dp<df::Subroute>();
+    subroute->m_polyline = polyline;
+    subroute->m_baseDistance = 0.0;
+    subroute->m_baseDepthIndex = static_cast<double>(i + 1);
+    subroute->m_routeType = df::RouteType::Car;
+    subroute->m_headFakeDistance = -1.0;
+    subroute->m_tailFakeDistance = polylineLen + 1.0;
+    subroute->AddStyle(df::SubrouteStyle(df::kRouteAlternative, df::kRouteAlternativeOutline));
+
+    LOG(LINFO, ("InsertAlternativeRoutes: alt", i, "polylineLen =", polylineLen,
+                "tailFakeDist =", subroute->m_tailFakeDistance));
+
+    auto const id = m_drapeEngine.SafeCallWithResult(&df::DrapeEngine::AddSubroute,
+                                                     df::SubrouteConstPtr(subroute.release()));
+    LOG(LINFO, ("InsertAlternativeRoutes: alt", i, "drapeId =", id));
+    m_alternativeDrapeSubroutes.push_back(id);
+  }
 }
 
 /// @brief Select an alternative route as the new primary.
 /// @param index Route index: 0 = keep current primary, 1+ = switch to alternative (1-based for alternatives).
 /// @note Alternatives array uses 0-based indexing internally, so index 1 maps to alternatives[0].
-void RoutingManager::SelectAlternativeRoute(int index)
+bool RoutingManager::SelectAlternativeRoute(int index)
 {
-  if (index == m_selectedRouteIndex)
-    return;
+  if (index == 0 && m_selectedRouteIndex == 0)
+    return true;
 
   auto const & alternatives = m_routingSession.GetAlternatives();
   // Validate index: must be >= 0, and if > 0, (index - 1) must be valid index into alternatives array
   if (index < 0 || (index > 0 && static_cast<size_t>(index - 1) >= alternatives.size()))
-    return;
-
-  // TODO: In Phase 4, implement style swapping:
-  // 1. Change current selected route to alternative style (gray dashed)
-  // 2. Change new selected route to primary style (solid blue)
-  // 3. Use DrapeEngine::UpdateSubrouteStyle() when available
-
-  int const prevIndex = m_selectedRouteIndex;
-  m_selectedRouteIndex = index;
+    return false;
 
   // If switching to an alternative (index > 0), trigger route switch in session
   if (index > 0)
   {
     bool const switched = m_routingSession.SwitchToAlternative(index);
     if (!switched)
+      return false;
+
+    ClearAlternativeRoutes();
+    m_routingSession.RouteCall([this](Route const & route)
     {
-      // Revert if switch failed
-      m_selectedRouteIndex = prevIndex;
+      UpdateRouteBuiltState(route, RouterResultCode::NoError);
+      if (auto const params = GetAlternativeParams(route, m_currentRouterType); params)
+        ScheduleAlternativeRoutesUpdate(route.GetRouteId(), *params);
+    });
+  }
+
+  return true;
+}
+
+void RoutingManager::ScheduleAlternativeRoutesUpdate(uint64_t routeId, AlternativeParams const & params)
+{
+  LOG(LINFO, ("ScheduleAlternativeRoutesUpdate queued:",
+              "routeId =", routeId,
+              "k =", params.k,
+              "minLengthMeters =", params.minLengthMeters,
+              "overlapThreshold =", params.overlapThreshold,
+              "maxLengthRatio =", params.maxLengthRatio));
+  GetPlatform().RunTask(Platform::Thread::Gui, [this, routeId, params]()
+  {
+    if (!m_routingSession.IsRouteValid() || !m_routingSession.IsRouteId(routeId))
+    {
+      LOG(LINFO, ("ScheduleAlternativeRoutesUpdate skipped: route changed before task started"));
       return;
     }
 
-    // Rebuild the route display with the new primary route
-    m_routingSession.RouteCall([this](Route const & route) { InsertRoute(route); });
-  }
+    // Capture shared ownership of the route on GUI thread (thread-safe).
+    auto routeRef = m_routingSession.GetCurrentRouteRef();
+    if (!routeRef)
+      return;
+
+    // Run heavy A* computation on background thread to avoid GUI freeze.
+    GetPlatform().RunTask(Platform::Thread::Background, [this, routeId, params, routeRef]()
+    {
+      LOG(LINFO, ("ScheduleAlternativeRoutesUpdate computing on background:", "routeId =", routeId));
+      auto alternatives = m_routingSession.FindAlternativeRoutesBackground(routeRef, params);
+      LOG(LINFO, ("ScheduleAlternativeRoutesUpdate background done:", "alternatives =", alternatives.size()));
+
+      GetPlatform().RunTask(Platform::Thread::Gui, [this, routeId, alternatives = std::move(alternatives)]() mutable
+      {
+        bool const routeValid = m_routingSession.IsRouteValid();
+        bool const routeMatches = m_routingSession.IsRouteId(routeId);
+        LOG(LINFO, ("ScheduleAlternativeRoutesUpdate result:",
+                    "routeId =", routeId, "alternatives =", alternatives.size(),
+                    "routeValid =", routeValid, "routeMatches =", routeMatches));
+        if (!routeValid || !routeMatches)
+          return;
+
+        if (!alternatives.empty())
+          InsertAlternativeRoutes(alternatives);
+        // Notify via dedicated callback instead of re-firing CallRouteBuilded,
+        // to avoid a second full route UI re-render (flicker + color change).
+        if (m_alternativesReadyCallback)
+          m_alternativesReadyCallback();
+      });
+    });
+  });
+}
+
+void RoutingManager::UpdateRouteBuiltState(Route const & route, RouterResultCode code)
+{
+  auto const hasWarnings = InsertRoute(route);
+  CallRouteBuilded(hasWarnings ? RouterResultCode::HasWarnings : code, storage::CountriesSet());
 }
 
 void RoutingManager::ClearAlternativeRoutes()
@@ -1638,6 +1744,7 @@ void RoutingManager::ClearAlternativeRoutes()
 
   m_alternativeDrapeSubroutes.clear();
   m_selectedRouteIndex = 0;
+  m_routingSession.SetAlternatives({});
 }
 
 std::vector<AlternativeRoute> RoutingManager::GetAlternativeRoutes() const

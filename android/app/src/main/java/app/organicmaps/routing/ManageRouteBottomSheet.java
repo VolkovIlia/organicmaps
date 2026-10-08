@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import app.organicmaps.MwmActivity;
 import app.organicmaps.MwmApplication;
 import app.organicmaps.R;
 import app.organicmaps.sdk.Framework;
@@ -171,6 +172,24 @@ public class ManageRouteBottomSheet
     mManageRouteAdapter.deleteRoutePoint(viewHolder);
 
     mManageRouteAdapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void onRoutePointEdit(int position)
+  {
+    if (position < 0 || position >= mManageRouteAdapter.getRoutePoints().size())
+      return;
+
+    RouteMarkData routePoint = mManageRouteAdapter.getRoutePoints().get(position);
+    if (routePoint.mPointType != app.organicmaps.sdk.routing.RouteMarkType.Start &&
+        routePoint.mPointType != app.organicmaps.sdk.routing.RouteMarkType.Finish)
+    {
+      return;
+    }
+
+    dismiss();
+    if (requireActivity() instanceof MwmActivity)
+      ((MwmActivity) requireActivity()).onSearchRoutePoint(routePoint.mPointType);
   }
 
   private static class ManageRouteItemTouchHelperCallback extends ItemTouchHelper.Callback

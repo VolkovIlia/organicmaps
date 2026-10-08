@@ -11,6 +11,7 @@
 namespace
 {
 int constexpr kOnRouteMissedCount = 10;
+size_t constexpr kCorridorSuggestReturnThreshold = 2;
 
 double constexpr kShowLanesMinDistInMeters = 500.0;
 
@@ -41,13 +42,13 @@ RoutingSession::RoutingSession()
   , m_route(std::make_shared<Route>(std::string{} /* router */, 0 /* route id */))
   , m_state(SessionState::NoValidRoute)
   , m_isFollowing(false)
+  , m_corridorTracker(std::make_unique<CorridorTracker>())
+  , m_rerouteDecision(std::make_unique<RerouteDecision>())
+  , m_useCorridorTracking(false)
   , m_speedCameraManager(m_turnNotificationsMgr)
   , m_routingSettings(GetRoutingSettings(VehicleType::Car))
   , m_passedDistanceOnRouteMeters(0.0)
   , m_lastCompletionPercent(0.0)
-  , m_corridorTracker(std::make_unique<CorridorTracker>())
-  , m_rerouteDecision(std::make_unique<RerouteDecision>())
-  , m_useCorridorTracking(false)
 {
   // To call |m_changeSessionStateCallback| on |m_state| initialization.
   SetState(SessionState::NoValidRoute);
@@ -122,11 +123,15 @@ void RoutingSession::RemoveRoute()
 
   m_lastDistance = 0.0;
   m_moveAwayCounter = 0;
+  m_corridorSuggestReturnCount = 0;
   m_turnNotificationsMgr.Reset();
 
   // Reset corridor tracker when route is removed
   if (m_corridorTracker)
     m_corridorTracker->Reset();
+
+  m_alternatives.clear();
+  m_dismissedAlternatives.clear();
 
   m_route = std::make_shared<Route>(std::string{} /* router */, 0 /* route id */);
   m_speedCameraManager.Reset();
@@ -322,6 +327,7 @@ SessionState RoutingSession::OnLocationPositionChanged(GpsInfo const & info)
         {
           m_moveAwayCounter = 0;
           m_lastDistance = 0.0;
+          m_corridorSuggestReturnCount = 0;
         }
         break;
 
@@ -952,21 +958,22 @@ void RoutingSession::HandleCorridorRerouteDecision(RerouteDecisionResult const &
   switch (decision.decision)
   {
   case RerouteDecisionType::StayOnRoute:
-    // Do nothing, continue on current route
+    m_corridorSuggestReturnCount = 0;
     if (m_corridorTracker)
       m_corridorTracker->Reset();
     break;
 
   case RerouteDecisionType::SuggestReturn:
-    // In future: transition corridor tracker to SuggestingReturn state
-    // For now, still trigger reroute after some delay
+    ++m_corridorSuggestReturnCount;
     LOG(LINFO, ("Corridor: Suggest return -", decision.reason));
-    break;
+    if (m_corridorSuggestReturnCount < kCorridorSuggestReturnThreshold)
+      break;
+    [[fallthrough]];
 
   case RerouteDecisionType::CalculateNewRoute:
-    // Trigger reroute
     LOG(LINFO, ("Corridor: Calculate new route -", decision.reason));
     m_passedDistanceOnRouteMeters += m_route->GetCurrentDistanceFromBeginMeters();
+    m_corridorSuggestReturnCount = 0;
     SetState(SessionState::RouteNeedRebuild);
     if (m_corridorTracker)
       m_corridorTracker->Reset();
@@ -982,6 +989,30 @@ void RoutingSession::SetAlternatives(std::vector<AlternativeRoute> && alternativ
   m_dismissedAlternatives.clear();
 }
 
+std::vector<AlternativeRoute> RoutingSession::FindAlternativeRoutes(AlternativeParams const & params)
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  if (!m_route || !m_route->IsValid())
+    return {};
+  return m_router->FindAlternativeRoutes(*m_route, params);
+}
+
+std::shared_ptr<Route> RoutingSession::GetCurrentRouteRef() const
+{
+  CHECK_THREAD_CHECKER(m_threadChecker, ());
+  if (!m_route || !m_route->IsValid())
+    return nullptr;
+  return m_route;
+}
+
+std::vector<AlternativeRoute> RoutingSession::FindAlternativeRoutesBackground(
+    std::shared_ptr<Route> const & route, AlternativeParams const & params) const
+{
+  if (!route || !route->IsValid())
+    return {};
+  return m_router->FindAlternativeRoutes(*route, params);
+}
+
 bool RoutingSession::SwitchToAlternative(int index)
 {
   CHECK_THREAD_CHECKER(m_threadChecker, ());
@@ -989,16 +1020,32 @@ bool RoutingSession::SwitchToAlternative(int index)
   if (index < 1 || index > static_cast<int>(m_alternatives.size()))
     return false;
 
+  bool const stateAllowed = (m_state == SessionState::RouteNotStarted || m_state == SessionState::OnRoute);
+  if (!stateAllowed || m_route->GetSubrouteCount() != 1)
+  {
+    LOG(LWARNING, ("Alternative route selection is only supported before navigation starts on single-leg routes.",
+                   "State:", DebugPrint(m_state), "Subroutes:", m_route->GetSubrouteCount()));
+    return false;
+  }
+
   auto const & alt = m_alternatives[static_cast<size_t>(index - 1)];
   if (!alt.IsValid())
     return false;
 
-  // TODO: In full implementation, create new Route from alternative path
-  // and call AssignRoute with the new route.
-  // For now, just clear alternatives after switch attempt.
+  auto alternativeRoute = std::make_shared<Route>(*m_route);
+  auto const result = m_router->ReconstructRoute(*m_route, alt.path, *alternativeRoute);
+  if (result != RouterResultCode::NoError || !alternativeRoute->IsValid())
+  {
+    LOG(LWARNING, ("Failed to reconstruct selected alternative route.", "Alternative:", alt.routeIndex,
+                   "Result:", DebugPrint(result)));
+    return false;
+  }
+
+  AssignRoute(alternativeRoute, RouterResultCode::NoError);
+  // Reset state so navigation can restart cleanly with the new route.
+  SetState(SessionState::RouteNotStarted);
   m_alternatives.clear();
   m_dismissedAlternatives.clear();
-
   return true;
 }
 

@@ -100,6 +100,7 @@ public:
   using RouteBuildingCallback = std::function<void(routing::RouterResultCode, storage::CountriesSet const &)>;
   using RouteSpeedCamShowCallback = std::function<void(m2::PointD const &, double)>;
   using RouteSpeedCamsClearCallback = std::function<void()>;
+  using AlternativesReadyCallback = std::function<void()>;
 
   using RouteStartBuildCallback = std::function<void(std::vector<RouteMarkData> const & points)>;
 
@@ -144,6 +145,11 @@ public:
     m_routingBuildingCallback = buildingCallback;
   }
 
+  void SetAlternativesReadyListener(AlternativesReadyCallback const & alternativesReadyCallback)
+  {
+    m_alternativesReadyCallback = alternativesReadyCallback;
+  }
+
   void SetRouteSpeedCamShowListener(RouteSpeedCamShowCallback const & speedCamShowCallback)
   {
     m_routeSpeedCamShowCallback = speedCamShowCallback;
@@ -176,7 +182,7 @@ public:
 
   /// @brief Select an alternative route as the new primary.
   /// @param index 0 = primary, 1+ = alternative index.
-  void SelectAlternativeRoute(int index);
+  bool SelectAlternativeRoute(int index);
 
   /// @brief Clear all alternative routes from display.
   void ClearAlternativeRoutes();
@@ -334,6 +340,8 @@ private:
   void HidePreviewSegments();
 
   void SetSubroutesVisibility(bool visible);
+  void ScheduleAlternativeRoutesUpdate(uint64_t routeId, routing::AlternativeParams const & params);
+  void UpdateRouteBuiltState(routing::Route const & route, routing::RouterResultCode code);
 
   void CancelRecommendation(Recommendation recommendation);
 
@@ -342,6 +350,7 @@ private:
   void OnExtrapolatedLocationUpdate(location::GpsInfo const & info);
 
   RouteBuildingCallback m_routingBuildingCallback;
+  AlternativesReadyCallback m_alternativesReadyCallback;
   RouteSpeedCamShowCallback m_routeSpeedCamShowCallback;
   RouteSpeedCamsClearCallback m_routeSpeedCamsClearCallback;
   RouteRecommendCallback m_routeRecommendCallback;

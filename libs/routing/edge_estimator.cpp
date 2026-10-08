@@ -391,7 +391,7 @@ public:
   }
 
 private:
-  shared_ptr<TrafficStash> m_trafficStash;
+  std::shared_ptr<TrafficStash> m_trafficStash;
   std::shared_ptr<ITurnCostModel> m_turnCostModel;
 };
 

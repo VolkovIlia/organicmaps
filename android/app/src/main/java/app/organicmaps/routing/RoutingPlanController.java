@@ -104,7 +104,8 @@ public class RoutingPlanController extends ToolbarController
     mProgressRuler = progressFrame.findViewById(R.id.progress_ruler);
     //    mProgressTaxi = (WheelProgressView) progressFrame.findViewById(R.id.progress_taxi);
 
-    mRoutingBottomMenuController = RoutingBottomMenuController.newInstance(requireActivity(), mFrame, listener);
+    mRoutingBottomMenuController = RoutingBottomMenuController.newInstance(
+        requireActivity(), requireActivity().findViewById(android.R.id.content), listener);
 
     mDrivingOptionsBtnContainer = mFrame.findViewById(R.id.driving_options_btn_container);
     View btn = mDrivingOptionsBtnContainer.findViewById(R.id.driving_options_btn);
@@ -224,6 +225,12 @@ public class RoutingPlanController extends ToolbarController
     final boolean showStartButton = !RoutingController.get().isRulerRouterType();
     mRoutingBottomMenuController.setStartButton(showStartButton);
     mRoutingBottomMenuController.showAltitudeChartAndRoutingDetails();
+    mRoutingBottomMenuController.updateAlternativeRoutes();
+  }
+
+  /** Called when alternative routes are ready — only updates the alternatives panel without re-rendering the route. */
+  public void onAlternativesReady()
+  {
     mRoutingBottomMenuController.updateAlternativeRoutes();
   }
 

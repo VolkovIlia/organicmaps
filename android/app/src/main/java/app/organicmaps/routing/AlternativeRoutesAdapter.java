@@ -22,7 +22,7 @@ public class AlternativeRoutesAdapter extends RecyclerView.Adapter<AlternativeRo
 
   @Nullable
   private AlternativeRouteInfo[] mRoutes;
-  private int mSelectedIndex = 0;
+  private int mSelectedRouteIndex = 0;
   @Nullable
   private OnRouteSelectedListener mListener;
   @NonNull
@@ -33,19 +33,17 @@ public class AlternativeRoutesAdapter extends RecyclerView.Adapter<AlternativeRo
     mContext = context;
   }
 
-  public void setRoutes(@NonNull AlternativeRouteInfo[] routes, int selectedIndex)
+  public void setRoutes(@NonNull AlternativeRouteInfo[] routes, int selectedRouteIndex)
   {
     mRoutes = routes;
-    mSelectedIndex = selectedIndex;
+    mSelectedRouteIndex = selectedRouteIndex;
     notifyDataSetChanged();
   }
 
-  public void setSelectedIndex(int index)
+  public void setSelectedRouteIndex(int routeIndex)
   {
-    int oldIndex = mSelectedIndex;
-    mSelectedIndex = index;
-    notifyItemChanged(oldIndex);
-    notifyItemChanged(index);
+    mSelectedRouteIndex = routeIndex;
+    notifyDataSetChanged();
   }
 
   public void setOnRouteSelectedListener(OnRouteSelectedListener listener)
@@ -66,7 +64,7 @@ public class AlternativeRoutesAdapter extends RecyclerView.Adapter<AlternativeRo
   public void onBindViewHolder(@NonNull ViewHolder holder, int position)
   {
     AlternativeRouteInfo route = mRoutes[position];
-    boolean isSelected = position == mSelectedIndex;
+    boolean isSelected = route.routeIndex == mSelectedRouteIndex;
 
     // Route label
     holder.routeLabel.setText(mContext.getString(R.string.route_number, position + 1));

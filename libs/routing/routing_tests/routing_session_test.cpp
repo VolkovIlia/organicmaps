@@ -68,6 +68,13 @@ public:
     return m_code;
   }
 
+  RouterResultCode ReconstructRoute(Route const & /* currentRoute */,
+                                    std::vector<Segment> const & /* segments */, Route & route) override
+  {
+    route = m_route;
+    return m_code;
+  }
+
   bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                    EdgeProj & proj) override
   {
@@ -108,6 +115,51 @@ private:
   vector<RouterResultCode> m_returnCodes;
   vector<m2::PointD> m_route;
   size_t m_returnCodesIdx = 0;
+};
+
+class TestCorridorTracker : public ICorridorTracker
+{
+public:
+  explicit TestCorridorTracker(std::vector<CorridorCheckResult> results) : m_results(std::move(results)) {}
+
+  CorridorCheckResult CheckPosition(ms::LatLon const & /* position */, double /* gpsAccuracy */,
+                                    Route const & /* route */) override
+  {
+    TEST(!m_results.empty(), ());
+    auto const index = std::min(m_index, m_results.size() - 1);
+    ++m_index;
+    return m_results[index];
+  }
+
+  double GetCorridorWidth(Route const & /* route */, size_t /* segmentIndex */) const override { return 20.0; }
+  void Reset() override { m_state = CorridorState::OnRoute; }
+  CorridorState GetState() const override { return m_state; }
+
+private:
+  std::vector<CorridorCheckResult> m_results;
+  size_t m_index = 0;
+  CorridorState m_state = CorridorState::OnRoute;
+};
+
+class TestRerouteDecision : public IRerouteDecision
+{
+public:
+  explicit TestRerouteDecision(std::vector<RerouteDecisionResult> results)
+    : m_results(std::move(results))
+  {}
+
+  RerouteDecisionResult Decide(ms::LatLon const & /* currentPosition */,
+                               Route const & /* currentRoute */) override
+  {
+    TEST(!m_results.empty(), ());
+    auto const index = std::min(m_index, m_results.size() - 1);
+    ++m_index;
+    return m_results[index];
+  }
+
+private:
+  std::vector<RerouteDecisionResult> m_results;
+  size_t m_index = 0;
 };
 
 class TimedSignal
@@ -607,5 +659,159 @@ UNIT_CLASS_TEST(AsyncGuiThreadTestWithRoutingSession, TestRouteRebuildingError)
     vector<double> const latitudes = {0.003, 0.0035, 0.004};
     TestMovingByUpdatingLat(sessionStateTest, latitudes, info, *m_session);
   }
+}
+
+UNIT_CLASS_TEST(AsyncGuiThreadTestWithRoutingSession, TestCorridorSuggestReturnEscalatesToRebuild)
+{
+  TimedSignal signal;
+  GetPlatform().RunTask(Platform::Thread::Gui, [this, &signal]()
+  {
+    InitRoutingSession();
+    Route route("dummy", kTestRoute.begin(), kTestRoute.end(), 0 /* route id */);
+    FillSubroutesInfo(route);
+
+    m_session->AssignRouteForTesting(std::make_shared<Route>(route), RouterResultCode::NoError);
+    m_session->SetState(SessionState::OnRoute);
+    m_session->SetCorridorTrackingEnabled(true);
+
+    CorridorCheckResult reroute;
+    reroute.isInsideCorridor = false;
+    reroute.recommendation = CorridorCheckResult::Recommendation::Reroute;
+    m_session->SetCorridorTrackerForTesting(
+        std::make_unique<TestCorridorTracker>(std::vector<CorridorCheckResult>{reroute, reroute}));
+
+    RerouteDecisionResult suggestReturn;
+    suggestReturn.decision = RerouteDecisionType::SuggestReturn;
+    suggestReturn.reason = "missed turn";
+    m_session->SetRerouteDecisionForTesting(
+        std::make_unique<TestRerouteDecision>(
+            std::vector<RerouteDecisionResult>{suggestReturn, suggestReturn}));
+
+    location::GpsInfo info;
+    info.m_latitude = 0.0;
+    info.m_longitude = 0.0;
+    info.m_horizontalAccuracy = 5.0;
+
+    TEST_EQUAL(m_session->OnLocationPositionChanged(info), SessionState::OnRoute, ());
+    TEST_EQUAL(m_session->OnLocationPositionChanged(info), SessionState::RouteNeedRebuild, ());
+    signal.Signal();
+  });
+
+  TEST(signal.WaitUntil(steady_clock::now() + kRouteBuildingMaxDuration), ());
+}
+
+UNIT_CLASS_TEST(AsyncGuiThreadTestWithRoutingSession, TestCorridorContinueResetsSuggestReturnCounter)
+{
+  TimedSignal signal;
+  GetPlatform().RunTask(Platform::Thread::Gui, [this, &signal]()
+  {
+    InitRoutingSession();
+    Route route("dummy", kTestRoute.begin(), kTestRoute.end(), 0 /* route id */);
+    FillSubroutesInfo(route);
+
+    m_session->AssignRouteForTesting(std::make_shared<Route>(route), RouterResultCode::NoError);
+    m_session->SetState(SessionState::OnRoute);
+    m_session->SetCorridorTrackingEnabled(true);
+
+    CorridorCheckResult reroute;
+    reroute.isInsideCorridor = false;
+    reroute.recommendation = CorridorCheckResult::Recommendation::Reroute;
+
+    CorridorCheckResult stayOnRoute;
+    stayOnRoute.isInsideCorridor = true;
+    stayOnRoute.recommendation = CorridorCheckResult::Recommendation::Continue;
+
+    m_session->SetCorridorTrackerForTesting(std::make_unique<TestCorridorTracker>(
+        std::vector<CorridorCheckResult>{reroute, stayOnRoute, reroute}));
+
+    RerouteDecisionResult suggestReturn;
+    suggestReturn.decision = RerouteDecisionType::SuggestReturn;
+    suggestReturn.reason = "brief detour";
+    m_session->SetRerouteDecisionForTesting(std::make_unique<TestRerouteDecision>(
+        std::vector<RerouteDecisionResult>{suggestReturn, suggestReturn}));
+
+    location::GpsInfo info;
+    info.m_latitude = 0.0;
+    info.m_longitude = 0.0;
+    info.m_horizontalAccuracy = 5.0;
+
+    TEST_EQUAL(m_session->OnLocationPositionChanged(info), SessionState::OnRoute, ());
+    TEST_EQUAL(m_session->OnLocationPositionChanged(info), SessionState::OnRoute, ());
+    TEST_EQUAL(m_session->OnLocationPositionChanged(info), SessionState::OnRoute, ());
+    signal.Signal();
+  });
+
+  TEST(signal.WaitUntil(steady_clock::now() + kRouteBuildingMaxDuration), ());
+}
+
+UNIT_CLASS_TEST(AsyncGuiThreadTestWithRoutingSession, TestSwitchToAlternativeFailsWithoutRouteReconstruction)
+{
+  TimedSignal signal;
+  GetPlatform().RunTask(Platform::Thread::Gui, [this, &signal]()
+  {
+    InitRoutingSession();
+    Route route("dummy", kTestRoute.begin(), kTestRoute.end(), 0 /* route id */);
+    FillSubroutesInfo(route);
+
+    size_t counter = 0;
+    std::unique_ptr<DummyRouter> router = make_unique<DummyRouter>(route, RouterResultCode::InternalError, counter);
+    m_session->SetRouter(std::move(router), nullptr);
+    m_session->AssignRouteForTesting(std::make_shared<Route>(route), RouterResultCode::NoError);
+
+    AlternativeRoute alternative;
+    alternative.routeIndex = 1;
+    alternative.distanceMeters = 1500.0;
+    alternative.durationSeconds = 180.0;
+    alternative.path = kTestSegments;
+    m_session->SetAlternatives(std::vector<AlternativeRoute>{alternative});
+
+    TEST(m_session->HasAlternatives(), ());
+    TEST(!m_session->SwitchToAlternative(1), ());
+    TEST(m_session->HasAlternatives(), ());
+    TEST_EQUAL(m_session->GetAlternatives().front().routeIndex, 1, ());
+    signal.Signal();
+  });
+
+  TEST(signal.WaitUntil(steady_clock::now() + kRouteBuildingMaxDuration), ());
+}
+
+UNIT_CLASS_TEST(AsyncGuiThreadTestWithRoutingSession, TestSwitchToAlternativeReconstructsRouteAtStart)
+{
+  TimedSignal signal;
+  GetPlatform().RunTask(Platform::Thread::Gui, [this, &signal]()
+  {
+    InitRoutingSession();
+
+    Route primary("dummy", kTestRoute.begin(), kTestRoute.end(), 0 /* route id */);
+    FillSubroutesInfo(primary);
+
+    std::vector<m2::PointD> const kAlternativeRoute = {{0., 1.}, {0.2, 2.0}, {0., 4.0}};
+    Route reconstructed("dummy", kAlternativeRoute.begin(), kAlternativeRoute.end(), 0 /* route id */);
+    FillSubroutesInfo(reconstructed);
+
+    size_t counter = 0;
+    std::unique_ptr<DummyRouter> router =
+        make_unique<DummyRouter>(reconstructed, RouterResultCode::NoError, counter);
+    m_session->SetRouter(std::move(router), nullptr);
+    m_session->AssignRouteForTesting(std::make_shared<Route>(primary), RouterResultCode::NoError);
+
+    AlternativeRoute alternative;
+    alternative.routeIndex = 1;
+    alternative.distanceMeters = 1500.0;
+    alternative.durationSeconds = 180.0;
+    alternative.path = kTestSegments;
+    m_session->SetAlternatives(std::vector<AlternativeRoute>{alternative});
+
+    TEST(m_session->SwitchToAlternative(1), ());
+    TEST(!m_session->HasAlternatives(), ());
+    auto const routeForTests = m_session->GetRouteForTests();
+    TEST(routeForTests->IsValid(), ());
+    TEST_EQUAL(routeForTests->GetPoly().GetSize(), reconstructed.GetPoly().GetSize(), ());
+    TEST_EQUAL(routeForTests->GetPoly().Front(), reconstructed.GetPoly().Front(), ());
+    TEST_EQUAL(routeForTests->GetPoly().Back(), reconstructed.GetPoly().Back(), ());
+    signal.Signal();
+  });
+
+  TEST(signal.WaitUntil(steady_clock::now() + kRouteBuildingMaxDuration), ());
 }
 }  // namespace routing_session_test

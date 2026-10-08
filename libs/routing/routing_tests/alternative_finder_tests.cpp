@@ -170,6 +170,8 @@ UNIT_TEST(AlternativeParams_ForMediumRoutes)
   TEST_EQUAL(params.k, 2, ("Medium routes k should be 2"));
   TEST_ALMOST_EQUAL_ABS(params.minLengthMeters, 20000, 0.1, ("Medium min length 20km"));
   TEST_EQUAL(params.maxViaNodeCandidates, 50, ("Medium max candidates 50"));
+  TEST_ALMOST_EQUAL_ABS(params.overlapThreshold, 0.9, 0.001,
+                        ("Medium routes should allow high overlap"));
 }
 
 // Test IAlternativeFinder::CalcOverlap via the factory

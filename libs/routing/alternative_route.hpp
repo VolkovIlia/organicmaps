@@ -3,6 +3,7 @@
 #include "routing/segment.hpp"
 
 #include "geometry/latlon.hpp"
+#include "geometry/point2d.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -50,6 +51,7 @@ struct AlternativeRoute
 
   std::vector<DecisionPoint> decisionPoints;
   std::vector<Segment> path;        ///< Full path segments
+  std::vector<m2::PointD> polylinePoints;  ///< Geographic points (Mercator) for map rendering
 
   /// @brief Get stretch ratio compared to primary route.
   /// @param primaryDistance Primary route distance in meters.
@@ -82,21 +84,25 @@ struct AlternativeRoute
 struct AlternativeParams
 {
   int k = 3;                        ///< Total routes (1 primary + k-1 alternatives)
-  double overlapThreshold = 0.6;    ///< Max overlap with primary (Jaccard similarity)
-  double maxLengthRatio = 1.3;      ///< Max stretch factor vs primary
-  double minLengthMeters = 50000;   ///< Minimum route length to compute alternatives (50km)
-  int maxViaNodeCandidates = 100;   ///< Max via-nodes to evaluate
+  double overlapThreshold = 0.95;   ///< Max overlap with primary (Jaccard similarity); high for highways
+  double maxLengthRatio = 2.0;      ///< Max stretch factor vs primary
+  double minLengthMeters = 10000;   ///< Minimum route length to compute alternatives (10km)
+  int maxViaNodeCandidates = 10;    ///< Max via-nodes to evaluate
   double minTimeSavingSeconds = 60; ///< Min time saving to show decision point (1 min)
+  double maxComputeTimeSec = 60.0;  ///< Abort search after this many wall-clock seconds
 
   static AlternativeParams Default() { return AlternativeParams{}; }
 
-  /// @brief Parameters for shorter routes (20-50km).
+  /// @brief Parameters for shorter routes (5-10km).
   static AlternativeParams ForMediumRoutes()
   {
     AlternativeParams params;
-    params.minLengthMeters = 20000;
-    params.maxViaNodeCandidates = 50;
-    params.k = 2;  // Only 1 alternative for medium routes
+    params.minLengthMeters = 5000;
+    params.maxViaNodeCandidates = 7;
+    params.k = 2;
+    params.overlapThreshold = 0.93;
+    params.maxLengthRatio = 2.0;
+    params.maxComputeTimeSec = 30.0;
     return params;
   }
 };

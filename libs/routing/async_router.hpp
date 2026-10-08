@@ -54,6 +54,11 @@ public:
   bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                    EdgeProj & proj);
 
+  RouterResultCode ReconstructRoute(Route const & currentRoute, std::vector<Segment> const & segments,
+                                    Route & route);
+  std::vector<AlternativeRoute> FindAlternativeRoutes(Route const & currentRoute,
+                                                      AlternativeParams const & params);
+
 private:
   /// Worker thread function
   void ThreadFunc();

@@ -148,6 +148,24 @@ public class MwmActivity extends BaseMwmFragmentActivity
   private static final String EXTRA_CONSUMED = "mwm.extra.intent.processed";
   private boolean mIntentConsumed = false;
   private boolean mPreciseLocationDialogShown = false;
+  @NonNull
+  private final Runnable mProcessIntentWhenReadyTask = new Runnable()
+  {
+    @Override
+    public void run()
+    {
+      if (isDestroyed() || mIntentConsumed)
+        return;
+
+      if (Map.isEngineCreated())
+      {
+        processIntent();
+        return;
+      }
+
+      app.organicmaps.sdk.util.concurrency.UiThread.runLater(this, 100);
+    }
+  };
 
   private static final String[] DOCKED_FRAGMENTS = {SearchFragment.class.getName(), DownloaderFragment.class.getName(),
                                                     RoutingPlanFragment.class.getName(),
@@ -272,7 +290,6 @@ public class MwmActivity extends BaseMwmFragmentActivity
       saveAndStopTrackRecording();
     }
 
-    processIntent();
     migrateOAuthCredentials();
   }
 
@@ -324,9 +341,22 @@ public class MwmActivity extends BaseMwmFragmentActivity
     };
     for (IntentProcessor ip : mIntentProcessors)
     {
-      if (ip.process(intent, this))
+      final boolean processed = ip.process(intent, this);
+      if (processed)
         break;
     }
+  }
+
+  private void scheduleIntentProcessingIfNeeded()
+  {
+    if (mIntentConsumed)
+      return;
+
+    app.organicmaps.sdk.util.concurrency.UiThread.cancelDelayedTasks(mProcessIntentWhenReadyTask);
+    if (Map.isEngineCreated())
+      processIntent();
+    else
+      app.organicmaps.sdk.util.concurrency.UiThread.runLater(mProcessIntentWhenReadyTask, 100);
   }
 
   private void migrateOAuthCredentials()
@@ -1041,8 +1071,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
     setIntent(intent);
     mIntentConsumed = false;
     super.onNewIntent(intent);
-    if (mMapController.isRenderingActive())
-      processIntent();
+    scheduleIntentProcessingIfNeeded();
     if (intent.getAction() != null && intent.getAction().equals(TrackRecordingService.STOP_TRACK_RECORDING))
     {
       // closes the bottom sheet in case it is opened to deal with updation of track recording status in bottom sheet.
@@ -1058,6 +1087,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
     super.onResume();
     ThemeSwitcher.INSTANCE.synchronizeApplicationTheme();
     ThemeSwitcher.INSTANCE.synchronizeMapStyle(this, mMapController.isRenderingActive());
+    scheduleIntentProcessingIfNeeded();
     refreshSearchToolbar();
     setFullscreen(isFullscreen());
     makeNavigationBarTransparentInLightMode();
@@ -1087,6 +1117,7 @@ public class MwmActivity extends BaseMwmFragmentActivity
   {
     if (mOnmapDownloader != null)
       mOnmapDownloader.onPause();
+    app.organicmaps.sdk.util.concurrency.UiThread.cancelDelayedTasks(mProcessIntentWhenReadyTask);
     MwmApplication.from(this).getSensorHelper().removeListener(this);
     dismissLocationErrorDialog();
     dismissAlertDialog();
@@ -1621,6 +1652,15 @@ public class MwmActivity extends BaseMwmFragmentActivity
       return;
 
     closeSearchToolbar(true, true);
+  }
+
+  @Override
+  public void onAlternativesReady()
+  {
+    if (mRoutingPlanInplaceController == null)
+      return;
+
+    mRoutingPlanInplaceController.onAlternativesReady();
   }
 
   @Override

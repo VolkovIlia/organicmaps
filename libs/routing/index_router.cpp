@@ -31,6 +31,7 @@
 
 #include "indexer/data_source.hpp"
 
+#include "base/cancellable.hpp"
 #include "platform/settings.hpp"
 
 #include "geometry/distance_on_sphere.hpp"
@@ -48,6 +49,7 @@
 #include "defines.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <deque>
 #include <iterator>
 #include <map>
@@ -91,6 +93,18 @@ double CalcMaxSpeed(NumMwmIds const & numMwmIds, VehicleModelFactoryInterface co
 SpeedKMpH const & CalcOffroadSpeed(VehicleModelFactoryInterface const & vehicleModelFactory)
 {
   return vehicleModelFactory.GetVehicleModel()->GetOffroadSpeed();
+}
+
+std::vector<Segment> CollectRealSegments(std::vector<Segment> const & segments)
+{
+  std::vector<Segment> realSegments;
+  realSegments.reserve(segments.size());
+  for (auto const & segment : segments)
+  {
+    if (!IndexGraphStarter::IsFakeSegment(segment))
+      realSegments.push_back(segment);
+  }
+  return realSegments;
 }
 
 std::shared_ptr<VehicleModelFactoryInterface> CreateVehicleModelFactory(
@@ -269,9 +283,26 @@ std::unique_ptr<WorldGraph> IndexRouter::MakeSingleMwmWorldGraph()
 
 void IndexRouter::ClearState()
 {
+  // Cancel any ongoing FindAlternativeRoutes computation to prevent a use-after-free:
+  // the background thread holds references into m_dataSource's MwmHandle objects, so
+  // we must wait for it to finish before calling FreeHandles().
+  {
+    std::lock_guard lock(m_alternativesMutex);
+    m_cancelAlternatives = true;
+    if (m_currentAltDelegate)
+      m_currentAltDelegate->Cancel();  // make ongoing A* exit within milliseconds
+  }
+  {
+    std::unique_lock lock(m_alternativesMutex);
+    m_alternativesCV.wait_for(lock, std::chrono::milliseconds(500),
+                              [this] { return !m_alternativesRunning; });
+  }
+
   m_roadGraph.ClearState();
   m_directionsEngine->Clear();
   m_dataSource.FreeHandles();
+
+  m_cancelAlternatives = false;
 }
 
 bool IndexRouter::FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
@@ -614,6 +645,565 @@ RouterResultCode IndexRouter::DoCalculateRoute(Checkpoints const & checkpoints, 
   m_lastFakeEdges = std::make_unique<FakeEdgesContainer>(std::move(*starter));
 
   return RouterResultCode::NoError;
+}
+
+RouterResultCode IndexRouter::ReconstructRoute(Route const & currentRoute,
+                                               std::vector<Segment> const & segments, Route & route)
+{
+  if (!currentRoute.IsValid() || segments.empty())
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: invalid current route or empty segments",
+                "routeValid =", currentRoute.IsValid(), "segments =", segments.size()));
+    return RouterResultCode::InternalError;
+  }
+
+  auto graph = MakeWorldGraph();
+  return ReconstructRoute(currentRoute, segments, route, *graph);
+}
+
+RouterResultCode IndexRouter::ReconstructRoute(Route const & currentRoute,
+                                               std::vector<Segment> const & segments, Route & route,
+                                               WorldGraph & graph)
+{
+  auto const & polyline = currentRoute.GetPoly();
+  if (polyline.GetSize() < 2)
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: polyline too short", polyline.GetSize()));
+    return RouterResultCode::InternalError;
+  }
+
+  auto const realSegments = CollectRealSegments(segments);
+  if (realSegments.empty())
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: no real segments", "segments =", segments.size()));
+    return RouterResultCode::InternalError;
+  }
+
+  PointsOnEdgesSnapping snapping(*this, graph);
+  auto const appendNearbySegments = [&](m2::PointD const & point, bool isOutgoing,
+                                        std::vector<Segment> & endpointSegments)
+  {
+    std::vector<Segment> nearbySegments;
+    bool ignoredCodirectional = false;
+    if (!snapping.FindBestSegments(point, m2::PointD::Zero() /* direction */, isOutgoing, nearbySegments,
+                                   ignoredCodirectional))
+    {
+      return;
+    }
+
+    for (auto const & segment : nearbySegments)
+    {
+      if (std::find(endpointSegments.begin(), endpointSegments.end(), segment) == endpointSegments.end())
+        endpointSegments.push_back(segment);
+    }
+  };
+  auto const findEndpointMatch = [](std::vector<Segment> const & endpointSegments, Segment const & candidate,
+                                    Segment & matchedSegment)
+  {
+    auto const exactIt = std::find(endpointSegments.begin(), endpointSegments.end(), candidate);
+    if (exactIt != endpointSegments.end())
+    {
+      matchedSegment = *exactIt;
+      return true;
+    }
+
+    auto const inverseIt =
+        std::find_if(endpointSegments.begin(), endpointSegments.end(),
+                     [&candidate](Segment const & endpoint) { return endpoint.IsInverse(candidate); });
+    if (inverseIt != endpointSegments.end())
+    {
+      matchedSegment = *inverseIt;
+      return true;
+    }
+
+    return false;
+  };
+
+  std::vector<Segment> startSegments;
+  bool bestSegmentIsAlmostCodirectional = false;
+  if (!snapping.FindBestSegments(polyline.Front(), polyline.GetPoint(1) - polyline.Front(),
+                                 true /* isOutgoing */, startSegments, bestSegmentIsAlmostCodirectional))
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: no snapped start segments"));
+    return RouterResultCode::RouteNotFound;
+  }
+
+  // Use the candidate's actual first segment directly; compute strictForward only if it happens
+  // to match one of the primary snapped starts (to preserve directionality when possible).
+  appendNearbySegments(polyline.Front(), true /* isOutgoing */, startSegments);
+  Segment matchedStartSegment;
+  bool const strictForward =
+      bestSegmentIsAlmostCodirectional &&
+      findEndpointMatch(startSegments, realSegments.front(), matchedStartSegment);
+  if (!strictForward)
+    matchedStartSegment = realSegments.front();
+
+  std::vector<Segment> finishSegments;
+  bool dummy = false;
+  if (!snapping.FindBestSegments(polyline.Back(), {} /* direction */, false /* isOutgoing */, finishSegments,
+                                 dummy))
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: no snapped finish segments"));
+    return RouterResultCode::RouteNotFound;
+  }
+
+  appendNearbySegments(polyline.Back(), false /* isOutgoing */, finishSegments);
+  Segment matchedFinishSegment;
+  if (!findEndpointMatch(finishSegments, realSegments.back(), matchedFinishSegment))
+    matchedFinishSegment = realSegments.back();  // Use candidate's actual end segment
+
+  FakeEnding const startFakeEnding = MakeFakeEnding({matchedStartSegment}, polyline.Front(), graph);
+  FakeEnding const finishFakeEnding = MakeFakeEnding({matchedFinishSegment}, polyline.Back(), graph);
+
+  IndexGraphStarter starter(startFakeEnding, finishFakeEnding, 0 /* fakeNumerationStart */,
+                            strictForward, graph);
+
+  std::vector<Segment> reconstructedSegments;
+  reconstructedSegments.reserve(realSegments.size() + 2);
+  reconstructedSegments.push_back(starter.GetStartSegment());
+  reconstructedSegments.insert(reconstructedSegments.end(), realSegments.begin(), realSegments.end());
+  reconstructedSegments.push_back(starter.GetFinishSegment());
+
+  route.SetCurrentSubrouteIdx(0);
+  route.SetSubroteAttrs(std::vector<Route::SubrouteAttrs>{
+      Route::SubrouteAttrs(starter.GetStartJunction().ToPointWithAltitude(),
+                           starter.GetFinishJunction().ToPointWithAltitude(),
+                           0 /* beginSegmentIdx */, reconstructedSegments.size())});
+
+  base::Cancellable cancellable;
+  auto const result = RedressRoute(reconstructedSegments, cancellable, starter, route);
+  if (result != RouterResultCode::NoError)
+  {
+    LOG(LINFO, ("ReconstructRoute rejected: RedressRoute failed",
+                "result =", DebugPrint(result),
+                "segments =", reconstructedSegments.size(),
+                "strictForward =", strictForward));
+  }
+  return result;
+}
+
+std::vector<AlternativeRoute> IndexRouter::FindAlternativeRoutes(Route const & currentRoute,
+                                                                 AlternativeParams const & params)
+{
+  bool const wrongVehicle = m_vehicleType != VehicleType::Car;
+  bool const invalidRoute = !currentRoute.IsValid();
+  bool const wrongSubrouteCount = currentRoute.GetSubrouteCount() != 1;
+  bool const missingLastRoute = !m_lastRoute;
+  bool const missingLastFakeEdges = !m_lastFakeEdges;
+  bool const routeTooShort = currentRoute.GetTotalDistanceMeters() < params.minLengthMeters;
+  if (wrongVehicle || invalidRoute || wrongSubrouteCount || missingLastRoute || missingLastFakeEdges || routeTooShort)
+  {
+    LOG(LINFO, ("FindAlternativeRoutes skipped:",
+                "wrongVehicle =", wrongVehicle,
+                "invalidRoute =", invalidRoute,
+                "wrongSubrouteCount =", wrongSubrouteCount,
+                "missingLastRoute =", missingLastRoute,
+                "missingLastFakeEdges =", missingLastFakeEdges,
+                "routeDistance =", currentRoute.GetTotalDistanceMeters(),
+                "minLength =", params.minLengthMeters));
+    return {};
+  }
+
+  if (!m_alternativeFinder)
+    m_alternativeFinder = CreateAlternativeFinder();
+
+  // Register as running; bail out if ClearState() was already called.
+  {
+    std::lock_guard lock(m_alternativesMutex);
+    if (m_cancelAlternatives)
+      return {};
+    m_alternativesRunning = true;
+  }
+  SCOPE_GUARD(clearRunningGuard, [this] {
+    std::lock_guard lock(m_alternativesMutex);
+    m_alternativesRunning = false;
+    m_alternativesCV.notify_all();
+  });
+
+  auto const isUsableSegment = [this](Segment const & segment)
+  {
+    return !IndexGraphStarter::IsFakeSegment(segment) && m_numMwmIds->ContainsFileForMwm(segment.GetMwmId());
+  };
+
+  struct PrimarySegmentInfo
+  {
+    Segment m_segment;
+    m2::PointD m_junctionPoint;
+    double m_distanceFromStartMeters = 0.0;
+  };
+
+  auto const collectSegments = [&isUsableSegment](Route const & route)
+  {
+    std::vector<Segment> segments;
+    segments.reserve(route.GetRouteSegments().size());
+    for (auto const & routeSegment : route.GetRouteSegments())
+    {
+      auto const segment = routeSegment.GetSegment();
+      if (isUsableSegment(segment))
+        segments.push_back(segment);
+    }
+    return segments;
+  };
+
+  auto const collectPrimarySegmentInfo = [&isUsableSegment](Route const & route)
+  {
+    std::vector<PrimarySegmentInfo> segments;
+    segments.reserve(route.GetRouteSegments().size());
+    for (auto const & routeSegment : route.GetRouteSegments())
+    {
+      auto const segment = routeSegment.GetSegment();
+      if (!isUsableSegment(segment))
+        continue;
+
+      segments.push_back({segment, routeSegment.GetJunction().GetPoint(), routeSegment.GetDistFromBeginningMeters()});
+    }
+    return segments;
+  };
+
+  auto graph = MakeWorldGraph();
+  graph->SetMode(WorldGraphMode::NoLeaps);
+  size_t reconstructRejected = 0;
+  size_t acceptRejected = 0;
+  size_t duplicateRejected = 0;
+
+  auto const & polyline = currentRoute.GetPoly();
+  if (polyline.GetSize() < 2)
+  {
+    LOG(LINFO, ("FindAlternativeRoutes skipped: polyline too short", polyline.GetSize()));
+    return {};
+  }
+
+  std::vector<Segment> startSegments;
+  bool bestSegmentIsAlmostCodirectional = false;
+  PointsOnEdgesSnapping snapping(*this, *graph);
+  if (!snapping.FindBestSegments(polyline.Front(), polyline.GetPoint(1) - polyline.Front(),
+                                 true /* isOutgoing */, startSegments, bestSegmentIsAlmostCodirectional))
+  {
+    LOG(LINFO, ("FindAlternativeRoutes skipped: no start segments"));
+    return {};
+  }
+
+  if (startSegments.size() <= 1)
+  {
+    std::vector<Segment> nearbyStartSegments;
+    bool ignoredCodirectional = false;
+    if (snapping.FindBestSegments(polyline.Front(), m2::PointD::Zero() /* direction */,
+                                  true /* isOutgoing */, nearbyStartSegments, ignoredCodirectional))
+    {
+      for (auto const & segment : nearbyStartSegments)
+      {
+        if (std::find(startSegments.begin(), startSegments.end(), segment) == startSegments.end())
+          startSegments.push_back(segment);
+      }
+    }
+  }
+
+  auto const primarySegmentsInfo = collectPrimarySegmentInfo(currentRoute);
+  if (primarySegmentsInfo.empty())
+  {
+    LOG(LINFO, ("FindAlternativeRoutes skipped: empty primary segments info"));
+    return {};
+  }
+
+  std::vector<Segment> primaryPath;
+  primaryPath.reserve(primarySegmentsInfo.size());
+  for (auto const & info : primarySegmentsInfo)
+    primaryPath.push_back(info.m_segment);
+
+  auto const primaryStartSegment = primaryPath.front();
+  std::vector<AlternativeRoute> alternatives;
+
+  auto const appendNearbyCandidates = [&](m2::PointD const & point, std::vector<Segment> & segments)
+  {
+    if (segments.size() > 1)
+      return;
+
+    std::vector<Segment> nearbySegments;
+    bool ignoredCodirectional = false;
+    if (!snapping.FindBestSegments(point, m2::PointD::Zero() /* direction */, true /* isOutgoing */,
+                                   nearbySegments, ignoredCodirectional))
+    {
+      return;
+    }
+
+    for (auto const & segment : nearbySegments)
+    {
+      if (std::find(segments.begin(), segments.end(), segment) == segments.end())
+        segments.push_back(segment);
+    }
+  };
+  auto const appendAlternativeRoute = [&](Route const & alternativeRoute)
+  {
+    AlternativeRoute alternative;
+    alternative.routeIndex = static_cast<int>(alternatives.size()) + 1;
+    alternative.distanceMeters = alternativeRoute.GetTotalDistanceMeters();
+    alternative.durationSeconds = alternativeRoute.GetTotalTimeSec();
+    alternative.path = collectSegments(alternativeRoute);
+    alternative.overlapWithPrimary =
+        m_alternativeFinder ? m_alternativeFinder->CalcOverlap(primaryPath, alternative.path) : 0.0;
+    alternative.diversityScore = 1.0 - alternative.overlapWithPrimary;
+
+    // Populate geographic polyline for map rendering.
+    auto const & altPoly = alternativeRoute.GetPoly();
+    alternative.polylinePoints.reserve(altPoly.GetSize());
+    for (size_t i = 0; i < altPoly.GetSize(); ++i)
+      alternative.polylinePoints.push_back(altPoly.GetPoint(i));
+
+    if (!alternative.IsAcceptable(params.overlapThreshold, params.maxLengthRatio,
+                                  currentRoute.GetTotalDistanceMeters()))
+    {
+      LOG(LINFO, ("FindAlternativeRoutes: route rejected by IsAcceptable",
+                  "overlap =", alternative.overlapWithPrimary,
+                  "threshold =", params.overlapThreshold,
+                  "stretch =", alternative.GetStretchRatio(currentRoute.GetTotalDistanceMeters()),
+                  "maxRatio =", params.maxLengthRatio));
+      ++acceptRejected;
+      return;
+    }
+
+    if (m_alternativeFinder)
+    {
+      for (auto const & existing : alternatives)
+      {
+        if (m_alternativeFinder->CalcOverlap(existing.path, alternative.path) > params.overlapThreshold)
+        {
+          ++duplicateRejected;
+          return;
+        }
+      }
+    }
+
+    alternatives.push_back(std::move(alternative));
+  };
+
+  appendNearbyCandidates(polyline.Front(), startSegments);
+
+  auto const tryAppendAlternative = [&](std::vector<Segment> const & candidatePath)
+  {
+    std::vector<Segment> usableCandidatePath;
+    usableCandidatePath.reserve(candidatePath.size());
+    for (auto const & segment : candidatePath)
+    {
+      if (isUsableSegment(segment))
+        usableCandidatePath.push_back(segment);
+    }
+
+    if (usableCandidatePath.size() < 2)
+      return;
+
+    Route alternativeRoute(currentRoute);
+    if (ReconstructRoute(currentRoute, usableCandidatePath, alternativeRoute, *graph) != RouterResultCode::NoError ||
+        !alternativeRoute.IsValid())
+    {
+      ++reconstructRejected;
+      return;
+    }
+
+    appendAlternativeRoute(alternativeRoute);
+  };
+
+  for (auto const & startSegment : startSegments)
+  {
+    if (startSegment == primaryStartSegment)
+      continue;
+    if (m_cancelAlternatives.load())
+      break;
+
+    RouterDelegate delegate;
+    {
+      std::lock_guard lock(m_alternativesMutex);
+      m_currentAltDelegate = &delegate;
+    }
+    FakeEnding startFakeEnding = MakeFakeEnding({startSegment}, polyline.Front(), *graph);
+    FakeEnding finishFakeEnding;
+    bool startIsCodirectional = false;
+    switch (snapping.Snap(polyline.Front(), polyline.Back(), polyline.GetPoint(1) - polyline.Front(),
+                          startFakeEnding, finishFakeEnding, startIsCodirectional))
+    {
+    case 1:
+    {
+      std::lock_guard lock(m_alternativesMutex);
+      m_currentAltDelegate = nullptr;
+      continue;
+    }
+    case 2:
+    {
+      std::lock_guard lock(m_alternativesMutex);
+      m_currentAltDelegate = nullptr;
+      continue;
+    }
+    }
+
+    Checkpoints const checkpoints(polyline.Front(), polyline.Back());
+    auto progress = std::make_shared<AStarProgress>();
+    progress->AppendSubProgress(
+        AStarSubProgress(mercator::ToLatLon(polyline.Front()), mercator::ToLatLon(polyline.Back()), 1.0));
+    SCOPE_GUARD(eraseProgress, [&progress]() { progress->PushAndDropLastSubProgress(); });
+
+    IndexGraphStarter starter(startFakeEnding, finishFakeEnding, 0 /* fakeNumerationStart */,
+                              startIsCodirectional, *graph);
+    std::vector<Segment> routeSegments;
+    auto const resultCode =
+        CalculateSubroute(checkpoints, 0 /* subrouteIdx */, delegate, progress, starter, routeSegments,
+                          false /* guides are detached */);
+    {
+      std::lock_guard lock(m_alternativesMutex);
+      m_currentAltDelegate = nullptr;
+    }
+    if (resultCode != RouterResultCode::NoError || routeSegments.size() < 2)
+      continue;
+
+    tryAppendAlternative(routeSegments);
+    if (static_cast<int>(alternatives.size()) >= params.k - 1)
+      break;
+  }
+
+  if (static_cast<int>(alternatives.size()) < params.k - 1 && primarySegmentsInfo.size() > 2)
+  {
+    double constexpr kMinAnchorDistanceMeters = 150.0;
+    double constexpr kAnchorSpacingMeters = 250.0;
+    double const maxAnchorDistanceMeters =
+        std::min(currentRoute.GetTotalDistanceMeters() * 0.35, 2000.0);
+
+    double lastAnchorDistanceMeters = -kAnchorSpacingMeters;
+    int anchorCandidatesChecked = 0;
+    auto const anchorLoopStart = std::chrono::steady_clock::now();
+
+    for (size_t i = 0; i + 1 < primarySegmentsInfo.size(); ++i)
+    {
+      auto const elapsed =
+          std::chrono::duration<double>(std::chrono::steady_clock::now() - anchorLoopStart).count();
+      if (elapsed >= params.maxComputeTimeSec || m_cancelAlternatives.load())
+      {
+        LOG(LINFO, ("FindAlternativeRoutes: time budget exceeded after", elapsed, "s; found",
+                    alternatives.size(), "alternatives"));
+        break;
+      }
+      if (static_cast<int>(alternatives.size()) >= params.k - 1 ||
+          anchorCandidatesChecked >= params.maxViaNodeCandidates)
+      {
+        break;
+      }
+
+      auto const & anchor = primarySegmentsInfo[i];
+      if (anchor.m_distanceFromStartMeters < kMinAnchorDistanceMeters ||
+          anchor.m_distanceFromStartMeters > maxAnchorDistanceMeters ||
+          anchor.m_distanceFromStartMeters - lastAnchorDistanceMeters < kAnchorSpacingMeters)
+      {
+        continue;
+      }
+
+      auto const checkpoint = anchor.m_junctionPoint;
+      m2::PointD startDirection = checkpoint - (i == 0 ? polyline.Front() : primarySegmentsInfo[i - 1].m_junctionPoint);
+      if (startDirection.IsAlmostZero() && i + 1 < primarySegmentsInfo.size())
+        startDirection = primarySegmentsInfo[i + 1].m_junctionPoint - checkpoint;
+
+      std::vector<Segment> candidateStartSegments;
+      bool bestSegmentIsAlmostCodirectional = false;
+      if (!snapping.FindBestSegments(checkpoint, startDirection, true /* isOutgoing */, candidateStartSegments,
+                                     bestSegmentIsAlmostCodirectional))
+      {
+        continue;
+      }
+
+      appendNearbyCandidates(checkpoint, candidateStartSegments);
+
+      auto const primaryContinuation = primarySegmentsInfo[i + 1].m_segment;
+      std::vector<Segment> prefix(primaryPath.begin(), primaryPath.begin() + static_cast<ptrdiff_t>(i + 1));
+      ++anchorCandidatesChecked;
+      lastAnchorDistanceMeters = anchor.m_distanceFromStartMeters;
+
+      for (auto const & candidateStart : candidateStartSegments)
+      {
+        if (static_cast<int>(alternatives.size()) >= params.k - 1)
+          break;
+
+        {
+          auto const innerElapsed =
+              std::chrono::duration<double>(std::chrono::steady_clock::now() - anchorLoopStart).count();
+          if (innerElapsed >= params.maxComputeTimeSec || m_cancelAlternatives.load())
+          {
+            LOG(LINFO, ("FindAlternativeRoutes: time budget exceeded in inner loop after",
+                        innerElapsed, "s; found", alternatives.size(), "alternatives"));
+            goto doneAnchorLoop;
+          }
+        }
+
+        if (candidateStart == primaryContinuation)
+          continue;
+
+        RouterDelegate delegate;
+        {
+          std::lock_guard lock(m_alternativesMutex);
+          m_currentAltDelegate = &delegate;
+        }
+        FakeEnding startFakeEnding = MakeFakeEnding({candidateStart}, checkpoint, *graph);
+        FakeEnding finishFakeEnding;
+        bool startIsCodirectional = false;
+        switch (snapping.Snap(checkpoint, polyline.Back(), startDirection, startFakeEnding, finishFakeEnding,
+                              startIsCodirectional))
+        {
+        case 1:
+        {
+          std::lock_guard lock(m_alternativesMutex);
+          m_currentAltDelegate = nullptr;
+          continue;
+        }
+        case 2:
+        {
+          std::lock_guard lock(m_alternativesMutex);
+          m_currentAltDelegate = nullptr;
+          continue;
+        }
+        }
+
+        Checkpoints const checkpoints(checkpoint, polyline.Back());
+        auto progress = std::make_shared<AStarProgress>();
+        progress->AppendSubProgress(
+            AStarSubProgress(mercator::ToLatLon(checkpoint), mercator::ToLatLon(polyline.Back()), 1.0));
+        SCOPE_GUARD(eraseProgress, [&progress]() { progress->PushAndDropLastSubProgress(); });
+
+        IndexGraphStarter starter(startFakeEnding, finishFakeEnding, 0 /* fakeNumerationStart */,
+                                  startIsCodirectional, *graph);
+        std::vector<Segment> suffixSegments;
+        auto const resultCode =
+            CalculateSubroute(checkpoints, 0 /* subrouteIdx */, delegate, progress, starter, suffixSegments,
+                              false /* guides are detached */);
+        {
+          std::lock_guard lock(m_alternativesMutex);
+          m_currentAltDelegate = nullptr;
+        }
+        if (resultCode != RouterResultCode::NoError || suffixSegments.size() < 2)
+          continue;
+
+        std::vector<Segment> candidatePath = prefix;
+        auto suffixBegin = suffixSegments.begin();
+        if (!candidatePath.empty() && candidatePath.back() == suffixSegments.front())
+          ++suffixBegin;
+        candidatePath.insert(candidatePath.end(), suffixBegin, suffixSegments.end());
+        tryAppendAlternative(candidatePath);
+      }
+    }
+    doneAnchorLoop:;
+  }
+
+  if (m_alternativeFinder && !alternatives.empty())
+  {
+    auto decisionPoints = m_alternativeFinder->FindDecisionPoints(currentRoute, alternatives);
+    for (auto & point : decisionPoints)
+    {
+      int const idx = point.alternativeIndex - 1;
+      if (idx >= 0 && idx < static_cast<int>(alternatives.size()))
+        alternatives[idx].decisionPoints.push_back(point);
+    }
+  }
+
+  LOG(LINFO, ("FindAlternativeRoutes:", "accepted =", alternatives.size(),
+              "reconstructRejected =", reconstructRejected,
+              "acceptRejected =", acceptRejected,
+              "duplicateRejected =", duplicateRejected));
+
+  return alternatives;
 }
 
 std::vector<Segment> ProcessJoints(std::vector<JointSegment> const & jointsPath,
@@ -1617,7 +2207,7 @@ RouterResultCode IndexRouter::RedressRoute(std::vector<Segment> const & segments
   }
 
   m_directionsEngine->SetVehicleType(m_vehicleType);
-  ReconstructRoute(*m_directionsEngine, roadGraph, cancellable, junctions, times, route);
+  ::routing::ReconstructRoute(*m_directionsEngine, roadGraph, cancellable, junctions, times, route);
 
   if (cancellable.IsCancelled())
     return RouterResultCode::Cancelled;
@@ -1786,47 +2376,6 @@ void IndexRouter::SetupAlgorithmMode(IndexGraphStarter & starter, bool guidesAct
     starter.GetGraph().SetMode(AreMwmsNear(starter) ? WorldGraphMode::Joints : WorldGraphMode::LeapsOnly);
     break;
   case VehicleType::Count: CHECK(false, ("Unknown vehicle type:", m_vehicleType)); break;
-  }
-}
-
-// Phase 4: Alternative routes implementation
-void IndexRouter::CalculateAlternatives(Route & primaryRoute)
-{
-  if (!m_computeAlternatives)
-    return;
-
-  // Only compute alternatives for car routing
-  if (m_vehicleType != VehicleType::Car)
-  {
-    LOG(LDEBUG, ("Alternatives only supported for car routing"));
-    return;
-  }
-
-  // Check minimum route length
-  double const primaryLength = primaryRoute.GetTotalDistanceMeters();
-  AlternativeParams params = AlternativeParams::Default();
-
-  if (primaryLength < params.minLengthMeters)
-  {
-    LOG(LDEBUG, ("Route too short for alternatives:",
-        primaryLength, "m <", params.minLengthMeters, "m"));
-    return;
-  }
-
-  // Create finder if not exists
-  if (!m_alternativeFinder)
-    m_alternativeFinder = CreateAlternativeFinder();
-
-  // Find alternatives using k-SPwLO algorithm
-  std::vector<AlternativeRoute> alternatives = m_alternativeFinder->Find(primaryRoute, params);
-
-  if (!alternatives.empty())
-  {
-    LOG(LINFO, ("Found", alternatives.size(), "alternative routes"));
-
-    // TODO: Store alternatives in Route for RoutingSession to access.
-    // For now, we just log that alternatives were found.
-    // Full integration requires Route class modification to store alternatives.
   }
 }
 

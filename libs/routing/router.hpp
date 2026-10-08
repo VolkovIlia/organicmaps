@@ -1,7 +1,9 @@
 #pragma once
 
 #include "routing/checkpoints.hpp"
+#include "routing/alternative_route.hpp"
 #include "routing/road_graph.hpp"
+#include "routing/segment.hpp"
 #include "routing/router_delegate.hpp"
 #include "routing/routing_callbacks.hpp"
 
@@ -71,6 +73,25 @@ public:
   /// @see Cancellable
   virtual RouterResultCode CalculateRoute(Checkpoints const & checkpoints, m2::PointD const & startDirection,
                                           bool adjust, RouterDelegate const & delegate, Route & route) = 0;
+
+  /// Reconstruct a navigable Route from an already selected segment path.
+  /// The default implementation reports unsupported reconstruction.
+  virtual RouterResultCode ReconstructRoute(Route const & currentRoute,
+                                            std::vector<Segment> const & segments, Route & route)
+  {
+    (void)currentRoute;
+    (void)segments;
+    (void)route;
+    return RouterResultCode::InternalError;
+  }
+
+  virtual std::vector<AlternativeRoute> FindAlternativeRoutes(Route const & currentRoute,
+                                                              AlternativeParams const & params)
+  {
+    (void)currentRoute;
+    (void)params;
+    return {};
+  }
 
   virtual bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                            EdgeProj & proj) = 0;

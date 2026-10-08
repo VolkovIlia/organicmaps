@@ -449,6 +449,7 @@ public:
   traffic::SpeedGroup GetTraffic(size_t segmentIdx) const;
 
   void GetTurnsForTesting(std::vector<turns::TurnItem> & turns) const;
+  uint64_t GetRouteId() const { return m_routeId; }
   bool IsRouteId(uint64_t routeId) const { return routeId == m_routeId; }
 
   /// \returns Length of the route segment with |segIdx| in meters.

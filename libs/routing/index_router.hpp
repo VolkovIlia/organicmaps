@@ -27,7 +27,11 @@
 #include "geometry/point2d.hpp"
 #include "geometry/tree4d.hpp"
 
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
 #include <memory>
+#include <mutex>
 #include <set>
 #include <string>
 #include <vector>
@@ -84,6 +88,10 @@ public:
   void SetGuides(GuidesTracks && guides) override;
   RouterResultCode CalculateRoute(Checkpoints const & checkpoints, m2::PointD const & startDirection,
                                   bool adjustToPrevRoute, RouterDelegate const & delegate, Route & route) override;
+  RouterResultCode ReconstructRoute(Route const & currentRoute, std::vector<Segment> const & segments,
+                                    Route & route) override;
+  std::vector<AlternativeRoute> FindAlternativeRoutes(Route const & currentRoute,
+                                                      AlternativeParams const & params) override;
 
   bool FindClosestProjectionToRoad(m2::PointD const & point, m2::PointD const & direction, double radius,
                                    EdgeProj & proj) override;
@@ -124,6 +132,10 @@ private:
 
   RouterResultCode AdjustRoute(Checkpoints const & checkpoints, m2::PointD const & startDirection,
                                RouterDelegate const & delegate, Route & route);
+
+  /// @brief Overload that reuses an already-constructed WorldGraph (avoids repeated disk loads).
+  RouterResultCode ReconstructRoute(Route const & currentRoute, std::vector<Segment> const & segments,
+                                    Route & route, WorldGraph & graph);
 
   std::unique_ptr<WorldGraph> MakeWorldGraph();
 
@@ -273,9 +285,6 @@ private:
 
   std::vector<Segment> GetBestOutgoingSegments(m2::PointD const & checkpoint, WorldGraph & graph);
 
-  // Phase 4: Calculate alternatives using k-SPwLO algorithm
-  void CalculateAlternatives(Route & primaryRoute);
-
   VehicleType m_vehicleType;
   bool m_loadAltitudes;
   std::string const m_name;
@@ -304,5 +313,14 @@ private:
   // Phase 4: Alternative routes
   bool m_computeAlternatives = false;
   std::unique_ptr<IAlternativeFinder> m_alternativeFinder;
+
+  // Thread-safety: guard against concurrent ClearState() / FindAlternativeRoutes().
+  // ClearState() cancels the ongoing A* search and waits for FindAlternativeRoutes() to finish
+  // before calling FreeHandles(), preventing a use-after-free on MwmSet::MwmHandle objects.
+  std::mutex m_alternativesMutex;
+  std::condition_variable m_alternativesCV;
+  bool m_alternativesRunning = false;               ///< protected by m_alternativesMutex
+  std::atomic<bool> m_cancelAlternatives{false};
+  RouterDelegate * m_currentAltDelegate = nullptr;  ///< protected by m_alternativesMutex
 };
 }  // namespace routing

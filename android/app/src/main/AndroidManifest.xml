@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto">
+    android:installLocation="internalOnly">
 
   <!-- Requiring "android.hardware.touchscreen" here breaks DeX mode -->
   <uses-feature

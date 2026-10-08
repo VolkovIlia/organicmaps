@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.IntentCompat;
 import app.organicmaps.MwmActivity;
 import app.organicmaps.MwmApplication;
@@ -40,13 +41,28 @@ public class Factory
 
   public static class KmzKmlProcessor implements IntentProcessor
   {
+    private static boolean isImportUri(@Nullable Uri uri)
+    {
+      if (uri == null)
+        return false;
+
+      final String scheme = uri.getScheme();
+      return "content".equals(scheme) || "file".equals(scheme) || "data".equals(scheme) ||
+             "http".equals(scheme) || "https".equals(scheme);
+    }
+
     @Override
     public boolean process(@NonNull Intent intent, @NonNull MwmActivity activity)
     {
       // See KML/KMZ/KMB intent filters in manifest.
       final List<Uri> uris;
       if (Intent.ACTION_VIEW.equals(intent.getAction()))
-        uris = Collections.singletonList(intent.getData());
+      {
+        final Uri uri = intent.getData();
+        if (!isImportUri(uri))
+          return false;
+        uris = Collections.singletonList(uri);
+      }
       else if (Intent.ACTION_SEND.equals(intent.getAction()))
         uris = Collections.singletonList(IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri.class));
       else if (Intent.ACTION_SEND_MULTIPLE.equals(intent.getAction()))
@@ -75,7 +91,8 @@ public class Factory
       if (uri == null)
         return false;
 
-      switch (Framework.nativeParseAndSetApiUrl(uri.toString()))
+      final int requestType = Framework.nativeParseAndSetApiUrl(uri.toString());
+      switch (requestType)
       {
       case RequestType.INCORRECT: return false;
 

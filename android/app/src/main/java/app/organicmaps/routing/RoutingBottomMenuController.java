@@ -205,7 +205,6 @@ final class RoutingBottomMenuController implements View.OnClickListener
       mAlternativesRecycler.setAdapter(mAlternativesAdapter);
       mAlternativesAdapter.setOnRouteSelectedListener(routeIndex -> {
         Framework.nativeSelectAlternativeRoute(routeIndex);
-        mAlternativesAdapter.setSelectedIndex(routeIndex);
       });
     }
     else
@@ -346,13 +345,14 @@ final class RoutingBottomMenuController implements View.OnClickListener
     if (mAlternativesPanel == null || mAlternativesAdapter == null)
       return;
 
-    if (Framework.nativeHasAlternativeRoutes())
+    final boolean hasAlternatives = Framework.nativeHasAlternativeRoutes();
+    if (hasAlternatives)
     {
       AlternativeRouteInfo[] routes = Framework.nativeGetAlternativeRoutes();
       if (routes != null && routes.length > 0)
       {
-        int selectedIndex = Framework.nativeGetSelectedRouteIndex();
-        mAlternativesAdapter.setRoutes(routes, selectedIndex);
+        int selectedRouteIndex = Framework.nativeGetSelectedRouteIndex();
+        mAlternativesAdapter.setRoutes(routes, selectedRouteIndex);
         mAlternativesPanel.setVisibility(View.VISIBLE);
         return;
       }

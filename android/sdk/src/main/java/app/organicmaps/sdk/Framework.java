@@ -21,6 +21,7 @@ import app.organicmaps.sdk.routing.RoutingProgressListener;
 import app.organicmaps.sdk.routing.RoutingRecommendationListener;
 import app.organicmaps.sdk.routing.TransitRouteInfo;
 import app.organicmaps.sdk.routing.AlternativeRouteInfo;
+import app.organicmaps.sdk.routing.AlternativesReadyListener;
 import app.organicmaps.sdk.settings.SpeedCameraMode;
 import app.organicmaps.sdk.util.Constants;
 import dalvik.annotation.optimization.FastNative;
@@ -209,6 +210,8 @@ public class Framework
 
   public static native void nativeSetRoutingListener(@NonNull RoutingListener listener);
 
+  public static native void nativeSetAlternativesReadyListener(@NonNull AlternativesReadyListener listener);
+
   public static native void nativeSetRouteProgressListener(@NonNull RoutingProgressListener listener);
 
   public static native void nativeSetRoutingRecommendationListener(@NonNull RoutingRecommendationListener listener);
@@ -258,8 +261,9 @@ public class Framework
   /**
    * Select an alternative route as the new primary.
    * @param routeIndex 0 = primary, 1+ = alternative index
+   * @return true if the route was switched, false when switching is not supported yet
    */
-  public static native void nativeSelectAlternativeRoute(int routeIndex);
+  public static native boolean nativeSelectAlternativeRoute(int routeIndex);
 
   /**
    * Check if alternative routes are available.

@@ -315,11 +315,15 @@ void CorrectCandidatesSegmentByOutgoing(TurnInfo const & turnInfo, Segment const
   else  // firstOutgoingSeg is found.
     if (nodes.isCandidatesAngleValid)
     {
-#ifdef DEBUG
       double constexpr eps = 0.001;
       double const diff = fabs(it->m_angle - turnAngle);
-      ASSERT(diff < eps || fabs(diff - 360) < eps, (it->m_angle, turnAngle));
-#endif
+      if (diff >= eps && fabs(diff - 360) >= eps)
+      {
+        // This can happen for alternative route segments where the path geometry creates
+        // angle inconsistencies. Correct the stored angle to the freshly computed value.
+        LOG(LWARNING, ("Turn angle mismatch corrected:", it->m_angle, "->", turnAngle));
+        it->m_angle = turnAngle;
+      }
     }
     else
     {
